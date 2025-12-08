@@ -1,69 +1,124 @@
-/* Full page container for centering */
+/* GLOBAL FIX — makes inputs & buttons EXACT same width */
+* {
+  box-sizing: border-box !important;
+}
+
+
+/* Full background */
 .login-container {
   display: flex;
-  justify-content: center;  /* horizontal center */
-  align-items: center;      /* vertical center */
-  height: 100vh;            /* full screen height */
-  background: #f5f5f5;      /* light background */
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+
+  background: linear-gradient(135deg, #fcfaf9, #f09819);
+  font-family: 'Poppins', sans-serif;
 }
 
-/* Login form card */
-form {
-  width: 350px;
-  padding: 30px;
-  background: #5a5a5a;  /* dark gray */
-  border-radius: 10px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+/* Card */
+.login-card {
+  width: 400px;
+  background: white;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 8px 35px rgba(0, 0, 0, 0.25);
+}
+
+/* Header */
+.card-header {
+  background: linear-gradient(135deg, #ff6a00, #ee0978a3);
+  padding: 40px 30px;
   text-align: center;
-}
-
-/* Titles */
-h2 {
-  margin-bottom: 15px;
-  font-size: 20px;
-  font-weight: bold;
   color: #fff;
 }
 
-/* Input fields */
-input {
-  width: 100%;
-  padding: 12px;
-  margin: 10px 0;
-  border: none;
-  border-radius: 5px;
-  box-sizing: border-box;
+.card-header h2 {
+  font-size: 26px;
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+
+.card-header p {
   font-size: 14px;
+  opacity: 0.85;
 }
 
-/* Button */
-button {
-  width: 100%;
-  padding: 12px;
-  background: #28a745;
-  color: #fff;
-  border: none;
-  border-radius: 5px;
-  font-size: 16px;
-  font-weight: bold;
-  cursor: pointer;
-  transition: background 0.3s;
-}
-
-button:hover:not(:disabled) {
-  background: #218838;
-}
-
-button:disabled {
-  background: #888;
-  cursor: not-allowed;
+/* Body */
+.card-body {
+  padding: 35px 30px;
 }
 
 /* Labels */
 label {
+  font-size: 14px;
+  font-weight: 600;
+  margin-bottom: 6px;
   display: block;
-  text-align: left;
-  margin: 8px 0 4px;
-  font-weight: bold;
-  color: #eee;
+  color: #444;
+}
+
+/* Autofill Fix */
+input:-webkit-autofill {
+  -webkit-box-shadow: 0 0 0 30px #ffa84b inset !important;
+  -webkit-text-fill-color: #fff !important;
+}
+
+/* ---- INPUT AND BUTTON SAME SIZE CONTROL ---- */
+input,
+button {
+  width: 100% !important;
+  height: 48px !important;
+  border-radius: 30px !important;
+  border: none !important;
+  box-sizing: border-box !important;
+}
+
+/* Gradient Inputs */
+input {
+  padding: 0 18px;
+  margin-bottom: 18px;
+
+  background: linear-gradient(135deg, #ffa84b, #ff7a18) !important;
+  color: #fff !important;
+
+  -moz-appearance: none !important;
+  -webkit-appearance: none !important;
+  appearance: none !important;
+}
+
+input::placeholder {
+  color: rgba(255, 255, 255, 0.85);
+}
+
+input:focus {
+  outline: 2px solid #ff7a18;
+}
+
+/* Forgot Password */
+.forgot {
+  text-align: right;
+  font-size: 13px;
+  margin-top: -10px;
+  margin-bottom: 18px;
+  color: #ff416c;
+  cursor: pointer;
+}
+.forgot:hover {
+  text-decoration: underline;
+}
+
+/* LOGIN Button */
+button {
+  margin-top: 10px;
+
+  background: linear-gradient(135deg, #ff7a18, #ff4b2b) !important;
+  color: white !important;
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: 0.3s ease;
+}
+
+button:hover {
+  transform: translateY(-2px);
 }

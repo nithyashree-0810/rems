@@ -1,28 +1,48 @@
 <div class="login-container">
-  <form #loginForm="ngForm" (ngSubmit)="onSubmit(loginForm)">
-    <h2>REAL ESTATE MANAGEMENT</h2>
-    <h2>SignIn</h2>
+    <ngx-spinner
+    bdColor="rgba(0,0,0,0.5)"
+    size="medium"
+    color="#fff"
+    type="ball-clip-rotate"
+    [fullScreen]="true">
+  </ngx-spinner>
+  <div class="login-card">
 
-    <label for="email">Email:</label>
-    <input
-      type="email"
-      id="email"
-      name="email"
-      [(ngModel)]="login.email"
-      required
-      placeholder="Enter your email"
-    />
+    <!-- Header -->
+    <div class="card-header">
+      <h2>Welcome<br>To Real Estate Portal</h2>
+      <p>Manage properties, bookings, clients and more—all in one place.</p>
+    </div>
 
-    <label for="password">Password:</label>
-    <input
-      type="password"
-      id="password"
-      name="password"
-      [(ngModel)]="login.password"
-      required
-      placeholder="Enter your password"
-    />
+    <!-- Body -->
+    <div class="card-body">
+      <form #loginForm="ngForm" (ngSubmit)="onSubmit(loginForm)">
 
-    <button type="submit" [disabled]="!loginForm.valid">Login</button>
-  </form>
+        <label>Username</label>
+        <input
+          type="email"
+          name="email"
+          [(ngModel)]="login.email"
+          placeholder="Enter your email"
+          required />
+
+        <label>Password</label>
+        <input
+          type="password"
+          name="password"
+          [(ngModel)]="login.password"
+          placeholder="Enter your password"
+          required />
+
+        <div class="forgot">Forgot password?</div>
+
+        <button type="submit" [disabled]="!loginForm.valid">
+          LOGIN
+        </button>
+
+      </form>
+    </div>
+
+  </div>
+
 </div>

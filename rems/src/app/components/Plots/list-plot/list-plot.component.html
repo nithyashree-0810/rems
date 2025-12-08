@@ -2,6 +2,24 @@
 
   <h2 class="title">List of Plots</h2>
 
+  <!-- 🔹 Search Bar -->
+  <div class="search-bar mb-3">
+    <input type="text"
+           [(ngModel)]="searchLayoutName"
+           placeholder="Search by layout name"
+           class="search-input" />
+
+    <button class="btn search-btn" (click)="searchPlotsByLayout()">
+      <i class="fa fa-search"></i> Search
+    </button>
+
+    <button class="btn reset-btn" (click)="loadPlots()">
+      Reset
+    </button>
+
+    <span class="search-message" *ngIf="searchMessage">{{ searchMessage }}</span>
+  </div>
+
   <div class="top-bar">
     <button class="add-btn" routerLink="/create-plot">
       <i class="fa fa-plus"></i> Create Plot
@@ -21,8 +39,8 @@
           <th>DIRECTION</th>
           <th>PRICE</th>
           <th>MOBILE</th>
-          <th>DTCP APPROVED</th> <!-- New -->
-          <th>RERA APPROVED</th> <!-- New -->
+          <th>DTCP APPROVED</th>
+          <th>RERA APPROVED</th>
           <th>ACTIONS</th>
         </tr>
       </thead>
@@ -38,15 +56,8 @@
           <td>{{ plot.direction }}</td>
           <td class="price">₹ {{ plot.price }}</td>
           <td>{{ plot.mobile }}</td>
-
-          <!-- ✅ New columns showing Yes / No -->
-          <td class="center-align">
-            {{ plot.dtcpApproved ? 'Yes' : 'No' }}
-          </td>
-
-          <td class="center-align">
-            {{ plot.reraApproved ? 'Yes' : 'No' }}
-          </td>
+          <td class="center-align">{{ plot.dtcpApproved ? 'Yes' : 'No' }}</td>
+          <td class="center-align">{{ plot.reraApproved ? 'Yes' : 'No' }}</td>
 
           <td class="action-col">
             <span class="icon view" (click)="viewPlot(plot)">
@@ -72,39 +83,21 @@
     </table>
   </div>
 
-
   <div class="pagination-wrapper">
-
-    <!-- Pagination stays center -->
     <div class="pagination-section">
+      <button class="page-btn" [disabled]="currentPage === 1" (click)="prevPage()">« Prev</button>
 
-      <button class="page-btn"
-        [disabled]="currentPage === 1"
-        (click)="prevPage()">
-        « Prev
-      </button>
-
-      <button
-        *ngFor="let page of totalPagesArray"
-        class="page-number"
-        [class.active]="currentPage === page"
-        (click)="goToPage(page)">
+      <button *ngFor="let page of totalPagesArray"
+              class="page-number"
+              [class.active]="currentPage === page"
+              (click)="goToPage(page)">
         {{ page }}
       </button>
 
-      <button class="page-btn"
-        [disabled]="currentPage === totalPages"
-        (click)="nextPage()">
-        Next »
-      </button>
-
+      <button class="page-btn" [disabled]="currentPage === totalPages" (click)="nextPage()">Next »</button>
     </div>
 
-    <!-- Home goes to right -->
-    <button class="home-btn" (click)="goHome()">
-      Home
-    </button>
-
+    <button class="home-btn" (click)="goHome()">Home</button>
   </div>
 
 </div>

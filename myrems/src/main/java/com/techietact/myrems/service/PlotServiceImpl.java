@@ -109,6 +109,11 @@ public class PlotServiceImpl implements PlotService {
 		   return plotRepository.save(plot);
 
 		}
+
+	@Override
+	public List<Plot> getPlotsByLayout(String layoutName) {
+		   return plotRepository.findByLayout_LayoutName(layoutName);
+	}
 	}
 
 	

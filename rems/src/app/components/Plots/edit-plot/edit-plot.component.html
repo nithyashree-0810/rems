@@ -10,26 +10,26 @@
 
     <!-- Layout + Plot -->
     <div class="form-row">
-  <div class="form-group">
-    <label>Layout</label>
+      <div class="form-group">
+        <label>Layout</label>
 
-    <select class="form-control"
-            [(ngModel)]="plot.layout.layoutName"
-            name="layout"
-            required
-            #layout="ngModel">
+        <select class="form-control"
+                [(ngModel)]="plot.layout.layoutName"
+                name="layout"
+                required
+                #layout="ngModel">
 
-      <option value="">Select Layout</option>
-      <option *ngFor="let lay of layouts" [value]="lay.layoutName">
-        {{ lay.layoutName }}
-      </option>
+          <option value="">Select Layout</option>
+          <option *ngFor="let lay of layouts" [value]="lay.layoutName">
+            {{ lay.layoutName }}
+          </option>
 
-    </select>
+        </select>
 
-    <small class="error" *ngIf="layout.invalid && layout.touched">
-      Layout is required
-    </small>
-  </div>
+        <small class="error" *ngIf="layout.invalid && layout.touched">
+          Layout is required
+        </small>
+      </div>
 
       <div class="form-group">
         <label>Plot No.</label>
@@ -38,13 +38,10 @@
                name="plotNo"
                readonly />
       </div>
-
     </div>
-
 
     <!-- Rate + Direction -->
     <div class="form-row">
-
       <div class="form-group">
         <label>SqFt Rate</label>
         <input type="number"
@@ -81,13 +78,10 @@
           Direction is required
         </small>
       </div>
-
     </div>
-
 
     <!-- Dimensions -->
     <div class="form-row">
-
       <div class="form-group">
         <label>Total Square Feet</label>
         <input type="number"
@@ -109,12 +103,9 @@
           Required
         </small>
       </div>
-
     </div>
 
-
     <div class="form-row">
-
       <div class="form-group">
         <label>Breadth Two</label>
         <input type="number"
@@ -142,12 +133,9 @@
           Required
         </small>
       </div>
-
     </div>
 
-
     <div class="form-row">
-
       <div class="form-group">
         <label>Length Two</label>
         <input type="number"
@@ -169,13 +157,10 @@
                name="price"
                readonly />
       </div>
-
     </div>
-
 
     <!-- Owner Details -->
     <div class="form-row">
-
       <div class="form-group">
         <label>Owner Name</label>
         <input type="text"
@@ -201,12 +186,9 @@
           Address is required
         </small>
       </div>
-
     </div>
 
-
     <div class="form-row">
-
       <div class="form-group">
         <label>Mobile No.</label>
         <input type="tel"
@@ -233,13 +215,27 @@
           Enter valid email
         </small>
       </div>
-
     </div>
 
+    <!-- ✅ New Approvals -->
+    <div class="form-row">
+      <div class="form-group">
+        <label>
+          <input type="checkbox" [(ngModel)]="plot.dtcpApproved" name="dtcpApproved" />
+          DTCP Approved
+        </label>
+      </div>
+
+      <div class="form-group">
+        <label>
+          <input type="checkbox" [(ngModel)]="plot.reraApproved" name="reraApproved" />
+          RERA Approved
+        </label>
+      </div>
+    </div>
 
     <!-- Buttons -->
     <div class="form-buttons">
-
       <button class="btn save-btn" 
               type="submit"
               [disabled]="plotForm.invalid">
@@ -251,7 +247,6 @@
               (click)="goHome()">
         Home
       </button>
-
     </div>
 
   </form>

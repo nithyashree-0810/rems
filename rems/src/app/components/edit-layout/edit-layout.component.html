@@ -127,29 +127,101 @@
       </div>
     </div>
 
-    <!-- Owner Name -->
+    <!-- Owner Names -->
     <div class="form-group">
-      <label>Owner Name:</label>
+      <label>Owner Name 1:</label>
       <input 
         type="text" 
-        [(ngModel)]="layout.ownerName" 
-        name="ownerName" 
-        required 
+        [(ngModel)]="layout.ownerName1" 
+        name="ownerName1" 
         minlength="3" 
         pattern="^[A-Za-z ]+$"
-        #ownerName="ngModel"
+        #ownerName1="ngModel"
       />
-      <div *ngIf="ownerName.invalid && ownerName.touched" class="error">
-        <small *ngIf="ownerName.errors?.['required']">Owner name is required</small>
-        <small *ngIf="ownerName.errors?.['minlength']">Minimum 3 characters required</small>
-        <small *ngIf="ownerName.errors?.['pattern']">Only alphabets are allowed</small>
-      </div>
+    </div>
+
+    <div class="form-group">
+      <label>Owner Name 2:</label>
+      <input 
+        type="text" 
+        [(ngModel)]="layout.ownerName2" 
+        name="ownerName2" 
+        minlength="3" 
+        pattern="^[A-Za-z ]+$"
+        #ownerName2="ngModel"
+      />
+    </div>
+
+    <div class="form-group">
+      <label>Owner Name 3:</label>
+      <input 
+        type="text" 
+        [(ngModel)]="layout.ownerName3" 
+        name="ownerName3" 
+        minlength="3" 
+        pattern="^[A-Za-z ]+$"
+        #ownerName3="ngModel"
+      />
+    </div>
+
+    <div class="form-group">
+      <label>Owner Name 4:</label>
+      <input 
+        type="text" 
+        [(ngModel)]="layout.ownerName4" 
+        name="ownerName4" 
+        minlength="3" 
+        pattern="^[A-Za-z ]+$"
+        #ownerName4="ngModel"
+      />
+    </div>
+
+    <div class="form-group">
+      <label>Owner Name 5:</label>
+      <input 
+        type="text" 
+        [(ngModel)]="layout.ownerName5" 
+        name="ownerName5" 
+        minlength="3" 
+        pattern="^[A-Za-z ]+$"
+        #ownerName5="ngModel"
+      />
+    </div>
+
+    <div class="form-group">
+      <label>Owner Name 6:</label>
+      <input 
+        type="text" 
+        [(ngModel)]="layout.ownerName6" 
+        name="ownerName6" 
+        minlength="3" 
+        pattern="^[A-Za-z ]+$"
+        #ownerName6="ngModel"
+      />
+    </div>
+
+    <!-- DTCP Approved -->
+    <div class="form-group">
+      <label>
+        <input type="checkbox" [(ngModel)]="layout.dtcpApproved" name="dtcpApproved" />
+        DTCP Approved
+      </label>
+    </div>
+
+    <!-- RERA Approved -->
+    <div class="form-group">
+      <label>
+        <input type="checkbox" [(ngModel)]="layout.reraApproved" name="reraApproved" />
+        RERA Approved
+      </label>
     </div>
 
     <br>
     <div class="button-group">
-      <button type="submit" class="btn create-btn" [disabled]="editForm.invalid">Update Layout</button>&nbsp;&nbsp;
+      <button type="submit" class="btn create-btn" [disabled]="editForm.invalid">Update Layout</button>
+      &nbsp;&nbsp;
       <button type="button" class="btn home-btn" (click)="goBack()">Back</button>
     </div>
+
   </form>
 </div>

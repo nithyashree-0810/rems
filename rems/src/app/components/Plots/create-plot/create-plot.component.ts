@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { LayoutserviceService } from '../../../services/layoutservice.service';
 import { PlotserviceService } from '../../../services/plotservice.service';
-import { Layout } from '../../../models/layout';
 import { Router } from '@angular/router';
-import { Plot } from '../../../models/plot';   // ✅ model file use pannu
+import { Plot } from '../../../models/plot';
+import { Layout } from '../../../models/layout';
 
 @Component({
   selector: 'app-create-plot',
@@ -18,7 +18,7 @@ export class CreatePlotComponent implements OnInit {
   // ✅ ngModel binding object
   newPlot: Plot = {
     plotNo: '',
-    sqft: 0,          // rate
+    sqft: 0,
     direction: '',
     breadthOne: 0,
     breadthTwo: 0,
@@ -30,9 +30,10 @@ export class CreatePlotComponent implements OnInit {
     mobile: 0,
     ownerName: '',
     email: '',
-     layout: {
-      layoutName: ''
-    }
+    dtcpApproved: false,
+    reraApproved: false,
+    booked: false,
+    layout: new Layout()   // ✅ Use Layout object
   };
 
   constructor(
@@ -60,13 +61,17 @@ export class CreatePlotComponent implements OnInit {
 
   // ✅ When dropdown changes
   onLayoutChange(event: any): void {
-    this.newPlot.layout.layoutName = event.target.value;
-    console.log('Selected layout 👉', this.newPlot.layout.layoutName);
+    const selectedName = event.target.value;
+    // Assign the selected Layout object
+    const selectedLayout = this.layouts.find(l => l.layoutName === selectedName);
+    if (selectedLayout) {
+      this.newPlot.layout = selectedLayout;
+      console.log('Selected layout 👉', this.newPlot.layout);
+    }
   }
 
   // ✅ Auto calculate sqft + price
   calculateValues(): void {
-
     const b1 = Number(this.newPlot.breadthOne) || 0;
     const b2 = Number(this.newPlot.breadthTwo) || 0;
     const l1 = Number(this.newPlot.lengthOne) || 0;
@@ -74,10 +79,8 @@ export class CreatePlotComponent implements OnInit {
     const rate = Number(this.newPlot.sqft) || 0;
 
     if (b1 > 0 && b2 > 0 && l1 > 0 && l2 > 0) {
-
       const avgBreadth = (b1 + b2) / 2;
       const avgLength = (l1 + l2) / 2;
-
       const totalSqft = avgBreadth * avgLength;
       const totalPrice = totalSqft * rate;
 
@@ -88,7 +91,6 @@ export class CreatePlotComponent implements OnInit {
 
   // ✅ Save plot
   savePlot(): void {
-
     if (!this.newPlot.layout.layoutName) {
       alert("Please select Layout");
       return;
@@ -96,18 +98,14 @@ export class CreatePlotComponent implements OnInit {
 
     console.log("FINAL DATA 👉", this.newPlot);
 
-   this.plotService.createPlot(this.newPlot).subscribe({
-  next: (res: string) => {
-    alert(res);   // Plot created successfully!
-
-    // ✅ List page ku navigate pannum
-    this.router.navigate(['/plots']); 
-
-    this.resetForm();
-  },
+    this.plotService.createPlot(this.newPlot).subscribe({
+      next: (res: string) => {
+        alert(res);   // Plot created successfully!
+        this.router.navigate(['/plots']); 
+        this.resetForm();
+      },
       error: (error) => {
         console.error('❌ Backend error:', error);
-
         if (error.status === 409) {
           alert("Plot No already exists. Try another Plot No");
         } else {
@@ -133,9 +131,10 @@ export class CreatePlotComponent implements OnInit {
       mobile: 0,
       ownerName: '',
       email: '',
-       layout: {
-      layoutName: ''
-    }
+      dtcpApproved: false,
+      reraApproved: false,
+      booked: false,
+      layout: new Layout()   // ✅ reset layout properly
     };
   }
 
@@ -143,5 +142,4 @@ export class CreatePlotComponent implements OnInit {
   goHome(): void {
     this.router.navigate(['/dashboard']);
   }
-
 }

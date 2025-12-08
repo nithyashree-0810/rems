@@ -1,0 +1,40 @@
+.form-container {
+  max-width: 600px;
+  margin: 20px auto;
+  padding: 20px;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.form-title {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.row {
+  display: flex;
+  margin: 8px 0;
+}
+
+.label {
+  font-weight: bold;
+  width: 150px;   /* fixed width for labels */
+  flex-shrink: 0;
+}
+
+.value {
+  flex: 1;
+  text-align: left;
+  word-wrap: break-word; /* ensures long text wraps nicely */
+}
+
+.home-btn {
+  margin-top: 20px;
+  padding: 8px 16px;
+  background: #f44336;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}

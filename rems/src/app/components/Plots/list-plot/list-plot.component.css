@@ -1,0 +1,215 @@
+.main-container {
+  background: #f5f6fa;
+  min-height: 100vh;
+  padding: 30px;
+  font-family: Arial, sans-serif;
+}
+
+/* TITLE */
+.title {
+  text-align: center;
+  color: orange;
+  margin-bottom: 30px;
+  font-weight: 700;
+}
+
+/* TOP BAR */
+.top-bar {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 15px;
+}
+
+/* ADD BUTTON */
+.add-btn {
+  background: #28a745;
+  color: white;
+  border: none;
+  padding: 10px 18px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 14px;
+  box-shadow: 0 3px 6px rgba(0,0,0,0.2);
+}
+
+.add-btn:hover {
+  background: #218838;
+}
+
+/* TABLE CARD */
+.table-card {
+  background: white;
+  border-radius: 15px;
+  padding: 15px;
+  box-shadow: 0px 8px 15px rgba(0,0,0,0.15);
+  overflow-x: auto;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+thead {
+  background: orange;
+  color: white;
+}
+
+th {
+  padding: 12px 6px;
+  font-size: 13px;
+}
+
+td {
+  padding: 14px 8px;
+  text-align: center;
+  font-size: 14px;
+  border-bottom: 1px solid #eee;
+}
+
+tr:hover {
+  background: #fff3e0;
+}
+
+/* PRICE STYLE */
+.price {
+  font-weight: bold;
+  color: #2c3e50;
+}
+
+/* ACTION COLUMN */
+/* ACTION COLUMN */
+.action-col {
+  display: flex;
+  justify-content: center;
+  gap: 16px;   /* 8px → 16px (more space) */
+}
+
+/* ICON BUTTONS */
+.icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;     /* 32px → 36px */
+  height: 36px;    /* 32px → 36px */
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+
+.view {
+  background:#e3f2fd;
+  color:#1565c0;
+}
+
+.edit {
+  background:#e8f5e9;
+  color:#2e7d32;
+}
+
+.delete {
+  background:#ffebee;
+  color:#c62828;
+}
+
+.book {
+  background:#e0f7fa;
+  color:#00695c;
+}
+
+.icon:hover {
+  transform: scale(1.15);
+}
+
+/* PAGINATION */
+.pagination-wrapper {
+  position: relative;
+  margin: 40px 0;
+  width: 100%;
+}
+
+/* pagination center */
+.pagination-section {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+}
+
+/* Prev, Next, Number buttons */
+.page-btn,
+.page-number {
+  min-width: 40px;
+  height: 40px;
+  padding: 0 16px;
+  border-radius: 50px;
+  border: 1.5px solid orange;
+  background: #fff;
+  color: #333;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 14px;
+  transition: 0.2s;
+}
+
+/* Hover */
+.page-btn,
+.page-number {
+  border: 1.5px solid #3498db;   /* blue border */
+}
+
+/* Hover */
+.page-btn:hover,
+.page-number:hover {
+  background: #3498db;            /* blue background */
+  color: white;
+}
+
+/* Active page */
+.page-number.active {
+  background: #3498db;            /* blue active */
+  color: white;
+  border: none;
+}
+
+/* Disabled */
+.page-btn:disabled {
+  background: #eee;
+  border-color: #ccc;
+  color: #999;
+  cursor: not-allowed;
+}
+
+/* HOME button right bottom */
+.home-btn {
+  position: absolute;
+  right: 0;
+  top: 0;
+  background: #dc3545;
+  color: white;
+  border: none;
+  padding: 10px 22px;
+  border-radius: 10px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.home-btn:hover {
+  transform: scale(1.05);
+}
+
+/* Mobile fix */
+@media (max-width: 600px) {
+  .pagination-section {
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .home-btn {
+    position: static;
+    margin-top: 15px;
+    display: block;
+    margin-left: auto;
+  }
+}

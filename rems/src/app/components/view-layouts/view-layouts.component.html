@@ -1,0 +1,72 @@
+<div class="container">
+  <h2><u>List of Layouts</u></h2>
+
+  <div class="top-buttons">
+    <button class="btn btn-success" (click)="navigateToCreate()">
+      <i class="fa fa-plus"></i> Create Layout
+    </button>
+  </div>
+
+  <table class="layout-table">
+    <thead>
+      <tr>
+        <th>S.NO</th>
+        <th>Layout Name</th>
+        <th>Total Area</th>
+        <th>Total Plots</th>
+        <th>Phone No</th>
+        <th>Location</th>
+        <th>Address</th>
+        <th>Pincode</th>
+        <th>Owner</th>
+        <th>View</th>
+        <th>Edit</th>
+        <th>Delete</th>
+        <th>Create Plot</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let layout of layouts; let i = index">
+        <td>{{ (currentPage - 1) * pageSize + i + 1 }}</td>
+        <td>{{ layout.layoutName }}</td>
+        <td>{{ layout.area }}</td>
+        <td>{{ layout.noOfPlots }}</td>
+        <td>{{ layout.phone }}</td>
+        <td>{{ layout.location }}</td>
+        <td>{{ layout.address }}</td>
+        <td>{{ layout.pincode }}</td>
+        <td>{{ layout.ownerName }}</td>
+        <td>
+  <i class="fa fa-eye circle-icon view" (click)="viewLayout(layout.layoutName)"></i>
+</td>
+<td>
+  <i class="fa fa-pencil circle-icon edit" (click)="editLayout(layout.layoutName)"></i>
+</td>
+<td>
+  <i class="fa fa-trash circle-icon delete" (click)="deleteLayout(layout.layoutName)"></i>
+</td>
+<td>
+  <i class="fa fa-plus circle-icon create" (click)="createPlot(layout.layoutName)"></i>
+</td>
+
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="pagination-flex">
+    <div class="pagination">
+      <button [disabled]="currentPage === 1" (click)="prevPage()">&laquo; Prev</button>
+
+      <button *ngFor="let page of totalPagesArray"
+              [ngClass]="{'active': page === currentPage}"
+              (click)="goToPage(page)">
+        {{ page }}
+      </button>
+
+      <button [disabled]="currentPage === totalPages" (click)="nextPage()">Next &raquo;</button>
+    </div>
+
+    <button class="btn btn-danger pagination-home-btn" (click)="goHome()">Home</button>
+  </div>
+</div>
+

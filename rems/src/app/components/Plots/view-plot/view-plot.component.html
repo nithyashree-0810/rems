@@ -1,0 +1,81 @@
+<div class="form-container" *ngIf="plot">
+
+  <h2 class="form-title">Plot Details ( View )</h2>
+
+  <div class="row">
+    <div class="label">Plot No :</div>
+    <div class="value">{{ plot.plotNo }}</div>
+  </div>
+
+  <div class="row">
+    <div class="label">Owner Name :</div>
+    <div class="value">{{ plot.ownerName }}</div>
+  </div>
+
+  <div class="row">
+    <div class="label">Address :</div>
+    <div class="value">{{ plot.address }}</div>
+  </div>
+
+  <div class="row">
+    <div class="label">Mobile :</div>
+    <div class="value">{{ plot.mobile }}</div>
+  </div>
+
+  <div class="row">
+    <div class="label">Email :</div>
+    <div class="value">{{ plot.email }}</div>
+  </div>
+
+  <div class="row">
+    <div class="label">Layout :</div>
+    <div class="value">{{ plot.layout.layoutName }}</div>
+  </div>
+
+  <div class="row">
+    <div class="label">Direction :</div>
+    <div class="value">{{ plot.direction }}</div>
+  </div>
+
+  <div class="row">
+    <div class="label">Breadth 1 :</div>
+    <div class="value">{{ plot.breadthOne }}</div>
+  </div>
+
+  <div class="row">
+    <div class="label">Breadth 2 :</div>
+    <div class="value">{{ plot.breadthTwo }}</div>
+  </div>
+
+  <div class="row">
+    <div class="label">Length 1 :</div>
+    <div class="value">{{ plot.lengthOne }}</div>
+  </div>
+
+  <div class="row">
+    <div class="label">Length 2 :</div>
+    <div class="value">{{ plot.lengthTwo }}</div>
+  </div>
+
+  <div class="row">
+    <div class="label">Sqft :</div>
+    <div class="value">{{ plot.sqft }}</div>
+  </div>
+
+  <div class="row">
+    <div class="label">Total Sqft :</div>
+    <div class="value">{{ plot.totalSqft }}</div>
+  </div>
+
+  <div class="row">
+    <div class="label">Price :</div>
+    <div class="value">₹ {{ plot.price }}</div>
+  </div>
+
+  <!-- Buttons -->
+  <div style="text-align:center; margin-top:20px;">
+    <button class="home-btn" routerLink="/list-plot">Back To List</button>
+    <button class="home-btn" routerLink="/dashboard">Home</button>
+  </div>
+
+</div>

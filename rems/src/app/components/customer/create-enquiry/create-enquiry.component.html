@@ -1,0 +1,159 @@
+<div class="center-page">
+  <div class="enquiry-card">
+    <!-- <h3>Customer Enquiry Form</h3> -->
+     <h3 style="text-align: center;">Customer Enquiry Form</h3>
+
+    <form #enquiryForm="ngForm" (ngSubmit)="onSubmit(enquiryForm)">
+
+      <!-- Row 1: First Name & Last Name -->
+      <div class="row">
+        <!-- First Name -->
+        <div class="col">
+          <label for="firstName" class="dark-label">First Name:</label>
+          <input
+            type="text"
+            name="firstName"
+            [(ngModel)]="enquiry.firstName"
+            required
+            minlength="2"
+            maxlength="15"
+            pattern="^[a-zA-Z]+$"
+            placeholder="Enter First Name"
+            #firstName="ngModel"
+            [class.is-invalid]="firstName.invalid && firstName.touched"
+          />
+          <p *ngIf="firstName.errors?.['required'] && firstName.touched" class="text-danger">First Name is required</p>
+          <p *ngIf="firstName.errors?.['pattern'] && firstName.touched" class="text-danger">Only letters allowed</p>
+          <p *ngIf="firstName.errors?.['minlength'] && firstName.touched" class="text-danger">Minimum 2 characters required</p>
+          <p *ngIf="firstName.errors?.['maxlength'] && firstName.touched" class="text-danger">Maximum 15 characters allowed</p>
+        </div>
+
+        <!-- Last Name -->
+        <div class="col">
+          <label for="lastName" class="dark-label">Last Name:</label>
+          <input
+            type="text"
+            name="lastName"
+            [(ngModel)]="enquiry.lastName"
+            required
+            minlength="1"
+            maxlength="1"
+            pattern="^[a-zA-Z]+$"
+            placeholder="Enter Last Name"
+            #lastName="ngModel"
+            [class.is-invalid]="lastName.invalid && lastName.touched"
+          />
+          <p *ngIf="lastName.errors?.['required'] && lastName.touched" class="text-danger">Last Name is required</p>
+          <p *ngIf="lastName.errors?.['pattern'] && lastName.touched" class="text-danger">Only letters allowed</p>
+          <p *ngIf="lastName.errors?.['minlength'] && lastName.touched" class="text-danger">Minimum 2 characters required</p>
+          <p *ngIf="lastName.errors?.['maxlength'] && lastName.touched" class="text-danger">Maximum 15 characters allowed</p>
+        </div>
+      </div>
+
+      <!-- Row 2: Mobile & Email -->
+      <div class="row">
+        <!-- Mobile -->
+        <div class="col">
+          <label for="mobileNo" class="dark-label">Mobile:</label>
+          <input
+            type="text"
+            name="mobileNo"
+            [(ngModel)]="enquiry.mobileNo"
+            required
+            maxlength="10"
+            pattern="^[0-9]{10}$"
+            placeholder="Enter 10-digit Mobile Number"
+            #mobileNo="ngModel"
+            [class.is-invalid]="mobileNo.invalid && mobileNo.touched"
+             
+          />
+          <p *ngIf="mobileNo.errors?.['required'] && mobileNo.touched" class="text-danger">Mobile Number is required</p>
+          <p *ngIf="mobileNo.errors?.['pattern'] && mobileNo.touched" class="text-danger">Enter valid 10-digit number</p>
+        </div>
+
+        <!-- Email -->
+        <div class="col">
+          <label for="email" class="dark-label">Email:</label>
+          <input
+            type="email"
+            name="email"
+            [(ngModel)]="enquiry.email"
+            placeholder="Enter Email"
+             pattern="^(?=.*[a-zA-Z])(?=.*\d)[a-zA-Z\d._%+-]+@[a-zA-Z\d.-]+\.[a-zA-Z]{2,}$"
+            #email="ngModel"
+            [class.is-invalid]="email.invalid && email.touched"
+          />
+          <div *ngIf="email.invalid && (email.dirty || email.touched)" class="error-message">
+                  Please enter a valid email with both letters and numbers.
+                </div>
+        </div>
+      </div>
+
+      <!-- Row 3: Address & Pincode -->
+      <div class="row">
+        <!-- Address -->
+        <div class="col">
+          <label for="address" class="dark-label">Address:</label>
+          <input
+            type="text"
+            name="address"
+            [(ngModel)]="enquiry.address"
+            required
+            minlength="5"
+            placeholder="Enter Address"
+            #address="ngModel"
+            [class.is-invalid]="address.invalid && address.touched"
+          />
+          <p *ngIf="address.errors?.['required'] && address.touched" class="text-danger">Address is required</p>
+          <p *ngIf="address.errors?.['minlength'] && address.touched" class="text-danger">Minimum 5 characters required</p>
+        </div>
+
+        <!-- Pincode -->
+        <div class="col">
+          <label for="pincode" class="dark-label">Pincode:</label>
+          <input
+            type="text"
+            name="pincode"
+            [(ngModel)]="enquiry.pincode"
+            required
+            maxlength="6"
+            pattern="^[0-9]{6}$"
+            placeholder="Enter 6-digit Pincode"
+            #pincode="ngModel"
+            [class.is-invalid]="pincode.invalid && pincode.touched"
+          />
+          <p *ngIf="pincode.errors?.['required'] && pincode.touched" class="text-danger">Pincode is required</p>
+          <p *ngIf="pincode.errors?.['pattern'] && pincode.touched" class="text-danger">Enter valid 6-digit pincode</p>
+        </div>
+      </div>
+
+      <!-- Row 4: Aadhaar -->
+      <div class="row">
+        <div class="col">
+          <label for="aadharNo" class="dark-label">Aadhaar:</label>
+          <input
+            type="text"
+            name="aadharNo"
+            [(ngModel)]="enquiry.aadharNo"
+            required
+            maxlength="12"
+            pattern="^[0-9]{12}$"
+            placeholder="Enter 12-digit Aadhaar"
+            #aadharNo="ngModel"
+            [class.is-invalid]="aadharNo.invalid && aadharNo.touched"
+          />
+          <p *ngIf="aadharNo.errors?.['required'] && aadharNo.touched" class="text-danger">Aadhaar is required</p>
+          <p *ngIf="aadharNo.errors?.['pattern'] && aadharNo.touched" class="text-danger">Enter valid 12-digit Aadhaar</p>
+        </div>
+      </div>
+
+      <!-- Buttons Row -->
+          <div class="buttons-row mt-3 text-center">
+            <button type="submit" class="btn btn-success me-2" [disabled]="!enquiryForm.valid">Create Customer</button>
+            <button type="button" class="btn btn-danger" (click)="goHome()">Home</button>
+          </div>
+
+
+    </form>
+  </div>
+</div>

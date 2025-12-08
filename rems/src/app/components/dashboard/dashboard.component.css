@@ -1,0 +1,128 @@
+/* Navbar Container */
+.navbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: #ff8800;
+  color: white;
+  padding: 15px 40px;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+/* Brand / Title */
+.navbar-brand {
+  font-size: 18px;        /* uniform font size */
+  font-weight: 600;
+  letter-spacing: 1px;
+  color: white;
+}
+
+/* Menu Links */
+.nav-links {
+  list-style: none;
+  display: flex;
+  gap: 40px;
+  margin: 0;
+  padding: 0;
+}
+
+/* Each Item */
+.nav-links li {
+  position: relative;
+}
+
+/* Menu Text */
+.nav-links a {
+  text-decoration: none;
+  color: white;
+  font-weight: 600;
+  font-size: 18px;        /* same size as title */
+}
+
+/* Dropdown Menu */
+.dropdown-menu {
+  position: absolute;
+  top: 35px;
+  left: 0;
+  background-color: white;
+  color: black;
+  list-style: none;
+  padding: 8px 0;
+  border-radius: 6px;
+  display: block;
+  min-width: 160px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+  z-index: 10;
+}
+
+.dropdown-menu li {
+  padding: 8px 15px;
+}
+
+.dropdown-menu li a {
+  color: #333;
+  text-decoration: none;
+  display: block;
+}
+
+.dropdown-menu li:hover {
+  background-color: #f2f2f2;
+}
+
+/* Logout Button */
+.logout-btn {
+  background-color: white;
+  color: #ff8800;
+  border: none;
+  border-radius: 20px;
+  padding: 6px 18px;
+  font-weight: bold;
+  font-size: 16px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.logout-btn:hover {
+  background-color: #ffd6a0;
+}
+.welcome-box p {
+  font-size: 16px;
+  color: #333;
+  line-height: 1.6;
+  margin-top: 200px;   /* increase this value for more space */
+  text-align: center;
+}
+.header {
+  background-color: orange;
+  padding: 10px 0;
+}
+
+h1 {
+  margin-top: 50px; /* ithu thaan text konjam killa move pannum */
+  text-align: center;
+  font-weight: bold;
+}
+.welcome-container {
+  text-align: center;
+  margin-top: 80px; /* Move content down */
+}
+
+.home-icon {
+  font-size: 60px;
+  color: orange;
+  display: block;
+  margin: 0 auto 20px auto; /* Center icon and add space below */
+}
+
+h1 {
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+
+p {
+  font-size: 18px;
+  line-height: 1.6;
+  color: #333;
+  width: 80%;
+  margin: 0 auto; /* Paragraph center alignment and fixed width */
+}

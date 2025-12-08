@@ -1,0 +1,58 @@
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<!-- Top Navbar -->
+<nav class="navbar">
+  <div class="navbar-brand">REAL ESTATE MANAGEMENT SYSTEM</div>
+
+  <!-- Menu -->
+  <ul class="nav-links">
+    <!-- Layouts & Plots -->
+    <li class="dropdown" (click)="toggleDropdown('layouts')">
+      <a href="javascript:void(0)"><b>Layouts & Plots</b></a>
+      <ul class="dropdown-menu" *ngIf="activeDropdown === 'layouts'">
+        <li><a routerLink="/create-layout">Create Layout</a></li>
+        <li><a routerLink="/layouts">View Layouts</a></li>
+        <li><a routerLink="/create-plot">Create Plot</a></li>
+        <li><a routerLink="/plots">View Plots</a></li>
+      </ul>
+    </li><br>
+
+    <!-- Customer Enquiry -->
+    <li class="dropdown" (click)="toggleDropdown('customer')">
+      <a href="javascript:void(0)"><b>Customer Enquiry</b></a>
+      <ul class="dropdown-menu" *ngIf="activeDropdown === 'customer'">
+        <li><a routerLink="/create-enquiry">Create Enquiry</a></li>
+        <li><a routerLink="/view-enquiries">View Enquiries</a></li>
+      </ul>
+    </li><br>
+
+    <!-- Booking Plot -->
+    <li class="dropdown" (click)="toggleDropdown('booking')">
+      <a href="javascript:void(0)"><b>Booking Plot</b></a>
+      <ul class="dropdown-menu" *ngIf="activeDropdown === 'booking'">
+        <li><a routerLink="/new-booking">New Booking</a></li>
+        <li><a routerLink="/booking-history">Booking History</a></li>
+      </ul>
+    </li><br>
+
+    <li class="dropdown" (click)="toggleDropdown('report')">
+  <a href="javascript:void(0)"><b>Report</b></a>
+  <ul class="dropdown-menu" *ngIf="activeDropdown === 'report'">
+        <li><a href="javascript:void(0)" (click)="downloadLayoutsReport()">Layouts Report</a></li>
+        <li><a routerLink="/plot-report">Plots Report</a></li>
+        <li><a routerLink="/enquiry-report">Enquiries Report</a></li>
+        <li><a routerLink="/booking-report">Bookings Report</a></li>
+      </ul>
+</li>
+  </ul>
+
+  <!-- Logout -->
+  <button class="logout-btn" (click)="logout()">Logout</button>
+</nav>
+
+<!-- Dashboard Body -->
+<div class="welcome-container">
+  <i class="fa fa-home home-icon"></i>
+  <h1>Welcome to Real Estate Management System</h1>
+  <p>Your one-stop solution for efficient property management, customer enquiries, and bookings. 
+     Manage your real estate portfolio effortlessly.</p>
+</div>

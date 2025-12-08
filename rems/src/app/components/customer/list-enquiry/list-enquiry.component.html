@@ -1,0 +1,55 @@
+<div class="container">
+  <h2>List of Customers</h2>
+
+  <!-- Top Buttons -->
+  <div class="top-buttons">
+    <button class="btn btn-success" (click)="createEnquiry()">
+      <i class="fa fa-plus"></i> Create Customer
+    </button>
+  </div>
+
+  <!-- Customer Table -->
+  <div class="table-wrapper">
+    <table class="layout-table">
+      <thead>
+        <tr>
+          <th>S.No</th>
+          <th>First Name</th>
+          <th>Last Name</th>
+          <th>Address</th>
+          <th>Mobile Number</th>
+          <th>View</th>
+          <th>Edit</th>
+          <th>Delete</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let c of customer; let i = index">
+          <td>{{ (currentPage - 1) * pageSize + i + 1 }}</td>
+          <td class="left-align">{{ c.firstName }}</td>
+          <td class="left-align">{{ c.lastName }}</td>
+          <td class="left-align">{{ c.address }}</td>
+          <td class="left-align">{{ c.mobileNo }}</td>
+          <td><i class="fa fa-eye circle-icon view" (click)="viewcustomer(c.mobileNo)"></i></td>
+          <td><i class="fa fa-pencil circle-icon edit" (click)="editCustomer(c)"></i></td>
+          <td><i class="fa fa-trash circle-icon delete" (click)="deleteCustomer(c.mobileNo)"></i></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Pagination & Home -->
+  <div class="pagination-container">
+    <div class="pagination">
+      <button [disabled]="currentPage === 1" (click)="prevPage()">&laquo; Prev</button>
+      <button *ngFor="let page of totalPagesArray"
+              [ngClass]="{'active': page === currentPage}"
+              (click)="goToPage(page)">
+        {{ page }}
+      </button>
+      <button [disabled]="currentPage === totalPages" (click)="nextPage()">Next &raquo;</button>
+    </div>
+
+    <button class="btn btn-danger pagination-home-btn" (click)="goHome()">Home</button>
+  </div>
+</div>

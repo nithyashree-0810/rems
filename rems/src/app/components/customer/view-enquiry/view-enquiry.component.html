@@ -1,0 +1,49 @@
+
+<div class="form-container">
+  <h2 class="form-title">View Customer</h2>
+
+  <div class="row">
+    <i class="fa fa-user icon"></i>
+    <span class="label">First Name:</span>
+    <span class="value">{{ customer.firstName }}</span>
+  </div>
+
+  <div class="row">
+    <i class="fa fa-user icon"></i>
+    <span class="label">Last Name:</span>
+    <span class="value">{{ customer.lastName}}</span>
+  </div>
+
+  <div class="row">
+    <i class="fa fa-phone icon"></i>
+    <span class="label">Mobile Number:</span>
+    <span class="value">{{ customer.mobileNo }}</span>
+  </div>
+
+  <div class="row">
+    <i class="fa fa-home icon"></i>
+    <span class="label">Address:</span>
+    <span class="value">{{ customer.address}}</span>
+  </div>
+
+  <div class="row">
+    <i class="fa fa-map-pin icon"></i>
+    <span class="label">Pincode:</span>
+    <span class="value">{{ customer.pincode }}</span>
+  </div>
+
+  <div class="row">
+    <i class="fa fa-id-card icon"></i>
+    <span class="label">Aadhaar Number:</span>
+    <span class="value">{{ customer.aadharNo}}</span>
+  </div>
+
+  <!-- <div class="row">
+    <i class="fa fa-id-badge icon"></i>
+    <span class="label">Pan Number:</span>
+    <span class="value">{{ customer.panNo}}</span>
+  </div> -->
+
+  <button class="btn home-btn" (click)="goHome()">BACK</button>
+</div>
+

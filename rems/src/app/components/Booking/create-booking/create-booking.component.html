@@ -1,0 +1,180 @@
+<div class="booking-container">
+  <div class="booking-card">
+
+    <!-- Title Row -->
+    <div class="title-row">
+      <h2 class="page-title">Book Plot</h2>
+      <div class="view-bookings-top-right">
+        <button class="btn-view" (click)="viewBookings()">View Bookings</button>
+      </div>
+    </div>
+
+    <!-- Booking Form -->
+    <form #bookingForm="ngForm" (ngSubmit)="onSubmit(bookingForm)">
+      <div class="form-row">
+
+        <!-- Left Column -->
+        <div class="form-column">
+
+          <!-- Plot No -->
+          <div class="form-group">
+            <label>
+            Plot No <span style="color: red;">*</span>
+            </label>
+            <input
+              type="text"
+              class="form-control"
+              name="plotno"
+              [(ngModel)]="booking.plotno"
+              (blur)="onPlotChange()"
+              />
+          </div>
+
+          <!-- Auto-filled Plot Details -->
+          <div class="form-group">
+            <label>Layout Name:<span style="color: red;">*</span></label>
+            <input
+              type="text"
+              class="form-control"
+              name="layoutName"
+              [(ngModel)]="booking.layoutName"
+              readonly />
+          </div>
+
+          <div class="form-group">
+            <label>Square Feet:<span style="color: red;">*</span></label>
+            <input
+              type="number"
+              class="form-control"
+              name="sqft"
+              [(ngModel)]="booking.sqft"
+              readonly />
+          </div>
+
+          <div class="form-group">
+            <label>Price:<span style="color: red;">*</span></label>
+            <input
+              type="number"
+              class="form-control"
+              name="price"
+              [(ngModel)]="booking.price"
+              readonly />
+          </div>
+
+          <div class="form-group">
+            <label>Direction:<span style="color: red;">*</span></label>
+            <input
+              type="text"
+              class="form-control"
+              name="direction"
+              [(ngModel)]="booking.direction"
+              readonly />
+          </div>
+
+          <!-- Paid & Balance -->
+          <div class="form-group">
+            <label>Amount Paid:<span style="color: red;">*</span></label>
+            <input
+              type="number"
+              class="form-control"
+              name="paidAmount"
+              [(ngModel)]="booking.paidAmount"
+              (input)="onPaidAmountChange()" />
+          </div>
+
+          <div class="form-group">
+            <label>Balance:<span style="color: red;">*</span></label>
+            <input
+              type="number"
+              class="form-control"
+              name="balance"
+              [(ngModel)]="booking.balance"
+              readonly />
+          </div>
+        </div>
+
+        <!-- Right Column -->
+        <div class="form-column">
+
+          <!-- Mobile Number with auto-fetch -->
+          <div class="form-group">
+            <label>Mobile Number:<span style="color: red;">*</span></label>
+            <input
+              type="tel"
+              class="form-control"
+              name="mobileNo"
+              [(ngModel)]="booking.mobileNo"
+              pattern="[0-9]{10}"
+              (blur)="onMobileChange()"
+              required />
+          </div>
+
+          <!-- Auto-filled Customer Details -->
+          <div class="form-group">
+            <label>Customer Name:<span style="color: red;">*</span></label>
+            <input
+              type="text"
+              class="form-control"
+              name="customerName"
+              [(ngModel)]="booking.customerName"
+              readonly />
+          </div>
+
+          <div class="form-group">
+            <label>Address:<span style="color: red;">*</span></label>
+            <input
+              type="text"
+              class="form-control"
+              name="address"
+              [(ngModel)]="booking.address"
+              readonly />
+          </div>
+
+          <div class="form-group">
+            <label>Pincode:</label>
+            <input
+              type="number"
+              class="form-control"
+              name="pincode"
+              [(ngModel)]="booking.pincode"
+              readonly />
+          </div>
+
+          <div class="form-group">
+            <label>Aadhaar Number:</label>
+            <input
+              type="number"
+              class="form-control"
+              name="aadharNo"
+              [(ngModel)]="booking.aadharNo"
+              readonly />
+          </div>
+
+          <div class="form-group">
+            <label>PAN Number:</label>
+            <input
+              type="text"
+              class="form-control"
+              name="panNo"
+              [(ngModel)]="booking.panNo"
+              readonly />
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Buttons -->
+      <div class="action-buttons">
+        <button
+          type="submit"
+          class="btn btn-success"
+          [disabled]="!bookingForm.valid">Book</button>
+        <button
+          type="button"
+          class="btn btn-danger"
+          (click)="goHome()">Home</button>
+      </div>
+    </form>
+  </div>
+</div>
+

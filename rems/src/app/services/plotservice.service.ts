@@ -1,0 +1,42 @@
+import { HttpClient } from '@angular/common/http';
+import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
+import { Plot } from '../models/plot';
+
+@Injectable({
+  providedIn: 'root'
+})
+export class PlotserviceService {
+  
+
+  private baseUrl = 'http://localhost:8080/api/plots';
+
+  constructor(private http: HttpClient) { }
+
+  // GET ALL PLOTS
+  getPlots(): Observable<Plot[]> {
+    return this.http.get<Plot[]>(`${this.baseUrl}`);
+  }
+
+  // DELETE PLOT
+  deletePlotByPlotNo(plotNo: string) {
+  return this.http.delete(`${this.baseUrl}/${plotNo}`, { responseType: 'text' });
+}
+
+  // CREATE PLOT
+  createPlot(newPlot: Plot): Observable<any> {
+    return this.http.post(`${this.baseUrl}/create`, newPlot, { responseType: 'text' });
+  }
+
+  getPlotByPlotNo(plotNo: any): Observable<any> {
+  return this.http.get<any>(`${this.baseUrl}/${plotNo}`);
+}
+
+updatePlotByPlotNo(plotNo: any, plot: any): Observable<any> {
+  return this.http.put<any>(`${this.baseUrl}/${plotNo}`, plot);
+}
+
+  getPlotById(plotId: string): Observable<Plot> {
+    return this.http.get<Plot>(`${this.baseUrl}/id/${plotId}`);
+  }
+}

@@ -1,0 +1,155 @@
+<h2 class="form-title">Edit Layout</h2>
+
+<div class="form-container">
+  <form #editForm="ngForm" (ngSubmit)="onSubmit()">
+
+    <!-- Layout Name (readonly) -->
+    <div class="form-group">
+      <label>Layout Name:</label>
+      <input 
+        type="text" 
+        [(ngModel)]="layout.layoutName" 
+        name="layoutName" 
+        required 
+        readonly 
+        minlength="3"
+        pattern="^[A-Za-z ]+$"
+        #layoutName="ngModel"
+      />
+      <div *ngIf="layoutName.invalid && layoutName.touched" class="error">
+        <small *ngIf="layoutName.errors?.['required']">Layout Name is required</small>
+        <small *ngIf="layoutName.errors?.['minlength']">Minimum 3 characters required</small>
+        <small *ngIf="layoutName.errors?.['pattern']">Only alphabets are allowed</small>
+      </div>
+    </div>
+
+    <!-- Total Area -->
+    <div class="form-group">
+      <label>Total Area (sq/ft):</label>
+      <input 
+        type="number" 
+        [(ngModel)]="layout.area" 
+        name="area" 
+        required 
+        min="100" 
+        #area="ngModel"
+      />
+      <div *ngIf="area.invalid && area.touched" class="error">
+        <small *ngIf="area.errors?.['required']">Total area is required</small>
+        <small *ngIf="area.errors?.['min']">Area must be greater than 100</small>
+      </div>
+    </div>
+
+    <!-- Number of Plots -->
+    <div class="form-group">
+      <label>Total Plots:</label>
+      <input 
+        type="number" 
+        [(ngModel)]="layout.noOfPlots" 
+        name="noOfPlots" 
+        required 
+        min="1" 
+        #noOfPlots="ngModel"
+      />
+      <div *ngIf="noOfPlots.invalid && noOfPlots.touched" class="error">
+        <small *ngIf="noOfPlots.errors?.['required']">Number of plots is required</small>
+        <small *ngIf="noOfPlots.errors?.['min']">Must have at least 1 plot</small>
+      </div>
+    </div>
+
+    <!-- Phone -->
+    <div class="form-group">
+      <label>Phone:</label>
+      <input 
+        type="tel" 
+        [(ngModel)]="layout.phone" 
+        name="phone" 
+        required 
+        pattern="^[6-9]\d{9}$" 
+        #phone="ngModel"
+      />
+      <div *ngIf="phone.invalid && phone.touched" class="error">
+        <small *ngIf="phone.errors?.['required']">Phone number is required</small>
+        <small *ngIf="phone.errors?.['pattern']">Enter a valid 10-digit number</small>
+      </div>
+    </div>
+
+    <!-- Location -->
+    <div class="form-group">
+      <label>Location:</label>
+      <input 
+        type="text" 
+        [(ngModel)]="layout.location" 
+        name="location" 
+        required 
+        minlength="5" 
+        pattern="^[A-Za-z ]+$"
+        #location="ngModel"
+      />
+      <div *ngIf="location.invalid && location.touched" class="error">
+        <small *ngIf="location.errors?.['required']">Location is required</small>
+        <small *ngIf="location.errors?.['minlength']">Minimum 5 characters required</small>
+        <small *ngIf="location.errors?.['pattern']">Only alphabets are allowed</small>
+      </div>
+    </div>
+
+    <!-- Address -->
+    <div class="form-group">
+      <label>Address:</label>
+      <input 
+        type="text" 
+        [(ngModel)]="layout.address" 
+        name="address" 
+        required 
+        minlength="5" 
+        #address="ngModel"
+      />
+      <div *ngIf="address.invalid && address.touched" class="error">
+        <small *ngIf="address.errors?.['required']">Address is required</small>
+        <small *ngIf="address.errors?.['minlength']">Minimum 5 characters required</small>
+      </div>
+    </div>
+
+    <!-- Pincode -->
+    <div class="form-group">
+      <label>Pincode:</label>
+      <input 
+        type="number" 
+        [(ngModel)]="layout.pincode" 
+        name="pincode" 
+        required 
+        pattern="^[1-9][0-9]{5}$" 
+        #pincode="ngModel"
+      />
+      <div *ngIf="pincode.invalid && pincode.touched" class="error">
+        <small *ngIf="pincode.errors?.['required']">Pincode is required</small>
+        <small *ngIf="pincode.errors?.['pattern']">Enter valid 6-digit pincode</small>
+      </div>
+    </div>
+
+    <!-- Owner Name -->
+    <div class="form-group">
+      <label>Owner Name:</label>
+      <input 
+        type="text" 
+        [(ngModel)]="layout.ownerName" 
+        name="ownerName" 
+        required 
+        minlength="3" 
+        pattern="^[A-Za-z ]+$"
+        #ownerName="ngModel"
+      />
+      <div *ngIf="ownerName.invalid && ownerName.touched" class="error">
+        <small *ngIf="ownerName.errors?.['required']">Owner name is required</small>
+        <small *ngIf="ownerName.errors?.['minlength']">Minimum 3 characters required</small>
+        <small *ngIf="ownerName.errors?.['pattern']">Only alphabets are allowed</small>
+      </div>
+    </div>
+
+    <br>
+    <div class="button-group">
+      <button type="submit" class="btn create-btn" [disabled]="editForm.invalid">Update Layout</button>&nbsp;&nbsp;
+      <button type="button" class="btn home-btn" (click)="goBack()">Back</button>
+    </div>
+  </form>
+</div>

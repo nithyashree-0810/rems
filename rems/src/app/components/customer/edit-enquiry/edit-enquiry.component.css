@@ -1,0 +1,132 @@
+
+/* Full page center */
+.center-page {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background-color: #f2f2f2;
+  padding: 20px;
+}
+h2 {
+  text-align: center;
+  color: #ff7e00; /* Orange or choose your color */
+  font-weight: bold;
+  margin-bottom: 25px;
+}
+
+/* Card style */
+.enquiry-card {
+  background-color: #fff;
+  padding: 30px 40px;
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+  width: 100%;
+  max-width: 700px;
+}
+
+/* Form heading */
+.enquiry-card h3 {
+  text-align: center;
+  margin-bottom: 25px;
+  color: #333;
+}
+
+/* Row spacing */
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 25px; /* Increased gap between columns */
+  margin-bottom: 15px;
+}
+
+/* Column width */
+.col {
+  flex: 1;
+  min-width: 200px;
+  padding-right: 10px; /* Optional: adds extra space inside column */
+}
+
+/* Labels */
+.form-label {
+  display: block;
+  font-weight: 500;
+  margin-bottom: 5px;
+  color: hsl(0, 2%, 9%);
+}
+
+/* Input fields */
+.form-control {
+  width: 100%;
+  padding: 8px 12px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  font-size: 14px;
+  transition: border-color 0.2s ease;
+}
+
+.form-control:focus {
+  outline: none;
+  border-color: #007bff;
+  box-shadow: 0 0 5px rgba(0,123,255,0.3);
+}
+
+/* Buttons row */
+.buttons-row {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+}
+
+/* Buttons style */
+.buttons-row button {
+  padding: 10px 25px;
+  border-radius: 6px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.buttons-row button:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+/* Button colors */
+.btn-primary {
+  background-color: #007bff;
+  border: none;
+  color: #fff;
+}
+
+.btn-primary:hover {
+  background-color: #0069d9;
+}
+
+.btn-secondary {
+  background-color: #6c757d;
+  border: none;
+  color: #fff;
+}
+
+.btn-secondary:hover {
+  background-color: #5a6268;
+}
+
+/* Responsive adjustments */
+@media (max-width: 576px) {
+  .row {
+    flex-direction: column;
+    gap: 15px; /* Smaller gap for mobile */
+  }
+}
+button.btn.btn-secondary {
+  background-color: hsl(0, 100%, 50%); /* Orange color */
+  color: white;
+  border: none;
+}
+
+button.btn.btn-secondary:hover {
+  background-color: #e46d00; /* Darker shade for hover */
+  color: white;
+}

@@ -1,0 +1,75 @@
+package com.techietact.myrems.controller;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.techietact.myrems.entity.Enquiry;
+import com.techietact.myrems.repository.EnquiryRepository;
+import com.techietact.myrems.service.EnquiryService;
+@CrossOrigin("*")
+@RequestMapping("/api/customer")
+@RestController
+public class EnquiryController {
+	@Autowired
+	private EnquiryService enquiryService;
+	//private EnquiryRepository enquiryRepository;
+	
+	@PostMapping
+    public ResponseEntity<?> create(@RequestBody Enquiry enquiry) {
+        try {
+            return ResponseEntity.ok(enquiryService.create(enquiry));
+        } catch (RuntimeException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    @GetMapping
+    public List<Enquiry> getAll() {
+        return enquiryService.getAll();
+    }
+
+    @GetMapping("/{mobileNo}")
+    public Enquiry getById(@PathVariable Long mobileNo) {
+        return enquiryService.getByMobileNo(mobileNo);
+    }
+
+    @PutMapping("/{mobileNo}")
+    public ResponseEntity<?> update(@PathVariable Long mobileNo, @RequestBody Enquiry enquiry) {
+        try {
+            return ResponseEntity.ok(enquiryService.update(mobileNo, enquiry));
+        } catch (RuntimeException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    @DeleteMapping("/{mobileNo}")
+    public ResponseEntity<String> delete(@PathVariable Long mobileNo) {
+    	enquiryService.delete(mobileNo);
+        return ResponseEntity.ok("Deleted Successfully");
+    }
+
+    // Duplicate check
+    @GetMapping("/check-mobile/{mobileNo}")
+    public boolean checkMobile(@PathVariable Long mobileNo) {
+        return enquiryService.mobileExists(mobileNo);
+    }
+
+    @GetMapping("/check-email/{email}")
+    public boolean checkEmail(@PathVariable String email) {
+        return enquiryService.emailExists(email);
+    }
+}
+	
+
+

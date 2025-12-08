@@ -1,0 +1,143 @@
+/* Center the whole form */
+.center-page {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;   /* full screen center */
+  padding: 20px;
+  background: #f9f9f9; /* light background */
+}
+
+/* Card styling */
+.enquiry-card {
+  width: 100%;
+  max-width: 800px;
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+  padding: 30px;
+}
+
+/* Heading */
+.enquiry-card h3 {
+  text-align: left;       /* left-align the heading */
+  margin-bottom: 20px;    
+  color: #ff6600;         /* orange color */
+  font-weight: 600;
+}
+
+/* Form row */
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  margin-bottom: 15px;
+  gap: 20px; /* space between columns */
+}
+
+/* Each column */
+.col {
+  flex: 1;
+  min-width: 250px;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Labels */
+.dark-label {
+  font-weight: 600;
+  margin-bottom: 5px;
+}
+
+/* Input fields */
+input[type="text"],
+input[type="email"] {
+  padding: 8px 12px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  font-size: 14px;
+  transition: border-color 0.3s;
+}
+
+/* Input focus style */
+input:focus {
+  outline: none;
+  border-color: #ff6600;
+  box-shadow: 0 0 4px rgba(255, 102, 0, 0.4);
+}
+
+/* Invalid input style */
+.is-invalid {
+  border-color: red !important;
+}
+
+/* Error messages */
+.text-danger {
+  color: red;
+  font-size: 12px;
+  margin-top: 3px;
+}
+
+/* Error message for email custom */
+.error-message {
+  color: red;
+  font-size: 12px;
+  margin-top: 3px;
+}
+
+/* Buttons row */
+.buttons-row {
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
+  margin-top: 20px;
+}
+
+/* Buttons */
+button {
+  padding: 8px 18px;
+  border-radius: 5px;
+  border: none;
+  font-size: 14px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+button.btn-success {
+  background: #28a745;
+  color: #fff;
+}
+
+button.btn-success:disabled {
+  background: #ccc;
+  cursor: not-allowed;
+}
+
+button.btn-danger {
+  background: #dc3545;
+  color: #fff;
+}
+
+button:hover:not(:disabled) {
+  opacity: 0.9;
+}
+/* Table layout fix */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: fixed; /* make column widths uniform */
+}
+
+/* FIRST NAME column - left align */
+th:nth-child(2),
+td:nth-child(2) {
+  text-align: left;
+  padding-left: 40px; /* adjust value until looks perfect */
+  width: 200px;       /* optional - keeps same width for all rows */
+}
+/* ul {
+  padding-left: 0;
+  margin-left: 0;
+  list-style: none;
+} */
+ /* component.css */
+

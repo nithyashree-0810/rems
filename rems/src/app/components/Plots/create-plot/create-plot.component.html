@@ -1,0 +1,263 @@
+<div class="form-container">
+
+  <div class="top-bar">
+    <button class="view-btn" routerLink="/view-plots">View Plots</button>
+  </div>
+
+  <h2 class="form-title">Create New Plot</h2>
+
+  <form class="plot-form" #plotForm="ngForm" (ngSubmit)="savePlot()" novalidate>
+
+    <!-- Layout + Plot -->
+    <div class="form-row">
+
+      <div class="form-group">
+        <label>Layout</label>
+        <select [(ngModel)]="newPlot.layout"
+                name="layout"
+                required
+                #layout="ngModel">
+
+          <option value="">Select Layout</option>
+          <option *ngFor="let layout of layouts" [ngValue]="layout">
+            {{ layout.layoutName }}
+          </option>
+        </select>
+
+        <small class="error" *ngIf="layout.invalid && layout.touched">
+          Layout is required
+        </small>
+      </div>
+
+      <div class="form-group">
+        <label>Plot No.</label>
+        <input type="text"
+               [(ngModel)]="newPlot.plotNo"
+               name="plotNo"
+               required
+               #plotNo="ngModel"/>
+
+        <small class="error" *ngIf="plotNo.invalid && plotNo.touched">
+          Plot number is required
+        </small>
+      </div>
+
+    </div>
+
+
+    <!-- Rate + Direction -->
+    <div class="form-row">
+
+      <div class="form-group">
+        <label>SqFt Rate</label>
+        <input type="number"
+               [(ngModel)]="newPlot.sqft"
+               name="sqft"
+               required
+               #sqft="ngModel"
+               (input)="calculateValues()"/>
+
+        <small class="error" *ngIf="sqft.invalid && sqft.touched">
+          SqFt rate required
+        </small>
+      </div>
+
+      <div class="form-group">
+        <label>Direction</label>
+        <select [(ngModel)]="newPlot.direction"
+                name="direction"
+                required
+                #direction="ngModel">
+
+          <option value="">Select Direction</option>
+          <option>EAST</option>
+          <option>WEST</option>
+          <option>NORTH</option>
+          <option>SOUTH</option>
+          <option>SOUTHEAST</option>
+          <option>SOUTHWEST</option>
+          <option>NORTHEAST</option>
+          <option>NORTHWEST</option>
+
+        </select>
+
+        <small class="error" *ngIf="direction.invalid && direction.touched">
+          Direction is required
+        </small>
+      </div>
+
+    </div>
+
+
+    <!-- Dimensions -->
+    <div class="form-row">
+
+      <div class="form-group">
+        <label>Total Square Feet</label>
+        <input type="number"
+               [(ngModel)]="newPlot.totalSqft"
+               name="totalSqft"
+               readonly />
+      </div>
+
+      <div class="form-group">
+        <label>Breadth One</label>
+        <input type="number"
+               [(ngModel)]="newPlot.breadthOne"
+               name="breadthOne"
+               required
+               #breadthOne="ngModel"
+               (input)="calculateValues()" />
+
+        <small class="error" *ngIf="breadthOne.invalid && breadthOne.touched">
+          Required
+        </small>
+      </div>
+
+    </div>
+
+
+    <div class="form-row">
+
+      <div class="form-group">
+        <label>Breadth Two</label>
+        <input type="number"
+               [(ngModel)]="newPlot.breadthTwo"
+               name="breadthTwo"
+               required
+               #breadthTwo="ngModel"
+               (input)="calculateValues()" />
+
+        <small class="error" *ngIf="breadthTwo.invalid && breadthTwo.touched">
+          Required
+        </small>
+      </div>
+
+      <div class="form-group">
+        <label>Length One</label>
+        <input type="number"
+               [(ngModel)]="newPlot.lengthOne"
+               name="lengthOne"
+               required
+               #lengthOne="ngModel"
+               (input)="calculateValues()" />
+
+        <small class="error" *ngIf="lengthOne.invalid && lengthOne.touched">
+          Required
+        </small>
+      </div>
+
+    </div>
+
+
+    <div class="form-row">
+
+      <div class="form-group">
+        <label>Length Two</label>
+        <input type="number"
+               [(ngModel)]="newPlot.lengthTwo"
+               name="lengthTwo"
+               required
+               #lengthTwo="ngModel"
+               (input)="calculateValues()" />
+
+        <small class="error" *ngIf="lengthTwo.invalid && lengthTwo.touched">
+          Required
+        </small>
+      </div>
+
+      <div class="form-group">
+        <label>Price (₹)</label>
+        <input type="number"
+               [(ngModel)]="newPlot.price"
+               name="price"
+               readonly />
+      </div>
+
+    </div>
+
+
+    <!-- Owner Details -->
+    <div class="form-row">
+
+      <div class="form-group">
+        <label>Owner Name</label>
+        <input type="text"
+               [(ngModel)]="newPlot.ownerName"
+               name="ownerName"
+               required
+               #ownerName="ngModel" />
+
+        <small class="error" *ngIf="ownerName.invalid && ownerName.touched">
+          Owner Name is required
+        </small>
+      </div>
+
+      <div class="form-group">
+        <label>Address</label>
+        <input type="text"
+               [(ngModel)]="newPlot.address"
+               name="address"
+               required
+               #address="ngModel" />
+
+        <small class="error" *ngIf="address.invalid && address.touched">
+          Address is required
+        </small>
+      </div>
+
+    </div>
+
+
+    <div class="form-row">
+
+      <div class="form-group">
+        <label>Mobile No.</label>
+        <input type="tel"
+               [(ngModel)]="newPlot.mobile"
+               name="mobile"
+               required
+               pattern="[0-9]{10}"
+               #mobile="ngModel" />
+
+        <small class="error" *ngIf="mobile.invalid && mobile.touched">
+          Enter valid 10 digit mobile number
+        </small>
+      </div>
+
+      <div class="form-group">
+        <label>Email</label>
+        <input type="email"
+               [(ngModel)]="newPlot.email"
+               name="email"
+               required
+               #email="ngModel" />
+
+        <small class="error" *ngIf="email.invalid && email.touched">
+          Enter valid email
+        </small>
+      </div>
+
+    </div>
+
+
+    <!-- Buttons -->
+    <div class="form-buttons">
+
+      <button class="btn save-btn" 
+              type="submit"
+              [disabled]="plotForm.invalid">
+        Save
+      </button>
+
+      <button class="btn home-btn" 
+              type="button" 
+              (click)="goHome()">
+        Home
+      </button>
+
+    </div>
+
+  </form>
+
+</div>

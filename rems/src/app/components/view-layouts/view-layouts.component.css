@@ -1,0 +1,122 @@
+.container {
+  font-family: 'Segoe UI', sans-serif;
+  background-color: #f5f6fa;
+  padding: 30px;
+  font-size: 14px;
+}
+
+h2 {
+  text-align: center;
+  color: #ff7e00;
+  margin-bottom: 25px;
+}
+
+.top-buttons {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 15px;
+}
+
+.btn {
+  background-color: #2979ff;
+  color: white;
+  padding: 8px 14px;
+  border: none;
+  border-radius: 6px;
+  font-size: 14px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+}
+
+.btn i {
+  margin-right: 6px;
+}
+
+.btn-success { background-color: #28a745; }
+.btn-danger { background-color: #dc3545; }
+
+.layout-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: white;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 0 8px rgba(0,0,0,0.08);
+}
+
+.layout-table thead { background-color: #ff9800; }
+.layout-table thead th {
+  padding: 12px;
+  color: white;
+  text-transform: uppercase;
+  font-weight: bold;
+  text-align: center;
+  font-size: 13px;
+}
+
+.layout-table tbody td {
+  padding: 10px;
+  text-align: center;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.layout-table tbody tr:hover { background-color: #f4f8fd; }
+
+
+.pagination-flex {
+  display: flex;
+  justify-content: space-between; /* pagination left-center, home button right */
+  align-items: center;
+  margin-top: 20px;
+}
+
+.pagination {
+  flex: 1; /* take full width */
+  display: flex;
+  justify-content: center; /* center the pagination buttons */
+  gap: 6px;
+}
+
+.pagination button {
+  padding: 6px 10px;
+  border: 1px solid #ddd;
+  color: #333;
+  background: white;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+.pagination-home-btn {
+  margin-left: auto; /* push Home button to the far right */
+}
+
+.pagination .active {
+  background-color: #3498db;
+  color: white;
+  border: 1px solid #3498db;
+}
+
+.pagination button:disabled {
+  color: #999;
+  pointer-events: none;
+  border: 1px solid #ccc;
+}
+
+
+.circle-icon {
+  cursor: pointer;
+  font-size: 14px;
+  padding: 6px;
+  border-radius: 50%;
+  transition: background 0.2s ease, transform 0.2s ease;
+}
+
+.circle-icon:hover {
+  transform: scale(1.1);
+}
+
+.view { background: #e3f2fd; color: #1976d2; }
+.edit { background: #e8f5e9; color: #388e3c; }
+.delete { background: #ffebee; color: #d32f2f; }
+.create { background: #fff3e0; color: #ef6c00; }

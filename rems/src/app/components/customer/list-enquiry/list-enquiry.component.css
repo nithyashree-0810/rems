@@ -1,0 +1,231 @@
+/* Container Styling */
+.container {
+  font-family: 'Segoe UI', sans-serif;
+  background-color: #f5f6fa;
+  padding: 40px 20px;
+  font-size: 14px;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Header without underline */
+h2 {
+  color: #ff7e00;
+  margin-bottom: 25px;
+  font-weight: 600;
+  text-align: center;
+  font-size: 24px;
+  text-decoration: none; /* Removes underline */
+}
+
+/* Create button - Right aligned */
+.top-buttons {
+  display: flex;
+  justify-content: flex-end;
+  width: 100%;
+  max-width: 1200px;
+  margin-bottom: 15px;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background-color: #2979ff;
+  color: white;
+  padding: 8px 14px;
+  border: none;
+  border-radius: 6px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.btn:hover {
+  transform: scale(1.03);
+}
+
+.btn-success {
+  background-color: #28a745;
+}
+
+.btn-danger {
+  background-color: #dc3545;
+}
+
+/* Table Styling */
+.table-wrapper {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+
+.layout-table {
+  width: 1200px;
+  border-collapse: collapse;
+  background: white;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.08);
+  text-align: center;
+}
+
+.layout-table thead {
+  background-color: #ff9800;
+}
+
+.layout-table thead th {
+  padding: 12px;
+  color: white;
+  text-transform: uppercase;
+  font-weight: bold;
+  font-size: 13px;
+}
+
+.layout-table tbody td {
+  padding: 10px 12px;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.layout-table tbody tr:hover {
+  background-color: #f4f8fd;
+}
+
+/* Action Icons */
+.circle-icon {
+  cursor: pointer;
+  font-size: 15px;
+  padding: 6px;
+  border-radius: 50%;
+  transition: 0.2s ease;
+}
+
+.circle-icon:hover {
+  transform: scale(1.15);
+}
+
+.view {
+  background: #e3f2fd;
+  color: #1976d2;
+}
+
+.edit {
+  background: #e8f5e9;
+  color: #388e3c;
+}
+
+.delete {
+  background: #ffebee;
+  color: #d32f2f;
+}
+
+/* Pagination + Home Container */
+/* Pagination center alignment + Home right side */
+.pagination-container {
+  display: flex;
+  justify-content: center; /* pagination buttons center la varum */
+  align-items: center;
+  width: 1200px;
+  margin-top: 30px;
+  position: relative;
+  padding-bottom: 10px;
+}
+
+
+/* Pagination Buttons */
+.pagination {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.pagination button {
+  padding: 6px 12px;
+  border: 1px solid #ddd;
+  color: #333;
+  background: white;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: 0.2s ease;
+}
+
+.pagination button:hover {
+  background-color: #e8f4ff;
+}
+
+.pagination .active {
+  background-color: #3498db;
+  color: white;
+  border: 1px solid #3498db;
+}
+
+.pagination button:disabled {
+  color: #999;
+  pointer-events: none;
+  border: 1px solid #ccc;
+}
+
+/* Home button on right corner */
+/* .pagination-home-btn {
+  margin-left: auto;
+  background-color: #dc3545;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  padding: 8px 16px;
+  cursor: pointer;
+  transition: 0.2s ease;
+} */
+/* Home button right side fixed */
+.pagination-home-btn {
+  position: absolute;
+  right: 0; /* right corner ku pogum */
+  background-color: #dc3545;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  padding: 8px 16px;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.pagination-home-btn:hover {
+  transform: scale(1.05);
+  background-color: #b92c38;
+}
+
+.pagination-home-btn:hover {
+  transform: scale(1.05);
+  background-color: #b92c38;
+}
+
+/* Responsive Design */
+@media (max-width: 992px) {
+  .layout-table {
+    width: 100%;
+    font-size: 12px;
+  }
+
+  .pagination-container {
+    width: 100%;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .pagination {
+    justify-content: center;
+  }
+
+  .pagination-home-btn {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+  }
+
+  .top-buttons {
+    justify-content: center;
+  }
+}

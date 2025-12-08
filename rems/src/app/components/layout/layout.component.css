@@ -1,0 +1,90 @@
+.form-container {
+  max-width: 500px; 
+  margin: 30px auto;
+  padding: 20px 20px 40px 20px;
+  border: 2px solid #ccc;
+  border-radius: 8px;
+  background-color: #f9f9f9;
+  position: relative;
+}
+
+.form-title {
+  text-align: center;
+  color: orange;
+  margin-bottom: 20px;
+  font-size: 24px;
+}
+
+form {
+  margin-top: 40px; /* push fields down */
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px 30px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+}
+
+label {
+  margin-bottom: 5px;
+  font-weight: bold;
+   font-family: Arial, Helvetica, sans-serif;
+}
+
+input[type="text"],
+input[type="number"],
+input[type="tel"] {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #aaa;
+  border-radius: 4px;
+}
+
+.form-actions {
+  grid-column: span 2; /* full width across both columns */
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+}
+
+.btn {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.create-btn {
+  background-color: #4CAF50;
+  color: white;
+}
+
+.home-btn {
+  background-color: #f44336;
+  color: white;
+}
+
+.header-actions {
+  position: absolute;
+  top: 10px;
+  right: 15px;
+}
+
+.header-actions .btn-success {
+  background-color: #28a745; /* green */
+  color: white;
+  padding: 8px 16px;
+  border: none;
+  border-radius: 4px;
+  font-weight: bold;
+  cursor: pointer;
+}
+.error small {
+  color: red;
+  font-size: 13px;
+  display: block;
+  margin-top: 4px;
+}

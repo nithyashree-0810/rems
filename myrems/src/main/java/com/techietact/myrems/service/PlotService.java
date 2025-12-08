@@ -24,5 +24,7 @@ public interface PlotService {
 
 	Plot getByPlotNo(String plotNo);
 
+	List<Plot> getPlotsByLayout(String layoutName);
+
 	
 }

@@ -7,7 +7,6 @@ import { Plot } from '../models/plot';
   providedIn: 'root'
 })
 export class PlotserviceService {
-  
 
   private baseUrl = 'http://localhost:8080/api/plots';
 
@@ -20,23 +19,32 @@ export class PlotserviceService {
 
   // DELETE PLOT
   deletePlotByPlotNo(plotNo: string) {
-  return this.http.delete(`${this.baseUrl}/${plotNo}`, { responseType: 'text' });
-}
+    return this.http.delete(`${this.baseUrl}/${plotNo}`, { responseType: 'text' });
+  }
 
   // CREATE PLOT
   createPlot(newPlot: Plot): Observable<any> {
     return this.http.post(`${this.baseUrl}/create`, newPlot, { responseType: 'text' });
   }
 
+  // GET PLOT BY PLOT NO
   getPlotByPlotNo(plotNo: any): Observable<any> {
-  return this.http.get<any>(`${this.baseUrl}/${plotNo}`);
-}
+    return this.http.get<any>(`${this.baseUrl}/${plotNo}`);
+  }
 
-updatePlotByPlotNo(plotNo: any, plot: any): Observable<any> {
-  return this.http.put<any>(`${this.baseUrl}/${plotNo}`, plot);
-}
+  // UPDATE PLOT BY PLOT NO
+  updatePlotByPlotNo(plotNo: any, plot: any): Observable<any> {
+    return this.http.put<any>(`${this.baseUrl}/${plotNo}`, plot);
+  }
 
+  // GET PLOT BY ID (if needed)
   getPlotById(plotId: string): Observable<Plot> {
     return this.http.get<Plot>(`${this.baseUrl}/id/${plotId}`);
   }
+
+  // 🔹 NEW: SEARCH PLOTS BY LAYOUT
+  getPlotsByLayout(layoutName: string): Observable<Plot[]> {
+  return this.http.get<Plot[]>(`${this.baseUrl}/search/${layoutName}`);
+}
+
 }

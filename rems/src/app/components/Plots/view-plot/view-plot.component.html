@@ -72,6 +72,18 @@
     <div class="value">₹ {{ plot.price }}</div>
   </div>
 
+  <!-- ✅ DTCP Approved -->
+  <div class="row">
+    <div class="label">DTCP Approved :</div>
+    <div class="value">{{ plot.dtcpApproved ? 'Yes' : 'No' }}</div>
+  </div>
+
+  <!-- ✅ RERA Approved -->
+  <div class="row">
+    <div class="label">RERA Approved :</div>
+    <div class="value">{{ plot.reraApproved ? 'Yes' : 'No' }}</div>
+  </div>
+
   <!-- Buttons -->
   <div style="text-align:center; margin-top:20px;">
     <button class="home-btn" routerLink="/list-plot">Back To List</button>

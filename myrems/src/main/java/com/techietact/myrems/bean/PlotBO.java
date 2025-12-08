@@ -35,6 +35,9 @@ public class PlotBO {
 	
 	private String email;
 	
+	private boolean dtcpApproved;
+	private boolean reraApproved;
+	
 	private boolean booked;
 	
 	private Layout layout;

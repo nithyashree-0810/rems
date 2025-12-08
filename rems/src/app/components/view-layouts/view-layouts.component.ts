@@ -60,9 +60,10 @@ export class ViewLayoutsComponent {
   editLayout(layoutName: string) { 
     this.router.navigate(['/edit-layout', layoutName]);
    }
-  createPlot(layoutName: string) {  
-    this.router.navigate(['/create-plot', layoutName]);
-  }
+  createPlot(layoutName: string): void {  
+  this.router.navigate(['/create-plot', layoutName]);
+}
+
      deleteLayout(layoutName: string) {
   if (confirm('Are you sure you want to delete this layout?')) {
     debugger

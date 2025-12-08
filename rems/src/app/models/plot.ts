@@ -1,13 +1,12 @@
 import { Layout } from "./layout";
 
-export class Plot{
-
-   plotNo!: string;
+export class Plot {
+  plotNo!: string;
   sqft!: number;
   direction!: string;
   totalSqft!: number;
   breadthOne!: number;
-  breadthTwo!: number 
+  breadthTwo!: number;
   lengthOne!: number;
   lengthTwo!: number;
   price!: number;
@@ -15,7 +14,12 @@ export class Plot{
   mobile!: number;
   ownerName!: string;
   email!: string;
-  layout!: {
-    layoutName: string;
-  };
+
+  // New attributes
+  dtcpApproved!: boolean;
+  reraApproved!: boolean;
+  booked!: boolean;
+
+  // Use Layout object instead of inline object
+  layout!: Layout;
 }

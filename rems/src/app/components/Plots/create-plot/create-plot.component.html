@@ -8,7 +8,7 @@
 
   <form class="plot-form" #plotForm="ngForm" (ngSubmit)="savePlot()" novalidate>
 
-    <!-- Layout + Plot -->
+    <!-- Layout + Plot No -->
     <div class="form-row">
 
       <div class="form-group">
@@ -43,7 +43,6 @@
       </div>
 
     </div>
-
 
     <!-- Rate + Direction -->
     <div class="form-row">
@@ -88,7 +87,6 @@
 
     </div>
 
-
     <!-- Dimensions -->
     <div class="form-row">
 
@@ -97,7 +95,12 @@
         <input type="number"
                [(ngModel)]="newPlot.totalSqft"
                name="totalSqft"
-               readonly />
+               placeholder="Enter total square feet"
+               #totalSqft="ngModel"
+               (input)="calculateValues()" />
+        <small class="error" *ngIf="totalSqft.invalid && totalSqft.touched">
+          Total square feet is required
+        </small>
       </div>
 
       <div class="form-group">
@@ -115,7 +118,6 @@
       </div>
 
     </div>
-
 
     <div class="form-row">
 
@@ -149,7 +151,6 @@
 
     </div>
 
-
     <div class="form-row">
 
       <div class="form-group">
@@ -176,7 +177,6 @@
 
     </div>
 
-
     <!-- Owner Details -->
     <div class="form-row">
 
@@ -184,30 +184,17 @@
         <label>Owner Name</label>
         <input type="text"
                [(ngModel)]="newPlot.ownerName"
-               name="ownerName"
-               required
-               #ownerName="ngModel" />
-
-        <small class="error" *ngIf="ownerName.invalid && ownerName.touched">
-          Owner Name is required
-        </small>
+               name="ownerName" />
       </div>
 
       <div class="form-group">
         <label>Address</label>
         <input type="text"
                [(ngModel)]="newPlot.address"
-               name="address"
-               required
-               #address="ngModel" />
-
-        <small class="error" *ngIf="address.invalid && address.touched">
-          Address is required
-        </small>
+               name="address" />
       </div>
 
     </div>
-
 
     <div class="form-row">
 
@@ -216,30 +203,43 @@
         <input type="tel"
                [(ngModel)]="newPlot.mobile"
                name="mobile"
-               required
-               pattern="[0-9]{10}"
-               #mobile="ngModel" />
-
-        <small class="error" *ngIf="mobile.invalid && mobile.touched">
-          Enter valid 10 digit mobile number
-        </small>
+               pattern="[0-9]{10}" />
       </div>
 
       <div class="form-group">
         <label>Email</label>
         <input type="email"
                [(ngModel)]="newPlot.email"
-               name="email"
-               required
-               #email="ngModel" />
-
-        <small class="error" *ngIf="email.invalid && email.touched">
-          Enter valid email
-        </small>
+               name="email" />
       </div>
 
     </div>
 
+    <!-- ✅ New boolean attributes -->
+    <div class="form-row">
+
+      <div class="form-group">
+        <label>
+          <input type="checkbox" [(ngModel)]="newPlot.dtcpApproved" name="dtcpApproved" />
+          DTCP Approved
+        </label>
+      </div>
+
+      <div class="form-group">
+        <label>
+          <input type="checkbox" [(ngModel)]="newPlot.reraApproved" name="reraApproved" />
+          RERA Approved
+        </label>
+      </div>
+
+      <div class="form-group">
+        <label>
+          <input type="checkbox" [(ngModel)]="newPlot.booked" name="booked" />
+          Booked
+        </label>
+      </div>
+
+    </div>
 
     <!-- Buttons -->
     <div class="form-buttons">

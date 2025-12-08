@@ -23,7 +23,16 @@ public class LayoutBO {
 	
 	private int pincode;
 	
-	private String ownerName;
+	private String ownerName1;
+	private String ownerName2;
+	private String ownerName3;
+	private String ownerName4;
+	private String ownerName5;
+	private String ownerName6;
+
+	private boolean dtcpApproved;
+	private boolean reraApproved;
+	
 	
 	private LocalDateTime createdDate;
 	

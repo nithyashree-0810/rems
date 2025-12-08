@@ -14,10 +14,17 @@ public interface EnquiryRepository  extends JpaRepository<Enquiry, Long>{
 	boolean existsByMobileNo(Long mobileNo);
 
 	boolean existsByEmail(String email);
-	//List<Enquiry> findAllByOrderByCreatedDateAsc();
 
 	Enquiry findByMobileNo(Long mobileNo);
 
 	List<Enquiry> findAllByOrderByCreatedDateDesc();
+	
+	List<Enquiry> findByFirstNameContainingIgnoreCaseOrLastNameContainingIgnoreCaseOrMobileNo(
+	        String firstName, String lastName, Long mobileNo);
+	
+	List<Enquiry> findByFirstNameContainingIgnoreCaseOrLastNameContainingIgnoreCaseOrMobileNoOrEmailContainingIgnoreCase(
+	        String firstName, String lastName, Long mobileNo, String email);
+
+
 
 }

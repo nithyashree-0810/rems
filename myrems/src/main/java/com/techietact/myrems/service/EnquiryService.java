@@ -25,8 +25,8 @@ public interface EnquiryService {
 
 	Enquiry getByMobileNo(Long mobileNo);
 
+	List<Enquiry> search(String keyword);
 
-	
 
 	
 }

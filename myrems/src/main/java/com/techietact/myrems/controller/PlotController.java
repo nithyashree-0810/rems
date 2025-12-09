@@ -89,4 +89,14 @@ public class PlotController {
 	    return ResponseEntity.ok("Plot deleted successfully");
 	}
 
+	@GetMapping("/search/{layoutName}")
+	public ResponseEntity<List<Plot>> getPlotsByLayout(@PathVariable String layoutName) {
+	    List<Plot> plots = plotService.getPlotsByLayout(layoutName);
+	    if (plots.isEmpty()) {
+	        return ResponseEntity.noContent().build();
+	    }
+	    return ResponseEntity.ok(plots);
+	}
+
+
 }

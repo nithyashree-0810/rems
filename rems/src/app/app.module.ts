@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { importProvidersFrom, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -10,7 +10,10 @@ import { HeaderComponent } from './components/header/header.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ViewLayoutsComponent } from './components/view-layouts/view-layouts.component';
+import { BrowserAnimationsModule, provideAnimations } from '@angular/platform-browser/animations';
 
+import { ToastrModule } from 'ngx-toastr';
+import { NgxSpinnerModule } from 'ngx-spinner';
 
 import { HttpClientModule } from '@angular/common/http';
 
@@ -61,8 +64,17 @@ import { EditLayoutComponent } from './components/edit-layout/edit-layout.compon
     FormsModule,
    HttpClientModule,
     ReactiveFormsModule,
+    NgxSpinnerModule,
+      ToastrModule.forRoot({
+      timeOut: 2000,
+      positionClass: 'toast-top-right',
+      preventDuplicates: true,
+    }),
+BrowserAnimationsModule
   ],
-  providers: [],
+  providers: [
+    provideAnimations()
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

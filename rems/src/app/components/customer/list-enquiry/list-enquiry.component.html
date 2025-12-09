@@ -1,14 +1,25 @@
 <div class="container">
   <h2>List of Customers</h2>
 
-  <!-- Top Buttons -->
+  <!-- 🔍 Search Box -->
+  <div class="search-container">
+    <input 
+      type="text" 
+      placeholder="Search by Name or Mobile..." 
+      [(ngModel)]="searchText" 
+      (input)="onSearch()"
+    />
+    <i class="fa fa-search search-icon"></i>
+  </div>
+
+  <!-- Create Button -->
   <div class="top-buttons">
     <button class="btn btn-success" (click)="createEnquiry()">
       <i class="fa fa-plus"></i> Create Customer
     </button>
   </div>
 
-  <!-- Customer Table -->
+  <!-- Table -->
   <div class="table-wrapper">
     <table class="layout-table">
       <thead>
@@ -23,13 +34,14 @@
           <th>Delete</th>
         </tr>
       </thead>
+
       <tbody>
         <tr *ngFor="let c of customer; let i = index">
           <td>{{ (currentPage - 1) * pageSize + i + 1 }}</td>
-          <td class="left-align">{{ c.firstName }}</td>
-          <td class="left-align">{{ c.lastName }}</td>
-          <td class="left-align">{{ c.address }}</td>
-          <td class="left-align">{{ c.mobileNo }}</td>
+          <td>{{ c.firstName }}</td>
+          <td>{{ c.lastName }}</td>
+          <td>{{ c.address }}</td>
+          <td>{{ c.mobileNo }}</td>
           <td><i class="fa fa-eye circle-icon view" (click)="viewcustomer(c.mobileNo)"></i></td>
           <td><i class="fa fa-pencil circle-icon edit" (click)="editCustomer(c)"></i></td>
           <td><i class="fa fa-trash circle-icon delete" (click)="deleteCustomer(c.mobileNo)"></i></td>
@@ -38,15 +50,17 @@
     </table>
   </div>
 
-  <!-- Pagination & Home -->
+  <!-- Pagination -->
   <div class="pagination-container">
     <div class="pagination">
       <button [disabled]="currentPage === 1" (click)="prevPage()">&laquo; Prev</button>
+
       <button *ngFor="let page of totalPagesArray"
               [ngClass]="{'active': page === currentPage}"
               (click)="goToPage(page)">
         {{ page }}
       </button>
+
       <button [disabled]="currentPage === totalPages" (click)="nextPage()">Next &raquo;</button>
     </div>
 

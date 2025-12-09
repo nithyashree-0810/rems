@@ -65,4 +65,20 @@ public boolean mobileExists(Long mobileNo) {
 public boolean emailExists(String email) {
     return repository.existsByEmail(email);
 }
+@Override
+public List<Enquiry> search(String keyword) {
+    Long mobile = null;
+
+    // Check if keyword is a mobile number
+    try {
+        mobile = Long.parseLong(keyword);
+    } catch (Exception e) {
+        mobile = null; // Not a number → ignore
+    }
+
+    return repository.findByFirstNameContainingIgnoreCaseOrLastNameContainingIgnoreCaseOrMobileNoOrEmailContainingIgnoreCase(
+            keyword, keyword, mobile, keyword
+    );
+}
+
 }

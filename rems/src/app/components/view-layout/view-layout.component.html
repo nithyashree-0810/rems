@@ -36,9 +36,47 @@
     <span class="value">{{ layout.pincode }}</span>
   </div>
 
+  <!-- Owners Section -->
+  <div class="row" *ngIf="layout.ownerName1">
+    <span class="label">Owner 1:</span>
+    <span class="value">{{ layout.ownerName1 }}</span>
+  </div>
+
+  <div class="row" *ngIf="layout.ownerName2">
+    <span class="label">Owner 2:</span>
+    <span class="value">{{ layout.ownerName2 }}</span>
+  </div>
+
+  <div class="row" *ngIf="layout.ownerName3">
+    <span class="label">Owner 3:</span>
+    <span class="value">{{ layout.ownerName3 }}</span>
+  </div>
+
+  <div class="row" *ngIf="layout.ownerName4">
+    <span class="label">Owner 4:</span>
+    <span class="value">{{ layout.ownerName4 }}</span>
+  </div>
+
+  <div class="row" *ngIf="layout.ownerName5">
+    <span class="label">Owner 5:</span>
+    <span class="value">{{ layout.ownerName5 }}</span>
+  </div>
+
+  <div class="row" *ngIf="layout.ownerName6">
+    <span class="label">Owner 6:</span>
+    <span class="value">{{ layout.ownerName6 }}</span>
+  </div>
+
+  <!-- DTCP Approved -->
   <div class="row">
-    <span class="label">Owner:</span>
-    <span class="value">{{ layout.ownerName }}</span>
+    <span class="label">DTCP Approved:</span>
+    <span class="value">{{ layout.dtcpApproved ? 'Yes' : 'No' }}</span>
+  </div>
+
+  <!-- RERA Approved -->
+  <div class="row">
+    <span class="label">RERA Approved:</span>
+    <span class="value">{{ layout.reraApproved ? 'Yes' : 'No' }}</span>
   </div>
 
   <button class="btn home-btn" (click)="goBack()">Home</button>

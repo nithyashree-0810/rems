@@ -69,6 +69,12 @@ public class EnquiryController {
     public boolean checkEmail(@PathVariable String email) {
         return enquiryService.emailExists(email);
     }
+    
+    @GetMapping("/search/{keyword}")
+    public List<Enquiry> search(@PathVariable String keyword) {
+        return enquiryService.search(keyword);
+    }
+
 }
 	
 

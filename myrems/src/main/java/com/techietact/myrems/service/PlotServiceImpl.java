@@ -101,7 +101,7 @@ public class PlotServiceImpl implements PlotService {
 		   plot.setPrice(newPlot.getPrice());
 
 		   Layout layout = layoutRepository
-		           .findByLayoutName(newPlot.getLayout().getLayoutName())
+		           .getByLayoutName(newPlot.getLayout().getLayoutName())
 		           .orElseThrow(() -> new RuntimeException("Layout not found"));
 
 		   plot.setLayout(layout);

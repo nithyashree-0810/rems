@@ -2,8 +2,6 @@ package com.techietact.myrems.service;
 
 import java.util.List;
 
-import org.springframework.data.domain.Page;
-
 import com.techietact.myrems.bean.LayoutBO;
 import com.techietact.myrems.entity.Layout;
 
@@ -26,5 +24,8 @@ public interface LayoutService {
 	LayoutBO getLayoutByLayoutName(String layoutName);
 
 	List<Layout> getAllLayouts();
-
+	
+	List<Layout> searchLayouts(String layoutName , String location);
+	
+	
 }

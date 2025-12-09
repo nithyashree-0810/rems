@@ -1,20 +1,24 @@
+
 .container {
   font-family: 'Segoe UI', sans-serif;
-  background-color: #f5f6fa;
-  padding: 30px;
-  font-size: 14px;
+  background-color: #f4f7fb;
+  padding: 35px;
+  font-size: 15px;
 }
 
 h2 {
   text-align: center;
   color: #ff7e00;
-  margin-bottom: 25px;
+  font-size: 25px;
+  font-weight: 600;
+  margin-bottom: 28px;
+  letter-spacing: 1px;
 }
 
 .top-buttons {
   display: flex;
   justify-content: flex-end;
-  margin-bottom: 15px;
+  margin-bottom: 18px;
 }
 
 .btn {
@@ -22,11 +26,18 @@ h2 {
   color: white;
   padding: 8px 14px;
   border: none;
-  border-radius: 6px;
+  border-radius: 7px;
   font-size: 14px;
   cursor: pointer;
   display: inline-flex;
   align-items: center;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.12);
+  transition: all .2s ease;
+}
+
+.btn:hover {
+  transform: translateY(-2px);
+  opacity: 0.9;
 }
 
 .btn i {
@@ -36,59 +47,96 @@ h2 {
 .btn-success { background-color: #28a745; }
 .btn-danger { background-color: #dc3545; }
 
+/* ---------- TABLE STYLING ---------- */
 .layout-table {
   width: 100%;
   border-collapse: collapse;
-  background: white;
-  border-radius: 10px;
+  background: #ffffff;
+  border-radius: 12px;
   overflow: hidden;
-  box-shadow: 0 0 8px rgba(0,0,0,0.08);
+  box-shadow: 0 3px 10px rgba(0,0,0,0.10);
 }
 
-.layout-table thead { background-color: #ff9800; }
+.layout-table thead {
+  background-color: #ff9800;
+}
+
 .layout-table thead th {
-  padding: 12px;
+  padding: 14px;
   color: white;
   text-transform: uppercase;
   font-weight: bold;
   text-align: center;
-  font-size: 13px;
+  font-size: 13.5px;
+  letter-spacing: 0.7px;
 }
 
 .layout-table tbody td {
-  padding: 10px;
+  padding: 12px;
   text-align: center;
-  border-bottom: 1px solid #f0f0f0;
+  border-bottom: 1px solid #f1f1f1;
+  font-size: 14px;
 }
 
-.layout-table tbody tr:hover { background-color: #f4f8fd; }
+.layout-table tbody tr {
+  transition: background 0.2s ease;
+}
 
+.layout-table tbody tr:hover {
+  background-color: #eef5ff;
+}
 
+/* ---------- ICON BUTTONS (VIEW/EDIT/DELETE) ---------- */
+.circle-icon {
+  cursor: pointer;
+  font-size: 15px;
+  padding: 8px;
+  border-radius: 50%;
+  transition: all 0.2s ease;
+}
+
+.circle-icon:hover {
+  transform: scale(1.15);
+}
+
+/* Individual Button Colors */
+.view { background: #e3f2fd; color: #1976d2; }
+.edit { background: #e8f5e9; color: #388e3c; }
+.delete { background: #ffebee; color: #d32f2f; }
+
+/* ---------- PAGINATION SECTION ---------- */
 .pagination-flex {
   display: flex;
-  justify-content: space-between; /* pagination left-center, home button right */
+  justify-content: space-between;
   align-items: center;
-  margin-top: 20px;
+  margin-top: 25px;
 }
 
 .pagination {
-  flex: 1; /* take full width */
+  flex: 1;
   display: flex;
-  justify-content: center; /* center the pagination buttons */
-  gap: 6px;
+  justify-content: center;
+  gap: 8px;
 }
 
 .pagination button {
-  padding: 6px 10px;
-  border: 1px solid #ddd;
+  padding: 7px 11px;
+  border: 1px solid #dcdcdc;
   color: #333;
   background: white;
   cursor: pointer;
-  border-radius: 4px;
+  border-radius: 5px;
+  font-size: 13px;
+  transition: all 0.2s ease;
+}
+
+.pagination button:hover {
+  background-color: #eaf1ff;
+  border-color: #2979ff;
 }
 
 .pagination-home-btn {
-  margin-left: auto; /* push Home button to the far right */
+  margin-left: auto;
 }
 
 .pagination .active {
@@ -98,25 +146,87 @@ h2 {
 }
 
 .pagination button:disabled {
-  color: #999;
+  color: #aaa;
   pointer-events: none;
-  border: 1px solid #ccc;
+  border-color: #ccc;
+}
+/* Title center */
+.title {
+  text-align: center;
+  margin-bottom: 25px;
+  color: #d35400;
+  font-size: 26px;
+  font-weight: bold;
 }
 
+/* Top bar full width flex */
+.top-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 25px;
+  width: 100%;
+  padding: 0 20px;
+}
 
-.circle-icon {
+/* Search center box group */
+.search-container {
+  display: flex;
+  gap: 10px;
+  margin: 0 auto;
+}
+
+/* Search input styling – No rectangle look */
+.search-container input {
+  padding: 8px 12px;
+  border: 1px solid #ddd;
+  border-radius: 20px;
+  outline: none;
+  width: 200px;
+  background: #f7f7f7;
+  transition: 0.3s;
+}
+
+.search-container input:focus {
+  background: #fff;
+  box-shadow: 0 0 4px rgba(0, 0, 0, 0.15);
+}
+
+/* Search button */
+.search-btn {
+  padding: 8px 15px;
+  border-radius: 20px;
+  border: none;
+  background: #3498db;
+  color: white;
   cursor: pointer;
-  font-size: 14px;
-  padding: 6px;
-  border-radius: 50%;
-  transition: background 0.2s ease, transform 0.2s ease;
+  transition: 0.3s;
 }
 
-.circle-icon:hover {
-  transform: scale(1.1);
+.search-btn:hover {
+  background: #217dbb;
 }
 
-.view { background: #e3f2fd; color: #1976d2; }
-.edit { background: #e8f5e9; color: #388e3c; }
-.delete { background: #ffebee; color: #d32f2f; }
-.create { background: #fff3e0; color: #ef6c00; }
+/* Create button right corner */
+.create-btn {
+  padding: 10px 18px;
+  background: #27ae60;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: 0.3s;
+}
+
+.create-btn:hover {
+  background: #1e8449;
+}
+.no-records {
+  text-align: center;
+  margin-top: 30px;
+  font-size: 20px;
+  font-weight: 600;
+  color: #d9534f;
+}
+

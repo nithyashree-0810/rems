@@ -7,6 +7,20 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class LayoutserviceService {
+  searchLayouts(searchName: string, searchLocation: string): Observable<Layout[]> {
+  const params: any = {};
+
+  if (searchName && searchName.trim() !== '') {
+    params['layoutName'] = searchName;
+  }
+
+  if (searchLocation && searchLocation.trim() !== '') {
+    params['location'] = searchLocation;
+  }
+
+  return this.http.get<Layout[]>(`${this.apiUrl}/search`, { params });
+}
+
 
   private apiUrl = 'http://localhost:8080/api/layouts';
 

@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.techietact.myrems.bean.LayoutBO;
 import com.techietact.myrems.entity.Layout;
+import com.techietact.myrems.entity.Plot;
 import com.techietact.myrems.service.LayoutService;
 
 @RestController
@@ -53,5 +54,28 @@ public class LayoutController {
     public void deleteLayout(@PathVariable String layoutName) {
         layoutService.deleteLayout(layoutName); // returns nothing
     }
+    
+    @GetMapping("/search")
+    public ResponseEntity<?> searchLayouts(
+            @RequestParam(required = false) String layoutName,
+            @RequestParam(required = false) String location) {
+
+        // If both are missing → list page (NO CONTENT)
+        if ((layoutName == null || layoutName.isBlank()) &&
+            (location == null || location.isBlank())) {
+            return ResponseEntity.noContent().build();
+        }
+
+        // Call service with whichever values are present
+        List<Layout> layouts = layoutService.searchLayouts(layoutName, location);
+
+        if (layouts.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }
+
+        return ResponseEntity.ok(layouts);
+    }
+
+
 
 }

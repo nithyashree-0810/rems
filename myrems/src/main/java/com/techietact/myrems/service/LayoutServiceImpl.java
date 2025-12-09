@@ -42,7 +42,7 @@ public class LayoutServiceImpl implements LayoutService {
 	@Override
 	public LayoutBO getLayoutByLayoutName(String layoutName) {
 		// TODO Auto-generated method stub
-		return layoutRepository.findByLayoutName(layoutName)
+		return layoutRepository.getByLayoutName(layoutName)
                 .map(layout -> {
                     LayoutBO layoutBO = new LayoutBO();
                     BeanUtils.copyProperties(layout, layoutBO);
@@ -54,7 +54,7 @@ public class LayoutServiceImpl implements LayoutService {
 	@Override
 	public LayoutBO updateLayout(String layoutName, LayoutBO layoutBO) {
 		// TODO Auto-generated method stub
-		return layoutRepository.findByLayoutName(layoutName)
+		return layoutRepository.getByLayoutName(layoutName)
                 .map(existing -> {
                     BeanUtils.copyProperties(layoutBO, existing, "layoutName"); // keep id unchanged
                     Layout updated = layoutRepository.save(existing);
@@ -71,6 +71,22 @@ public class LayoutServiceImpl implements LayoutService {
 		layoutRepository.deleteById(layoutName);
 	}
 
+
+	public List<Layout> searchLayouts(String layoutName, String location) {
+	    if (layoutName != null && location != null) {
+	        return layoutRepository.findByLayoutNameAndLocation(layoutName, location);
+	    }
+	    if (layoutName != null) {
+	        return layoutRepository.findByLayoutName(layoutName);
+	    }
+	    if (location != null) {
+	        return layoutRepository.findByLocation(location);
+	    }
+	    return List.of();
+	}
+
+
+	
 
 	
 }

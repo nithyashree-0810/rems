@@ -1,6 +1,8 @@
 import { Component, HostListener } from '@angular/core';
 import { Router } from '@angular/router';
 import { ReportService } from '../../services/report.service';
+import { DashboardServiceService } from '../../services/dashboard-service.service';
+
 
 @Component({
   selector: 'app-dashboard',
@@ -11,9 +13,23 @@ import { ReportService } from '../../services/report.service';
 export class DashboardComponent {
 
   activeDropdown: string | null = null;
+  totalLayouts = 0;
+  totalPlots = 0;
+  totalEnquiries = 0;
+  totalBookings = 0;
+  constructor(private router: Router,private reportService:ReportService,private dashboardService:DashboardServiceService) {}
 
-  constructor(private router: Router,private reportService:ReportService) {}
-
+  ngOnInit(): void {
+    this.loadCounts();
+  }
+   loadCounts() {
+    this.dashboardService.getDashboardCounts().subscribe((res: any) => {
+      this.totalLayouts = res.totalLayouts;
+      this.totalPlots = res.totalPlots;
+      this.totalEnquiries = res.totalEnquiries;
+      this.totalBookings = res.totalBookings;
+    });
+  } 
   toggleDropdown(menu: string) {
     this.activeDropdown = this.activeDropdown === menu ? null : menu;
   }

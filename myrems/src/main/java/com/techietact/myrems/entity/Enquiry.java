@@ -30,7 +30,7 @@ public class Enquiry {
 	private String email;
 	
 	private Long aadharNo;
-	//private String panNo;
+	private String panNo;
 	
 	@Column(name = "created_date", columnDefinition = "DATETIME")
 	private LocalDateTime createdDate;

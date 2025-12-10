@@ -13,6 +13,7 @@ public class EnquiryBO {
 
 	private String email;
 
+	private String panNo;
 	private Long aadharNo;
 	
 

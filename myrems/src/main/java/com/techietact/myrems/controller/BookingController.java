@@ -36,7 +36,7 @@ private EnquiryService enquiryService;
 	        
 	    	String plotNo=booking.getPlot().getPlotNo();
 	    	 Plot plot = plotService.getByPlotNo(plotNo);
-	    	 if (null!=plot) {
+	    	 if (null ==plot) {
 	    	        return ResponseEntity.badRequest().build(); 
 	    	    }
 	    	 	booking.setPlot(plot);
@@ -45,6 +45,7 @@ private EnquiryService enquiryService;
 	    	    booking.setDirection(plot.getDirection());
 	    	    booking.setSqft(plot.getSqft());
 	    	    booking.setPrice(plot.getPrice());
+	    	  
 	    	
 	    	    Long mobileNo = booking.getCustomer().getMobileNo();
 	            Enquiry customer = enquiryService.getByMobileNo(mobileNo);
@@ -57,7 +58,7 @@ private EnquiryService enquiryService;
 	            booking.setAddress(customer.getAddress());
 	            booking.setPincode(customer.getPincode());
 	            booking.setAadharNo(customer.getAadharNo());
-	           // booking.setPanNo(customer.getPanNo());
+	            booking.setPanNo(customer.getPanNo());
 	    	
 	        double balance = booking.getPrice() - booking.getPaidAmount();
 	        booking.setBalance(balance);

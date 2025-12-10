@@ -22,8 +22,10 @@ public Enquiry create(Enquiry enquiry) {
     if (repository.existsByMobileNo(enquiry.getMobileNo())) {
         throw new RuntimeException("Mobile number already exists!");
     }
-    if (repository.existsByEmail(enquiry.getEmail())) {
-        throw new RuntimeException("Email already exists!");
+    if (enquiry.getEmail() != null && !enquiry.getEmail().trim().isEmpty()) {
+        if (repository.existsByEmail(enquiry.getEmail())) {
+            throw new RuntimeException("Email already exists!");
+        }
     }
     enquiry.setCreatedDate(LocalDateTime.now());
 

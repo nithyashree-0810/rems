@@ -21,6 +21,7 @@ mobileNo: undefined as any,
     address:'',
   pincode: undefined as any,
     aadharNo:null,
+    panNo:'',
    
 
     

@@ -28,23 +28,28 @@ export class PlotserviceService {
   }
 
   // GET PLOT BY PLOT NO
-  getPlotByPlotNo(plotNo: any): Observable<any> {
-    return this.http.get<any>(`${this.baseUrl}/${plotNo}`);
-  }
+  getPlotByPlotNo(plotNo: string): Observable<Plot> {
+  return this.http.get<Plot>(`${this.baseUrl}/${plotNo}`);
+}
+
 
   // UPDATE PLOT BY PLOT NO
   updatePlotByPlotNo(plotNo: any, plot: any): Observable<any> {
     return this.http.put<any>(`${this.baseUrl}/${plotNo}`, plot);
   }
 
-  // GET PLOT BY ID (if needed)
+  // GET PLOT BY ID
   getPlotById(plotId: string): Observable<Plot> {
     return this.http.get<Plot>(`${this.baseUrl}/id/${plotId}`);
   }
 
-  // 🔹 NEW: SEARCH PLOTS BY LAYOUT
+  // 🔹 Get all plots for a layout
   getPlotsByLayout(layoutName: string): Observable<Plot[]> {
-  return this.http.get<Plot[]>(`${this.baseUrl}/search/${layoutName}`);
-}
+    return this.http.get<Plot[]>(`${this.baseUrl}/search/${layoutName}`);
+  }
 
+  // 🔹 Get one plot by layout + plot number
+  getPlotByLayoutAndPlotNo(layoutName: string, plotNo: string): Observable<Plot> {
+    return this.http.get<Plot>(`${this.baseUrl}/${layoutName}/${plotNo}`);
+  }
 }

@@ -25,7 +25,12 @@ public interface LayoutService {
 
 	List<Layout> getAllLayouts();
 	
-	List<Layout> searchLayouts(String layoutName , String location);
+	List<Layout> findByLayoutNameAndLocation(String layoutName , String location);
 	
+	List<Layout> findByLayoutName(String layoutName);
+	
+	List<Layout> findByLocation(String location);
+
+	List<Layout> searchLayouts(String layoutName, String location);
 	
 }

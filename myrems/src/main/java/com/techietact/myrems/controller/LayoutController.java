@@ -56,25 +56,19 @@ public class LayoutController {
     }
     
     @GetMapping("/search")
-    public ResponseEntity<?> searchLayouts(
+    public ResponseEntity<List<Layout>> searchLayouts(
             @RequestParam(required = false) String layoutName,
             @RequestParam(required = false) String location) {
 
-        // If both are missing → list page (NO CONTENT)
         if ((layoutName == null || layoutName.isBlank()) &&
             (location == null || location.isBlank())) {
-            return ResponseEntity.noContent().build();
+            return ResponseEntity.ok(layoutService.getAllLayouts());
         }
 
-        // Call service with whichever values are present
-        List<Layout> layouts = layoutService.searchLayouts(layoutName, location);
-
-        if (layouts.isEmpty()) {
-            return ResponseEntity.noContent().build();
-        }
-
-        return ResponseEntity.ok(layouts);
+        return ResponseEntity.ok(layoutService.searchLayouts(layoutName, location));
     }
+
+
 
 
 

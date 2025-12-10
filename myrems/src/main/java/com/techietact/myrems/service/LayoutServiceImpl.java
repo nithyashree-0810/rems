@@ -1,12 +1,9 @@
 package com.techietact.myrems.service;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import com.techietact.myrems.bean.LayoutBO;
@@ -72,17 +69,39 @@ public class LayoutServiceImpl implements LayoutService {
 	}
 
 
+	@Override
+	public List<Layout> findByLayoutNameAndLocation(String layoutName, String location) {
+		// TODO Auto-generated method stub
+		return layoutRepository.findByLayoutNameAndLocation(layoutName, location);
+	}
+
+
+	@Override
+	public List<Layout> findByLayoutName(String layoutName) {
+		// TODO Auto-generated method stub
+		return layoutRepository.findByLayoutName(layoutName);
+	}
+
+
+	@Override
+	public List<Layout> findByLocation(String location) {
+		// TODO Auto-generated method stub
+		return layoutRepository.findByLocation(location);
+	}
+
+
+	@Override
 	public List<Layout> searchLayouts(String layoutName, String location) {
-	    if (layoutName != null && location != null) {
-	        return layoutRepository.findByLayoutNameAndLocation(layoutName, location);
+
+	    if (layoutName != null && layoutName.isBlank()) {
+	        layoutName = null;
 	    }
-	    if (layoutName != null) {
-	        return layoutRepository.findByLayoutName(layoutName);
+	    if (location != null && location.isBlank()) {
+	        location = null;
 	    }
-	    if (location != null) {
-	        return layoutRepository.findByLocation(location);
-	    }
-	    return List.of();
+
+	    // Perform LIKE %search%
+	    return layoutRepository.searchLayouts(layoutName, location);
 	}
 
 

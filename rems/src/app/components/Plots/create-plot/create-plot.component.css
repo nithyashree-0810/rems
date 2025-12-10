@@ -8,6 +8,21 @@
   box-shadow: 0 2px 8px rgba(0,0,0,0.1);
 }
 
+.upload-btn {
+  background: #007bff;
+  color: white;
+  padding: 8px 14px;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-left: 10px;
+  font-size: 14px;
+}
+
+.upload-btn:hover {
+  background: #0056b3;
+}
+
+
 .top-bar {
   display: flex;
   justify-content: flex-end;

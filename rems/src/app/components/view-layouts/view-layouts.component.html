@@ -1,33 +1,32 @@
 <div class="container layout-container">
+
   <h2 class="page-title"><u>List of Layouts</u></h2>
 
-<div class="layout-header">
-
   <div class="top-bar">
-    <div class="search-container">
-      <input
+
+    <!-- SEARCH center -->
+    <div class="search-row">
+      <input 
         type="text"
-        placeholder="Search by Layout Name"
         [(ngModel)]="searchName"
-      />
+        (keyup)="filterLayouts()"
+        placeholder="Search Name">
 
-      <input
+      <input 
         type="text"
-        placeholder="Search by Location"
         [(ngModel)]="searchLocation"
-      />
+        (keyup)="filterLayouts()"
+        placeholder="Search Location">
 
-      <button class="search-btn" (click)="search()">
-        🔍 Search
-      </button>
+      <button class="search-btn" (click)="filterLayouts()">Search</button>
     </div>
 
+    <!-- CREATE BUTTON -->
     <button class="create-btn" (click)="navigateToCreate()">
       + Create Layout
     </button>
-  </div>
-</div>
 
+  </div>
 
 
   <div class="table-responsive">
@@ -42,12 +41,6 @@
           <th>Location</th>
           <th>Address</th>
           <th>Pincode</th>
-          <th>Owner 1</th>
-          <th>Owner 2</th>
-          <th>Owner 3</th>
-          <th>Owner 4</th>
-          <th>Owner 5</th>
-          <th>Owner 6</th>
           <th>DTCP</th>
           <th>RERA</th>
           <th>View</th>
@@ -67,40 +60,53 @@
           <td>{{ layout.location }}</td>
           <td>{{ layout.address }}</td>
           <td>{{ layout.pincode }}</td>
-          <td>{{ layout.ownerName1 }}</td>
-          <td>{{ layout.ownerName2 }}</td>
-          <td>{{ layout.ownerName3 }}</td>
-          <td>{{ layout.ownerName4 }}</td>
-          <td>{{ layout.ownerName5 }}</td>
-          <td>{{ layout.ownerName6 }}</td>
           <td>{{ layout.dtcpApproved ? 'Yes' : 'No' }}</td>
           <td>{{ layout.reraApproved ? 'Yes' : 'No' }}</td>
 
           <td><i class="fa fa-eye action-icon view" (click)="viewLayout(layout.layoutName)"></i></td>
           <td><i class="fa fa-pencil action-icon edit" (click)="editLayout(layout.layoutName)"></i></td>
           <td><i class="fa fa-trash action-icon delete" (click)="deleteLayout(layout.layoutName)"></i></td>
-          <td><i class="fa fa-plus action-icon create" (click)="createPlot(layout.layoutName)"></i></td>
+
+          <td>
+            <i class="fa fa-plus action-icon create" 
+               [routerLink]="['/create-plot']">
+            </i>
+          </td>
         </tr>
       </tbody>
     </table>
+    
   </div>
-  <div *ngIf="allLayouts.length === 0" class="no-records">
-   No Records Found
+  <div *ngIf="noRecords" class="no-records">
+  No Records Found
 </div>
 
-  <div class="pagination-flex">
-    <div class="pagination">
-      <button [disabled]="currentPage === 1" (click)="prevPage()">&laquo; Prev</button>
+  
 
-      <button *ngFor="let page of totalPagesArray"
-              [ngClass]="{'active': page === currentPage}"
-              (click)="goToPage(page)">
-        {{ page }}
-      </button>
+  <!-- PAGINATION -->
+<!-- PAGINATION + HOME SAME LINE -->
+<div class="pagination-wrapper">
 
-      <button [disabled]="currentPage === totalPages" (click)="nextPage()">Next &raquo;</button>
-    </div>
+  <!-- CENTER Pagination -->
+  <div class="pagination-container">
+    <button (click)="prevPage()" [disabled]="currentPage === 1">« Prev</button>
 
-    <button class="btn btn-danger pagination-home-btn" (click)="goHome()">Home</button>
+    <button *ngFor="let page of totalPagesArray"
+            [ngClass]="{'active': page === currentPage}"
+            (click)="goToPage(page)">
+      {{ page }}
+    </button>
+
+    <button (click)="nextPage()" [disabled]="currentPage === totalPages">Next »</button>
   </div>
+
+  <!-- RIGHT Home -->
+  <button class="home-btn" (click)="goHome()">Home</button>
+
 </div>
+
+
+
+
+
+    

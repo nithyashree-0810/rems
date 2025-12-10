@@ -11,15 +11,17 @@ import { Layout } from '../../models/layout';
 })
 export class ViewLayoutsComponent {
 
-  allLayouts: Layout[] = [];   // 🔥 Full data store
-  layouts: Layout[] = [];      // 🔥 Pagination display
+  searchName: string = "";
+  searchLocation: string = "";
+
+  allLayouts: Layout[] = [];    // Full data
+  layouts: Layout[] = [];       // Pagination display
 
   currentPage = 1;
   pageSize = 10;
   totalPages = 1;
 
-  searchName: string = "";
-  searchLocation: string = "";
+  noRecords: boolean = false;
 
   constructor(
     private layoutService: LayoutserviceService,
@@ -30,54 +32,43 @@ export class ViewLayoutsComponent {
     this.loadLayouts();
   }
 
-  // 🔥 Load full list
+  // 🔥 Load full list initially
   loadLayouts() {
     this.layoutService.getLayouts().subscribe((data: Layout[]) => {
       this.allLayouts = data;
+      this.noRecords = data.length === 0;
+      this.currentPage = 1;
       this.applyPagination();
     });
   }
-search(): void {
 
-  // 1. Both fields empty → load full list
-  if (
-    (!this.searchName || this.searchName.trim() === '') &&
-    (!this.searchLocation || this.searchLocation.trim() === '')
-  ) {
-    this.loadLayouts();   // your existing list load function
-    return;
+  // 🔍 Search using input OR button click
+  filterLayouts() {
+    const name = this.searchName.trim().toLowerCase();
+    const loc = this.searchLocation.trim().toLowerCase();
+
+    // 🚨 If both empty → Load full list again
+    if (name === "" && loc === "") {
+      this.loadLayouts();
+      return;
+    }
+
+    // 🔥 Filter logic
+    const filtered = this.allLayouts.filter(layout =>
+      (name === "" || layout.layoutName?.toLowerCase().includes(name)) &&
+      (loc === "" || layout.location?.toLowerCase().includes(loc))
+    );
+
+    this.noRecords = filtered.length === 0;
+
+    this.layouts = filtered;
+    this.currentPage = 1;
+    this.totalPages = Math.ceil(filtered.length / this.pageSize);
+
+    this.applyPaginationAfterSearch(filtered);
   }
 
-  // 2. At least one field has value → perform search
-  this.layoutService.searchLayouts(this.searchName, this.searchLocation)
-    .subscribe(
-      (response: Layout[]) => {
-
-        // If API returns empty → show "No records"
-        if (!response || response.length === 0) {
-          this.allLayouts = [];
-          this.currentPage = 1;
-          this.applyPagination();
-          return;
-        }
-
-        // Otherwise show results
-        this.allLayouts = response;
-        this.currentPage = 1;
-        this.applyPagination();
-      },
-      () => {
-        // ERROR → show no records message
-        this.allLayouts = [];
-        this.applyPagination();
-      }
-    );
-}
-
-
- 
-
-  // 📄 Pagination Logic
+  // 📄 Normal Pagination
   applyPagination() {
     this.totalPages = Math.ceil(this.allLayouts.length / this.pageSize);
 
@@ -87,6 +78,15 @@ search(): void {
     this.layouts = this.allLayouts.slice(startIndex, endIndex);
   }
 
+  // 📄 Pagination for Search Results
+  applyPaginationAfterSearch(filteredData: Layout[]) {
+    const startIndex = (this.currentPage - 1) * this.pageSize;
+    const endIndex = startIndex + this.pageSize;
+
+    this.layouts = filteredData.slice(startIndex, endIndex);
+  }
+
+  // Pagination Helpers
   get totalPagesArray() {
     return Array.from({ length: this.totalPages }, (_, i) => i + 1);
   }
@@ -110,6 +110,7 @@ search(): void {
     this.applyPagination();
   }
 
+  // Navigation Buttons
   navigateToCreate() {
     this.router.navigate(['/create-layout']);
   }
@@ -122,16 +123,12 @@ search(): void {
     this.router.navigate(['/edit-layout', layoutName]);
   }
 
-  createPlot(layoutName: string) {
-    this.router.navigate(['/create-plot', layoutName]);
-  }
-
   deleteLayout(layoutName: string) {
     if (confirm('Are you sure you want to delete this layout?')) {
       this.layoutService.deleteLayout(layoutName).subscribe({
         next: () => {
           alert('Layout deleted successfully!');
-          this.loadLayouts();  // refresh list
+          this.loadLayouts();
         },
         error: err => console.error(err)
       });

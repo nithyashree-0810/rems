@@ -1,16 +1,31 @@
 <div class="container">
   <h2>List of Customers</h2>
 
-  <!-- 🔍 Search Box -->
-  <div class="search-container">
-    <input 
-      type="text" 
-      placeholder="Search by Name or Mobile..." 
-      [(ngModel)]="searchText" 
-      (input)="onSearch()"
-    />
-    <i class="fa fa-search search-icon"></i>
-  </div>
+  <!-- Search Inputs -->
+  <div class="search-container" style="display: flex; gap: 10px; justify-content: center; margin-bottom: 15px;">
+  <input
+    type="text"
+    placeholder="Search Name"
+    [(ngModel)]="searchName"
+    (input)="onSearch()"
+    style="padding: 10px 20px; border-radius: 20px; border: 1px solid #ccc; width: 200px;"
+  />
+  <input
+    type="text"
+    placeholder="Search Mobile Number"
+    [(ngModel)]="searchMobile"
+    (input)="onSearch()"
+    style="padding: 10px 20px; border-radius: 20px; border: 1px solid #ccc; width: 200px;"
+  />
+  <button
+    class="btn btn-primary"
+    (click)="onSearch()"
+    style="padding: 10px 25px; border-radius: 10px; font-weight: 600;"
+  >
+    Search
+  </button>
+</div>
+
 
   <!-- Create Button -->
   <div class="top-buttons">
@@ -36,7 +51,7 @@
       </thead>
 
       <tbody>
-        <tr *ngFor="let c of customer; let i = index">
+        <tr *ngFor="let c of paginatedCustomers; let i = index">
           <td>{{ (currentPage - 1) * pageSize + i + 1 }}</td>
           <td>{{ c.firstName }}</td>
           <td>{{ c.lastName }}</td>

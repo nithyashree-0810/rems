@@ -47,6 +47,11 @@ private double breadthOne;
 	
 	private String email;
 	
+	private boolean dtcpApproved;
+	private boolean reraApproved;
+	
+	
+	
 	private boolean booked;
 	
 	@ManyToOne(fetch = FetchType.LAZY)

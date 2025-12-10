@@ -7,6 +7,9 @@ import { Plot } from '../models/plot';
   providedIn: 'root'
 })
 export class PlotserviceService {
+  uploadPlotsExcel(formData: FormData): Observable<any> {
+  return this.http.post(`${this.baseUrl}/upload`, formData, { responseType: 'text' });
+}
 
   private baseUrl = 'http://localhost:8080/api/plots';
 

@@ -115,6 +115,22 @@ export class CreatePlotComponent implements OnInit {
     });
   }
 
+  uploadExcel(event: any) {
+    const file = event.target.files[0];
+    if (!file) return;
+
+    const formData = new FormData();
+    formData.append("file", file);
+
+    this.plotService.uploadPlotsExcel(formData).subscribe({
+      next: (res: string) => alert(res),
+      error: (err) => {
+        console.error(err);
+        alert("Excel upload failed.");
+      }
+    });
+  }
+
   // ✅ Reset form
   resetForm(): void {
     this.newPlot = {

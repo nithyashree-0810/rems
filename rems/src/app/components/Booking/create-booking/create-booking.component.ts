@@ -111,7 +111,7 @@ export class CreateBookingComponent implements OnInit {
         this.booking.customerName = customer.firstName;
         this.booking.address = customer.address;
         this.booking.pincode = customer.pincode;
-        this.booking.aadharNo = customer.aadharNo;
+        // this.booking.aadharNo = customer.aadharNo;
         this.booking.panNo = customer.panNo;
       },
       error: () => {

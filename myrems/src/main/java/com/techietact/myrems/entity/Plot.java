@@ -50,7 +50,7 @@ private double breadthOne;
 	private boolean dtcpApproved;
 	private boolean reraApproved;
 	
-
+	
 	
 	private boolean booked;
 	

@@ -38,6 +38,7 @@ public class PlotBO {
 	private boolean dtcpApproved;
 	private boolean reraApproved;
 	
+	  private String panNo;
 	private boolean booked;
 	
 	private Layout layout;

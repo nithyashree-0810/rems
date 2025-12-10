@@ -1,6 +1,5 @@
 package com.techietact.myrems.entity;
 
-
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -15,51 +14,49 @@ import lombok.Data;
 @Table(name="bookings")
 public class Booking {
 
-	 @Id
-	    @GeneratedValue(strategy = GenerationType.IDENTITY)
-	    private Long bookingId;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long bookingId;
 
-	    // ✅ Mapping with Plot
-	    @ManyToOne
-	    @JoinColumn(name = "plotNo", referencedColumnName = "plotNo")
-	    private Plot plot;
+    // ✅ Mapping with Plot (using plotId as FK)
+    @ManyToOne
+    @JoinColumn(name = "plot_id", referencedColumnName = "plotId")
+    private Plot plot;
 
-	    // ✅ Mapping with Layout
-	    @ManyToOne
-	    @JoinColumn(name = "layoutName", referencedColumnName = "layoutName")
-	    private Layout layout;
+    // ✅ Mapping with Layout (assuming layoutName is primary key in Layout)
+    @ManyToOne
+    @JoinColumn(name = "layout_name", referencedColumnName = "layoutName")
+    private Layout layout;
 
-	    // ✅ Mapping with Customer
-	    @ManyToOne
-	    @JoinColumn(name = "mobileNo", referencedColumnName = "mobileNo")
-	    private Enquiry customer;
+    // ✅ Mapping with Customer
+    @ManyToOne
+    @JoinColumn(name = "mobile_no", referencedColumnName = "mobileNo")
+    private Enquiry customer;
 
-	    private int sqft;
-	    private double price;
-	    private String direction;
-	    private double balance;
-	    private String address;
-	    private int pincode;
-	    private Long aadharNo;
-	    private String panNo;
-	    private int paidAmount;
+    private int sqft;
+    private double price;
+    private String direction;
+    private double balance;
+    private String address;
+    private int pincode;
+    private Long aadharNo;
+    private String panNo;
+    private int paidAmount;
 
-	    // auto-calculate balance
-	    public void setPrice(double d) {
-	        this.price = d;
-	        updateBalance();
-	    }
+    // auto-calculate balance
+    public void setPrice(double price) {
+        this.price = price;
+        updateBalance();
+    }
 
-	    public void setPaidAmount(int paidAmount) {
-	        this.paidAmount = paidAmount;
-	        updateBalance();
-	    }
+    public void setPaidAmount(int paidAmount) {
+        this.paidAmount = paidAmount;
+        updateBalance();
+    }
 
-	    private void updateBalance() {
-	        if (this.price > 0) {
-	            this.balance = this.price - this.paidAmount;
-	        }
-	    }
-	
-
+    private void updateBalance() {
+        if (this.price > 0) {
+            this.balance = this.price - this.paidAmount;
+        }
+    }
 }

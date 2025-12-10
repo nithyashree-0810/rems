@@ -24,30 +24,42 @@ public class PlotServiceImpl implements PlotService {
 
 	@Override
     public boolean createPlat(PlotBO plotBo) {
-        if (plotRepository.existsByPlotNo(plotBo.getPlotNo())) {
-            return false;
-        }
+		 // Step 1 → Find layout object
+	    Layout layout = layoutRepository.getByLayoutName(plotBo.getLayout().getLayoutName())
+	            .orElseThrow(() -> new RuntimeException("Layout not found"));
 
-        Plot plot = new Plot();
-        BeanUtils.copyProperties(plotBo, plot);
-        plot.setLayout(plotBo.getLayout());
+	    // Step 2 → Check unique condition: plotNo + layoutName
+	    boolean exists = plotRepository.existsByPlotNoAndLayout_LayoutName(
+	            plotBo.getPlotNo(),
+	            layout.getLayoutName()
+	    );
 
-        double area = 0.0;
-        if (plotBo.getTotalSqft() > 0) {
-            area = plotBo.getTotalSqft();
-        } else if (plotBo.getBreadthOne() > 0 && plotBo.getBreadthTwo() > 0 &&
-        		plotBo.getLengthOne() > 0 && plotBo.getLengthTwo() > 0) {
-            double avgBreadth = (plotBo.getBreadthOne() + plotBo.getBreadthTwo()) / 2;
-            double avgLength = (plotBo.getLengthOne() + plotBo.getLengthTwo()) / 2;
-            area = avgBreadth * avgLength;
-            plot.setTotalSqft(area);
-        }
+	    if (exists) {
+	        return false; // Plot already exists in same layout
+	    }
 
-        plot.setPrice(plotBo.getSqft() * area);
-        
-        plotRepository.save(plot);
-        return true;
-    }
+	    // Step 3 → Create new plot
+	    Plot plot = new Plot();
+	    BeanUtils.copyProperties(plotBo, plot);
+	    plot.setLayout(layout);
+
+	    // Step 4 → Calculate area
+	    double area = 0.0;
+	    if (plotBo.getTotalSqft() > 0) {
+	        area = plotBo.getTotalSqft();
+	    } else if (plotBo.getBreadthOne() > 0 && plotBo.getBreadthTwo() > 0 &&
+	            plotBo.getLengthOne() > 0 && plotBo.getLengthTwo() > 0) {
+
+	        double avgBreadth = (plotBo.getBreadthOne() + plotBo.getBreadthTwo()) / 2;
+	        double avgLength = (plotBo.getLengthOne() + plotBo.getLengthTwo()) / 2;
+	        area = avgBreadth * avgLength;
+	        plot.setTotalSqft(area);
+	    }
+
+	    plot.setPrice(plotBo.getSqft() * area);
+
+	    plotRepository.save(plot);
+	    return true;    }
 	
 //	@Override
 //	 public List<Plot> getPlotsByLayout(String layoutName) {
@@ -84,30 +96,26 @@ public class PlotServiceImpl implements PlotService {
 	@Override
 	public Plot updateByPlotNo(String plotNo, PlotBO newPlot) {
 		// TODO Auto-generated method stub
-		Plot plot = plotRepository.findByPlotNo(plotNo)
-		        .orElseThrow(()-> new RuntimeException("Plot not found"));
+		 Plot existing = plotRepository.findByPlotNo(plotNo)
+		            .orElseThrow(() -> new RuntimeException("Plot not found"));
 
-		   plot.setOwnerName(newPlot.getOwnerName());
-		   plot.setAddress(newPlot.getAddress());
-		   plot.setMobile(newPlot.getMobile());
-		   plot.setEmail(newPlot.getEmail());
-		   plot.setSqft(newPlot.getSqft());
-		   plot.setDirection(newPlot.getDirection());
-		   plot.setBreadthOne(newPlot.getBreadthOne());
-		   plot.setBreadthTwo(newPlot.getBreadthTwo());
-		   plot.setLengthOne(newPlot.getLengthOne());
-		   plot.setLengthTwo(newPlot.getLengthTwo());
-		   plot.setTotalSqft(newPlot.getTotalSqft());
-		   plot.setPrice(newPlot.getPrice());
+		    Layout layout = layoutRepository.getByLayoutName(newPlot.getLayout().getLayoutName())
+		            .orElseThrow(() -> new RuntimeException("Layout not found"));
 
-		   Layout layout = layoutRepository
-		           .getByLayoutName(newPlot.getLayout().getLayoutName())
-		           .orElseThrow(() -> new RuntimeException("Layout not found"));
+		    // Duplicate check
+		    boolean exists = plotRepository.existsByPlotNoAndLayout_LayoutName(
+		            newPlot.getPlotNo(),
+		            layout.getLayoutName()
+		    );
 
-		   plot.setLayout(layout);
+		    if (exists && !existing.getPlotId().equals(newPlot.getPlotId())) {
+		        throw new RuntimeException("Plot already exists in this layout");
+		    }
 
-		   return plotRepository.save(plot);
+		    BeanUtils.copyProperties(newPlot, existing);
+		    existing.setLayout(layout);
 
+		    return plotRepository.save(existing);
 		}
 
 	@Override

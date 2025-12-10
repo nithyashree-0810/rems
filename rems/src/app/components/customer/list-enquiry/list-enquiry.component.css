@@ -42,18 +42,16 @@
   font-size: 18px;
 }
 
-
-/* Header without underline */
+/* Header */
 h2 {
   color: #ff7e00;
   margin-bottom: 25px;
   font-weight: 600;
   text-align: center;
   font-size: 24px;
-  text-decoration: none; /* Removes underline */
 }
 
-/* Create button - Right aligned */
+/* Create button */
 .top-buttons {
   display: flex;
   justify-content: flex-end;
@@ -74,10 +72,6 @@ h2 {
   font-size: 14px;
   cursor: pointer;
   transition: 0.2s ease;
-}
-
-.btn:hover {
-  transform: scale(1.03);
 }
 
 .btn-success {
@@ -154,11 +148,10 @@ h2 {
   color: #d32f2f;
 }
 
-/* Pagination + Home Container */
-/* Pagination center alignment + Home right side */
+/* Pagination */
 .pagination-container {
   display: flex;
-  justify-content: center; /* pagination buttons center la varum */
+  justify-content: center;
   align-items: center;
   width: 1200px;
   margin-top: 30px;
@@ -166,8 +159,6 @@ h2 {
   padding-bottom: 10px;
 }
 
-
-/* Pagination Buttons */
 .pagination {
   display: flex;
   justify-content: center;
@@ -185,80 +176,24 @@ h2 {
   transition: 0.2s ease;
 }
 
-.pagination button:hover {
-  background-color: #e8f4ff;
-}
-
 .pagination .active {
   background-color: #3498db;
   color: white;
-  border: 1px solid #3498db;
+  border-color: #3498db;
 }
 
-.pagination button:disabled {
-  color: #999;
-  pointer-events: none;
-  border: 1px solid #ccc;
-}
-
-/* Home button on right corner */
-/* .pagination-home-btn {
-  margin-left: auto;
-  background-color: #dc3545;
-  color: white;
-  border: none;
-  border-radius: 6px;
-  padding: 8px 16px;
-  cursor: pointer;
-  transition: 0.2s ease;
-} */
-/* Home button right side fixed */
 .pagination-home-btn {
   position: absolute;
-  right: 0; /* right corner ku pogum */
+  right: 0;
   background-color: #dc3545;
   color: white;
   border: none;
   border-radius: 6px;
   padding: 8px 16px;
   cursor: pointer;
-  transition: 0.2s ease;
 }
 
 .pagination-home-btn:hover {
   transform: scale(1.05);
   background-color: #b92c38;
-}
-
-.pagination-home-btn:hover {
-  transform: scale(1.05);
-  background-color: #b92c38;
-}
-
-/* Responsive Design */
-@media (max-width: 992px) {
-  .layout-table {
-    width: 100%;
-    font-size: 12px;
-  }
-
-  .pagination-container {
-    width: 100%;
-    flex-direction: column;
-    gap: 10px;
-  }
-
-  .pagination {
-    justify-content: center;
-  }
-
-  .pagination-home-btn {
-    width: 100%;
-    display: flex;
-    justify-content: center;
-  }
-
-  .top-buttons {
-    justify-content: center;
-  }
 }

@@ -2,22 +2,14 @@
 
   <h2 class="title">List of Plots</h2>
 
-  <!-- 🔹 Search Bar -->
-  <div class="search-bar mb-3">
+  <!-- Search Section -->
+  <div class="search-section">
     <input type="text"
            [(ngModel)]="searchLayoutName"
-           placeholder="Search by layout name"
-           class="search-input" />
-
-    <button class="btn search-btn" (click)="searchPlotsByLayout()">
-      <i class="fa fa-search"></i> Search
-    </button>
-
-    <button class="btn reset-btn" (click)="loadPlots()">
-      Reset
-    </button>
-
-    <span class="search-message" *ngIf="searchMessage">{{ searchMessage }}</span>
+           (keyup)="filterPlots()"
+           placeholder="Search Name"
+           class="search-box">
+    <button class="search-button" (click)="filterPlots()">Search</button>
   </div>
 
   <div class="top-bar">
@@ -26,8 +18,8 @@
     </button>
   </div>
 
+  <!-- Table -->
   <div class="table-card">
-
     <table>
       <thead>
         <tr>
@@ -47,7 +39,6 @@
 
       <tbody>
         <tr *ngFor="let plot of plots | slice:(currentPage-1)*pageSize:(currentPage)*pageSize; let i = index">
-
           <td>{{ (currentPage - 1) * pageSize + i + 1 }}</td>
           <td class="left-align">{{ plot.layout?.layoutName }}</td>
           <td>{{ plot.plotNo }}</td>
@@ -60,40 +51,29 @@
           <td class="center-align">{{ plot.reraApproved ? 'Yes' : 'No' }}</td>
 
           <td class="action-col">
-            <span class="icon view" (click)="viewPlot(plot)">
-              <i class="fa fa-eye"></i>
-            </span>
-
-            <span class="icon edit" (click)="editPlot(plot)">
-              <i class="fa fa-pencil"></i>
-            </span>
-
-            <span class="icon delete" (click)="deletePlot(plot)">
-              <i class="fa fa-trash"></i>
-            </span>
-
-            <span class="icon book" (click)="bookPlot(plot)">
-              <i class="fa fa-book"></i>
-            </span>
+            <span class="icon view" (click)="viewPlot(plot)"><i class="fa fa-eye"></i></span>
+            <span class="icon edit" (click)="editPlot(plot)"><i class="fa fa-pencil"></i></span>
+            <span class="icon delete" (click)="deletePlot(plot)"><i class="fa fa-trash"></i></span>
+            <span class="icon book" (click)="bookPlot(plot)"><i class="fa fa-book"></i></span>
           </td>
-
         </tr>
       </tbody>
-
     </table>
+
+    <!-- No results message -->
+    <div *ngIf="searchMessage" class="no-results">{{ searchMessage }}</div>
   </div>
 
+  <!-- Pagination -->
   <div class="pagination-wrapper">
     <div class="pagination-section">
       <button class="page-btn" [disabled]="currentPage === 1" (click)="prevPage()">« Prev</button>
-
       <button *ngFor="let page of totalPagesArray"
               class="page-number"
               [class.active]="currentPage === page"
               (click)="goToPage(page)">
         {{ page }}
       </button>
-
       <button class="page-btn" [disabled]="currentPage === totalPages" (click)="nextPage()">Next »</button>
     </div>
 

@@ -67,6 +67,9 @@ public class EnquiryController {
 
     @GetMapping("/check-email/{email}")
     public boolean checkEmail(@PathVariable String email) {
+        if (email == null || email.trim().isEmpty()) {
+            return false; 
+        }
         return enquiryService.emailExists(email);
     }
     

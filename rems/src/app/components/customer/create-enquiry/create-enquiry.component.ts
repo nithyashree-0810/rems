@@ -14,33 +14,52 @@ export class CreateEnquiryComponent {
 constructor(private customerService:CustomerService,private router:Router){}
   enquiry:Enquiry={
 
-    mobileNo:0,
+mobileNo: undefined as any,
     firstName:'',
     lastName:'',
     email:'',
     address:'',
-    pincode:0,
-    aadharNo:'',
-    panNo:'',
+  pincode: undefined as any,
+    aadharNo:null,
+   
 
     
   }
 mobileExists: boolean = false;
 
 onSubmit(form: NgForm) {
-    if (form.valid) {
-      this.customerService.checkMobileExists(this.enquiry.mobileNo).subscribe(mobileExists => {
-        if (mobileExists) {
-          alert('Mobile number already exists!');
-          return;
-        }
+  if (form.valid) {
 
+    // 1️⃣ Check Mobile Duplicate First
+    this.customerService.checkMobileExists(this.enquiry.mobileNo).subscribe(mobileExists => {
+      if (mobileExists) {
+        alert('Mobile number already exists!');
+        return;
+      }
+
+      // 2️⃣ EMAIL OPTIONAL → If empty, skip email check
+      if (!this.enquiry.email || this.enquiry.email.trim() === '') {
+
+        // Direct Customer Create
+        this.customerService.createCustomer(this.enquiry).subscribe({
+          next: () => {
+            alert('Customer Created Successfully!');
+            form.reset();
+            this.router.navigate(['/view-enquiries']);
+          },
+          error: err => alert(err.error)
+        });
+
+      } else {
+
+        // 3️⃣ Email is entered → check duplicate
         this.customerService.checkEmailExists(this.enquiry.email).subscribe(emailExists => {
           if (emailExists) {
             alert('Email already exists!');
             return;
           }
 
+          // 4️⃣ Create customer if email is NOT duplicate
           this.customerService.createCustomer(this.enquiry).subscribe({
             next: () => {
               alert('Customer Created Successfully!');
@@ -49,11 +68,15 @@ onSubmit(form: NgForm) {
             },
             error: err => alert(err.error)
           });
-        });
-      });
-    }
-  }
 
+        });
+
+      }
+
+    });
+
+  }
+}
 
 goHome() {
     // navigate to home page

@@ -73,18 +73,19 @@
 
         <!-- Email -->
         <div class="col">
-          <label for="email" class="dark-label">Email:</label>
-          <input
+        <label for="email" class="dark-label">Email (optional):</label>
+        <input
             type="email"
             name="email"
             [(ngModel)]="enquiry.email"
             placeholder="Enter Email"
-             pattern="^(?=.*[a-zA-Z])(?=.*\d)[a-zA-Z\d._%+-]+@[a-zA-Z\d.-]+\.[a-zA-Z]{2,}$"
+         pattern="^$|^[a-zA-Z._%+-]+@gmail\.com$"
             #email="ngModel"
             [class.is-invalid]="email.invalid && email.touched"
           />
           <div *ngIf="email.invalid && (email.dirty || email.touched)" class="error-message">
-                  Please enter a valid email with both letters and numbers.
+                Please enter a valid email that ends with &#64;gmail.com
+
                 </div>
         </div>
       </div>
@@ -129,21 +130,19 @@
 
       <!-- Row 4: Aadhaar -->
       <div class="row">
-        <div class="col">
-          <label for="aadharNo" class="dark-label">Aadhaar:</label>
-          <input
+        <div class="col"><label for="aadharNo" class="dark-label">Aadhaar (optional):</label>
+      <input
             type="text"
             name="aadharNo"
             [(ngModel)]="enquiry.aadharNo"
-            required
             maxlength="12"
-            pattern="^[0-9]{12}$"
+           pattern="^$|^[0-9]{12}$"
             placeholder="Enter 12-digit Aadhaar"
             #aadharNo="ngModel"
             [class.is-invalid]="aadharNo.invalid && aadharNo.touched"
           />
-          <p *ngIf="aadharNo.errors?.['required'] && aadharNo.touched" class="text-danger">Aadhaar is required</p>
-          <p *ngIf="aadharNo.errors?.['pattern'] && aadharNo.touched" class="text-danger">Enter valid 12-digit Aadhaar</p>
+         
+     <p *ngIf="aadharNo.errors?.['pattern'] && aadharNo.touched" class="text-danger">Enter valid 12-digit Aadhaar</p>
         </div>
       </div>
 

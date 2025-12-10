@@ -1,180 +1,131 @@
 <div class="booking-container">
   <div class="booking-card">
 
-    <!-- Title Row -->
     <div class="title-row">
       <h2 class="page-title">Book Plot</h2>
-      <div class="view-bookings-top-right">
-        <button class="btn-view" (click)="viewBookings()">View Bookings</button>
-      </div>
+      <button class="btn-view" (click)="viewBookings()">View Bookings</button>
     </div>
 
-    <!-- Booking Form -->
     <form #bookingForm="ngForm" (ngSubmit)="onSubmit(bookingForm)">
       <div class="form-row">
 
-        <!-- Left Column -->
+        <!-- LEFT SIDE -->
         <div class="form-column">
 
-          <!-- Plot No -->
-          <div class="form-group">
-            <label>
-            Plot No <span style="color: red;">*</span>
-            </label>
-            <input
-              type="text"
-              class="form-control"
-              name="plotno"
-              [(ngModel)]="booking.plotno"
-              (blur)="onPlotChange()"
-              />
-          </div>
-
-          <!-- Auto-filled Plot Details -->
+          <!-- LAYOUT DROPDOWN -->
           <div class="form-group">
             <label>Layout Name:<span style="color: red;">*</span></label>
-            <input
-              type="text"
-              class="form-control"
-              name="layoutName"
-              [(ngModel)]="booking.layoutName"
-              readonly />
+
+            <select class="form-control"
+                    name="layoutName"
+                    [(ngModel)]="booking.layoutName"
+                    (change)="onLayoutChange()"
+                    required>
+
+              <option value="">-- Select Layout --</option>
+              <option *ngFor="let layout of layoutList" 
+                      [value]="layout.layoutName">
+                {{ layout.layoutName }}
+              </option>
+
+            </select>
+          </div>
+
+          <!-- PLOT NO DROPDOWN -->
+          <div class="form-group">
+            <label>Plot No <span style="color: red;">*</span></label>
+
+            <select class="form-control"
+                    name="plotno"
+                    [(ngModel)]="booking.plotno"
+                    (change)="onPlotChange()"
+                    required>
+
+              <option value="">-- Select Plot --</option>
+              <option *ngFor="let p of plotList" [value]="p.plotNo">
+                {{ p.plotNo }}
+              </option>
+
+            </select>
+          </div>
+
+          <!-- AUTO-FILLED PLOT DETAILS -->
+          <div class="form-group">
+            <label>Square Feet:</label>
+            <input type="number" class="form-control" readonly [(ngModel)]="booking.sqft" name="sqft">
           </div>
 
           <div class="form-group">
-            <label>Square Feet:<span style="color: red;">*</span></label>
-            <input
-              type="number"
-              class="form-control"
-              name="sqft"
-              [(ngModel)]="booking.sqft"
-              readonly />
+            <label>Price:</label>
+            <input type="number" class="form-control" readonly [(ngModel)]="booking.price" name="price">
           </div>
 
           <div class="form-group">
-            <label>Price:<span style="color: red;">*</span></label>
-            <input
-              type="number"
-              class="form-control"
-              name="price"
-              [(ngModel)]="booking.price"
-              readonly />
+            <label>Direction:</label>
+            <input type="text" class="form-control" readonly [(ngModel)]="booking.direction" name="direction">
           </div>
 
           <div class="form-group">
-            <label>Direction:<span style="color: red;">*</span></label>
-            <input
-              type="text"
-              class="form-control"
-              name="direction"
-              [(ngModel)]="booking.direction"
-              readonly />
-          </div>
-
-          <!-- Paid & Balance -->
-          <div class="form-group">
-            <label>Amount Paid:<span style="color: red;">*</span></label>
-            <input
-              type="number"
-              class="form-control"
-              name="paidAmount"
-              [(ngModel)]="booking.paidAmount"
-              (input)="onPaidAmountChange()" />
+            <label>Amount Paid:</label>
+            <input type="number" class="form-control" [(ngModel)]="booking.paidAmount"
+                   (input)="onPaidAmountChange()" name="paidAmount">
           </div>
 
           <div class="form-group">
-            <label>Balance:<span style="color: red;">*</span></label>
-            <input
-              type="number"
-              class="form-control"
-              name="balance"
-              [(ngModel)]="booking.balance"
-              readonly />
+            <label>Balance:</label>
+            <input type="number" class="form-control" readonly [(ngModel)]="booking.balance" name="balance">
           </div>
+
         </div>
 
-        <!-- Right Column -->
+        <!-- RIGHT SIDE -->
         <div class="form-column">
 
-          <!-- Mobile Number with auto-fetch -->
           <div class="form-group">
             <label>Mobile Number:<span style="color: red;">*</span></label>
-            <input
-              type="tel"
-              class="form-control"
-              name="mobileNo"
-              [(ngModel)]="booking.mobileNo"
-              pattern="[0-9]{10}"
-              (blur)="onMobileChange()"
-              required />
-          </div>
-
-          <!-- Auto-filled Customer Details -->
-          <div class="form-group">
-            <label>Customer Name:<span style="color: red;">*</span></label>
-            <input
-              type="text"
-              class="form-control"
-              name="customerName"
-              [(ngModel)]="booking.customerName"
-              readonly />
+            <input type="tel" class="form-control"
+                   [(ngModel)]="booking.mobileNo"
+                   (blur)="onMobileChange()"
+                   name="mobileNo"
+                   pattern="[0-9]{10}"
+                   required />
           </div>
 
           <div class="form-group">
-            <label>Address:<span style="color: red;">*</span></label>
-            <input
-              type="text"
-              class="form-control"
-              name="address"
-              [(ngModel)]="booking.address"
-              readonly />
+            <label>Customer Name:</label>
+            <input type="text" class="form-control" readonly [(ngModel)]="booking.customerName" name="customerName">
+          </div>
+
+          <div class="form-group">
+            <label>Address:</label>
+            <input type="text" class="form-control" readonly [(ngModel)]="booking.address" name="address">
           </div>
 
           <div class="form-group">
             <label>Pincode:</label>
-            <input
-              type="number"
-              class="form-control"
-              name="pincode"
-              [(ngModel)]="booking.pincode"
-              readonly />
+            <input type="number" class="form-control" readonly [(ngModel)]="booking.pincode" name="pincode">
           </div>
 
           <div class="form-group">
             <label>Aadhaar Number:</label>
-            <input
-              type="number"
-              class="form-control"
-              name="aadharNo"
-              [(ngModel)]="booking.aadharNo"
-              readonly />
+            <input type="text" class="form-control" readonly [(ngModel)]="booking.aadharNo" name="aadharNo">
           </div>
 
           <div class="form-group">
             <label>PAN Number:</label>
-            <input
-              type="text"
-              class="form-control"
-              name="panNo"
-              [(ngModel)]="booking.panNo"
-              readonly />
+            <input type="text" class="form-control" readonly [(ngModel)]="booking.panNo" name="panNo">
           </div>
 
         </div>
+
       </div>
 
-      <!-- Buttons -->
       <div class="action-buttons">
-        <button
-          type="submit"
-          class="btn btn-success"
-          [disabled]="!bookingForm.valid">Book</button>
-        <button
-          type="button"
-          class="btn btn-danger"
-          (click)="goHome()">Home</button>
+        <button type="submit" class="btn btn-success" [disabled]="!bookingForm.valid">Book</button>
+        <button type="button" class="btn btn-danger" (click)="goHome()">Home</button>
       </div>
+
     </form>
+
   </div>
 </div>
-

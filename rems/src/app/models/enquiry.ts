@@ -6,7 +6,9 @@ export class Enquiry{
     address!: string;
     pincode!: number;
     email!: string;
-    aadharNo!: string;
-    panNo!:String
+
+    aadharNo!: number | null;
+   
+
 }
 

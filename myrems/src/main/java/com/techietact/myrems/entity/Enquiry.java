@@ -28,9 +28,9 @@ public class Enquiry {
 	private int pincode;
 	
 	private String email;
-	
+	@Column(nullable = true)
 	private Long aadharNo;
-	//private String panNo;
+
 	
 	@Column(name = "created_date", columnDefinition = "DATETIME")
 	private LocalDateTime createdDate;

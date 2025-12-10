@@ -2,6 +2,8 @@ package com.techietact.myrems.entity;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
@@ -13,7 +15,11 @@ import lombok.Data;
 @Table(name="plots")
 public class Plot {
 
+
+	
 	@Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long plotId;
 
 	private String plotNo;
 
@@ -47,5 +53,7 @@ private double breadthOne;
     @JoinColumn(name = "layout_name", referencedColumnName = "layoutName")
 
     private Layout layout;
+	
+
 
 }

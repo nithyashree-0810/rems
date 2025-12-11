@@ -9,6 +9,9 @@ import { Router } from '@angular/router';
   styleUrls: ['./list-plot.component.css']
 })
 export class ListPlotComponent implements OnInit {
+bookPlot(arg0: any,arg1: any) {
+throw new Error('Method not implemented.');
+}
 
   allPlots: any[] = [];   // Full list from backend
   plots: any[] = [];      // Filtered/displayed list
@@ -84,25 +87,38 @@ export class ListPlotComponent implements OnInit {
     this.router.navigate(['/dashboard']);
   }
 
-  viewPlot(plot: any): void {
-    this.router.navigate(['/view-plot', plot.plotNo]);
-  }
+  viewPlot(layoutName: string, plotNo: string): void {
+  this.router.navigate(['/view-plot', layoutName, plotNo]);
+}
 
-  editPlot(plot: any): void {
-    this.router.navigate(['/edit-plot', plot.plotNo]);
-  }
+  editPlot(layoutName: string, plotNo: string): void {
+  this.router.navigate(['/edit-plot', layoutName, plotNo]);
+}
 
-  deletePlot(plot: any): void {
-    if (confirm(`Delete plot ${plot.plotNo}?`)) {
-      this.plotService.deletePlotByPlotNo(plot.plotNo).subscribe(() => {
-        alert('Deleted successfully ✅');
-        this.loadPlots();
-      });
-    }
-  }
+  deletePlot(layoutName: string, plotNo: string): void {
+  if (confirm(`Delete plot ${plotNo} in layout ${layoutName}?`)) {
+    this.plotService.deletePlot(layoutName, plotNo).subscribe({
+      next: () => {
+        alert("Deleted successfully ✅");
 
-  bookPlot(plot: any): void {
-    console.log('Booking: ', plot);
-  }
+        // Remove from UI list
+        this.allPlots = this.allPlots.filter(
+          p => !(p.plotNo === plotNo && p.layout?.layoutName === layoutName)
+        );
 
+        this.plots = this.plots.filter(
+          p => !(p.plotNo === plotNo && p.layout?.layoutName === layoutName)
+        );
+
+        if (this.currentPage > this.totalPages) {
+          this.currentPage = this.totalPages;
+        }
+      },
+      error: (err) => {
+        console.error("Delete failed ❌", err);
+        alert("Delete failed");
+      }
+    });
+  }
+}
 }

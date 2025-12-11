@@ -11,6 +11,7 @@ import { Plot } from '../../../models/plot';
 })
 export class ViewPlotComponent implements OnInit {
 
+  layoutName: string = '';
   plotNo: any;
   plot!: Plot;
 
@@ -21,14 +22,23 @@ export class ViewPlotComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-
+    this.layoutName = this.route.snapshot.paramMap.get('layoutName') ?? '';
     this.plotNo = this.route.snapshot.paramMap.get('plotNo');
 
-    if (this.plotNo) {
-      this.plotService.getPlotByPlotNo(this.plotNo).subscribe((res: any) => {
-        this.plot = res;
-        console.log("VIEW PLOT DATA :", this.plot);
-      });
+    if (this.layoutName && this.plotNo) {
+
+      // ✅ Call updated backend API: /{layoutName}/{plotNo}
+      this.plotService.getPlotByLayoutAndPlotNo(this.layoutName, this.plotNo)
+        .subscribe({
+          next: (res: Plot) => {
+            this.plot = res;
+            console.log("VIEW PLOT DATA:", this.plot);
+          },
+          error: (err) => {
+            console.error("Error loading plot ❌", err);
+            alert("Plot not found");
+          }
+        });
     }
   }
 

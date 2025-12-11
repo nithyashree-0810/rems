@@ -19,6 +19,11 @@ public interface PlotRepository extends JpaRepository<Plot,Long> {
 	Optional<Plot> findByPlotNo(String plotNo);
 
 	boolean existsByPlotNoAndLayout_LayoutName(String plotNo, String layoutName);
+	
+	Optional<Plot> findByLayout_LayoutNameAndPlotNo(String layoutName, String plotNo);
+	
+	List<Plot> findByLayout_LayoutNameAndBookedFalse(String layoutName);
+
 
 
 }

@@ -29,6 +29,15 @@ public interface PlotService {
 	List<Plot> getPlotsByLayout(String layoutName);
 	
 	void uploadPlotsFromExcel(MultipartFile file);
+	
+	Plot getByLayoutAndPlotNo(String layoutName, String plotNo);
+
+	void deleteByLayoutNameAndPlotNo(String layoutName, String plotNo);
+
+	Plot updateByLayoutNameAndPlotNo(String layoutName, String plotNo, PlotBO bo);
+	
+	Plot getPlotById(Long plotId);
+
 
 	
 }

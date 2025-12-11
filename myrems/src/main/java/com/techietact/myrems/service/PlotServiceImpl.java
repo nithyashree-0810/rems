@@ -141,6 +141,45 @@ public class PlotServiceImpl implements PlotService {
 			throw new RuntimeException("Failed to store excel data: " + e.getMessage());
 			}
 			}
+	
+	@Override
+	public Plot getByLayoutAndPlotNo(String layoutName, String plotNo) {
+	    return plotRepository.findByLayout_LayoutNameAndPlotNo(layoutName, plotNo)
+	            .orElseThrow(() -> new RuntimeException("Plot not found"));
+	}
+	
+	@Override
+	public void deleteByLayoutNameAndPlotNo(String layoutName, String plotNo) {
+	    Plot plot = plotRepository.findByLayout_LayoutNameAndPlotNo(layoutName, plotNo)
+	            .orElseThrow(() -> new RuntimeException("Plot not found"));
+
+	    plotRepository.delete(plot);
+	}
+	
+	@Override
+	public Plot updateByLayoutNameAndPlotNo(String layoutName, String plotNo, PlotBO bo) {
+
+	    Plot existing = plotRepository.findByLayout_LayoutNameAndPlotNo(layoutName, plotNo)
+	            .orElseThrow(() -> new RuntimeException("Plot not found"));
+
+	    Layout layout = layoutRepository.getByLayoutName(bo.getLayout().getLayoutName())
+	            .orElseThrow(() -> new RuntimeException("Layout not found"));
+
+	    BeanUtils.copyProperties(bo, existing);
+	    existing.setLayout(layout);
+
+	    return plotRepository.save(existing);
+	}
+	
+	@Override
+	public Plot getPlotById(Long plotId) {
+	    return plotRepository.findById(plotId)
+	            .orElseThrow(() -> new RuntimeException("Plot not found"));
+	}
+
+
+
+
 		
 	}
 	

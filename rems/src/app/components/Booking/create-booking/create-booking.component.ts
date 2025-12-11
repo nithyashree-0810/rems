@@ -1,10 +1,12 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Booking } from '../../../models/bookings';
 import { BookingService } from '../../../services/booking.service';
 import { CustomerService } from '../../../services/customer.service';
 import { PlotserviceService } from '../../../services/plotservice.service';
+import { LayoutserviceService } from '../../../services/layoutservice.service';
+import { BookingRequest } from '../../../models/booking-request';
 
 @Component({
   selector: 'app-create-booking',
@@ -12,12 +14,14 @@ import { PlotserviceService } from '../../../services/plotservice.service';
   templateUrl: './create-booking.component.html',
   styleUrl: './create-booking.component.css'
 })
-export class CreateBookingComponent {
-plotList: any;
-onLayoutChange() {
-throw new Error('Method not implemented.');
-}
-   booking: Booking = {
+export class CreateBookingComponent implements OnInit {
+
+  // Selected Plot Object
+  selectedPlot: any = null;
+
+  booking: Booking = {
+    id: undefined,
+    plotId: 0,
     plotno: '',
     layoutName: '',
     sqft: 0,
@@ -30,103 +34,123 @@ throw new Error('Method not implemented.');
     pincode: 0,
     aadharNo: '',
     panNo: '',
-    paidAmount: 0,
-   
+    paidAmount: 0
   };
 
-  bookings: Booking[] = []; // store all bookings for listing
-layoutList: any;
+  layoutList: any[] = [];
+  plotList: any[] = [];
 
-  constructor(private bookingService: BookingService,private router:Router,private plotService:PlotserviceService,
-    private customerService:CustomerService) {}
-  onPlotChange(): void {
-  const plotno = this.booking.plotno;
-  if (!plotno) return;
+  constructor(
+    private bookingService: BookingService,
+    private router: Router,
+    private plotService: PlotserviceService,
+    private layoutService: LayoutserviceService,
+    private customerService: CustomerService
+  ) {}
 
-  this.plotService.getPlotById(plotno).subscribe({
-    next: (plot) => {
-      debugger
-      this.booking.layoutName = plot.layout.layoutName;
-      this.booking.sqft = plot.sqft;
-      this.booking.direction = plot.direction;
-      this.booking.price = plot.price;
+  ngOnInit(): void {
+    this.loadLayouts();
+  }
 
-      if (this.booking.paidAmount) {
-        this.booking.balance = this.booking.price - this.booking.paidAmount;
+  // ---------------- LOAD LAYOUTS ----------------
+  loadLayouts() {
+    this.layoutService.getLayouts().subscribe(data => {
+      this.layoutList = data;
+    });
+  }
+
+  // ---------------- WHEN LAYOUT SELECTED ----------------
+  onLayoutChange(): void {
+    const layoutName = this.booking.layoutName;
+
+    if (!layoutName) {
+      this.plotList = [];
+      return;
+    }
+
+    this.plotService.getPlotsByLayout(layoutName).subscribe({
+      next: plots => {
+        this.plotList = plots.filter(p => !p.booked);
       }
-    },
-    error: () => {
-      alert('Plot not found');
-      this.booking.layoutName = '';
-      this.booking.sqft = 0;
-      this.booking.direction = '';
-      this.booking.price = 0;
-    }
-  });
-}
+    });
+  }
 
-onMobileChange(): void {
-  const mobile = this.booking.mobileNo;
-  if (!mobile) return;
+  // ---------------- WHEN PLOT SELECTED ----------------
+  onPlotChange(): void {
+    if (!this.selectedPlot) return;
 
+    const plot = this.selectedPlot;
 
+    this.booking.plotId = plot.plotId;   // For FK
+    this.booking.plotno = plot.plotNo;   // For storing plotNo
+    this.booking.sqft = plot.sqft;
+    this.booking.direction = plot.direction;
+    this.booking.price = plot.price;
 
-  
-  this.customerService.getCustomerByMobile(mobile).subscribe({
-    next: (enquiry) => {
-      this.booking.customerName = enquiry.firstName;
-      this.booking.address = enquiry.address;
-      this.booking.pincode = enquiry.pincode;
-      //this.booking.aadharNo = enquiry.aadharNo;
-      
-    },
-    error: () => {
-      alert('Customer not found for this mobile number.');
-      this.booking.customerName = '';
-      this.booking.address = '';
-      this.booking.pincode = 0;
-      this.booking.aadharNo = '';
-      this.booking.panNo = '';
+    this.onPaidAmountChange();
+  }
 
-    }
-  });
-}
+  // ---------------- WHEN MOBILE ENTERED ----------------
+  onMobileChange(): void {
+    const mobile = this.booking.mobileNo;
+    if (!mobile) return;
 
-onPaidAmountChange(): void {
-  this.booking.balance = this.booking.price - (this.booking.paidAmount || 0);
-}
+    this.customerService.getCustomerByMobile(mobile).subscribe({
+      next: c => {
+        this.booking.customerName = c.firstName;
+        this.booking.address = c.address;
+        this.booking.pincode = c.pincode;
+        this.booking.aadharNo = c.aadharNo;
+        this.booking.panNo = c.panNo;
+      },
+      error: () => alert("Customer not found!")
+    });
+  }
 
+  // ---------------- CALCULATE BALANCE ----------------
+  onPaidAmountChange(): void {
+    this.booking.balance = this.booking.price - (this.booking.paidAmount || 0);
+  }
 
-  // CREATE
+  // ---------------- SUBMIT BOOKING ----------------
   onSubmit(form: NgForm) {
-    if (form.valid) {
-      debugger
-       this.bookingService.createBooking(this.booking).subscribe({
-         next: (res) => {
-           alert('Booking Saved Successfully!');
-           this.bookings.push(res);
-           form.reset();
-         },
-         error: (err) => {
-           console.error('Error:', err);
-         alert('Booking Failed!');
-       }
-     });
-    }
-    this.router.navigate(['/booking-history'])
+    if (form.invalid) return;
+
+    const requestBody: BookingRequest = {
+      plot: { plotId: this.booking.plotId },
+      plotNo: this.booking.plotno,
+      layout: { layoutName: this.booking.layoutName },
+      customer: { mobileNo: this.booking.mobileNo },
+
+      sqft: this.booking.sqft,
+      price: this.booking.price,
+      paidAmount: this.booking.paidAmount,
+      direction: this.booking.direction,
+      balance: this.booking.balance,
+      address: this.booking.address,
+      pincode: this.booking.pincode,
+      aadharNo: this.booking.aadharNo,
+      panNo: this.booking.panNo
+    };
+
+    this.bookingService.createBooking(requestBody).subscribe({
+      next: () => {
+        alert("Booking Saved Successfully!");
+        form.reset();
+        this.router.navigate(['/booking-history']);
+      },
+      error: err => {
+        console.error(err);
+        alert("Booking Failed!");
+      }
+    });
   }
 
-  
   goHome() {
-    // navigate to home page
-   this.router.navigate(['/dashboard']);
+    this.router.navigate(['/dashboard']);
   }
-  
-  viewBookings(){
-    
+
+  viewBookings() {
+    this.router.navigate(['/booking-history']);
   }
- 
-
-
-
 }

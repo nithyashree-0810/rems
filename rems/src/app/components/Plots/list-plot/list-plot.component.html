@@ -1,83 +1,85 @@
-<div class="main-container">
+<div class="container">
 
-  <h2 class="title">List of Plots</h2>
+  <h2>List of Plots</h2>
 
   <!-- Search Section -->
-  <div class="search-section">
+  <div class="search-container">
     <input type="text"
            [(ngModel)]="searchLayoutName"
            (keyup)="filterPlots()"
            placeholder="Search Name"
-           class="search-box">
-    <button class="search-button" (click)="filterPlots()">Search</button>
+           class="search-input">
+
+    <button class="search-btn" (click)="filterPlots()">Search</button>
   </div>
 
-  <div class="top-bar">
-    <button class="add-btn" routerLink="/create-plot">
+  <!-- Create Button -->
+  <div class="top-buttons">
+    <button class="btn btn-success" routerLink="/create-plot">
       <i class="fa fa-plus"></i> Create Plot
     </button>
   </div>
 
   <!-- Table -->
-  <div class="table-card">
-    <table>
+  <div class="table-wrapper">
+    <table class="layout-table">
       <thead>
         <tr>
-          <th>S.NO</th>
-          <th>LAYOUT NAME</th>
-          <th>PLOT NO</th>
-          <th>OWNER NAME</th>
-          <th>SQFT</th>
-          <th>DIRECTION</th>
-          <th>PRICE</th>
-          <th>MOBILE</th>
-          <th>DTCP APPROVED</th>
-          <th>RERA APPROVED</th>
-          <th>ACTIONS</th>
+          <th>S.No</th>
+          <th>Layout Name</th>
+          <th>Plot No</th>
+          <th>Owner Name</th>
+          <th>Sqft</th>
+          <th>Direction</th>
+          <th>Price</th>
+          <th>Mobile</th>
+          <th>DTCP Approved</th>
+          <th>RERA Approved</th>
+          <th>Actions</th>
         </tr>
       </thead>
 
       <tbody>
         <tr *ngFor="let plot of plots | slice:(currentPage-1)*pageSize:(currentPage)*pageSize; let i = index">
           <td>{{ (currentPage - 1) * pageSize + i + 1 }}</td>
-          <td class="left-align">{{ plot.layout?.layoutName }}</td>
+          <td>{{ plot.layout?.layoutName }}</td>
           <td>{{ plot.plotNo }}</td>
           <td>{{ plot.ownerName }}</td>
           <td>{{ plot.sqft }}</td>
           <td>{{ plot.direction }}</td>
-          <td class="price">₹ {{ plot.price }}</td>
+          <td>₹ {{ plot.price }}</td>
           <td>{{ plot.mobile }}</td>
-          <td class="center-align">{{ plot.dtcpApproved ? 'Yes' : 'No' }}</td>
-          <td class="center-align">{{ plot.reraApproved ? 'Yes' : 'No' }}</td>
+          <td>{{ plot.dtcpApproved ? 'Yes' : 'No' }}</td>
+          <td>{{ plot.reraApproved ? 'Yes' : 'No' }}</td>
 
-          <td class="action-col">
-            <span class="icon view" (click)="viewPlot(plot)"><i class="fa fa-eye"></i></span>
-            <span class="icon edit" (click)="editPlot(plot)"><i class="fa fa-pencil"></i></span>
-            <span class="icon delete" (click)="deletePlot(plot)"><i class="fa fa-trash"></i></span>
-            <span class="icon book" (click)="bookPlot(plot)"><i class="fa fa-book"></i></span>
+          <td>
+            <i class="fa fa-eye circle-icon view" (click)="viewPlot(plot.layout.layoutName, plot.plotNo)"></i>
+            <i class="fa fa-pencil circle-icon edit" (click)="editPlot(plot.layout.layoutName, plot.plotNo)"></i>
+            <i class="fa fa-trash circle-icon delete" (click)="deletePlot(plot.layout.layoutName, plot.plotNo)"></i>
+            <i class="fa fa-book circle-icon book" (click)="bookPlot(plot.layout.layoutName, plot.plotNo)"></i>
           </td>
         </tr>
       </tbody>
     </table>
 
-    <!-- No results message -->
     <div *ngIf="searchMessage" class="no-results">{{ searchMessage }}</div>
   </div>
 
   <!-- Pagination -->
-  <div class="pagination-wrapper">
-    <div class="pagination-section">
-      <button class="page-btn" [disabled]="currentPage === 1" (click)="prevPage()">« Prev</button>
+  <div class="pagination-container">
+    <div class="pagination">
+      <button [disabled]="currentPage === 1" (click)="prevPage()">&laquo; Prev</button>
+
       <button *ngFor="let page of totalPagesArray"
-              class="page-number"
-              [class.active]="currentPage === page"
+              [ngClass]="{'active': page === currentPage}"
               (click)="goToPage(page)">
         {{ page }}
       </button>
-      <button class="page-btn" [disabled]="currentPage === totalPages" (click)="nextPage()">Next »</button>
+
+      <button [disabled]="currentPage === totalPages" (click)="nextPage()">Next &raquo;</button>
     </div>
 
-    <button class="home-btn" (click)="goHome()">Home</button>
+    <button class="btn btn-danger pagination-home-btn" (click)="goHome()">Home</button>
   </div>
 
 </div>

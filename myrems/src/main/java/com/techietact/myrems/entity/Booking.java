@@ -42,6 +42,8 @@ public class Booking {
     private Long aadharNo;
     private String panNo;
     private int paidAmount;
+    private String plotNo;
+
 
     // auto-calculate balance
     public void setPrice(double price) {

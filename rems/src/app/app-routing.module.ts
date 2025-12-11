@@ -39,8 +39,8 @@ const routes: Routes = [
  {path:'edit-enquiry/:mobileNo',component:EditEnquiryComponent},
  //particular customer
  {path:'view-customer/:mobileNo',component:ViewEnquiryComponent},
- { path: 'edit-plot/:plotNo', component: EditPlotComponent },
- { path: 'view-plot/:plotNo', component: ViewPlotComponent },
+ { path: 'edit-plot/:layoutName/:plotNo', component: EditPlotComponent },
+  { path: 'view-plot/:layoutName/:plotNo', component: ViewPlotComponent },
  
  {path:'create-plot',component:CreatePlotComponent},
  {path:'plots',component:ListPlotComponent}

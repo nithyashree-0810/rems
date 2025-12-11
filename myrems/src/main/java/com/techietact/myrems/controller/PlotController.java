@@ -62,34 +62,37 @@ public class PlotController {
         return ResponseEntity.ok(plots);
     }
 	
-	@GetMapping("/{plotNo}")
-	public ResponseEntity<Plot> getByPlotNo(@PathVariable String plotNo) {
-	    Plot plot = plotService.getByPlotNo(plotNo);
+	@GetMapping("/{layoutName}/{plotNo}")
+	public ResponseEntity<Plot> getPlot(
+	        @PathVariable String layoutName,
+	        @PathVariable String plotNo) {
 
-	    if (plot == null) {
-	        return ResponseEntity.notFound().build();
-	    }
-
-	    return ResponseEntity.ok(plot);
+	    return ResponseEntity.ok(plotService.getByLayoutAndPlotNo(layoutName, plotNo));
 	}
+
 
 	
-	@PutMapping("/{plotNo}")
-	public ResponseEntity<Plot> update(@PathVariable String plotNo, @RequestBody PlotBO bo) {
-	try {
-	Plot updated = plotService.updateByPlotNo(plotNo, bo);
-	return ResponseEntity.ok(updated);
-	} catch (IllegalArgumentException ex) {
-	return ResponseEntity.notFound().build();
-	}
+	@PutMapping("/{layoutName}/{plotNo}")
+	public ResponseEntity<Plot> updatePlot(
+	        @PathVariable String layoutName,
+	        @PathVariable String plotNo,
+	        @RequestBody PlotBO bo) {
+
+	    return ResponseEntity.ok(
+	            plotService.updateByLayoutNameAndPlotNo(layoutName, plotNo, bo)
+	    );
 	}
 
 
-	@DeleteMapping("/{plotNo}")
-	public ResponseEntity<String> deleteByPlotNo(@PathVariable String plotNo) {
-	    plotService.deleteByPlotNo(plotNo);
-	    return ResponseEntity.ok("Plot deleted successfully");
+	@DeleteMapping("/delete/{layoutName}/{plotNo}")
+	public ResponseEntity<String> deletePlot(
+	        @PathVariable String layoutName,
+	        @PathVariable String plotNo) {
+
+	    plotService.deleteByLayoutNameAndPlotNo(layoutName, plotNo);
+	    return ResponseEntity.ok("Deleted Successfully");
 	}
+
 
 	@GetMapping("/search/{layoutName}")
 	public ResponseEntity<List<Plot>> getPlotsByLayout(@PathVariable String layoutName) {
@@ -104,6 +107,12 @@ public class PlotController {
 	public ResponseEntity<String> uploadPlots(@RequestParam("file") MultipartFile file) {
 	plotService.uploadPlotsFromExcel(file);
 	return ResponseEntity.ok("Excel uploaded successfully!");
+	}
+	
+	@GetMapping("/id/{plotId}")
+	public ResponseEntity<Plot> getPlotById(@PathVariable Long plotId) {
+	    Plot plot = plotService.getPlotById(plotId);
+	    return ResponseEntity.ok(plot);
 	}
 
 

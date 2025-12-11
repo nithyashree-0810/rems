@@ -7,7 +7,7 @@
   justify-content: space-between;
   align-items: center;
   background: #ff7a18;
-  padding: 15px 40px;
+  padding: 10px 25px;  /* reduced */
   color: white;
   font-family: 'Poppins', sans-serif;
   position: sticky;
@@ -17,21 +17,21 @@
 }
 
 .navbar-brand {
-  font-size: 20px;
+  font-size: 18px;  /* reduced */
   font-weight: 600;
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 8px;
 }
 
 .navbar-brand i {
-  font-size: 22px;
+  font-size: 20px;  /* reduced */
 }
 
 /* MENU LINKS */
 .nav-links {
   display: flex;
-  gap: 35px;
+  gap: 25px; /* reduced */
   list-style: none;
   margin: 0;
   padding: 0;
@@ -44,7 +44,7 @@
 
 .nav-links a {
   color: white;
-  font-size: 16px;
+  font-size: 15px; /* reduced */
   text-decoration: none;
   font-weight: 600;
   display: flex;
@@ -58,42 +58,34 @@
   background: #fff;
   color: #333;
   list-style: none;
-  min-width: 170px;
-  top: 38px;
+  min-width: 150px; /* reduced */
+  top: 34px;
   left: 0;
-  padding: 10px 0;
-  border-radius: 12px;
+  padding: 8px 0;
+  border-radius: 10px;
   box-shadow: 0 8px 25px rgba(0,0,0,0.15);
   animation: dropdownFade 0.25s ease;
 }
 
-@keyframes dropdownFade {
-  from { opacity: 0; transform: translateY(-8px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
 .dropdown-menu li {
-  padding: 10px 18px;
-}
-
-.dropdown-menu li:hover {
-  background: #f7f7f7;
+  padding: 8px 15px; /* reduced */
 }
 
 .dropdown-menu li a {
   color: #333;
   font-weight: 500;
+  font-size: 14px; /* reduced */
 }
 
 /* LOGOUT BUTTON */
 .logout-btn {
   background: white;
   color: #ff7a18;
-  padding: 8px 22px;
+  padding: 6px 18px;  /* reduced */
   border: none;
-  border-radius: 25px;
+  border-radius: 22px;
   font-weight: 700;
-  font-size: 14px;
+  font-size: 13px; /* reduced */
   cursor: pointer;
   transition: 0.3s ease;
 }
@@ -111,74 +103,73 @@
 .hero-section {
   display: flex;
   justify-content: center;
-  margin-top: 40px;
+  margin-top: 25px; /* reduced */
 }
 
 .hero-card {
   text-align: center;
-  width: 75%;
-  padding: 50px 30px;
-  border-radius: 20px;
+  width: 70%;
+  padding: 30px 25px;  /* reduced */
+  border-radius: 18px;
   background: #ffffff;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+  box-shadow: 0 6px 20px rgba(0,0,0,0.08);
 }
 
 .hero-icon {
-  font-size: 70px;
+  font-size: 55px; /* was 70px */
   color: #ff7a18;
-  margin-bottom: 20px;
-}
-
-.hero-card h1 {
-  font-size: 32px;
-  font-weight: 700;
   margin-bottom: 15px;
 }
 
+.hero-card h1 {
+  font-size: 26px; /* was 32px */
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+
 .hero-card p {
-  font-size: 18px;
-  line-height: 1.6;
+  font-size: 15px; /* was 18px */
+  line-height: 1.5;
   color: #555;
-  width: 80%;
+  width: 85%;
   margin: auto;
 }
 
 
 
 /* -----------------------------------------------------
-   PREMIUM STAT CARDS
+   PREMIUM STAT CARDS (Reduced)
 ----------------------------------------------------- */
 
 .stats-wrapper {
   display: flex;
   justify-content: center;
-  gap: 35px;
-  margin-top: 60px;
+  gap: 25px;       /* reduced */
+  margin-top: 40px; /* reduced */
   flex-wrap: wrap;
-  padding-bottom: 50px;
+  padding-bottom: 30px; /* reduced */
 }
 
-/* Stat Card */
 .stat-premium-card {
-  width: 260px;
+  width: 220px;            /* was 260px */
   background: #ffffff;
-  padding: 30px 20px;
-  border-radius: 28px;
+  padding: 22px 15px;      /* reduced */
+  border-radius: 22px;
   text-align: center;
-  box-shadow: 0px 15px 40px rgba(0,0,0,0.1);
+  box-shadow: 0px 12px 30px rgba(0,0,0,0.1);
   transition: 0.3s ease-in-out;
   cursor: pointer;
 }
 
 .stat-premium-card:hover {
-  transform: translateY(-12px);
-  box-shadow: 0px 20px 55px rgba(0,0,0,0.18);
+  transform: translateY(-8px); /* smaller hover lift */
+  box-shadow: 0px 18px 40px rgba(0,0,0,0.15);
 }
 
 /* Icon Circle */
 .icon-circle {
-  width: 75px;
-  height: 75px;
+  width: 60px;        /* was 75px */
+  height: 60px;
   margin: auto;
   border-radius: 50%;
   background: linear-gradient(135deg, #ff7a18, #ff4b2b);
@@ -189,22 +180,22 @@
 }
 
 .icon-circle i {
-  font-size: 32px;
+  font-size: 26px; /* was 32px */
   color: #fff;
 }
 
 /* Numbers */
 .stat-premium-card h2 {
-  font-size: 34px;
-  margin: 18px 0 5px 0;
+  font-size: 28px; /* was 34px */
+  margin: 12px 0 4px 0;
   font-weight: 700;
   color: #222;
 }
 
 /* Labels */
 .stat-premium-card p {
-  font-size: 16px;
+  font-size: 14px;  /* was 16px */
   color: #555;
   font-weight: 500;
-  letter-spacing: .5px;
+  letter-spacing: .3px;
 }

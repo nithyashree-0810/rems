@@ -1,0 +1,64 @@
+/* Container for the booking details */
+.form-container {
+  max-width: 700px;
+  margin: 30px auto;
+  padding: 25px;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  font-family: 'Segoe UI', sans-serif;
+}
+
+/* Title of the form */
+.form-title {
+  text-align: center;
+  color: #ff7e00;
+  font-size: 24px;
+  margin-bottom: 25px;
+}
+
+/* Each row containing label and value */
+.row {
+  display: flex;
+  margin: 10px 0;
+  align-items: center;
+}
+
+/* Label on the left */
+.label {
+  font-weight: 600;
+  width: 150px;   /* fixed width for labels */
+  flex-shrink: 0;
+  color: #333;
+}
+
+/* Value on the right */
+.value {
+  flex: 1;
+  color: #555;
+  word-wrap: break-word;
+}
+
+/* Buttons */
+.btn-success {
+  margin-top: 20px;
+  padding: 10px 20px;
+  background: #28a745;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.btn-success:hover {
+  background: #1e8a38;
+}
+
+/* Loading message */
+.loading {
+  text-align: center;
+  font-size: 18px;
+  color: #555;
+  margin-top: 40px;
+}

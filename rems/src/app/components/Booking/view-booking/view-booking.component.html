@@ -1,1 +1,79 @@
-<p>view-booking works!</p>
+<div class="form-container" *ngIf="!loading; else loadingTpl">
+  <h2 class="form-title">Booking Details</h2>
+
+  <div class="row">
+    <div class="label">Booking ID:</div>
+    <div class="value">{{ booking.bookingId }}</div>
+  </div>
+
+  <div class="row">
+    <div class="label">Layout Name:</div>
+    <div class="value">{{ booking.layout?.layoutName }}</div>
+  </div>
+
+  <div class="row">
+    <div class="label">Plot No:</div>
+    <div class="value">{{ booking.plot?.plotNo || booking.plotNo }}</div>
+  </div>
+
+  <div class="row">
+    <div class="label">Customer Name:</div>
+    <div class="value">{{ booking.customer?.firstName }}</div>
+  </div>
+
+  <div class="row">
+    <div class="label">Mobile No:</div>
+    <div class="value">{{ booking.customer?.mobileNo }}</div>
+  </div>
+
+  <div class="row">
+    <div class="label">Sqft:</div>
+    <div class="value">{{ booking.sqft }}</div>
+  </div>
+
+  <div class="row">
+    <div class="label">Price:</div>
+    <div class="value">₹ {{ booking.price }}</div>
+  </div>
+
+  <div class="row">
+    <div class="label">Paid Amount:</div>
+    <div class="value">₹ {{ booking.paidAmount }}</div>
+  </div>
+
+  <div class="row">
+    <div class="label">Balance:</div>
+    <div class="value">₹ {{ booking.balance }}</div>
+  </div>
+
+  <div class="row">
+    <div class="label">Direction:</div>
+    <div class="value">{{ booking.direction }}</div>
+  </div>
+
+  <div class="row">
+    <div class="label">Address:</div>
+    <div class="value">{{ booking.customer?.address }}</div>
+  </div>
+
+  <div class="row">
+    <div class="label">Pincode:</div>
+    <div class="value">{{ booking.customer?.pincode }}</div>
+  </div>
+
+  <div class="row">
+    <div class="label">Aadhar No:</div>
+    <div class="value">{{ booking.customer?.aadharNo }}</div>
+  </div>
+
+  <div class="row">
+    <div class="label">PAN No:</div>
+    <div class="value">{{ booking.customer?.panNo }}</div>
+  </div>
+
+  <button class="btn-success" (click)="goBack()">Back</button>
+</div>
+
+<ng-template #loadingTpl>
+  <div class="loading">Loading booking details...</div>
+</ng-template>

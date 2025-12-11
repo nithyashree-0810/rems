@@ -12,68 +12,61 @@
         <!-- LEFT SIDE -->
         <div class="form-column">
 
-          <!-- LAYOUT DROPDOWN -->
+          <!-- LAYOUT -->
           <div class="form-group">
             <label>Layout Name:<span style="color: red;">*</span></label>
-
             <select class="form-control"
                     name="layoutName"
                     [(ngModel)]="booking.layoutName"
                     (change)="onLayoutChange()"
                     required>
-
               <option value="">-- Select Layout --</option>
-              <option *ngFor="let layout of layoutList" 
-                      [value]="layout.layoutName">
+              <option *ngFor="let layout of layoutList" [value]="layout.layoutName">
                 {{ layout.layoutName }}
               </option>
-
             </select>
           </div>
 
-          <!-- PLOT NO DROPDOWN -->
+          <!-- PLOT -->
           <div class="form-group">
             <label>Plot No <span style="color: red;">*</span></label>
-
             <select class="form-control"
-                    name="plotno"
-                    [(ngModel)]="booking.plotno"
+                    name="selectedPlot"
+                    [(ngModel)]="selectedPlot"
                     (change)="onPlotChange()"
                     required>
-
               <option value="">-- Select Plot --</option>
-              <option *ngFor="let p of plotList" [value]="p.plotNo">
+              <option *ngFor="let p of plotList" [ngValue]="p">
                 {{ p.plotNo }}
               </option>
-
             </select>
           </div>
 
-          <!-- AUTO-FILLED PLOT DETAILS -->
+          <!-- PLOT DETAILS -->
           <div class="form-group">
             <label>Square Feet:</label>
-            <input type="number" class="form-control" readonly [(ngModel)]="booking.sqft" name="sqft">
+            <input type="number" class="form-control" name="sqft" readonly [(ngModel)]="booking.sqft">
           </div>
 
           <div class="form-group">
             <label>Price:</label>
-            <input type="number" class="form-control" readonly [(ngModel)]="booking.price" name="price">
+            <input type="number" class="form-control" name="price" readonly [(ngModel)]="booking.price">
           </div>
 
           <div class="form-group">
             <label>Direction:</label>
-            <input type="text" class="form-control" readonly [(ngModel)]="booking.direction" name="direction">
+            <input type="text" class="form-control" name="direction" readonly [(ngModel)]="booking.direction">
           </div>
 
           <div class="form-group">
             <label>Amount Paid:</label>
-            <input type="number" class="form-control" [(ngModel)]="booking.paidAmount"
-                   (input)="onPaidAmountChange()" name="paidAmount">
+            <input type="number" class="form-control" name="paidAmount"
+                   [(ngModel)]="booking.paidAmount" (input)="onPaidAmountChange()">
           </div>
 
           <div class="form-group">
             <label>Balance:</label>
-            <input type="number" class="form-control" readonly [(ngModel)]="booking.balance" name="balance">
+            <input type="number" class="form-control" name="balance" readonly [(ngModel)]="booking.balance">
           </div>
 
         </div>
@@ -82,38 +75,35 @@
         <div class="form-column">
 
           <div class="form-group">
-            <label>Mobile Number:<span style="color: red;">*</span></label>
-            <input type="tel" class="form-control"
+            <label>Mobile Number<span style="color:red">*</span></label>
+            <input type="tel" class="form-control" name="mobileNo"
                    [(ngModel)]="booking.mobileNo"
-                   (blur)="onMobileChange()"
-                   name="mobileNo"
-                   pattern="[0-9]{10}"
-                   required />
+                   (blur)="onMobileChange()" required>
           </div>
 
           <div class="form-group">
             <label>Customer Name:</label>
-            <input type="text" class="form-control" readonly [(ngModel)]="booking.customerName" name="customerName">
+            <input type="text" class="form-control" name="customerName" readonly [(ngModel)]="booking.customerName">
           </div>
 
           <div class="form-group">
             <label>Address:</label>
-            <input type="text" class="form-control" readonly [(ngModel)]="booking.address" name="address">
+            <input type="text" class="form-control" name="address" readonly [(ngModel)]="booking.address">
           </div>
 
           <div class="form-group">
             <label>Pincode:</label>
-            <input type="number" class="form-control" readonly [(ngModel)]="booking.pincode" name="pincode">
+            <input type="number" class="form-control" name="pincode" readonly [(ngModel)]="booking.pincode">
           </div>
 
           <div class="form-group">
             <label>Aadhaar Number:</label>
-            <input type="text" class="form-control" readonly [(ngModel)]="booking.aadharNo" name="aadharNo">
+            <input type="text" class="form-control" name="aadharNo" [(ngModel)]="booking.aadharNo">
           </div>
 
           <div class="form-group">
             <label>PAN Number:</label>
-            <input type="text" class="form-control" readonly [(ngModel)]="booking.panNo" name="panNo">
+            <input type="text" class="form-control" name="panNo" [(ngModel)]="booking.panNo">
           </div>
 
         </div>

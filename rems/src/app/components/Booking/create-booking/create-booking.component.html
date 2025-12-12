@@ -106,6 +106,42 @@
             <input type="text" class="form-control" name="panNo" [(ngModel)]="booking.panNo">
           </div>
 
+          <!-- STATUS -->
+          <div class="form-group">
+            <label>Status <span style="color:red">*</span></label>
+            <select class="form-control"
+                    name="status"
+                    [(ngModel)]="booking.status"
+                    required>
+              <option value="">-- Select Status --</option>
+              <option value="Registered">Registered</option>
+              <option value="Unregistered">Unregistered</option>
+            </select>
+          </div>
+
+          <!-- SHOW ONLY IF Registered -->
+          <div *ngIf="booking.status === 'Registered'">
+            
+            <div class="form-group">
+              <label>Registration Date <span style="color:red">*</span></label>
+              <input type="date"
+                     class="form-control"
+                     name="regDate"
+                     [(ngModel)]="booking.regDate"
+                     required>
+            </div>
+
+            <div class="form-group">
+              <label>Registration No <span style="color:red">*</span></label>
+              <input type="number"
+                     class="form-control"
+                     name="regNo"
+                     [(ngModel)]="booking.regNo"
+                     required>
+            </div>
+
+          </div>
+
         </div>
 
       </div>

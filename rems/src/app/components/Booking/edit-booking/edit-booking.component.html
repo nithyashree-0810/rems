@@ -68,6 +68,28 @@
       <input type="text" formControlName="panNo" class="value" />
     </div>
 
+    <!-- STATUS -->
+    <div class="row">
+      <label class="label">Status:</label>
+      <select formControlName="status" class="value" (change)="onStatusChange()">
+        <option value="">-- Select Status --</option>
+        <option value="Registered">Registered</option>
+        <option value="Unregistered">Unregistered</option>
+      </select>
+    </div>
+
+    <!-- REG DATE (Visible only when Registered) -->
+    <div class="row" *ngIf="showRegFields">
+      <label class="label">Registration Date:</label>
+      <input type="date" formControlName="regDate" class="value" />
+    </div>
+
+    <!-- REG NO (Visible only when Registered) -->
+    <div class="row" *ngIf="showRegFields">
+      <label class="label">Registration No:</label>
+      <input type="number" formControlName="regNo" class="value" />
+    </div>
+
     <div class="row">
       <button type="submit" class="home-btn">Save</button>
       <button type="button" class="home-btn" (click)="goBack()">Cancel</button>

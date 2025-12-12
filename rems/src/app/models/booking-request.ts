@@ -13,4 +13,8 @@ export interface BookingRequest {
   pincode: number;
   aadharNo: string | null;
   panNo: string | null;
+
+  status: String;
+  regDate:Date;
+  regNo:number;
 }

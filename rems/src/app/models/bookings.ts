@@ -29,4 +29,7 @@ export interface Booking {
   paidAmount: number;
   balance: number;
   plotNo: string; 
+  status:string;
+  regDate:Date;
+  regNo:number;
 }

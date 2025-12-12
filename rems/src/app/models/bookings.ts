@@ -1,25 +1,32 @@
+export interface Booking {
 
+  bookingId: number;   // backend uses bookingId, NOT id
 
-export class Booking{
+  plot?: {
+    plotId: number;
+    plotNo: string;
+    sqft: number;
+    price: number;
+    direction: string;
+  };
 
-   id?: number;
+  layout?: {
+    layoutName: string;
+  };
 
-  plotId!: number;   // FK
-  plotno!: string;   // plotNo
+  customer?: {
+    firstName: string;
+    mobileNo: number;
+    address: string;
+    pincode: number;
+    aadharNo: string;
+    panNo: string;
+  };
 
-  layoutName!: string;
-  sqft!: number;
-  price!: number;
-  direction!: string;
-  balance!: number;
-
-  customerName!: string;
-  mobileNo!: number;
-  address!: string;
-  pincode!: number;
-
-  aadharNo!: string | null;
-  panNo!: string | null;
-
-  paidAmount!: number;
+  sqft: number;
+  price: number;
+  direction: string;
+  paidAmount: number;
+  balance: number;
+  plotNo: string; 
 }

@@ -84,22 +84,31 @@ private EnquiryRepository enquiryRepository;
 
 	@Override
 	public Booking updateBooking(Long id, Booking booking) {
-		 Booking book= bookingRepository.findById(id).orElse(null);
-	        if (book != null) {
-	            book.setPlot(booking.getPlot());
-	            book.setLayout(booking.getLayout());
-	            book.setCustomer(booking.getCustomer());
-	            book.setSqft(booking.getSqft());
-	            book.setPrice(booking.getPrice());
-	            book.setPaidAmount(booking.getPaidAmount());
-	            book.setDirection(booking.getDirection());
-	            book.setAddress(booking.getAddress());
-	            book.setPincode(booking.getPincode());
-	            book.setAadharNo(booking.getAadharNo());
-	            book.setPanNo(booking.getPanNo());
-	        }
-	        return bookingRepository.save(book);
+	    Booking book = bookingRepository.findById(id).orElse(null);
+	    if (book == null) {
+	        throw new RuntimeException("Booking not found with id " + id);
+	    }
+
+	    book.setPlot(booking.getPlot());
+	    book.setLayout(booking.getLayout());
+	    book.setCustomer(booking.getCustomer());
+	    book.setSqft(booking.getSqft());
+	    book.setPrice(booking.getPrice());
+	    book.setPaidAmount(booking.getPaidAmount());
+	    book.setBalance(booking.getBalance());
+	    book.setDirection(booking.getDirection());
+
+	    // If you store customer details inside Booking entity itself:
+	    if (booking.getCustomer() != null) {
+	        book.setAddress(booking.getCustomer().getAddress());
+	        book.setPincode(booking.getCustomer().getPincode());
+	        book.setAadharNo(booking.getCustomer().getAadharNo());
+	        book.setPanNo(booking.getCustomer().getPanNo());
+	    }
+
+	    return bookingRepository.save(book);
 	}
+
 
 	@Override
 	public void deleteBooking(Long id) {

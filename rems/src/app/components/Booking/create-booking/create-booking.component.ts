@@ -35,7 +35,10 @@ export class CreateBookingComponent implements OnInit {
     address: '',
     pincode: 0,
     aadharNo: '',
-    panNo: ''
+    panNo: '',
+    status:'',
+    regDate:'',
+    regNo:0
   };
 
   layoutList: any[] = [];
@@ -133,7 +136,10 @@ export class CreateBookingComponent implements OnInit {
       address: this.booking.address,
       pincode: this.booking.pincode,
       aadharNo: this.booking.aadharNo,
-      panNo: this.booking.panNo
+      panNo: this.booking.panNo,
+      status:this.booking.status,
+      regDate:this.booking.regDate,
+      regNo:this.booking.regNo
     };
 
     this.bookingService.createBooking(requestBody).subscribe({

@@ -1,5 +1,7 @@
 package com.techietact.myrems.entity;
 
+import java.util.Date;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -61,4 +63,10 @@ public class Booking {
             this.balance = this.price - this.paidAmount;
         }
     }
+    
+    private String status;
+	
+    private Date regDate;
+    
+    private Long regNo;
 }

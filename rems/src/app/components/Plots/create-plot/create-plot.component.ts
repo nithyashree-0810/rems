@@ -4,6 +4,7 @@ import { PlotserviceService } from '../../../services/plotservice.service';
 import { Router } from '@angular/router';
 import { Plot } from '../../../models/plot';
 import { Layout } from '../../../models/layout';
+import { NgForm } from '@angular/forms';
 
 @Component({
   selector: 'app-create-plot',
@@ -127,11 +128,15 @@ export class CreatePlotComponent implements OnInit {
   }
 
   // ✅ Save plot
-  savePlot(): void {
+  savePlot(plotForm: NgForm) {
     if (!this.newPlot.layout.layoutName) {
       alert("Please select Layout");
       return;
     }
+  if (plotForm.invalid) {
+    plotForm.form.markAllAsTouched();   // <-- validation shows immediately
+    return;
+  }
 
     console.log("FINAL DATA 👉", this.newPlot);
 

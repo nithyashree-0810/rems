@@ -1,15 +1,18 @@
 package com.techietact.myrems.service;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.techietact.myrems.bean.PlotBO;
 import com.techietact.myrems.entity.Layout;
 import com.techietact.myrems.entity.Plot;
+import com.techietact.myrems.helper.ExcelHelper;
 import com.techietact.myrems.repository.LayoutRepository;
 import com.techietact.myrems.repository.PlotRepository;
 
@@ -122,7 +125,64 @@ public class PlotServiceImpl implements PlotService {
 	public List<Plot> getPlotsByLayout(String layoutName) {
 		   return plotRepository.findByLayout_LayoutName(layoutName);
 	}
+
+	@Override
+	public void uploadPlotsFromExcel(MultipartFile file) {
+		try {
+			List<Plot> plots = ExcelHelper.convertExcelToPlots(file.getInputStream(), layoutRepository);
+
+
+			// Optional: validate duplicates by plotNo before save
+			// e.g., filter out plots whose plotNo already exists
+
+
+			plotRepository.saveAll(plots);
+			} catch (IOException e) {
+			throw new RuntimeException("Failed to store excel data: " + e.getMessage());
+			}
+			}
+	
+	@Override
+	public Plot getByLayoutAndPlotNo(String layoutName, String plotNo) {
+	    return plotRepository.findByLayout_LayoutNameAndPlotNo(layoutName, plotNo)
+	            .orElseThrow(() -> new RuntimeException("Plot not found"));
 	}
+	
+	@Override
+	public void deleteByLayoutNameAndPlotNo(String layoutName, String plotNo) {
+	    Plot plot = plotRepository.findByLayout_LayoutNameAndPlotNo(layoutName, plotNo)
+	            .orElseThrow(() -> new RuntimeException("Plot not found"));
+
+	    plotRepository.delete(plot);
+	}
+	
+	@Override
+	public Plot updateByLayoutNameAndPlotNo(String layoutName, String plotNo, PlotBO bo) {
+
+	    Plot existing = plotRepository.findByLayout_LayoutNameAndPlotNo(layoutName, plotNo)
+	            .orElseThrow(() -> new RuntimeException("Plot not found"));
+
+	    Layout layout = layoutRepository.getByLayoutName(bo.getLayout().getLayoutName())
+	            .orElseThrow(() -> new RuntimeException("Layout not found"));
+
+	    BeanUtils.copyProperties(bo, existing);
+	    existing.setLayout(layout);
+
+	    return plotRepository.save(existing);
+	}
+	
+	@Override
+	public Plot getPlotById(Long plotId) {
+	    return plotRepository.findById(plotId)
+	            .orElseThrow(() -> new RuntimeException("Plot not found"));
+	}
+
+
+
+
+		
+	}
+	
 
 	
 	

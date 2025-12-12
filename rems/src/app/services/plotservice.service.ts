@@ -7,6 +7,9 @@ import { Plot } from '../models/plot';
   providedIn: 'root'
 })
 export class PlotserviceService {
+  uploadPlotsExcel(formData: FormData): Observable<any> {
+  return this.http.post(`${this.baseUrl}/upload`, formData, { responseType: 'text' });
+}
 
   private baseUrl = 'http://localhost:8080/api/plots';
 
@@ -18,30 +21,24 @@ export class PlotserviceService {
   }
 
   // DELETE PLOT
-  deletePlotByPlotNo(plotNo: string) {
-    return this.http.delete(`${this.baseUrl}/${plotNo}`, { responseType: 'text' });
-  }
+  deletePlot(layoutName: string, plotNo: string) {
+  return this.http.delete(
+    `${this.baseUrl}/delete/${layoutName}/${plotNo}`,
+    { responseType: 'text' }
+  );
+}
 
   // CREATE PLOT
   createPlot(newPlot: Plot): Observable<any> {
     return this.http.post(`${this.baseUrl}/create`, newPlot, { responseType: 'text' });
   }
 
-  // GET PLOT BY PLOT NO
-  getPlotByPlotNo(plotNo: string): Observable<Plot> {
-  return this.http.get<Plot>(`${this.baseUrl}/${plotNo}`);
-}
-
 
   // UPDATE PLOT BY PLOT NO
-  updatePlotByPlotNo(plotNo: any, plot: any): Observable<any> {
-    return this.http.put<any>(`${this.baseUrl}/${plotNo}`, plot);
-  }
+ updatePlot(layoutName: string, plotNo: string, plot: Plot) {
+  return this.http.put(`${this.baseUrl}/${layoutName}/${plotNo}`, plot);
+}
 
-  // GET PLOT BY ID
-  getPlotById(plotId: string): Observable<Plot> {
-    return this.http.get<Plot>(`${this.baseUrl}/id/${plotId}`);
-  }
 
   // 🔹 Get all plots for a layout
   getPlotsByLayout(layoutName: string): Observable<Plot[]> {
@@ -52,4 +49,13 @@ export class PlotserviceService {
   getPlotByLayoutAndPlotNo(layoutName: string, plotNo: string): Observable<Plot> {
     return this.http.get<Plot>(`${this.baseUrl}/${layoutName}/${plotNo}`);
   }
+
+  updatePlotByLayoutAndPlotNo(layoutName: string, plotNo: string, plot: any) {
+  return this.http.put(`${this.baseUrl}/${layoutName}/${plotNo}`, plot);
+}
+
+getPlotById(plotId: number | string): Observable<Plot> {
+    return this.http.get<Plot>(`${this.baseUrl}/id/${plotId}`);
+  }
+
 }

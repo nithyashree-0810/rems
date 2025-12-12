@@ -1,1 +1,75 @@
-<p>list-booking works!</p>
+<div class="booking-list-container">
+
+  <!-- Title + Buttons -->
+  <div class="title-row">
+    <h2 class="page-title">Booking History</h2>
+
+    <div class="header-buttons">
+      <button class="btn-create" (click)="goToCreate()">+ New Booking</button>
+      <button class="btn-home" (click)="goHome()">Home</button>
+    </div>
+  </div>
+
+  <!-- Loading -->
+  <div *ngIf="loading" class="loading">Loading bookings...</div>
+
+  <!-- Table -->
+  <div class="table-wrapper">
+    <table *ngIf="!loading && bookingList.length > 0" class="booking-table">
+
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Layout</th>
+          <th>Plot No</th>
+          <th>Customer</th>
+          <th>Mobile</th>
+          <th>Sqft</th>
+          <th>Price</th>
+          <th>Paid</th>
+          <th>Balance</th>
+          <th>Direction</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <tr *ngFor="let b of bookingList">
+          <td>{{ b.bookingId }}</td>
+          <td>{{ b.layout?.layoutName }}</td>
+          <td>{{ b.plot?.plotNo }}</td>
+          <td>{{ b.customer?.firstName }}</td>
+          <td>{{ b.customer?.mobileNo }}</td>
+          <td>{{ b.sqft }}</td>
+          <td>{{ b.price | currency:'INR' }}</td>
+          <td>{{ b.paidAmount | currency:'INR' }}</td>
+          <td>{{ b.balance | currency:'INR' }}</td>
+          <td>{{ b.direction }}</td>
+
+          <td>
+            <div class="actions">
+              <i class="fa fa-eye circle-icon view"
+                 [routerLink]="['/view-booking', b.bookingId]"
+                 title="View"></i>
+
+              <i class="fa fa-pencil circle-icon edit"
+                 [routerLink]="['/edit-booking', b.bookingId]"
+                 title="Edit"></i>
+
+              <i class="fa fa-trash circle-icon delete"
+                 (click)="deleteBooking(b.bookingId)"
+                 title="Delete"></i>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+
+    </table>
+  </div>
+
+  <!-- No Data -->
+  <div *ngIf="!loading && bookingList.length === 0" class="no-data">
+    No bookings found.
+  </div>
+
+</div>

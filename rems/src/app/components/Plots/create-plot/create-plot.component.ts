@@ -70,23 +70,60 @@ export class CreatePlotComponent implements OnInit {
     }
   }
 
-  // ✅ Auto calculate sqft + price
+  // ✅ Auto calculate sqft + price (improved logic)
   calculateValues(): void {
+    // normalize inputs to numbers
     const b1 = Number(this.newPlot.breadthOne) || 0;
     const b2 = Number(this.newPlot.breadthTwo) || 0;
     const l1 = Number(this.newPlot.lengthOne) || 0;
     const l2 = Number(this.newPlot.lengthTwo) || 0;
     const rate = Number(this.newPlot.sqft) || 0;
+    const manualTotal = Number(this.newPlot.totalSqft) || 0;
 
+    // Helper to compute price from total sqft and rate
+    const computePrice = (total: number) => {
+      if (rate > 0) {
+        this.newPlot.price = Math.round(total * rate);
+      } else {
+        this.newPlot.price = 0;
+      }
+    };
+
+    // 1) If all four breadth/length values are present -> compute using averages
     if (b1 > 0 && b2 > 0 && l1 > 0 && l2 > 0) {
       const avgBreadth = (b1 + b2) / 2;
       const avgLength = (l1 + l2) / 2;
       const totalSqft = avgBreadth * avgLength;
-      const totalPrice = totalSqft * rate;
-
       this.newPlot.totalSqft = Math.round(totalSqft);
-      this.newPlot.price = Math.round(totalPrice);
+      computePrice(totalSqft);
+      return;
     }
+
+    // 2) If user has entered a manual totalSqft (and it's > 0) -> use it to compute price
+    if (manualTotal > 0) {
+      // keep totalSqft as entered (do not overwrite)
+      this.newPlot.totalSqft = Math.round(manualTotal);
+      computePrice(manualTotal);
+      return;
+    }
+
+    // 3) Partial breadth/length inputs: if we have at least one breadth and one length,
+    //    compute averages from the non-zero values.
+    const breadths = [b1, b2].filter(v => v > 0);
+    const lengths = [l1, l2].filter(v => v > 0);
+
+    if (breadths.length > 0 && lengths.length > 0) {
+      const avgBreadth = breadths.reduce((s, v) => s + v, 0) / breadths.length;
+      const avgLength = lengths.reduce((s, v) => s + v, 0) / lengths.length;
+      const totalSqft = avgBreadth * avgLength;
+      this.newPlot.totalSqft = Math.round(totalSqft);
+      computePrice(totalSqft);
+      return;
+    }
+
+    // 4) Nothing enough to compute -> clear price (and don't clobber manual total if zero)
+    this.newPlot.price = 0;
+    // keep totalSqft as-is (if 0 it remains 0)
   }
 
   // ✅ Save plot
@@ -101,7 +138,7 @@ export class CreatePlotComponent implements OnInit {
     this.plotService.createPlot(this.newPlot).subscribe({
       next: (res: string) => {
         alert(res);   // Plot created successfully!
-        this.router.navigate(['/plots']); 
+        this.router.navigate(['/plots']);
         this.resetForm();
       },
       error: (error) => {
@@ -111,6 +148,22 @@ export class CreatePlotComponent implements OnInit {
         } else {
           alert('Server error. Check console');
         }
+      }
+    });
+  }
+
+  uploadExcel(event: any) {
+    const file = event.target.files[0];
+    if (!file) return;
+
+    const formData = new FormData();
+    formData.append("file", file);
+
+    this.plotService.uploadPlotsExcel(formData).subscribe({
+      next: (res: string) => alert(res),
+      error: (err) => {
+        console.error(err);
+        alert("Excel upload failed.");
       }
     });
   }

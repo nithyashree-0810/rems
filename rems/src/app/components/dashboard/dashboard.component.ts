@@ -66,5 +66,15 @@ export class DashboardComponent {
     alert('You have been logged out!');
     this.router.navigate(['/']);
   }
+    goTo(type: string) {
+    const routes: any = {
+      layouts: '/layouts',
+      plots: '/plots',
+      enquiries: '/view-enquiries',
+      bookings: '/booking-history'
+    };
+
+    this.router.navigate([routes[type]]);
+  }
 
 }

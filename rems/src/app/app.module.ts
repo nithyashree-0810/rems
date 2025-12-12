@@ -51,7 +51,7 @@ import { EditLayoutComponent } from './components/edit-layout/edit-layout.compon
     CreateBookingComponent,
     ListBookingComponent,
     EditBookingComponent,
-    ViewBookingComponent,
+    ViewLayoutsComponent,
     CreatePlotComponent,
     ListPlotComponent, 
     EditPlotComponent,

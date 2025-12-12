@@ -6,8 +6,7 @@ import { BookingService } from '../../../services/booking.service';
 import { CustomerService } from '../../../services/customer.service';
 import { PlotserviceService } from '../../../services/plotservice.service';
 import { LayoutserviceService } from '../../../services/layoutservice.service';
-import { Layout } from '../../../models/layout';
-import { Plot } from '../../../models/plot';
+import { BookingRequest } from '../../../models/booking-request';
 
 @Component({
   selector: 'app-create-booking',
@@ -17,142 +16,141 @@ import { Plot } from '../../../models/plot';
 })
 export class CreateBookingComponent implements OnInit {
 
-  layoutList: Layout[] = [];
-  plotList: Plot[] = [];   // Plots for the selected layout
+  // Selected Plot Object
+  selectedPlot: any = null;
 
-  booking: Booking = {
-    plotno: '',
+  booking: any = {
+    plotId: 0,
+    plotNo: '',
     layoutName: '',
     sqft: 0,
     price: 0,
     direction: '',
+    paidAmount: 0,
     balance: 0,
+
+    // Customer info
     customerName: '',
     mobileNo: 0,
     address: '',
     pincode: 0,
     aadharNo: '',
-    panNo: '',
-    paidAmount: 0,
+    panNo: ''
   };
 
-  bookings: Booking[] = [];
+  layoutList: any[] = [];
+  plotList: any[] = [];
 
   constructor(
     private bookingService: BookingService,
     private router: Router,
     private plotService: PlotserviceService,
-    private customerService: CustomerService,
-    private layoutService: LayoutserviceService
+    private layoutService: LayoutserviceService,
+    private customerService: CustomerService
   ) {}
 
   ngOnInit(): void {
     this.loadLayouts();
   }
 
-  // LOAD ALL LAYOUTS
+  // LOAD LAYOUTS
   loadLayouts() {
-    this.layoutService.getLayouts().subscribe({
-      next: (res) => { this.layoutList = res; },
-      error: (err) => { console.error("Error loading layouts", err); }
+    this.layoutService.getLayouts().subscribe(data => {
+      this.layoutList = data;
     });
   }
 
-  // WHEN LAYOUT CHANGES — LOAD PLOTS FOR THAT LAYOUT
-  onLayoutChange() {
-    if (!this.booking.layoutName) return;
+  // LAYOUT SELECTED
+  onLayoutChange(): void {
+    if (!this.booking.layoutName) {
+      this.plotList = [];
+      return;
+    }
 
     this.plotService.getPlotsByLayout(this.booking.layoutName).subscribe({
-      next: (res) => {
-        this.plotList = res;
-        this.booking.plotno = "";
-        this.resetPlotFields();  // clear plot info
-      },
-      error: () => {
-        alert("Failed to load plots for selected layout");
+      next: plots => {
+        this.plotList = plots.filter(p => !p.booked);
       }
     });
   }
 
-  // WHEN PLOT NO CHANGES — LOAD PLOT DETAILS
- onPlotChange() {
-  const plotno = this.booking.plotno;
-  if (!plotno) return;
+  // PLOT SELECTED
+  onPlotChange(): void {
+    if (!this.selectedPlot) return;
 
-  this.plotService.getPlotByPlotNo(plotno).subscribe({
-    next: (plot: Plot) => {
-      this.booking.sqft = plot.sqft;
-      this.booking.direction = plot.direction;
-      this.booking.price = plot.price;
-      this.onPaidAmountChange();
-    },
-    error: () => {
-      alert("❌ Plot not found!");
-      this.resetPlotFields();
-    }
-  });
-}
+    const p = this.selectedPlot;
 
+    this.booking.plotId = p.plotId;
+    this.booking.plotNo = p.plotNo;
+    this.booking.sqft = p.sqft;
+    this.booking.direction = p.direction;
+    this.booking.price = p.price;
 
-  resetPlotFields() {
-    this.booking.sqft = 0;
-    this.booking.direction = '';
-    this.booking.price = 0;
-    this.booking.balance = 0;
+    this.onPaidAmountChange();
   }
 
-  // WHEN MOBILE NUMBER CHANGES — LOAD CUSTOMER DETAILS
-  onMobileChange() {
+  // WHEN MOBILE ENTERED
+  onMobileChange(): void {
     const mobile = this.booking.mobileNo;
     if (!mobile) return;
 
     this.customerService.getCustomerByMobile(mobile).subscribe({
-      next: (customer) => {
-        this.booking.customerName = customer.firstName;
-        this.booking.address = customer.address;
-        this.booking.pincode = customer.pincode;
-        this.booking.aadharNo = customer.aadharNo;
-        this.booking.panNo = customer.panNo;
+      next: c => {
+        this.booking.customerName = c.firstName;
+        this.booking.address = c.address;
+        this.booking.pincode = c.pincode;
+        this.booking.aadharNo = c.aadharNo;
+        this.booking.panNo = c.panNo;
       },
-      error: () => {
-        alert("❌ Customer not found!");
-        this.resetCustomerFields();
-      }
+      error: () => alert("Customer not found!")
     });
   }
 
-  resetCustomerFields() {
-    this.booking.customerName = '';
-    this.booking.address = '';
-    this.booking.pincode = 0;
-    this.booking.aadharNo = '';
-    this.booking.panNo = '';
+  // BALANCE CALC
+  onPaidAmountChange(): void {
+    this.booking.balance = this.booking.price - (this.booking.paidAmount || 0);
   }
 
-  // AUTO UPDATE BALANCE
-  onPaidAmountChange() {
-    this.booking.balance = (this.booking.price || 0) - (this.booking.paidAmount || 0);
-  }
-
-  // SUBMIT FORM
+  // SUBMIT BOOKING
   onSubmit(form: NgForm) {
-    if (!form.valid) {
-      alert("Please fill all required fields!");
-      return;
-    }
+    if (form.invalid) return;
 
-    this.bookingService.createBooking(this.booking).subscribe({
-      next: (res) => {
-        alert("✅ Booking Saved Successfully!");
+    // FINAL request body that matches backend entity
+    const requestBody: BookingRequest = {
+      plot: { plotId: this.booking.plotId },
+      plotNo: this.booking.plotNo,
+
+      layout: { layoutName: this.booking.layoutName },
+
+      customer: { mobileNo: this.booking.mobileNo },
+
+      sqft: this.booking.sqft,
+      price: this.booking.price,
+      direction: this.booking.direction,
+      paidAmount: this.booking.paidAmount,
+      balance: this.booking.balance,
+
+      address: this.booking.address,
+      pincode: this.booking.pincode,
+      aadharNo: this.booking.aadharNo,
+      panNo: this.booking.panNo
+    };
+
+    this.bookingService.createBooking(requestBody).subscribe({
+      next: () => {
+        alert("Booking Saved Successfully!");
         form.reset();
         this.router.navigate(['/booking-history']);
       },
-      error: () => {
-        alert("❌ Booking Failed!");
-      }
+      error: () => alert("Booking Failed!")
     });
   }
 
-  goHome() { this.router.navigate(['/dashboard']); }
-  viewBookings() { this.router.navigate(['/booking-history']); }
+  goHome() {
+    this.router.navigate(['/dashboard']);
+  }
+
+  viewBookings() {
+    this.router.navigate(['/booking-history']);
+  }
 }

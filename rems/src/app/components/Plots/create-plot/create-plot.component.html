@@ -1,7 +1,16 @@
 <div class="form-container">
 
   <div class="top-bar">
-    <button class="view-btn" routerLink="/view-plots">View Plots</button>
+    <button class="view-btn" routerLink="/plots">View Plots</button>
+
+    <!-- ✅ BULK UPLOAD EXCEL BUTTON -->
+    <label class="upload-btn">
+      Bulk Upload Excel
+      <input type="file"
+             (change)="uploadExcel($event)"
+             accept=".xlsx,.xls"
+             hidden>
+    </label>
   </div>
 
   <h2 class="form-title">Create New Plot</h2>
@@ -18,7 +27,8 @@
                 required
                 #layout="ngModel">
 
-          <option value="">Select Layout</option>
+          <option [ngValue]="null">Select Layout</option>
+
           <option *ngFor="let layout of layouts" [ngValue]="layout">
             {{ layout.layoutName }}
           </option>
@@ -35,7 +45,7 @@
                [(ngModel)]="newPlot.plotNo"
                name="plotNo"
                required
-               #plotNo="ngModel"/>
+               #plotNo="ngModel" />
 
         <small class="error" *ngIf="plotNo.invalid && plotNo.touched">
           Plot number is required
@@ -54,7 +64,7 @@
                name="sqft"
                required
                #sqft="ngModel"
-               (input)="calculateValues()"/>
+               (input)="calculateValues()" />
 
         <small class="error" *ngIf="sqft.invalid && sqft.touched">
           SqFt rate required
@@ -77,7 +87,6 @@
           <option>SOUTHWEST</option>
           <option>NORTHEAST</option>
           <option>NORTHWEST</option>
-
         </select>
 
         <small class="error" *ngIf="direction.invalid && direction.touched">
@@ -215,7 +224,7 @@
 
     </div>
 
-    <!-- ✅ New boolean attributes -->
+    <!-- Boolean -->
     <div class="form-row">
 
       <div class="form-group">
@@ -241,7 +250,6 @@
 
     </div>
 
-    <!-- Buttons -->
     <div class="form-buttons">
 
       <button class="btn save-btn" 

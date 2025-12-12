@@ -11,13 +11,16 @@ import { CustomerService } from '../../../services/customer.service';
 })
 export class ListEnquiryComponent {
 
-  searchText: string = "";
-  allData: Enquiry[] = [];
+  searchName: string = "";
+  searchMobile: string = "";
+
+  allData: Enquiry[] = [];                // All loaded customers
+  filteredData: Enquiry[] = [];           // Data filtered by search
+  paginatedCustomers: Enquiry[] = [];    // Current page data
 
   totalPages: number = 0;
   pageSize: number = 5;
   currentPage: number = 1;
-  customer: Enquiry[] = [];
   totalPagesArray: number[] = [];
 
   constructor(private customerService: CustomerService, private router: Router) {}
@@ -29,7 +32,7 @@ export class ListEnquiryComponent {
   loadData() {
     this.customerService.getAllCustomers().subscribe((data: Enquiry[]) => {
 
-      // Clean unnecessary spaces
+      // Clean whitespace
       this.allData = data.map(c => ({
         ...c,
         firstName: c.firstName?.trim(),
@@ -37,18 +40,22 @@ export class ListEnquiryComponent {
         address: c.address?.trim()
       }));
 
+      // Initially filteredData = allData
+      this.filteredData = [...this.allData];
+
+      this.currentPage = 1;
       this.applyPagination();
     });
   }
 
   applyPagination() {
-    this.totalPages = Math.ceil(this.allData.length / this.pageSize);
+    this.totalPages = Math.ceil(this.filteredData.length / this.pageSize);
     this.totalPagesArray = Array.from({ length: this.totalPages }, (_, i) => i + 1);
 
     const start = (this.currentPage - 1) * this.pageSize;
     const end = start + this.pageSize;
 
-    this.customer = this.allData.slice(start, end);
+    this.paginatedCustomers = this.filteredData.slice(start, end);
   }
 
   fetchLayouts(page: number) {
@@ -56,20 +63,22 @@ export class ListEnquiryComponent {
     this.applyPagination();
   }
 
-  // 🔍 SEARCH FUNCTION
+  // Search using both name and mobile number, combined with AND condition
   onSearch() {
-    const keyword = this.searchText.trim();
+    const nameKeyword = this.searchName.trim().toLowerCase();
+    const mobileKeyword = this.searchMobile.trim();
 
-    if (keyword === "") {
-      this.loadData();
-      return;
-    }
+    this.filteredData = this.allData.filter(c => {
+      const fullName = (c.firstName + ' ' + c.lastName).toLowerCase();
 
-    this.customerService.searchCustomers(keyword).subscribe((data) => {
-      this.allData = data;
-      this.currentPage = 1;
-      this.applyPagination();
+      const matchesName = nameKeyword ? fullName.includes(nameKeyword) : true;
+      const matchesMobile = mobileKeyword ? c.mobileNo?.toString().includes(mobileKeyword) : true;
+
+      return matchesName && matchesMobile;
     });
+
+    this.currentPage = 1;
+    this.applyPagination();
   }
 
   nextPage() {

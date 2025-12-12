@@ -38,6 +38,15 @@
       </ul>
     </li>
 
+    <!-- Agents - ✅ Ithu than neenga add pannanum -->
+    <li class="dropdown" (click)="toggleDropdown('agents')">
+      <a href="javascript:void(0)">Agents <i class="fa-solid fa-chevron-down small-icon"></i></a>
+      <ul class="dropdown-menu" *ngIf="activeDropdown === 'agents'">
+        <li><a routerLink="/add-agent">Add Agent</a></li>
+        <li><a routerLink="/agent-list">View Agents</a></li>
+      </ul>
+    </li>
+
     <!-- Reports -->
     <li class="dropdown" (click)="toggleDropdown('report')">
       <a href="javascript:void(0)">Report <i class="fa-solid fa-chevron-down small-icon"></i></a>
@@ -100,6 +109,15 @@
     </div>
     <h2>{{ totalBookings }}</h2>
     <p>Bookings Completed</p>
+  </div>
+
+  <!-- Agent Stat Card - ✅ Ithu than neenga add pannanum -->
+  <div class="stat-premium-card">
+    <div class="icon-circle">
+      <i class="fa-solid fa-user-tie"></i>
+    </div>
+    <h2>{{ totalAgents }}</h2>
+    <p>Active Agents</p>
   </div>
 
 </div>

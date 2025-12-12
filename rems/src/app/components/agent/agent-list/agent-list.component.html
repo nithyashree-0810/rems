@@ -1,0 +1,110 @@
+<div class="form-container agent-list-container">
+
+  <!-- Back button (Different for list & edit) -->
+  <div class="top-bar">
+
+    <!-- When NOT editing → Back to Dashboard -->
+    <button *ngIf="!editMode" class="back-btn" (click)="goBack()">
+      ← Back
+    </button>
+
+    <!-- When editing → Back to List -->
+    <button *ngIf="editMode" class="back-btn" (click)="goBack()">
+      ← Back to List
+    </button>
+
+  </div>
+
+  <!-- Show Agent List only if not editing -->
+  <ng-container *ngIf="!editMode">
+    <h2 class="form-title">Agent List</h2>
+
+    <!-- Search Input -->
+    <div class="form-row search-container">
+      <input
+        type="text"
+        [value]="searchTerm"
+        (input)="onSearchChange($event)"
+        placeholder="Search by name, email, or mobile..."
+        class="search-input"
+      >
+      <button *ngIf="searchTerm" (click)="clearSearch()" class="btn home-btn">Clear</button>
+    </div>
+
+    <!-- Status / Info Messages -->
+    <div *ngIf="agents.length === 0 && searchTerm" class="message-card error-message">
+      <i class="fas fa-search"></i>
+      <div class="message-content">
+        <strong>No Results!</strong>
+        <p>No agents found matching "{{ searchTerm }}"</p>
+      </div>
+    </div>
+
+    <div *ngIf="allAgents.length === 0 && !searchTerm" class="message-card info-message">
+      <i class="fas fa-user-friends"></i>
+      <div class="message-content">
+        <strong>No Agents!</strong>
+        <p>No agents available.</p>
+      </div>
+    </div>
+
+    <!-- Results Info -->
+    <div class="results-info" *ngIf="allAgents.length > 0">
+      <i class="fas fa-info-circle"></i>
+      Showing {{ agents.length }} of {{ allAgents.length }} agents
+      <span *ngIf="searchTerm"> (filtered by "{{ searchTerm }}")</span>
+    </div>
+
+    <!-- Agent Cards -->
+    <div *ngIf="agents.length > 0" class="agent-cards">
+      <div *ngFor="let agent of agents" class="agent-card">
+        <h3>{{ agent.agentName }}</h3>
+        <p><strong>Email:</strong> {{ agent.email }}</p>
+        <p><strong>Mobile:</strong> {{ agent.mobile }}</p>
+        <p><strong>Address:</strong> {{ agent.address }}</p>
+        <p><strong>Status:</strong> {{ agent.active ? 'Active' : 'Inactive' }}</p>
+        <div class="form-buttons">
+          <button (click)="editAgent(agent)" class="btn save-btn">Edit</button>
+          <button (click)="deleteAgent(agent)" class="btn home-btn">Delete</button>
+        </div>
+      </div>
+    </div>
+  </ng-container>
+
+  <!-- Inline Edit Form only visible in editMode -->
+  <div *ngIf="editMode" class="edit-form">
+    <h3>Edit Agent</h3>
+
+    <div class="form-row">
+      <div class="form-group">
+        <label>Agent Name</label>
+        <input type="text" [(ngModel)]="selectedAgent.agentName" placeholder="Name">
+      </div>
+      <div class="form-group">
+        <label>Email</label>
+        <input type="email" [(ngModel)]="selectedAgent.email" placeholder="Email">
+      </div>
+    </div>
+
+    <div class="form-row">
+      <div class="form-group">
+        <label>Mobile</label>
+        <input type="text" [(ngModel)]="selectedAgent.mobile" placeholder="Mobile">
+      </div>
+      <div class="form-group">
+        <label>Address</label>
+        <input type="text" [(ngModel)]="selectedAgent.address" placeholder="Address">
+      </div>
+    </div>
+
+    <label>
+      <input type="checkbox" [(ngModel)]="selectedAgent.active"> Active
+    </label>
+
+    <div class="form-buttons">
+      <button class="btn save-btn" (click)="updateAgent()">Update</button>
+      <button class="btn home-btn" (click)="cancelEdit()">Cancel</button>
+    </div>
+  </div>
+
+</div>

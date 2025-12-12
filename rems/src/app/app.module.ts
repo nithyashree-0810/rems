@@ -1,6 +1,6 @@
 import { importProvidersFrom, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-
+import { CommonModule } from '@angular/common'; // ✅ IMPORTANT
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { LoginComponent } from './components/login/login.component';
@@ -30,6 +30,9 @@ import { ListPlotComponent } from './components/Plots/list-plot/list-plot.compon
 import { EditPlotComponent } from './components/Plots/edit-plot/edit-plot.component';
 import { ViewPlotComponent } from './components/Plots/view-plot/view-plot.component';
 import { EditLayoutComponent } from './components/edit-layout/edit-layout.component';
+import { AgentComponent } from './components/agent/agent.component';
+import { AgentListComponent } from './components/agent/agent-list/agent-list.component';
+import { AddAgentComponent } from './components/agent/add-agent/add-agent.component';
 
 
 @NgModule({
@@ -56,12 +59,14 @@ import { EditLayoutComponent } from './components/edit-layout/edit-layout.compon
     ListPlotComponent, 
     EditPlotComponent,
     ViewPlotComponent,
-   
+    AgentComponent,
+  
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     FormsModule,
+    CommonModule,
    HttpClientModule,
     ReactiveFormsModule,
     NgxSpinnerModule,
@@ -70,8 +75,12 @@ import { EditLayoutComponent } from './components/edit-layout/edit-layout.compon
       positionClass: 'toast-top-right',
       preventDuplicates: true,
     }),
-BrowserAnimationsModule
+BrowserAnimationsModule,
+  AgentListComponent,   // ✅ Add this
+    AddAgentComponent 
+   
   ],
+  
   providers: [
     provideAnimations()
   ],

@@ -17,6 +17,9 @@ import { EditLayoutComponent } from './components/edit-layout/edit-layout.compon
 import { ViewLayoutComponent } from './components/view-layout/view-layout.component';
 import { EditPlotComponent } from './components/Plots/edit-plot/edit-plot.component';
 import { ViewPlotComponent } from './components/Plots/view-plot/view-plot.component';
+import { AgentComponent } from './components/agent/agent.component';
+import { AgentListComponent } from './components/agent/agent-list/agent-list.component';
+import { AddAgentComponent } from './components/agent/add-agent/add-agent.component';
 
 
 const routes: Routes = [
@@ -41,9 +44,14 @@ const routes: Routes = [
  {path:'view-customer/:mobileNo',component:ViewEnquiryComponent},
  { path: 'edit-plot/:plotNo', component: EditPlotComponent },
  { path: 'view-plot/:plotNo', component: ViewPlotComponent },
- 
  {path:'create-plot',component:CreatePlotComponent},
- {path:'plots',component:ListPlotComponent}
+{path:'plots',component:ListPlotComponent},
+//Agent
+{ path: 'agent', component: AgentComponent },
+{ path: 'agent-list', component: AgentListComponent },
+{ path: 'add-agent', component: AddAgentComponent },
+
+
 ];
 
 @NgModule({

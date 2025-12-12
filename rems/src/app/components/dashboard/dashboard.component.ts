@@ -17,6 +17,7 @@ export class DashboardComponent {
   totalPlots = 0;
   totalEnquiries = 0;
   totalBookings = 0;
+   totalAgents = 0;
   constructor(private router: Router,private reportService:ReportService,private dashboardService:DashboardServiceService) {}
 
   ngOnInit(): void {
@@ -28,6 +29,7 @@ export class DashboardComponent {
       this.totalPlots = res.totalPlots;
       this.totalEnquiries = res.totalEnquiries;
       this.totalBookings = res.totalBookings;
+      this.totalAgents = res.totalAgents || 0;
     });
   } 
   toggleDropdown(menu: string) {

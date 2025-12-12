@@ -1,0 +1,83 @@
+<div class="form-container">
+
+  <!-- Top Bar -->
+  <div class="top-bar">
+    <button class="back-btn" (click)="goBack()">← Back</button>
+  </div>
+
+  <!-- Form Title -->
+  <h2 class="form-title">Add New Agent</h2>
+
+  <!-- Status Messages -->
+  <div *ngIf="successMessage" class="message-card success-message">
+    <i class="fas fa-check-circle"></i>
+    <div class="message-content">
+      <strong>Success!</strong>
+      <p>{{ successMessage }}</p>
+    </div>
+    <button class="message-close" (click)="successMessage = ''">
+      <i class="fas fa-times"></i>
+    </button>
+  </div>
+
+  <div *ngIf="errorMessage" class="message-card error-message">
+    <i class="fas fa-exclamation-triangle"></i>
+    <div class="message-content">
+      <strong>Error!</strong>
+      <p>{{ errorMessage }}</p>
+    </div>
+    <button class="message-close" (click)="errorMessage = ''">
+      <i class="fas fa-times"></i>
+    </button>
+  </div>
+
+  <!-- Loading Overlay -->
+  <div *ngIf="isLoading" class="loading-overlay">
+    <div class="loading-spinner">
+      <div class="spinner"></div>
+      <p>Adding agent to database...</p>
+    </div>
+  </div>
+
+  <!-- Agent Form -->
+  <form class="agent-form" (ngSubmit)="addAgent()" novalidate>
+
+    <!-- Name + Email -->
+    <div class="form-row">
+      <div class="form-group">
+        <label>Agent Name *</label>
+        <input type="text" name="agentName" [(ngModel)]="agentName" placeholder="Enter agent name"/>
+      </div>
+
+      <div class="form-group">
+        <label>Email Address *</label>
+        <input type="email" name="email" [(ngModel)]="email" placeholder="example@domain.com"/>
+      </div>
+    </div>
+
+    <!-- Mobile + Address -->
+    <div class="form-row">
+      <div class="form-group">
+        <label>Mobile Number *</label>
+        <input type="text" name="mobile" [(ngModel)]="mobile" placeholder="9876543210"/>
+      </div>
+
+      <div class="form-group">
+        <label>Complete Address *</label>
+        <textarea name="address" [(ngModel)]="address" rows="3" placeholder="Street, city, state, pin code"></textarea>
+      </div>
+    </div>
+
+    <!-- Action Buttons -->
+    <div class="form-buttons">
+      <button class="btn save-btn" type="submit" [disabled]="isLoading">
+        {{ isLoading ? 'Adding Agent...' : 'Add Agent' }}
+      </button>
+
+      <button class="btn home-btn" type="button" (click)="clearForm()" [disabled]="isLoading">
+        Clear Form
+      </button>
+    </div>
+
+  </form>
+</div>

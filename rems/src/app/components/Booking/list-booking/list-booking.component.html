@@ -29,6 +29,7 @@
           <th>Paid</th>
           <th>Balance</th>
           <th>Direction</th>
+          <th>Status</th>
           <th>Actions</th>
         </tr>
       </thead>
@@ -45,6 +46,7 @@
           <td>{{ b.paidAmount | currency:'INR' }}</td>
           <td>{{ b.balance | currency:'INR' }}</td>
           <td>{{ b.direction }}</td>
+          <td>{{ b.status }}</td>
 
           <td>
             <div class="actions">

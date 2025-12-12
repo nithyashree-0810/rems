@@ -19,22 +19,23 @@ export class CreateBookingComponent implements OnInit {
   // Selected Plot Object
   selectedPlot: any = null;
 
-  booking: Booking = {
-    id: undefined,
+  booking: any = {
     plotId: 0,
-    plotno: '',
+    plotNo: '',
     layoutName: '',
     sqft: 0,
     price: 0,
     direction: '',
+    paidAmount: 0,
     balance: 0,
+
+    // Customer info
     customerName: '',
     mobileNo: 0,
     address: '',
     pincode: 0,
     aadharNo: '',
-    panNo: '',
-    paidAmount: 0
+    panNo: ''
   };
 
   layoutList: any[] = [];
@@ -52,45 +53,43 @@ export class CreateBookingComponent implements OnInit {
     this.loadLayouts();
   }
 
-  // ---------------- LOAD LAYOUTS ----------------
+  // LOAD LAYOUTS
   loadLayouts() {
     this.layoutService.getLayouts().subscribe(data => {
       this.layoutList = data;
     });
   }
 
-  // ---------------- WHEN LAYOUT SELECTED ----------------
+  // LAYOUT SELECTED
   onLayoutChange(): void {
-    const layoutName = this.booking.layoutName;
-
-    if (!layoutName) {
+    if (!this.booking.layoutName) {
       this.plotList = [];
       return;
     }
 
-    this.plotService.getPlotsByLayout(layoutName).subscribe({
+    this.plotService.getPlotsByLayout(this.booking.layoutName).subscribe({
       next: plots => {
         this.plotList = plots.filter(p => !p.booked);
       }
     });
   }
 
-  // ---------------- WHEN PLOT SELECTED ----------------
+  // PLOT SELECTED
   onPlotChange(): void {
     if (!this.selectedPlot) return;
 
-    const plot = this.selectedPlot;
+    const p = this.selectedPlot;
 
-    this.booking.plotId = plot.plotId;   // For FK
-    this.booking.plotno = plot.plotNo;   // For storing plotNo
-    this.booking.sqft = plot.sqft;
-    this.booking.direction = plot.direction;
-    this.booking.price = plot.price;
+    this.booking.plotId = p.plotId;
+    this.booking.plotNo = p.plotNo;
+    this.booking.sqft = p.sqft;
+    this.booking.direction = p.direction;
+    this.booking.price = p.price;
 
     this.onPaidAmountChange();
   }
 
-  // ---------------- WHEN MOBILE ENTERED ----------------
+  // WHEN MOBILE ENTERED
   onMobileChange(): void {
     const mobile = this.booking.mobileNo;
     if (!mobile) return;
@@ -107,26 +106,30 @@ export class CreateBookingComponent implements OnInit {
     });
   }
 
-  // ---------------- CALCULATE BALANCE ----------------
+  // BALANCE CALC
   onPaidAmountChange(): void {
     this.booking.balance = this.booking.price - (this.booking.paidAmount || 0);
   }
 
-  // ---------------- SUBMIT BOOKING ----------------
+  // SUBMIT BOOKING
   onSubmit(form: NgForm) {
     if (form.invalid) return;
 
+    // FINAL request body that matches backend entity
     const requestBody: BookingRequest = {
       plot: { plotId: this.booking.plotId },
-      plotNo: this.booking.plotno,
+      plotNo: this.booking.plotNo,
+
       layout: { layoutName: this.booking.layoutName },
+
       customer: { mobileNo: this.booking.mobileNo },
 
       sqft: this.booking.sqft,
       price: this.booking.price,
-      paidAmount: this.booking.paidAmount,
       direction: this.booking.direction,
+      paidAmount: this.booking.paidAmount,
       balance: this.booking.balance,
+
       address: this.booking.address,
       pincode: this.booking.pincode,
       aadharNo: this.booking.aadharNo,
@@ -139,10 +142,7 @@ export class CreateBookingComponent implements OnInit {
         form.reset();
         this.router.navigate(['/booking-history']);
       },
-      error: err => {
-        console.error(err);
-        alert("Booking Failed!");
-      }
+      error: () => alert("Booking Failed!")
     });
   }
 

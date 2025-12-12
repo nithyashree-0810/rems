@@ -1,11 +1,47 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
+import { BookingService } from '../../../services/booking.service';
+import { Booking } from '../../../models/bookings';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-view-booking',
-  standalone: false,
   templateUrl: './view-booking.component.html',
-  styleUrl: './view-booking.component.css'
+  styleUrls: ['./view-booking.component.css'],
+  standalone: true,
+  imports: [CommonModule]
 })
-export class ViewBookingComponent {
+export class ViewBookingComponent implements OnInit {
+  bookingId!: number;
+  booking!: Booking;
+  loading: boolean = true;
 
+  constructor(
+    private route: ActivatedRoute,
+    private router: Router,
+    private bookingService: BookingService
+  ) {}
+
+  ngOnInit(): void {
+    this.bookingId = Number(this.route.snapshot.paramMap.get('id'));
+    this.loadBooking();
+  }
+
+  loadBooking(): void {
+    this.bookingService.getBookingById(this.bookingId).subscribe({
+      next: (data) => {
+        this.booking = data;
+        this.loading = false;
+      },
+      error: (err) => {
+        console.error(err);
+        alert('Booking not found!');
+        this.router.navigate(['/booking-history']);
+      }
+    });
+  }
+
+  goBack(): void {
+    this.router.navigate(['/booking-history']);
+  }
 }

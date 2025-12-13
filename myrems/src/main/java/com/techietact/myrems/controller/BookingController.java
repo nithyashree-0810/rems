@@ -48,8 +48,6 @@ public class BookingController {
         return ResponseEntity.ok(updatedBooking);
     }
 
-
-
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<String> deleteBooking(@PathVariable Long id) {
         bookingService.deleteBooking(id);

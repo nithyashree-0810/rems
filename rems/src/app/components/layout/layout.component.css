@@ -1,105 +1,132 @@
-/* FORM CONTAINER — reduced padding & compact height */
+/* ========= PROFESSIONAL UI CONTAINER (MEDIUM SIZE) ========= */
 .form-container {
-  max-width: 500px;
-  margin: 20px auto;
-  padding: 15px 18px 25px 18px;   /* ↓ smaller padding */
-  border: 2px solid #ccc;
-  border-radius: 8px;
-  background-color: #f9f9f9;
+  max-width: 560px;                /* slightly increased */
+  margin: 35px auto;
+  padding: 28px 34px;              /* slightly bigger */
+  background: #ffffff;
+  border-radius: 13px;
+  box-shadow: 0px 5px 22px rgba(0, 0, 0, 0.07);
   position: relative;
 }
 
-/* Title spacing reduced */
+/* ========= TITLE ========= */
 .form-title {
   text-align: center;
-  color: orange;
-  margin-bottom: 15px;   /* ↓ reduced */
-  font-size: 22px;       /* ↓ slightly smaller */
+  color: #ff8800;
+  font-size: 24px;                 /* slightly bigger */
+  font-weight: 600;
+  margin-top: 3px;
+  margin-bottom: 24px;
 }
 
-/* Compact form layout */
-form {
-  margin-top: 20px;      /* ↓ reduced from 40px */
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 15px 20px;        /* ↓ reduced gaps */
-}
-
-/* Form groups now tighter */
-.form-group {
-  display: flex;
-  flex-direction: column;
-}
-
-label {
-  margin-bottom: 3px;   /* ↓ reduced */
-  font-weight: bold;
-  font-family: Arial, Helvetica, sans-serif;
-}
-
-/* Inputs slightly smaller */
-input[type="text"],
-input[type="number"],
-input[type="tel"] {
-  width: 100%;
-  padding: 4px 6px;         /* ↓ smaller height */
-  border: 1px solid #aaa;
-  border-radius: 4px;
-  font-size: 13px;          /* ↓ smaller font */
-  height: 28px;             /* ↓ fixed smaller height */
-  box-sizing: border-box;
-}
-
-/* Compact buttons row */
-.form-actions {
-  grid-column: span 2;
-  display: flex;
-  justify-content: space-between;
-  margin-top: 15px;        /* ↓ reduced */
-}
-
-/* Buttons smaller */
-.btn {
-  padding: 8px 16px;       /* ↓ reduced */
-  border: none;
-  border-radius: 4px;
-  font-weight: bold;
-  cursor: pointer;
-  font-size: 14px;
-}
-
-/* Button colors remain same */
-.create-btn {
-  background-color: #4CAF50;
-  color: white;
-}
-
-.home-btn {
-  background-color: #f44336;
-  color: white;
-}
-
-/* Header button reduced */
+/* ========= VIEW BUTTON ========= */
 .header-actions {
   position: absolute;
-  top: 8px;               /* ↓ reduced */
-  right: 12px;
+  top: 16px;
+  right: 16px;
 }
 
 .header-actions .btn-success {
-  background-color: #28a745;
+  background: #007bff;
+  padding: 6px 14px;               /* medium size */
+  font-size: 13px;
+  border-radius: 6px;
+  border: none;
   color: white;
-  padding: 6px 12px;      /* ↓ reduced */
-  border-radius: 4px;
-  font-weight: bold;
-  cursor: pointer;
-  font-size: 13px;        /* ↓ smaller */
 }
 
-/* Error text remains same */
-.error small {
-  color: red;
-  font-size: 12px;        /* ↓ slightly smaller */
-  display: block;
-  margin-top: 3px;
+/* ========= FORM GRID ========= */
+form {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px 20px;                  /* medium spacing */
+}
+
+/* ========= LABELS ========= */
+label {
+  font-weight: 600;
+  margin-bottom: 4px;
+  font-size: 14px;
+  color: #333;
+}
+
+/* ========= INPUTS ========= */
+input[type="text"],
+input[type="number"],
+input[type="tel"] {
+  padding: 9px 12px;               /* medium height */
+  border-radius: 6px;
+  border: 1px solid #d4d4d4;
+  background: #f7f7f7;
+  font-size: 14px;
+  width: 100% !important;
+  box-sizing: border-box;
+}
+
+input:focus {
+  outline: none;
+  background: #ffffff;
+  border-color: #ff8800;
+  box-shadow: 0 0 4px rgba(255, 136, 0, 0.35);
+}
+
+/* ========= CHECKBOX ========= */
+.checkbox-row {
+  grid-column: span 2;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 50px;                 /* balanced spacing */
+  margin-top: 8px;
+  margin-bottom: 8px;
+}
+
+.checkbox-row label {
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.checkbox-row input[type="checkbox"] {
+  margin-right: 6px;
+  transform: scale(1.15);
+}
+
+/* ========= BUTTONS ========= */
+.form-actions {
+  grid-column: span 2;
+  display: flex;
+  justify-content: flex-end;
+  gap: 16px;
+  margin-top: 18px;
+}
+
+.btn {
+  padding: 9px 20px;               /* medium button size */
+  border-radius: 7px;
+  font-size: 14px;
+  font-weight: 600;
+  border: none;
+}
+
+/* Create button */
+.create-btn {
+  background: #28a745;
+  color: white;
+}
+.create-btn:hover {
+  background: #218838;
+}
+
+/* Home button */
+.home-btn {
+  background: #e63946;
+  color: white;
+}
+.home-btn:hover {
+  background: #c62828;
+}
+.required {
+  color: red !important;
+  font-weight: bold;
+  margin-left: 3px;
 }

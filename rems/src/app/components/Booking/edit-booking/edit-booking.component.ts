@@ -17,6 +17,8 @@ export class EditBookingComponent implements OnInit {
   bookingForm!: FormGroup;
   loading: boolean = true;
 
+  showRegFields: boolean = false;
+
   constructor(
     private route: ActivatedRoute,
     private router: Router,
@@ -34,10 +36,10 @@ export class EditBookingComponent implements OnInit {
       next: (data) => {
         this.booking = data;
         this.initForm();
+        this.onStatusChange(); // initialize reg fields visibility
         this.loading = false;
       },
-      error: (err) => {
-        console.error(err);
+      error: () => {
         alert('Booking not found!');
         this.router.navigate(['/booking-history']);
       }
@@ -55,73 +57,98 @@ export class EditBookingComponent implements OnInit {
       paidAmount: [this.booking.paidAmount || '', Validators.required],
       balance: [this.booking.balance || '', Validators.required],
       direction: [this.booking.direction || ''],
+
       address: [this.booking.customer?.address || ''],
       pincode: [this.booking.customer?.pincode || ''],
       aadharNo: [this.booking.customer?.aadharNo || ''],
-      panNo: [this.booking.customer?.panNo || '']
+      panNo: [this.booking.customer?.panNo || ''],
+
+      // NEW FIELDS
+      status: [this.booking.status || 'Unregistered', Validators.required],
+      regDate: [this.booking.regDate || ''],
+      regNo: [this.booking.regNo || '']
+    });
+
+    // Watch status change
+    this.bookingForm.get('status')?.valueChanges.subscribe(() => {
+      this.onStatusChange();
     });
   }
 
- saveBooking(): void {
+  // ---------------------------------------------------------
+  // SHOW / HIDE Registered Fields
+  // ---------------------------------------------------------
+  onStatusChange() {
+    const status = this.bookingForm.get('status')?.value;
+
+    // show/hide status
+    this.showRegFields = (status === 'Registered');
+
+    if (this.showRegFields) {
+      this.bookingForm.get('regDate')?.enable();
+      this.bookingForm.get('regNo')?.enable();
+    } else {
+      this.bookingForm.get('regDate')?.disable();
+      this.bookingForm.get('regNo')?.disable();
+      this.bookingForm.patchValue({ regDate: '', regNo: '' });
+    }
+  }
+
+  // ---------------------------------------------------------
+  // SAVE BOOKING
+  // ---------------------------------------------------------
+  saveBooking(): void {
   if (this.bookingForm.invalid) {
     alert('Please fill all required fields.');
     return;
   }
 
+  const form = this.bookingForm.getRawValue();  // IMPORTANT FIX
+
   const updatedBooking: Booking = {
     bookingId: this.booking.bookingId,
 
-    layout: this.booking.layout
-      ? { ...this.booking.layout, layoutName: this.bookingForm.value.layoutName }
-      : { layoutName: this.bookingForm.value.layoutName },
+    layout: {
+      ...this.booking.layout,
+      layoutName: form.layoutName
+    },
 
-    plot: this.booking.plot
-      ? {
-          plotId: this.booking.plot.plotId,
-          plotNo: this.bookingForm.value.plotNo,
-          sqft: this.bookingForm.value.sqft,
-          price: this.bookingForm.value.price,
-          direction: this.bookingForm.value.direction
-        }
-      : undefined,
+    plot: {
+      plotId: this.booking.plot?.plotId ?? 0,
+      plotNo: form.plotNo,
+      sqft: form.sqft,
+      price: form.price,
+      direction: form.direction
+    },
 
-    customer: this.booking.customer
-      ? {
-          ...this.booking.customer,
-          firstName: this.bookingForm.value.customerName,
-          mobileNo: this.bookingForm.value.mobileNo,
-          address: this.bookingForm.value.address,
-          pincode: this.bookingForm.value.pincode,
-          aadharNo: this.bookingForm.value.aadharNo,
-          panNo: this.bookingForm.value.panNo
-        }
-      : {
-          firstName: this.bookingForm.value.customerName,
-          mobileNo: this.bookingForm.value.mobileNo,
-          address: this.bookingForm.value.address,
-          pincode: this.bookingForm.value.pincode,
-          aadharNo: this.bookingForm.value.aadharNo,
-          panNo: this.bookingForm.value.panNo
-        },
+    customer: {
+      ...this.booking.customer,
+      firstName: form.customerName,
+      mobileNo: form.mobileNo,
+      address: form.address,
+      pincode: form.pincode,
+      aadharNo: form.aadharNo,
+      panNo: form.panNo
+    },
 
-    sqft: this.bookingForm.value.sqft,
-    price: this.bookingForm.value.price,
-    paidAmount: this.bookingForm.value.paidAmount,
-    balance: this.bookingForm.value.balance,
-    direction: this.bookingForm.value.direction,
-    plotNo: this.bookingForm.value.plotNo
+    sqft: form.sqft,
+    price: form.price,
+    paidAmount: form.paidAmount,
+    balance: form.balance,
+    direction: form.direction,
+    plotNo: form.plotNo,
+
+    status: form.status,
+    regDate: form.status === 'Registered' ? form.regDate : null,
+    regNo: form.status === 'Registered' ? form.regNo : null
   };
 
   this.bookingService.updateBooking(this.bookingId, updatedBooking).subscribe({
-    next: (res) => {
+    next: () => {
       alert('Booking updated successfully!');
-      // navigate after a tiny delay to ensure backend processed it
       setTimeout(() => this.router.navigate(['/booking-history']), 100);
     },
-    error: (err) => {
-      console.error(err);
-      alert('Failed to update booking!');
-    }
+    error: () => alert('Failed to update booking!')
   });
 }
 

@@ -1,0 +1,105 @@
+.center-page {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 90vh;
+  background: #f5f6fa;
+}
+
+.role-card {
+  width: 850px;
+  background: #ffffff;
+  padding: 30px;
+  border-radius: 14px;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.12);
+}
+
+.title {
+  text-align: center;
+  margin-bottom: 25px;
+  color: #ff7a00;
+  font-weight: 600;
+}
+
+.row {
+  display: flex;
+  gap: 20px;
+  margin-bottom: 18px;
+}
+
+.col {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+label {
+  font-weight: 600;
+  margin-bottom: 6px;
+}
+
+input, select {
+  padding: 10px 12px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  font-size: 14px;
+}
+
+input:focus, select:focus {
+  outline: none;
+  border-color: #ff7a00;
+}
+
+.is-invalid {
+  border-color: #dc3545;
+}
+
+.error {
+  color: #dc3545;
+  font-size: 12px;
+  margin-top: 4px;
+}
+
+/* Buttons container - right side */
+.buttons-row {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 25px;
+}
+
+/* ✅ Create Role - GREEN */
+.btn-create {
+  background-color: #28a745;   /* Green */
+  color: #fff;
+  padding: 8px 18px;
+  border: none;
+  border-radius: 6px;
+  font-weight: 600;
+}
+
+.btn-create:hover {
+  background-color: #218838;
+}
+
+/* Disabled create */
+.btn-create:disabled {
+  background-color: #9fd6af;
+  cursor: not-allowed;
+}
+
+/* 🔴 Home - RED */
+.btn-home {
+  background-color: #dc3545;   /* Red */
+  color: #fff;
+  padding: 8px 18px;
+  border: none;
+  border-radius: 6px;
+  font-weight: 600;
+}
+
+.btn-home:hover {
+  background-color: #c82333;
+}
+
+

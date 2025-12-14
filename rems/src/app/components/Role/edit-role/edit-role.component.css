@@ -1,0 +1,80 @@
+.center-page {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background: #f5f6fa;
+}
+
+.enquiry-card {
+  width: 800px;
+  background: #fff;
+  padding: 30px 40px;
+  border-radius: 14px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.12);
+}
+
+h2 {
+  text-align: center;
+  color: #ff7e00;
+  margin-bottom: 25px;
+}
+
+.row {
+  display: flex;
+  gap: 20px;
+  margin-bottom: 18px;
+}
+
+.col {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+label {
+  font-weight: 600;
+  margin-bottom: 6px;
+}
+
+input, select {
+  padding: 10px 12px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  font-size: 14px;
+}
+
+input:focus, select:focus {
+  border-color: #3498db;
+  outline: none;
+}
+
+select[multiple] {
+  height: 80px;
+}
+
+/* Buttons */
+.buttons-row {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 25px;
+}
+
+.btn-create {
+  background-color: #28a745;
+  color: #fff;
+  padding: 8px 18px;
+  border: none;
+  border-radius: 6px;
+  font-weight: 600;
+}
+
+.btn-home {
+  background-color: #dc3545;
+  color: #fff;
+  padding: 8px 18px;
+  border: none;
+  border-radius: 6px;
+  font-weight: 600;
+}

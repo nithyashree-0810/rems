@@ -48,6 +48,7 @@ public Enquiry update(Long mobileNo, Enquiry updated) {
     Enquiry existing = getByMobileNo(mobileNo);
     existing.setFirstName(updated.getFirstName());
     existing.setLastName(updated.getLastName());
+    existing.setFatherName(updated.getFatherName());
     existing.setAddress(updated.getAddress());
     existing.setPincode(updated.getPincode());
     existing.setEmail(updated.getEmail());

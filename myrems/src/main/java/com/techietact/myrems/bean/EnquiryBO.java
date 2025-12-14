@@ -7,6 +7,7 @@ public class EnquiryBO {
 	private Long mobileNo;
 	private String firstName;
 	private String lastName;
+	private String fatherName;
 	private String address;
 
 	private int pincode;

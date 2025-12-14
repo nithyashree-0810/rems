@@ -26,7 +26,10 @@ export interface Booking {
   sqft: number;
   price: number;
   direction: string;
-  paidAmount: number;
+  advance1: number;
+  advance2:number;
+  advance3:number;
+  advance4:number;
   balance: number;
   plotNo: string; 
   status:string;

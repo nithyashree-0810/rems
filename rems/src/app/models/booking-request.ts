@@ -6,7 +6,10 @@ export interface BookingRequest {
 
   sqft: number;
   price: number;
-  paidAmount: number;
+  advance1: number;
+  advance2:number;
+  advance3:number;
+  advance4:number;
   direction: string;
   balance: number;
   address: string;

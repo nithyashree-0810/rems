@@ -1,23 +1,29 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { BookingService } from '../../../services/booking.service';
-import { Booking } from '../../../models/bookings';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Booking } from '../../../models/bookings';
 
 @Component({
   selector: 'app-edit-booking',
-  standalone: false,
   templateUrl: './edit-booking.component.html',
-  styleUrls: ['./edit-booking.component.css']
+  styleUrls: ['./edit-booking.component.css'],
+  standalone: false
 })
 export class EditBookingComponent implements OnInit {
 
   bookingId!: number;
-  booking!: Booking;
   bookingForm!: FormGroup;
-  loading: boolean = true;
+  loading = true;
+  showRegFields = false;
 
-  showRegFields: boolean = false;
+  // 🔥 IMPORTANT: store existing booking
+  existingBooking!: Booking;
+
+  canEditAdvance1 = false;
+  canEditAdvance2 = false;
+  canEditAdvance3 = false;
+  canEditAdvance4 = false;
 
   constructor(
     private route: ActivatedRoute,
@@ -27,133 +33,159 @@ export class EditBookingComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+
+    // get booking id
     this.bookingId = Number(this.route.snapshot.paramMap.get('id'));
+
+    // init form
+    this.bookingForm = this.fb.group({
+      layoutName: [{ value: '', disabled: true }],
+      plotNo: [{ value: '', disabled: true }],
+      customerName: [{ value: '', disabled: true }],
+      mobileNo: [{ value: '', disabled: true }],
+      sqft: [{ value: 0, disabled: true }],
+      price: [{ value: 0, disabled: true }],
+
+      advance1: [0],
+      advance2: [0],
+      advance3: [0],
+      advance4: [0],
+      balance: [{ value: 0, disabled: true }],
+
+      direction: [{ value: '', disabled: true }],
+      address: [{ value: '', disabled: true }],
+      pincode: [{ value: '', disabled: true }],
+
+      aadharNo: [''],
+      panNo: [''],
+
+      status: ['', Validators.required],
+      regDate: [''],
+      regNo: ['']
+    });
+
     this.loadBooking();
   }
 
-  loadBooking(): void {
+  // ---------------- LOAD BOOKING ----------------
+  loadBooking() {
     this.bookingService.getBookingById(this.bookingId).subscribe({
-      next: (data) => {
-        this.booking = data;
-        this.initForm();
-        this.onStatusChange(); // initialize reg fields visibility
+      next: (data: Booking) => {
+
+        // 🔥 store existing booking
+        this.existingBooking = data;
+
+        this.bookingForm.patchValue({
+          layoutName: data.layout?.layoutName,
+          plotNo: data.plot?.plotNo,
+
+          customerName: data.customer?.firstName,
+          mobileNo: data.customer?.mobileNo,
+
+          sqft: data.sqft,
+          price: data.price,
+
+          advance1: data.advance1,
+          advance2: data.advance2,
+          advance3: data.advance3,
+          advance4: data.advance4,
+          balance: data.balance,
+
+          direction: data.direction,
+          address: data.customer?.address,
+          pincode: data.customer?.pincode,
+
+          aadharNo: data.customer?.aadharNo,
+          panNo: data.customer?.panNo,
+
+          status: data.status,
+          regDate: data.regDate,
+          regNo: data.regNo
+        });
+
+        this.showRegFields = data.status === 'Registered';
+        this.setAdvanceEditPermissions();
+        this.calculateBalance();
         this.loading = false;
       },
       error: () => {
-        alert('Booking not found!');
-        this.router.navigate(['/booking-history']);
+        alert('Failed to load booking');
+        this.loading = false;
       }
     });
   }
 
-  initForm(): void {
-    this.bookingForm = this.fb.group({
-      layoutName: [this.booking.layout?.layoutName || '', Validators.required],
-      plotNo: [this.booking.plot?.plotNo || '', Validators.required],
-      customerName: [this.booking.customer?.firstName || '', Validators.required],
-      mobileNo: [this.booking.customer?.mobileNo || '', Validators.required],
-      sqft: [this.booking.sqft || '', Validators.required],
-      price: [this.booking.price || '', Validators.required],
-      paidAmount: [this.booking.paidAmount || '', Validators.required],
-      balance: [this.booking.balance || '', Validators.required],
-      direction: [this.booking.direction || ''],
+  // ---------------- ADVANCE LOCK ----------------
+  setAdvanceEditPermissions() {
+    const raw = this.bookingForm.getRawValue();
 
-      address: [this.booking.customer?.address || ''],
-      pincode: [this.booking.customer?.pincode || ''],
-      aadharNo: [this.booking.customer?.aadharNo || ''],
-      panNo: [this.booking.customer?.panNo || ''],
+    this.canEditAdvance1 = raw.advance1 === 0;
+    this.canEditAdvance2 = raw.advance1 > 0 && raw.advance2 === 0;
+    this.canEditAdvance3 = raw.advance2 > 0 && raw.advance3 === 0;
+    this.canEditAdvance4 = raw.advance3 > 0 && raw.advance4 === 0;
+  }
 
-      // NEW FIELDS
-      status: [this.booking.status || 'Unregistered', Validators.required],
-      regDate: [this.booking.regDate || ''],
-      regNo: [this.booking.regNo || '']
-    });
+  // ---------------- BALANCE ----------------
+  calculateBalance() {
+    const raw = this.bookingForm.getRawValue();
 
-    // Watch status change
-    this.bookingForm.get('status')?.valueChanges.subscribe(() => {
-      this.onStatusChange();
+    const totalPaid =
+      (raw.advance1 || 0) +
+      (raw.advance2 || 0) +
+      (raw.advance3 || 0) +
+      (raw.advance4 || 0);
+
+    this.bookingForm.patchValue({
+      balance: raw.price - totalPaid
     });
   }
 
-  // ---------------------------------------------------------
-  // SHOW / HIDE Registered Fields
-  // ---------------------------------------------------------
   onStatusChange() {
-    const status = this.bookingForm.get('status')?.value;
-
-    // show/hide status
-    this.showRegFields = (status === 'Registered');
-
-    if (this.showRegFields) {
-      this.bookingForm.get('regDate')?.enable();
-      this.bookingForm.get('regNo')?.enable();
-    } else {
-      this.bookingForm.get('regDate')?.disable();
-      this.bookingForm.get('regNo')?.disable();
-      this.bookingForm.patchValue({ regDate: '', regNo: '' });
-    }
+    this.showRegFields = this.bookingForm.value.status === 'Registered';
   }
 
-  // ---------------------------------------------------------
-  // SAVE BOOKING
-  // ---------------------------------------------------------
-  saveBooking(): void {
-  if (this.bookingForm.invalid) {
-    alert('Please fill all required fields.');
-    return;
+  // ---------------- SAVE BOOKING ----------------
+  saveBooking() {
+    const raw = this.bookingForm.getRawValue();
+    const existing = this.existingBooking;
+
+    const payload: Booking = {
+      bookingId: existing.bookingId,
+
+      plot: existing.plot!,
+      layout: existing.layout!,
+      customer: {
+        ...existing.customer!,
+        aadharNo: raw.aadharNo,
+        panNo: raw.panNo
+      },
+
+      sqft: existing.sqft,
+      price: existing.price,
+      direction: existing.direction,
+
+      advance1: raw.advance1,
+      advance2: raw.advance2,
+      advance3: raw.advance3,
+      advance4: raw.advance4,
+      balance: raw.balance,
+
+      plotNo: existing.plotNo,
+      status: raw.status,
+      regDate: raw.regDate,
+      regNo: raw.regNo
+    };
+
+    this.bookingService
+      .updateBooking(this.bookingId, payload)
+      .subscribe(() => {
+        alert('Booking Updated Successfully');
+        this.goBack();
+      });
   }
 
-  const form = this.bookingForm.getRawValue();  // IMPORTANT FIX
-
-  const updatedBooking: Booking = {
-    bookingId: this.booking.bookingId,
-
-    layout: {
-      ...this.booking.layout,
-      layoutName: form.layoutName
-    },
-
-    plot: {
-      plotId: this.booking.plot?.plotId ?? 0,
-      plotNo: form.plotNo,
-      sqft: form.sqft,
-      price: form.price,
-      direction: form.direction
-    },
-
-    customer: {
-      ...this.booking.customer,
-      firstName: form.customerName,
-      mobileNo: form.mobileNo,
-      address: form.address,
-      pincode: form.pincode,
-      aadharNo: form.aadharNo,
-      panNo: form.panNo
-    },
-
-    sqft: form.sqft,
-    price: form.price,
-    paidAmount: form.paidAmount,
-    balance: form.balance,
-    direction: form.direction,
-    plotNo: form.plotNo,
-
-    status: form.status,
-    regDate: form.status === 'Registered' ? form.regDate : null,
-    regNo: form.status === 'Registered' ? form.regNo : null
-  };
-
-  this.bookingService.updateBooking(this.bookingId, updatedBooking).subscribe({
-    next: () => {
-      alert('Booking updated successfully!');
-      setTimeout(() => this.router.navigate(['/booking-history']), 100);
-    },
-    error: () => alert('Failed to update booking!')
-  });
-}
-
-
-  goBack(): void {
+  // ---------------- BACK ----------------
+  goBack() {
     this.router.navigate(['/booking-history']);
   }
 }

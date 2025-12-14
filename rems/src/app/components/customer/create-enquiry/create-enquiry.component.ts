@@ -11,16 +11,20 @@ import { CustomerService } from '../../../services/customer.service';
   styleUrl: './create-enquiry.component.css'
 })
 export class CreateEnquiryComponent {
+limitAadharLength() {
+throw new Error('Method not implemented.');
+}
 constructor(private customerService:CustomerService,private router:Router){}
   enquiry:Enquiry={
 
 mobileNo: undefined as any,
     firstName:'',
     lastName:'',
+    fatherName:'',
     email:'',
     address:'',
   pincode: undefined as any,
-    aadharNo:null,
+    aadharNo:'',
     panNo:'',
    
 
@@ -77,6 +81,9 @@ onSubmit(form: NgForm) {
     });
 
   }
+
+  
+
 }
 
 goHome() {
@@ -86,3 +93,5 @@ goHome() {
 
 
 }
+
+

@@ -23,6 +23,10 @@ import { CreatePlotComponent } from './components/Plots/create-plot/create-plot.
 import { ListPlotComponent } from './components/Plots/list-plot/list-plot.component';
 import { EditPlotComponent } from './components/Plots/edit-plot/edit-plot.component';
 import { ViewPlotComponent } from './components/Plots/view-plot/view-plot.component';
+import { CreateRoleComponent } from './components/Role/create-role/create-role.component';
+import { EditRoleComponent } from './components/Role/edit-role/edit-role.component';
+import { ListRoleComponent } from './components/Role/list-role/list-role.component';
+import { ViewRoleComponent } from './components/Role/view-role/view-role.component';
 
 const routes: Routes = [
   // Auth / Home
@@ -52,6 +56,12 @@ const routes: Routes = [
   { path: 'plots', component: ListPlotComponent },
   { path: 'edit-plot/:layoutName/:plotNo', component: EditPlotComponent },
   { path: 'view-plot/:layoutName/:plotNo', component: ViewPlotComponent },
+
+  //role routes
+  {path: 'create-role' ,component:CreateRoleComponent},
+  {path: 'edit-role/:roleId' ,component:EditRoleComponent},
+  {path: 'list-role' ,component:ListRoleComponent},
+  {path: 'view-role/:roleId' ,component:ViewRoleComponent},
 
   // Wildcard route for 404 page (optional)
   { path: '**', redirectTo: '', pathMatch: 'full' }

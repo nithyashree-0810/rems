@@ -30,6 +30,10 @@ import { ListPlotComponent } from './components/Plots/list-plot/list-plot.compon
 import { EditPlotComponent } from './components/Plots/edit-plot/edit-plot.component';
 import { ViewPlotComponent } from './components/Plots/view-plot/view-plot.component';
 import { EditLayoutComponent } from './components/edit-layout/edit-layout.component';
+import { CreateRoleComponent } from './components/Role/create-role/create-role.component';
+import { EditRoleComponent } from './components/Role/edit-role/edit-role.component';
+import { ListRoleComponent } from './components/Role/list-role/list-role.component';
+import { ViewRoleComponent } from './components/Role/view-role/view-role.component';
 
 
 @NgModule({
@@ -56,6 +60,10 @@ import { EditLayoutComponent } from './components/edit-layout/edit-layout.compon
     ListPlotComponent, 
     EditPlotComponent,
     ViewPlotComponent,
+    CreateRoleComponent,
+    EditRoleComponent,
+    ListRoleComponent,
+    ViewRoleComponent,
    
   ],
   imports: [

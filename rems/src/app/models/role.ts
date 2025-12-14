@@ -1,15 +1,12 @@
-export class Enquiry{
-
-    mobileNo!: number;
+export class Role {
+    
+    roleId?:number;
     firstName!: string;
     lastName!: string;
-    fatherName!:string;
+    mobileNo!: string;
     address!: string;
-    pincode!: number;
     email!: string;
     panNo!: string;
     aadharNo!: string ;
-   
-
+    role!:string;
 }
-

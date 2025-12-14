@@ -1,6 +1,6 @@
 /* Container */
 .form-container {
-  max-width: 800px;
+  max-width: 900px;
   padding: 25px 30px;
   margin: 30px auto;
   background: #fff;
@@ -9,7 +9,7 @@
   font-family: Arial, sans-serif;
 }
 
-/* Form Title */
+/* Title */
 .form-title {
   text-align: center;
   color: #FF9900;
@@ -17,21 +17,22 @@
   margin-bottom: 30px;
 }
 
-/* Each row */
+/* 🔥 Two fields per row */
 .row {
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-columns: 200px 1fr;
+  align-items: center;
+  gap: 15px;
   margin-bottom: 15px;
 }
 
-/* Label styling */
+/* Label */
 .label {
-  font-weight: bold;
-  margin-bottom: 5px;
+  font-weight: 600;
   color: #333;
 }
 
-/* Input styling */
+/* Input */
 .value {
   padding: 8px 10px;
   font-size: 1rem;
@@ -41,46 +42,56 @@
   box-sizing: border-box;
 }
 
-/* Buttons container */
-.row button {
-  padding: 10px 20px;
-  border: none;
-  border-radius: 5px;
-  font-weight: bold;
-  cursor: pointer;
-  margin-right: 10px;
-  color: white;
+/* ========================= */
+/* BUTTON ROW */
+/* ========================= */
+.actions {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  margin-top: 30px;
 }
 
 /* Save button */
-.row .save-btn {
+.save-btn {
   background-color: #28a745;
+  padding: 10px 25px;
+  border-radius: 5px;
+  border: none;
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
 }
 
 /* Cancel button */
-.row .home-btn {
+.home-btn {
   background-color: #dc3545;
+  padding: 10px 25px;
+  border-radius: 5px;
+  border: none;
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
 }
 
-/* Add hover effects */
-.row button:hover {
+.save-btn:hover,
+.home-btn:hover {
   opacity: 0.9;
 }
 
-/* Error messages */
+/* Error */
 .error {
   color: red;
   font-size: 12px;
-  margin-top: 4px;
 }
 
-/* Highlight invalid inputs */
+/* Invalid highlight */
 input.ng-invalid.ng-touched,
 select.ng-invalid.ng-touched {
   border: 1px solid red;
 }
 
-/* Loading template */
+/* Loading */
 .loading {
   text-align: center;
   font-size: 1.2rem;
@@ -88,14 +99,18 @@ select.ng-invalid.ng-touched {
   padding: 50px 0;
 }
 
-/* Responsive: Stack rows on small screens */
+/* 🔥 Mobile Responsive */
 @media (max-width: 600px) {
   .row {
+    grid-template-columns: 1fr;
+  }
+
+  .actions {
     flex-direction: column;
   }
 
-  .row button {
+  .save-btn,
+  .home-btn {
     width: 100%;
-    margin-bottom: 10px;
   }
 }

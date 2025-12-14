@@ -2,35 +2,26 @@ package com.techietact.myrems.entity;
 
 import java.util.Date;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.Data;
 
 @Data
 @Entity
-@Table(name="bookings")
+@Table(name = "bookings")
 public class Booking {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long bookingId;
 
-    // ✅ Mapping with Plot (using plotId as FK)
     @ManyToOne
     @JoinColumn(name = "plot_id", referencedColumnName = "plotId")
     private Plot plot;
 
-    // ✅ Mapping with Layout (assuming layoutName is primary key in Layout)
     @ManyToOne
     @JoinColumn(name = "layout_name", referencedColumnName = "layoutName")
     private Layout layout;
 
-    // ✅ Mapping with Customer
     @ManyToOne
     @JoinColumn(name = "mobile_no", referencedColumnName = "mobileNo")
     private Enquiry customer;
@@ -38,35 +29,35 @@ public class Booking {
     private int sqft;
     private double price;
     private String direction;
+
+    // 🔹 PAYMENTS
+    private int advance1;
+    private int advance2;
+    private int advance3;
+    private int advance4;
+
     private double balance;
+
+    private String plotNo;
     private String address;
     private int pincode;
     private Long aadharNo;
     private String panNo;
-    private int paidAmount;
-    private String plotNo;
 
-
-    // auto-calculate balance
-    public void setPrice(double price) {
-        this.price = price;
-        updateBalance();
-    }
-
-    public void setPaidAmount(int paidAmount) {
-        this.paidAmount = paidAmount;
-        updateBalance();
-    }
-
-    private void updateBalance() {
-        if (this.price > 0) {
-            this.balance = this.price - this.paidAmount;
-        }
-    }
-    
     private String status;
-	
     private Date regDate;
-    
     private Long regNo;
+
+    // 🔥 AUTO BALANCE CALCULATION
+    @PrePersist
+    @PreUpdate
+    public void calculateBalance() {
+        int totalPaid =
+                advance1 +
+                advance2 +
+                advance3 +
+                advance4;
+
+        this.balance = this.price - totalPaid;
+    }
 }

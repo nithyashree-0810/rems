@@ -43,8 +43,8 @@
           <td>{{ b.customer?.mobileNo }}</td>
           <td>{{ b.sqft }}</td>
           <td>{{ b.price | currency:'INR' }}</td>
-          <td>{{ b.paidAmount | currency:'INR' }}</td>
-          <td>{{ b.balance | currency:'INR' }}</td>
+          <td>{{ getTotalPaid(b) | currency:'INR' }}</td>
+          <td>{{ getBalance(b) | currency:'INR' }}</td>
           <td>{{ b.direction }}</td>
           <td>{{ b.status }}</td>
 

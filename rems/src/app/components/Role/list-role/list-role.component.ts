@@ -121,7 +121,7 @@ export class ListRoleComponent {
    }
  
    deleteRole(roleId: number) {
-  if (!confirm("Are you sure to delete this customer?")) {
+  if (!confirm("Are you sure to delete this?")) {
     return;
   }
 

@@ -33,7 +33,13 @@ public class BookingBO {
 	
 	private String panNo;
 	
-	private int paidAmount;
+	private int advance1;
+	
+	private int advance2;
+	
+	private int advance3;
+	
+	private int advance4;
 	
 	private String status;
 	

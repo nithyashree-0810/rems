@@ -3,75 +3,132 @@
 
   <form [formGroup]="bookingForm" (ngSubmit)="saveBooking()">
 
+    <!-- READ ONLY DETAILS -->
     <div class="row">
       <label class="label">Layout Name:</label>
-      <input type="text" formControlName="layoutName" class="value" />
+      <input class="value" formControlName="layoutName" readonly />
     </div>
 
     <div class="row">
       <label class="label">Plot No:</label>
-      <input type="text" formControlName="plotNo" class="value" />
+      <input class="value" formControlName="plotNo" readonly />
     </div>
 
     <div class="row">
       <label class="label">Customer Name:</label>
-      <input type="text" formControlName="customerName" class="value" />
+      <input class="value" formControlName="customerName" readonly />
     </div>
 
     <div class="row">
       <label class="label">Mobile No:</label>
-      <input type="text" formControlName="mobileNo" class="value" />
+      <input class="value" formControlName="mobileNo" readonly />
     </div>
 
     <div class="row">
       <label class="label">Sqft:</label>
-      <input type="number" formControlName="sqft" class="value" />
+      <input type="number" class="value" formControlName="sqft" readonly />
     </div>
 
     <div class="row">
       <label class="label">Price:</label>
-      <input type="number" formControlName="price" class="value" />
+      <input type="number" class="value" formControlName="price" readonly />
+    </div>
+
+    <!-- ADVANCES -->
+    <div class="row">
+      <label class="label">Advance 1:</label>
+      <input type="number"
+             class="value"
+             formControlName="advance1"
+             [readonly]="!canEditAdvance1"
+             (input)="calculateBalance()" />
     </div>
 
     <div class="row">
-      <label class="label">Paid Amount:</label>
-      <input type="number" formControlName="paidAmount" class="value" />
+      <label class="label">Advance 2:</label>
+      <input type="number"
+             class="value"
+             formControlName="advance2"
+             [readonly]="!canEditAdvance2"
+             (input)="calculateBalance()" />
     </div>
 
+    <div class="row">
+      <label class="label">Advance 3:</label>
+      <input type="number"
+             class="value"
+             formControlName="advance3"
+             [readonly]="!canEditAdvance3"
+             (input)="calculateBalance()" />
+    </div>
+
+    <div class="row">
+      <label class="label">Advance 4:</label>
+      <input type="number"
+             class="value"
+             formControlName="advance4"
+             [readonly]="!canEditAdvance4"
+             (input)="calculateBalance()" />
+    </div>
+
+    <!-- BALANCE -->
     <div class="row">
       <label class="label">Balance:</label>
-      <input type="number" formControlName="balance" class="value" />
+      <input type="number" class="value" formControlName="balance" readonly />
     </div>
 
     <div class="row">
       <label class="label">Direction:</label>
-      <input type="text" formControlName="direction" class="value" />
+      <input class="value" formControlName="direction" readonly />
     </div>
 
     <div class="row">
       <label class="label">Address:</label>
-      <input type="text" formControlName="address" class="value" />
+      <input class="value" formControlName="address" readonly />
     </div>
 
     <div class="row">
       <label class="label">Pincode:</label>
-      <input type="text" formControlName="pincode" class="value" />
+      <input class="value" formControlName="pincode" readonly />
     </div>
 
     <div class="row">
       <label class="label">Aadhar No:</label>
-      <input type="text" formControlName="aadharNo" class="value" />
+      <input class="value" formControlName="aadharNo" />
     </div>
 
     <div class="row">
       <label class="label">PAN No:</label>
-      <input type="text" formControlName="panNo" class="value" />
+      <input class="value" formControlName="panNo" />
     </div>
 
+    <!-- STATUS -->
     <div class="row">
-      <button type="submit" class="home-btn">Save</button>
-      <button type="button" class="home-btn" (click)="goBack()">Cancel</button>
+      <label class="label">Status:</label>
+      <select class="value" formControlName="status" (change)="onStatusChange()">
+        <option value="">-- Select --</option>
+        <option value="Registered">Registered</option>
+        <option value="Unregistered">Unregistered</option>
+      </select>
     </div>
+
+    <!-- REG DETAILS -->
+    <div *ngIf="showRegFields">
+      <div class="row">
+        <label class="label">Reg Date:</label>
+        <input type="date" class="value" formControlName="regDate" />
+      </div>
+
+      <div class="row">
+        <label class="label">Reg No:</label>
+        <input type="number" class="value" formControlName="regNo" />
+      </div>
+    </div>
+
+    <div class="actions">
+  <button type="submit" class="save-btn">Save</button>
+  <button type="button" class="home-btn" (click)="goBack()">Cancel</button>
+</div>
 
   </form>
 </div>

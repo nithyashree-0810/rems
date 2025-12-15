@@ -1,0 +1,87 @@
+<div class="container">
+  <h2>List of Role</h2>
+
+  <!-- Search + Create Row -->
+<div class="search-create-row">
+
+  <!-- Search Section (CENTER) -->
+  <div class="search-container">
+    <input
+      type="text"
+      placeholder="Search Name"
+      [(ngModel)]="searchName"
+      (input)="onSearch()"
+    />
+
+    <input
+      type="text"
+      placeholder="Search Mobile Number"
+      [(ngModel)]="searchMobile"
+      (input)="onSearch()"
+    />
+
+    <button class="btn btn-primary" (click)="onSearch()">
+      Search
+    </button>
+  </div>
+
+  <!-- Create Button (RIGHT) -->
+  <button class="btn btn-success create-btn" (click)="createRole()">
+    <i class="fa fa-plus"></i> Create Role
+  </button>
+
+</div>
+
+
+  <!-- Table -->
+  <div class="table-wrapper">
+    <table class="layout-table">
+      <thead>
+        <tr>
+          <th>S.No</th>
+          <th>First Name</th>
+          <th>Last Name</th>
+          <th>Mobile Number</th>
+          <th>Address</th>
+          <th>Aadhar No</th>
+          <th>Role</th>
+          <th>View</th>
+          <th>Edit</th>
+          <th>Delete</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <tr *ngFor="let c of paginatedCustomers; let i = index">
+          <td>{{ (currentPage - 1) * pageSize + i + 1 }}</td>
+          <td>{{ c.firstName }}</td>
+          <td>{{ c.lastName }}</td>
+          <td>{{c.mobileNo}}</td>
+          <td>{{ c.address }}</td>
+          <td>{{ c.aadharNo }}</td>
+          <td>{{c.role}}</td>
+          <td><i class="fa fa-eye circle-icon view" (click)="viewRole(c.roleId!)"></i></td>
+          <td><i class="fa fa-pencil circle-icon edit" (click)="editRole(c)"></i></td>
+          <td><i class="fa fa-trash circle-icon delete" (click)="deleteRole(c.roleId!)"></i></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Pagination -->
+  <div class="pagination-container">
+    <div class="pagination">
+      <button [disabled]="currentPage === 1" (click)="prevPage()">&laquo; Prev</button>
+
+      <button *ngFor="let page of totalPagesArray"
+              [ngClass]="{'active': page === currentPage}"
+              (click)="goToPage(page)">
+        {{ page }}
+      </button>
+
+      <button [disabled]="currentPage === totalPages" (click)="nextPage()">Next &raquo;</button>
+    </div>
+
+    <button class="btn btn-danger pagination-home-btn" (click)="goHome()">Home</button>
+  </div>
+</div>

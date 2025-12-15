@@ -10,6 +10,20 @@ import { Booking } from '../../../models/bookings';
   styleUrls: ['./list-booking.component.css']
 })
 export class ListBookingComponent implements OnInit {
+  
+getTotalPaid(b: any): number {
+  return (b.advance1 || 0)
+       + (b.advance2 || 0)
+       + (b.advance3 || 0)
+       + (b.advance4 || 0);
+}
+
+getBalance(b: any): number {
+  const price = b.price || 0;
+  const paid = this.getTotalPaid(b);
+  return price - paid;
+}
+
 
   bookingList: Booking[] = [];
   loading: boolean = true;

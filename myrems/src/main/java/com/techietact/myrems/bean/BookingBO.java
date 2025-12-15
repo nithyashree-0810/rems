@@ -1,5 +1,7 @@
 package com.techietact.myrems.bean;
 
+import java.util.Date;
+
 import lombok.Data;
 
 @Data
@@ -31,7 +33,17 @@ public class BookingBO {
 	
 	private String panNo;
 	
-	private int paidAmount;
+	private int advance1;
 	
-
+	private int advance2;
+	
+	private int advance3;
+	
+	private int advance4;
+	
+	private String status;
+	
+    private Date regDate;
+    
+    private Long regNo;
 }

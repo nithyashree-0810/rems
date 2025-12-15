@@ -1,8 +1,8 @@
 /* ---------------- CONTAINER ---------------- */
 .booking-list-container {
-  width: 90%;
+  width: 88%;                    /* slightly reduced */
   margin: auto;
-  padding-top: 40px;
+  padding-top: 28px;             /* reduced */
   font-family: 'Segoe UI', sans-serif;
 }
 
@@ -12,11 +12,11 @@
   display: flex;
   justify-content: center;
   position: relative;
-  margin-bottom: 20px;
+  margin-bottom: 16px;           /* reduced */
 }
 
 .page-title {
-  font-size: 32px;
+  font-size: 26px;               /* reduced */
   font-weight: bold;
   color: #e67e22;
   text-align: center;
@@ -29,17 +29,17 @@
   right: 0;
   top: 0;
   display: flex;
-  gap: 15px;
+  gap: 10px;                     /* reduced */
 }
 
 .btn-create,
 .btn-home {
-  padding: 10px 18px;
+  padding: 7px 14px;             /* reduced */
   border: none;
   border-radius: 5px;
   cursor: pointer;
   color: white;
-  font-size: 15px;
+  font-size: 13px;               /* reduced */
 }
 
 .btn-create { background-color: #27ae60; }
@@ -50,14 +50,14 @@
 
 /* ---------------- TABLE ---------------- */
 .table-wrapper {
-  margin-top: 40px;
+  margin-top: 24px;              /* reduced */
 }
 
 .booking-table {
   width: 100%;
   border-collapse: collapse;
   background: white;
-  border-radius: 10px;
+  border-radius: 8px;            /* reduced */
   overflow: hidden;
 }
 
@@ -68,9 +68,10 @@
 
 .booking-table th,
 .booking-table td {
-  padding: 12px;
+  padding: 8px 10px;             /* reduced */
   text-align: left;
   border-bottom: 1px solid #eee;
+  font-size: 13px;               /* reduced */
 }
 
 .booking-table tr:hover {
@@ -80,18 +81,18 @@
 /* ---------------- ACTION ICONS ---------------- */
 .actions {
   display: flex;
-  gap: 10px;
+  gap: 8px;                      /* reduced */
 }
 
 .circle-icon {
-  width: 32px;
-  height: 32px;
-  line-height: 32px;
+  width: 26px;                   /* reduced */
+  height: 26px;
+  line-height: 26px;
   border-radius: 50%;
   text-align: center;
   cursor: pointer;
   color: white;
-  font-size: 14px;
+  font-size: 12px;               /* reduced */
 }
 
 .circle-icon.view { background-color: #3498db; }
@@ -103,29 +104,29 @@
 /* ---------------- NO DATA / LOADING ---------------- */
 .no-data {
   text-align: center;
-  margin-top: 20px;
+  margin-top: 16px;              /* reduced */
   color: #888;
-  font-size: 16px;
+  font-size: 14px;               /* reduced */
 }
 
 .loading {
   text-align: center;
-  font-size: 18px;
+  font-size: 15px;               /* reduced */
   color: #555;
 }
 
 /* ---------------- PAGINATION ---------------- */
 .pagination-container {
-  margin-top: 25px;
+  margin-top: 18px;              /* reduced */
   display: flex;
   justify-content: center;
-  gap: 8px;
+  gap: 6px;                      /* reduced */
   width: 100%;
 }
 
 .pagination-container button {
-  padding: 8px 14px;
-  font-size: 14px;
+  padding: 6px 12px;             /* reduced */
+  font-size: 13px;               /* reduced */
   border: 1px solid #ddd;
   background: #ffffff;
   border-radius: 6px;

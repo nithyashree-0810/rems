@@ -1,6 +1,5 @@
 <div class="center-page">
   <div class="enquiry-card">
-    <!-- <h3>Edit Customer Enquiry</h3> -->
     <h2 style="text-align: center;">Edit Customer Enquiry</h2>
 
     <form #enquiryForm="ngForm" (ngSubmit)="onSubmit()">
@@ -9,52 +8,122 @@
       <div class="row">
         <div class="col">
           <label class="form-label">First Name:</label>
-          <input type="text" class="form-control" [(ngModel)]="customer.firstName" name="firstName" required>
+          <input
+            type="text"
+            class="form-control"
+            [(ngModel)]="customer.firstName"
+            name="firstName"
+            required
+          >
         </div>
+
         <div class="col">
           <label class="form-label">Last Name:</label>
-          <input type="text" class="form-control" [(ngModel)]="customer.lastName" name="lastName" required>
+          <input
+            type="text"
+            class="form-control"
+            [(ngModel)]="customer.lastName"
+            name="lastName"
+            required
+          >
         </div>
       </div>
 
-      <!-- Row 2: Mobile & Address -->
+      <!-- Row 2: Father Name & Mobile (SAME LINE) -->
       <div class="row">
+        <div class="col">
+          <label class="form-label">Father Name:</label>
+          <input
+            type="text"
+            class="form-control"
+            [(ngModel)]="customer.fatherName"
+            name="fatherName"
+            required
+            placeholder="Enter Father Name"
+          >
+        </div>
+
         <div class="col">
           <label class="form-label">Mobile:</label>
-          <input type="number" class="form-control" [(ngModel)]="customer.mobileNo" name="mobileNo" readonly>
+          <input
+            type="text"
+            class="form-control"
+            [(ngModel)]="customer.mobileNo"
+            name="mobileNo"
+            readonly
+          >
         </div>
+      </div>
+
+      <!-- Row 3: Address & Pincode -->
+      <div class="row">
         <div class="col">
           <label class="form-label">Address:</label>
-          <input type="text" class="form-control" [(ngModel)]="customer.address" name="address" required>
+          <input
+            type="text"
+            class="form-control"
+            [(ngModel)]="customer.address"
+            name="address"
+            required
+          >
         </div>
-      </div>
 
-      <!-- Row 3: Pincode & Email -->
-      <div class="row">
         <div class="col">
           <label class="form-label">Pincode:</label>
-          <input type="number" class="form-control" [(ngModel)]="customer.pincode" name="pincode" maxlength="6" required>
-        </div>
-        <div class="col">
-          <label class="form-label">Email:</label>
-          <input type="email" class="form-control" [(ngModel)]="customer.email" name="email">
+          <input
+            type="text"
+            class="form-control"
+            [(ngModel)]="customer.pincode"
+            name="pincode"
+            maxlength="6"
+            required
+          >
         </div>
       </div>
 
-      <!-- Row 4: Aadhaar (single column) -->
+      <!-- Row 4: Email & Aadhaar -->
       <div class="row">
         <div class="col">
+          <label class="form-label">Email:</label>
+          <input
+            type="email"
+            class="form-control"
+            [(ngModel)]="customer.email"
+            name="email"
+          >
+        </div>
+
+        <div class="col">
           <label class="form-label">Aadhaar:</label>
-          <input type="number" class="form-control" [(ngModel)]="customer.aadharNo" name="aadharNo" maxlength="12">
+          <input
+            type="text"
+            class="form-control"
+            [(ngModel)]="customer.aadharNo"
+            name="aadharNo"
+            maxlength="12"
+          >
         </div>
       </div>
 
       <!-- Buttons Row -->
-      <div class="buttons-row mt-3">
-        <button type="submit" class="btn btn-primary" [disabled]="!enquiryForm.valid">Update Customer</button>
-        <button type="button" class="btn btn-secondary" (click)="goHome()">Home</button>
+      <div class="buttons-row mt-3 text-center">
+        <button
+          type="submit"
+          class="btn btn-primary me-2"
+          [disabled]="!enquiryForm.valid"
+        >
+          Update Customer
+        </button>
+
+        <button
+          type="button"
+          class="btn btn-secondary"
+          (click)="goHome()"
+        >
+          Home
+        </button>
       </div>
+
     </form>
   </div>
 </div>
-

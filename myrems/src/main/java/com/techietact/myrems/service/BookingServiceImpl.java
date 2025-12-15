@@ -94,11 +94,14 @@ private EnquiryRepository enquiryRepository;
 	    book.setCustomer(booking.getCustomer());
 	    book.setSqft(booking.getSqft());
 	    book.setPrice(booking.getPrice());
-	    book.setPaidAmount(booking.getPaidAmount());
+	    book.setAdvance1(booking.getAdvance1());
+	    book.setAdvance2(booking.getAdvance2());
+	    book.setAdvance3(booking.getAdvance3());
+	    book.setAdvance4(booking.getAdvance4());
 	    book.setBalance(booking.getBalance());
 	    book.setDirection(booking.getDirection());
 
-	    // If you store customer details inside Booking entity itself:
+	    // Customer details
 	    if (booking.getCustomer() != null) {
 	        book.setAddress(booking.getCustomer().getAddress());
 	        book.setPincode(booking.getCustomer().getPincode());
@@ -106,8 +109,14 @@ private EnquiryRepository enquiryRepository;
 	        book.setPanNo(booking.getCustomer().getPanNo());
 	    }
 
+	    book.setStatus(booking.getStatus());
+	    book.setRegDate(booking.getRegDate());
+	    book.setRegNo(booking.getRegNo());
+	    // -----------------------------
+
 	    return bookingRepository.save(book);
 	}
+
 
 
 	@Override

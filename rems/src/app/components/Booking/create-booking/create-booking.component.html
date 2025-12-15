@@ -9,19 +9,20 @@
     <form #bookingForm="ngForm" (ngSubmit)="onSubmit(bookingForm)">
       <div class="form-row">
 
-        <!-- LEFT SIDE -->
+        <!-- ================= LEFT SIDE ================= -->
         <div class="form-column">
 
           <!-- LAYOUT -->
           <div class="form-group">
-            <label>Layout Name:<span style="color: red;">*</span></label>
+            <label>Layout Name:<span style="color:red">*</span></label>
             <select class="form-control"
                     name="layoutName"
                     [(ngModel)]="booking.layoutName"
                     (change)="onLayoutChange()"
                     required>
               <option value="">-- Select Layout --</option>
-              <option *ngFor="let layout of layoutList" [value]="layout.layoutName">
+              <option *ngFor="let layout of layoutList"
+                      [value]="layout.layoutName">
                 {{ layout.layoutName }}
               </option>
             </select>
@@ -29,14 +30,15 @@
 
           <!-- PLOT -->
           <div class="form-group">
-            <label>Plot No <span style="color: red;">*</span></label>
+            <label>Plot No:<span style="color:red">*</span></label>
             <select class="form-control"
                     name="selectedPlot"
                     [(ngModel)]="selectedPlot"
                     (change)="onPlotChange()"
                     required>
               <option value="">-- Select Plot --</option>
-              <option *ngFor="let p of plotList" [ngValue]="p">
+              <option *ngFor="let p of plotList"
+                      [ngValue]="p">
                 {{ p.plotNo }}
               </option>
             </select>
@@ -45,74 +47,169 @@
           <!-- PLOT DETAILS -->
           <div class="form-group">
             <label>Square Feet:</label>
-            <input type="number" class="form-control" name="sqft" readonly [(ngModel)]="booking.sqft">
+            <input type="number" class="form-control"
+                   name="sqft" readonly
+                   [(ngModel)]="booking.sqft">
           </div>
 
           <div class="form-group">
             <label>Price:</label>
-            <input type="number" class="form-control" name="price" readonly [(ngModel)]="booking.price">
+            <input type="number" class="form-control"
+                   name="price" readonly
+                   [(ngModel)]="booking.price">
           </div>
 
           <div class="form-group">
             <label>Direction:</label>
-            <input type="text" class="form-control" name="direction" readonly [(ngModel)]="booking.direction">
+            <input type="text" class="form-control"
+                   name="direction" readonly
+                   [(ngModel)]="booking.direction">
+          </div>
+
+          <!-- ADVANCE PAYMENTS -->
+          <div class="form-group">
+            <label>Advance 1:</label>
+            <input type="number" class="form-control"
+                   name="advance1"
+                   [(ngModel)]="booking.advance1"
+                   (input)="calculateBalance()">
           </div>
 
           <div class="form-group">
-            <label>Amount Paid:</label>
-            <input type="number" class="form-control" name="paidAmount"
-                   [(ngModel)]="booking.paidAmount" (input)="onPaidAmountChange()">
+            <label>Advance 2:</label>
+            <input type="number" class="form-control"
+                   name="advance2"
+                   [(ngModel)]="booking.advance2"
+                   (input)="calculateBalance()">
           </div>
 
+          <div class="form-group">
+            <label>Advance 3:</label>
+            <input type="number" class="form-control"
+                   name="advance3"
+                   [(ngModel)]="booking.advance3"
+                   (input)="calculateBalance()">
+          </div>
+
+          <div class="form-group">
+            <label>Advance 4:</label>
+            <input type="number" class="form-control"
+                   name="advance4"
+                   [(ngModel)]="booking.advance4"
+                   (input)="calculateBalance()">
+          </div>
+
+          <!-- BALANCE -->
           <div class="form-group">
             <label>Balance:</label>
-            <input type="number" class="form-control" name="balance" readonly [(ngModel)]="booking.balance">
+            <input type="number" class="form-control"
+                   name="balance"
+                   readonly
+                   [(ngModel)]="booking.balance">
           </div>
 
         </div>
 
-        <!-- RIGHT SIDE -->
+        <!-- ================= RIGHT SIDE ================= -->
         <div class="form-column">
 
           <div class="form-group">
-            <label>Mobile Number<span style="color:red">*</span></label>
-            <input type="tel" class="form-control" name="mobileNo"
+            <label>Mobile Number:<span style="color:red">*</span></label>
+            <input type="tel" class="form-control"
+                   name="mobileNo"
                    [(ngModel)]="booking.mobileNo"
-                   (blur)="onMobileChange()" required>
+                   (blur)="onMobileChange()"
+                   required>
           </div>
 
           <div class="form-group">
             <label>Customer Name:</label>
-            <input type="text" class="form-control" name="customerName" readonly [(ngModel)]="booking.customerName">
+            <input type="text" class="form-control"
+                   name="firstName"
+                   readonly
+                   [(ngModel)]="booking.firstName">
           </div>
 
           <div class="form-group">
             <label>Address:</label>
-            <input type="text" class="form-control" name="address" readonly [(ngModel)]="booking.address">
+            <input type="text" class="form-control"
+                   name="address"
+                   readonly
+                   [(ngModel)]="booking.address">
           </div>
 
           <div class="form-group">
             <label>Pincode:</label>
-            <input type="number" class="form-control" name="pincode" readonly [(ngModel)]="booking.pincode">
+            <input type="number" class="form-control"
+                   name="pincode"
+                   readonly
+                   [(ngModel)]="booking.pincode">
           </div>
 
           <div class="form-group">
             <label>Aadhaar Number:</label>
-            <input type="text" class="form-control" name="aadharNo" [(ngModel)]="booking.aadharNo">
+            <input type="text" class="form-control"
+                   name="aadharNo"
+                   [(ngModel)]="booking.aadharNo">
           </div>
 
           <div class="form-group">
             <label>PAN Number:</label>
-            <input type="text" class="form-control" name="panNo" [(ngModel)]="booking.panNo">
+            <input type="text" class="form-control"
+                   name="panNo"
+                   [(ngModel)]="booking.panNo">
+          </div>
+
+          <!-- STATUS -->
+          <div class="form-group">
+            <label>Status:<span style="color:red">*</span></label>
+            <select class="form-control"
+                    name="status"
+                    [(ngModel)]="booking.status"
+                    required>
+              <option value="">-- Select Status --</option>
+              <option value="Registered">Registered</option>
+              <option value="Unregistered">Unregistered</option>
+            </select>
+          </div>
+
+          <!-- REGISTERED DETAILS -->
+          <div *ngIf="booking.status === 'Registered'">
+
+            <div class="form-group">
+              <label>Registration Date:<span style="color:red">*</span></label>
+              <input type="date" class="form-control"
+                     name="regDate"
+                     [(ngModel)]="booking.regDate"
+                     required>
+            </div>
+
+            <div class="form-group">
+              <label>Registration No:<span style="color:red">*</span></label>
+              <input type="number" class="form-control"
+                     name="regNo"
+                     [(ngModel)]="booking.regNo"
+                     required>
+            </div>
+
           </div>
 
         </div>
-
       </div>
 
+      <!-- ACTION BUTTONS -->
       <div class="action-buttons">
-        <button type="submit" class="btn btn-success" [disabled]="!bookingForm.valid">Book</button>
-        <button type="button" class="btn btn-danger" (click)="goHome()">Home</button>
+        <button type="submit"
+                class="btn btn-success"
+                [disabled]="!bookingForm.valid">
+          Book
+        </button>
+
+        <button type="button"
+                class="btn btn-danger"
+                (click)="goHome()">
+          Home
+        </button>
       </div>
 
     </form>

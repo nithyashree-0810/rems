@@ -1,38 +1,37 @@
 <div class="container">
   <h2>List of Customers</h2>
 
-  <!-- Search Inputs -->
-  <div class="search-container" style="display: flex; gap: 10px; justify-content: center; margin-bottom: 15px;">
-  <input
-    type="text"
-    placeholder="Search Name"
-    [(ngModel)]="searchName"
-    (input)="onSearch()"
-    style="padding: 10px 20px; border-radius: 20px; border: 1px solid #ccc; width: 200px;"
-  />
-  <input
-    type="text"
-    placeholder="Search Mobile Number"
-    [(ngModel)]="searchMobile"
-    (input)="onSearch()"
-    style="padding: 10px 20px; border-radius: 20px; border: 1px solid #ccc; width: 200px;"
-  />
-  <button
-    class="btn btn-primary"
-    (click)="onSearch()"
-    style="padding: 10px 25px; border-radius: 10px; font-weight: 600;"
-  >
-    Search
-  </button>
-</div>
+  <!-- Search + Create Row -->
+<div class="search-create-row">
 
+  <!-- Search Section (CENTER) -->
+  <div class="search-container">
+    <input
+      type="text"
+      placeholder="Search Name"
+      [(ngModel)]="searchName"
+      (input)="onSearch()"
+    />
 
-  <!-- Create Button -->
-  <div class="top-buttons">
-    <button class="btn btn-success" (click)="createEnquiry()">
-      <i class="fa fa-plus"></i> Create Customer
+    <input
+      type="text"
+      placeholder="Search Mobile Number"
+      [(ngModel)]="searchMobile"
+      (input)="onSearch()"
+    />
+
+    <button class="btn btn-primary" (click)="onSearch()">
+      Search
     </button>
   </div>
+
+  <!-- Create Button (RIGHT) -->
+  <button class="btn btn-success create-btn" (click)="createEnquiry()">
+    <i class="fa fa-plus"></i> Create Customer
+  </button>
+
+</div>
+
 
   <!-- Table -->
   <div class="table-wrapper">
@@ -42,6 +41,7 @@
           <th>S.No</th>
           <th>First Name</th>
           <th>Last Name</th>
+          <th>Father Name</th>
           <th>Address</th>
           <th>Mobile Number</th>
           <th>View</th>
@@ -55,6 +55,7 @@
           <td>{{ (currentPage - 1) * pageSize + i + 1 }}</td>
           <td>{{ c.firstName }}</td>
           <td>{{ c.lastName }}</td>
+          <td>{{c.fatherName}}</td>
           <td>{{ c.address }}</td>
           <td>{{ c.mobileNo }}</td>
           <td><i class="fa fa-eye circle-icon view" (click)="viewcustomer(c.mobileNo)"></i></td>

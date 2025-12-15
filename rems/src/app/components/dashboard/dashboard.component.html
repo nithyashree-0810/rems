@@ -26,6 +26,8 @@
       <ul class="dropdown-menu" *ngIf="activeDropdown === 'customer'">
         <li><a routerLink="/create-enquiry">Create Enquiry</a></li>
         <li><a routerLink="/view-enquiries">View Enquiries</a></li>
+        <li><a routerLink="/create-role">Create Role</a></li>
+        <li><a routerLink="/list-role">View Role</a></li>
       </ul>
     </li>
 
@@ -69,33 +71,32 @@
 
 <!-- PREMIUM STAT CARDS -->
 <div class="stats-wrapper">
-
-  <div class="stat-premium-card">
-    <div class="icon-circle">
+<div class="stat-premium-card" (click)="goTo('layouts')">
+ <div class="icon-circle">
       <i class="fa-solid fa-map-location-dot"></i>
     </div>
     <h2>{{ totalLayouts }}</h2>
     <p>Total Layouts</p>
   </div>
 
-  <div class="stat-premium-card">
-    <div class="icon-circle">
+  <div class="stat-premium-card" (click)="goTo('plots')">
+ <div class="icon-circle">
       <i class="fa-solid fa-vector-square"></i>
     </div>
     <h2>{{ totalPlots }}</h2>
     <p>Total Plots</p>
   </div>
 
-  <div class="stat-premium-card">
-    <div class="icon-circle">
+<div class="stat-premium-card" (click)="goTo('enquiries')">
+<div class="icon-circle">
       <i class="fa-solid fa-user-group"></i>
     </div>
     <h2>{{ totalEnquiries }}</h2>
     <p>Customer Enquiries</p>
   </div>
 
-  <div class="stat-premium-card">
-    <div class="icon-circle">
+<div class="stat-premium-card" (click)="goTo('bookings')">
+ <div class="icon-circle">
       <i class="fa-solid fa-file-signature"></i>
     </div>
     <h2>{{ totalBookings }}</h2>

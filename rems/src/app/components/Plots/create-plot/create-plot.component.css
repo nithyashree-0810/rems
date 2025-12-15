@@ -67,9 +67,25 @@
 }
 
 .form-group {
-  flex: 1;
+  flex: 1; 
   display: flex;
   flex-direction: column;
+  position: relative;
+}
+
+/* Floating Error Message (NO alignment change) */
+.form-group .error {
+  position: absolute;
+  bottom: -15px;
+  left: 0;
+  color: red;
+  font-size: 11px;
+  margin: 0;
+}
+
+/* REMOVE old error margin — important */
+.error {
+  margin-top: 0 !important;
 }
 
 /* Labels */
@@ -88,7 +104,7 @@
 .form-group input,
 .form-group select {
   padding: 4px 8px;
-  height: 28px;                 /* smaller */
+  height: 28px;
   font-size: 13px;
   border: 1px solid #ccc;
   border-radius: 4px;
@@ -99,17 +115,10 @@
 /* Checkbox Size Reduced */
 .form-group input[type="checkbox"] {
   transform: scale(0.8);
-  accent-color: #28a745;        /* modern checkbox color */
+  accent-color: #28a745;
   cursor: pointer;
   width: 14px;
   height: 14px;
-}
-
-/* Error Message */
-.error {
-  color: red;
-  font-size: 11px;
-  margin-top: 2px;
 }
 
 /* Angular validation */
@@ -119,11 +128,11 @@ select.ng-invalid.ng-touched {
 }
 
 /* ============================
-   BUTTONS
+   BUTTONS (FIXED HERE)
 ============================ */
 .form-buttons {
   display: flex;
-  justify-content: center;
+  justify-content: flex-end;   /* BOTH buttons RIGHT */
   gap: 12px;
   margin-top: 15px;
 }

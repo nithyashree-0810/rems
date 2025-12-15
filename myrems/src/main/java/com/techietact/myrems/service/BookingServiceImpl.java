@@ -94,7 +94,10 @@ private EnquiryRepository enquiryRepository;
 	    book.setCustomer(booking.getCustomer());
 	    book.setSqft(booking.getSqft());
 	    book.setPrice(booking.getPrice());
-	    book.setPaidAmount(booking.getPaidAmount());
+	    book.setAdvance1(booking.getAdvance1());
+	    book.setAdvance2(booking.getAdvance2());
+	    book.setAdvance3(booking.getAdvance3());
+	    book.setAdvance4(booking.getAdvance4());
 	    book.setBalance(booking.getBalance());
 	    book.setDirection(booking.getDirection());
 

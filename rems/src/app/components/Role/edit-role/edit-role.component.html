@@ -1,0 +1,77 @@
+<div class="center-page">
+  <div class="enquiry-card">
+    <h2>Edit Role</h2>
+
+    <form #roleForm="ngForm" (ngSubmit)="onSubmit(roleForm)">
+
+      <!-- Row 1 -->
+      <div class="row">
+        <div class="col">
+          <label>First Name</label>
+          <input type="text" [(ngModel)]="role.firstName" name="firstName" required>
+        </div>
+
+        <div class="col">
+          <label>Last Name</label>
+          <input type="text" [(ngModel)]="role.lastName" name="lastName" required>
+        </div>
+      </div>
+
+      <!-- Row 2 -->
+      <div class="row">
+        <div class="col">
+          <label>Mobile</label>
+          <input type="text" [(ngModel)]="role.mobileNo" name="mobileNo" readonly>
+        </div>
+
+        <div class="col">
+          <label>Email (optional)</label>
+          <input type="email" [(ngModel)]="role.email" name="email">
+        </div>
+      </div>
+
+      <!-- Row 3 -->
+      <div class="row">
+        <div class="col">
+          <label>Address</label>
+          <input type="text" [(ngModel)]="role.address" name="address" required>
+        </div>
+
+        <div class="col">
+          <label>Aadhaar</label>
+          <input type="text" [(ngModel)]="role.aadharNo" name="aadharNo" required>
+        </div>
+      </div>
+
+      <!-- Row 4 -->
+      <div class="row">
+        <div class="col">
+          <label>PAN No (optional)</label>
+          <input type="text" [(ngModel)]="role.panNo" name="panNo">
+        </div>
+
+        <div class="col">
+          <label>Role</label>
+         <select multiple [(ngModel)]="selectedRoles" name="selectedRoles" required>
+  <option value="Agent">Agent</option>
+  <option value="Owner">Owner</option>
+</select>
+
+        </div>
+      </div>
+
+      <!-- Buttons -->
+      <div class="buttons-row">
+        <button class="btn btn-create" type="submit" [disabled]="!roleForm.valid">
+          Update
+        </button>
+
+        <button class="btn btn-home" type="button" (click)="goHome()">
+          Home
+        </button>
+      </div>
+
+    </form>
+  </div>
+</div>
+

@@ -1,8 +1,8 @@
 /* Container */
 .form-container {
-  max-width: 900px;
-  padding: 25px 30px;
-  margin: 30px auto;
+  max-width: 720px;              /* reduced again */
+  padding: 14px 16px;            /* reduced */
+  margin: 16px auto;             /* reduced */
   background: #fff;
   border-radius: 8px;
   box-shadow: 0 4px 12px rgba(0,0,0,0.1);
@@ -13,33 +13,35 @@
 .form-title {
   text-align: center;
   color: #FF9900;
-  font-size: 1.8rem;
-  margin-bottom: 30px;
+  font-size: 1.25rem;            /* reduced */
+  margin-bottom: 16px;           /* reduced */
 }
 
-/* 🔥 Two fields per row */
+/* Two fields per row */
 .row {
   display: grid;
-  grid-template-columns: 200px 1fr;
+  grid-template-columns: 140px 1fr; /* reduced label width */
   align-items: center;
-  gap: 15px;
-  margin-bottom: 15px;
+  gap: 8px;                        /* reduced */
+  margin-bottom: 8px;              /* reduced */
 }
 
 /* Label */
 .label {
   font-weight: 600;
   color: #333;
+  font-size: 0.85rem;              /* reduced */
 }
 
 /* Input */
 .value {
-  padding: 8px 10px;
-  font-size: 1rem;
+  padding: 5px 7px;                /* reduced */
+  font-size: 0.85rem;              /* reduced */
   border: 1px solid #ccc;
   border-radius: 5px;
   width: 100%;
   box-sizing: border-box;
+  height: 30px;                    /* reduced */
 }
 
 /* ========================= */
@@ -47,30 +49,32 @@
 /* ========================= */
 .actions {
   display: flex;
-  justify-content: center;
-  gap: 15px;
-  margin-top: 30px;
+  justify-content: flex-end;
+  gap: 8px;                        /* reduced */
+  margin-top: 16px;               /* reduced */
 }
 
 /* Save button */
 .save-btn {
   background-color: #28a745;
-  padding: 10px 25px;
+  padding: 7px 16px;               /* reduced */
   border-radius: 5px;
   border: none;
   color: white;
   font-weight: bold;
+  font-size: 0.85rem;              /* reduced */
   cursor: pointer;
 }
 
-/* Cancel button */
+/* Home button */
 .home-btn {
   background-color: #dc3545;
-  padding: 10px 25px;
+  padding: 7px 16px;               /* reduced */
   border-radius: 5px;
   border: none;
   color: white;
   font-weight: bold;
+  font-size: 0.85rem;              /* reduced */
   cursor: pointer;
 }
 
@@ -82,7 +86,7 @@
 /* Error */
 .error {
   color: red;
-  font-size: 12px;
+  font-size: 10.5px;               /* reduced */
 }
 
 /* Invalid highlight */
@@ -94,12 +98,12 @@ select.ng-invalid.ng-touched {
 /* Loading */
 .loading {
   text-align: center;
-  font-size: 1.2rem;
+  font-size: 0.95rem;              /* reduced */
   color: #555;
-  padding: 50px 0;
+  padding: 24px 0;                 /* reduced */
 }
 
-/* 🔥 Mobile Responsive */
+/* Mobile Responsive */
 @media (max-width: 600px) {
   .row {
     grid-template-columns: 1fr;
@@ -107,6 +111,7 @@ select.ng-invalid.ng-touched {
 
   .actions {
     flex-direction: column;
+    align-items: stretch;
   }
 
   .save-btn,

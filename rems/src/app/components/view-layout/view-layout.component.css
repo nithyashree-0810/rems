@@ -37,4 +37,7 @@
   border: none;
   border-radius: 6px;
   cursor: pointer;
+  margin-left: auto;   /* ✅ MOVE TO RIGHT */
+  display: block;      /* ✅ REQUIRED */
+
 }

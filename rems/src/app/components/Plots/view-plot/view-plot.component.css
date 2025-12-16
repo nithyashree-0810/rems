@@ -38,3 +38,10 @@
   border-radius: 6px;
   cursor: pointer;
 }
+.btn-row {
+  display: flex;
+  justify-content: flex-end; /* ✅ move both buttons to right */
+  gap: 8px;                 /* space between buttons */
+  margin-top: 20px;
+}
+

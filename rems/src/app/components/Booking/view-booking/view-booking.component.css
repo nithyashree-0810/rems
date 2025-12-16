@@ -62,3 +62,9 @@
   color: #555;
   margin-top: 40px;
 }
+.btn-row {
+  display: flex;
+  justify-content: flex-end; /* RIGHT side */
+  margin-top: 20px;
+}
+

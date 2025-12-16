@@ -43,9 +43,10 @@ input[type="tel"] {
 }
 
 .form-actions {
-  grid-column: span 2; /* full width across both columns */
+  grid-column: span 2;      /* full width */
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-end; /* ✅ move buttons to right */
+  gap: 12px;               /* space between buttons */
   margin-top: 20px;
 }
 
@@ -87,4 +88,11 @@ input[type="tel"] {
   font-size: 13px;
   display: block;
   margin-top: 4px;
+}
+.button-group {
+  grid-column: span 2;        /* ✅ TAKE FULL WIDTH OF GRID */
+  display: flex;
+  justify-content: flex-end;  /* ✅ MOVE BUTTONS TO RIGHT */
+  gap: 12px;
+  margin-top: 20px;
 }

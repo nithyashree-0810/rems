@@ -1,4 +1,4 @@
-<div class="form-container" *ngIf="!loading; else loadingTpl">
+<div class="form-container" *ngIf="!loading">
   <h2 class="form-title">Booking Details</h2>
 
   <div class="row">
@@ -85,9 +85,10 @@
     <div class="label">PAN No:</div>
     <div class="value">{{ booking.customer?.panNo }}</div>
   </div>
-
+<div class="btn-row">
   <button class="btn-success" (click)="goBack()">Back</button>
 </div>
+
 
 <ng-template #loadingTpl>
   <div class="loading">Loading booking details...</div>

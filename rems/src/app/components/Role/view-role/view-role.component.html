@@ -1,5 +1,9 @@
 <div class="form-container">
   <h2 class="form-title">View Role</h2>
+  
+  <div style="text-align:center; margin-bottom: 16px;">
+    <img *ngIf="role.profileImagePath" [src]="imageUrl(role.profileImagePath)" class="avatar-large" alt="Profile">
+  </div>
 
   <div class="row">
     <span class="label">First Name</span>

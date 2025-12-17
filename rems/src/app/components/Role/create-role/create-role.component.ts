@@ -25,6 +25,12 @@ constructor(private roleService:RoleserviceServiceService,private router:Router)
   role: ''
 };
 mobileExists: boolean = false;
+selectedImage: File | null = null;
+
+onFileChange(event: any) {
+  const file = event.target.files?.[0];
+  this.selectedImage = file || null;
+}
 
 onSubmit(form: NgForm) {
   if (form.valid) {
@@ -39,12 +45,26 @@ onSubmit(form: NgForm) {
       // 2️⃣ EMAIL OPTIONAL → If empty, skip email check
       if (!this.role.email || this.role.email.trim() === '') {
 
-        // Direct Customer Create
         this.roleService.createRole(this.role).subscribe({
-          next: () => {
-            alert('Created Successfully!');
-            form.reset();
-            this.router.navigate(['/list-role']);
+          next: (created) => {
+            if (created && created.roleId && this.selectedImage) {
+              this.roleService.uploadRoleImage(created.roleId, this.selectedImage).subscribe({
+                next: () => {
+                  alert('Created Successfully!');
+                  form.reset();
+                  this.router.navigate(['/list-role']);
+                },
+                error: () => {
+                  alert('Image upload failed');
+                  form.reset();
+                  this.router.navigate(['/list-role']);
+                }
+              });
+            } else {
+              alert('Created Successfully!');
+              form.reset();
+              this.router.navigate(['/list-role']);
+            }
           },
           error: err => alert(err.error)
         });
@@ -58,12 +78,26 @@ onSubmit(form: NgForm) {
             return;
           }
 
-          // 4️⃣ Create customer if email is NOT duplicate
           this.roleService.createRole(this.role).subscribe({
-            next: () => {
-              alert('Created Successfully!');
-              form.reset();
-              this.router.navigate(['/list-role']);
+            next: (created) => {
+              if (created && created.roleId && this.selectedImage) {
+                this.roleService.uploadRoleImage(created.roleId, this.selectedImage).subscribe({
+                  next: () => {
+                    alert('Created Successfully!');
+                    form.reset();
+                    this.router.navigate(['/list-role']);
+                  },
+                  error: () => {
+                    alert('Image upload failed');
+                    form.reset();
+                    this.router.navigate(['/list-role']);
+                  }
+                });
+              } else {
+                alert('Created Successfully!');
+                form.reset();
+                this.router.navigate(['/list-role']);
+              }
             },
             error: err => alert(err.error)
           });

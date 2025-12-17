@@ -11,8 +11,10 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.techietact.myrems.entity.Enquiry;
 import com.techietact.myrems.repository.EnquiryRepository;
@@ -76,6 +78,28 @@ public class EnquiryController {
     @GetMapping("/search/{keyword}")
     public List<Enquiry> search(@PathVariable String keyword) {
         return enquiryService.search(keyword);
+    }
+    
+    @PostMapping("/{mobileNo}/image")
+    public ResponseEntity<Enquiry> uploadImage(@PathVariable Long mobileNo, @RequestParam("file") MultipartFile file) {
+        Enquiry enquiry = enquiryService.getByMobileNo(mobileNo);
+        try {
+            String baseDir = System.getProperty("user.dir") + "/uploads/customers/";
+            java.nio.file.Files.createDirectories(java.nio.file.Path.of(baseDir));
+            String original = file.getOriginalFilename();
+            String ext = "";
+            if (original != null && original.contains(".")) {
+                ext = original.substring(original.lastIndexOf("."));
+            }
+            String filename = mobileNo + ext;
+            java.nio.file.Path path = java.nio.file.Path.of(baseDir + filename);
+            java.nio.file.Files.write(path, file.getBytes());
+            enquiry.setProfileImagePath("/uploads/customers/" + filename);
+            enquiryService.update(mobileNo, enquiry);
+            return ResponseEntity.ok(enquiry);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().build();
+        }
     }
 
 }

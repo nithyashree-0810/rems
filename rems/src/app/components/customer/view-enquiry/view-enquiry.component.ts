@@ -11,6 +11,9 @@ import { CustomerService } from '../../../services/customer.service';
 })
 export class ViewEnquiryComponent {
  customer:Enquiry=new Enquiry();
+  imageUrl(path?: string) {
+    return path ? `http://localhost:8080${path}` : '';
+  }
   constructor(private route:ActivatedRoute,private router:Router,
     private customerService:CustomerService
   ){}

@@ -32,7 +32,7 @@
             name="lastName"
             [(ngModel)]="enquiry.lastName"
             required
-            minlength="2"
+            minlength="1"
             maxlength="15"
             pattern="^[a-zA-Z]+$"
             placeholder="Enter Last Name"
@@ -118,6 +118,13 @@
           <p *ngIf="address.invalid && address.touched" class="text-danger">
             Address minimum 5 characters
           </p>
+        </div>
+      </div>
+      
+      <div class="row">
+        <div class="col">
+          <label class="dark-label">Profile Image (optional):</label>
+          <input type="file" (change)="onFileChange($event)" accept="image/*" />
         </div>
       </div>
 

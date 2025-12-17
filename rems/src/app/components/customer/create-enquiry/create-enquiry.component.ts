@@ -31,6 +31,12 @@ mobileNo: undefined as any,
     
   }
 mobileExists: boolean = false;
+selectedImage: File | null = null;
+
+onFileChange(event: any) {
+  const file = event.target.files?.[0];
+  this.selectedImage = file || null;
+}
 
 onSubmit(form: NgForm) {
   if (form.valid) {
@@ -45,12 +51,26 @@ onSubmit(form: NgForm) {
       // 2️⃣ EMAIL OPTIONAL → If empty, skip email check
       if (!this.enquiry.email || this.enquiry.email.trim() === '') {
 
-        // Direct Customer Create
         this.customerService.createCustomer(this.enquiry).subscribe({
-          next: () => {
-            alert('Customer Created Successfully!');
-            form.reset();
-            this.router.navigate(['/view-enquiries']);
+          next: (created) => {
+            if (this.selectedImage) {
+              this.customerService.uploadCustomerImage(this.enquiry.mobileNo, this.selectedImage).subscribe({
+                next: () => {
+                  alert('Customer Created Successfully!');
+                  form.reset();
+                  this.router.navigate(['/view-enquiries']);
+                },
+                error: () => {
+                  alert('Image upload failed');
+                  form.reset();
+                  this.router.navigate(['/view-enquiries']);
+                }
+              });
+            } else {
+              alert('Customer Created Successfully!');
+              form.reset();
+              this.router.navigate(['/view-enquiries']);
+            }
           },
           error: err => alert(err.error)
         });
@@ -64,12 +84,26 @@ onSubmit(form: NgForm) {
             return;
           }
 
-          // 4️⃣ Create customer if email is NOT duplicate
           this.customerService.createCustomer(this.enquiry).subscribe({
-            next: () => {
-              alert('Customer Created Successfully!');
-              form.reset();
-              this.router.navigate(['/view-enquiries']);
+            next: (created) => {
+              if (this.selectedImage) {
+                this.customerService.uploadCustomerImage(this.enquiry.mobileNo, this.selectedImage).subscribe({
+                  next: () => {
+                    alert('Customer Created Successfully!');
+                    form.reset();
+                    this.router.navigate(['/view-enquiries']);
+                  },
+                  error: () => {
+                    alert('Image upload failed');
+                    form.reset();
+                    this.router.navigate(['/view-enquiries']);
+                  }
+                });
+              } else {
+                alert('Customer Created Successfully!');
+                form.reset();
+                this.router.navigate(['/view-enquiries']);
+              }
             },
             error: err => alert(err.error)
           });

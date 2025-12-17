@@ -11,8 +11,10 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.techietact.myrems.entity.Role;
 import com.techietact.myrems.service.RoleService;
@@ -74,5 +76,27 @@ public class RoleController {
     @GetMapping("/search/{keyword}")
     public List<Role> search(@PathVariable String keyword) {
         return roleService.search(keyword);
+    }
+    
+    @PostMapping("/{roleId}/image")
+    public ResponseEntity<Role> uploadImage(@PathVariable Long roleId, @RequestParam("file") MultipartFile file) {
+        Role role = roleService.getByRoleId(roleId);
+        try {
+            String baseDir = System.getProperty("user.dir") + "/uploads/roles/";
+            java.nio.file.Files.createDirectories(java.nio.file.Path.of(baseDir));
+            String original = file.getOriginalFilename();
+            String ext = "";
+            if (original != null && original.contains(".")) {
+                ext = original.substring(original.lastIndexOf("."));
+            }
+            String filename = roleId + ext;
+            java.nio.file.Path path = java.nio.file.Path.of(baseDir + filename);
+            java.nio.file.Files.write(path, file.getBytes());
+            role.setProfileImagePath("/uploads/roles/" + filename);
+            roleService.update(roleId, role);
+            return ResponseEntity.ok(role);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().build();
+        }
     }
 }

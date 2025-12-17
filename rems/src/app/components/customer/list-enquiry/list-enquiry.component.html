@@ -38,6 +38,7 @@
     <table class="layout-table">
       <thead>
         <tr>
+          <th>Photo</th>
           <th>S.No</th>
           <th>First Name</th>
           <th>Last Name</th>
@@ -52,6 +53,9 @@
 
       <tbody>
         <tr *ngFor="let c of paginatedCustomers; let i = index">
+          <td>
+            <img *ngIf="c.profileImagePath" [src]="imageUrl(c.profileImagePath)" alt="Photo" class="avatar">
+          </td>
           <td>{{ (currentPage - 1) * pageSize + i + 1 }}</td>
           <td>{{ c.firstName }}</td>
           <td>{{ c.lastName }}</td>

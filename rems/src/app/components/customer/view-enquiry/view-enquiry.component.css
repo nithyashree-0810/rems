@@ -46,7 +46,7 @@
 
 .home-btn {
   display: block;
-  margin: 25px auto 0;
+  margin: 25px 0 0 auto;
   padding: 10px 25px;
   background: #ff6600;
   border: none;

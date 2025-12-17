@@ -28,8 +28,11 @@ export class BookingService {
     return this.httpClient.get<Booking>(`${this.apiUrl}/get/${id}`);
   }
 
-  updateBooking(id: number, booking: Booking): Observable<Booking> {
-  return this.httpClient.put<Booking>(`${this.apiUrl}/update/${id}`, booking);
+  updateBooking(id: number, booking: Partial<Booking>) {
+  return this.httpClient.put(
+    `${this.apiUrl}/update/${id}`,
+    booking
+  );
 }
 
 

@@ -1,12 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
-import { Booking } from '../../../models/bookings';
 import { BookingService } from '../../../services/booking.service';
-import { CustomerService } from '../../../services/customer.service';
 import { PlotserviceService } from '../../../services/plotservice.service';
 import { LayoutserviceService } from '../../../services/layoutservice.service';
-import { BookingRequest } from '../../../models/booking-request';
+import { CustomerService } from '../../../services/customer.service';
 
 @Component({
   selector: 'app-create-booking',
@@ -16,29 +14,30 @@ import { BookingRequest } from '../../../models/booking-request';
 })
 export class CreateBookingComponent implements OnInit {
 
-  // Selected Plot Object
   selectedPlot: any = null;
 
   booking: any = {
-    plotId: 0,
-    plotNo: '',
     layoutName: '',
+    plotId: null,
+    plotNo: '',
     sqft: 0,
     price: 0,
     direction: '',
-    paidAmount: 0,
+    advance1: 0,
+    advance2: 0,
+    advance3: 0,
+    advance4: 0,
     balance: 0,
 
-    // Customer info
-    customerName: '',
-    mobileNo: 0,
+    mobileNo: '',
     address: '',
-    pincode: 0,
-    aadharNo: '',
+    pincode: null,
+    aadharNo: null,
     panNo: '',
-    status:'',
-    regDate:'',
-    regNo:0
+
+    status: '',
+    regDate: null,
+    regNo: null
   };
 
   layoutList: any[] = [];
@@ -56,20 +55,13 @@ export class CreateBookingComponent implements OnInit {
     this.loadLayouts();
   }
 
-  // LOAD LAYOUTS
   loadLayouts() {
     this.layoutService.getLayouts().subscribe(data => {
       this.layoutList = data;
     });
   }
 
-  // LAYOUT SELECTED
-  onLayoutChange(): void {
-    if (!this.booking.layoutName) {
-      this.plotList = [];
-      return;
-    }
-
+  onLayoutChange() {
     this.plotService.getPlotsByLayout(this.booking.layoutName).subscribe({
       next: plots => {
         this.plotList = plots.filter(p => !p.booked);
@@ -77,78 +69,79 @@ export class CreateBookingComponent implements OnInit {
     });
   }
 
-  // PLOT SELECTED
-  onPlotChange(): void {
+  onPlotChange() {
     if (!this.selectedPlot) return;
 
     const p = this.selectedPlot;
-
     this.booking.plotId = p.plotId;
     this.booking.plotNo = p.plotNo;
     this.booking.sqft = p.sqft;
-    this.booking.direction = p.direction;
     this.booking.price = p.price;
+    this.booking.direction = p.direction;
 
-    this.onPaidAmountChange();
+    this.calculateBalance();
   }
 
-  // WHEN MOBILE ENTERED
-  onMobileChange(): void {
-    const mobile = this.booking.mobileNo;
-    if (!mobile) return;
+  onMobileChange() {
+    if (!this.booking.mobileNo) return;
 
-    this.customerService.getCustomerByMobile(mobile).subscribe({
+    this.customerService.getCustomerByMobile(this.booking.mobileNo).subscribe({
       next: c => {
-        this.booking.customerName = c.firstName;
+        this.booking.firstName=c.firstName;
         this.booking.address = c.address;
         this.booking.pincode = c.pincode;
         this.booking.aadharNo = c.aadharNo;
         this.booking.panNo = c.panNo;
       },
-      error: () => alert("Customer not found!")
+      error: () => alert('Customer not found')
     });
   }
 
-  // BALANCE CALC
-  onPaidAmountChange(): void {
-    this.booking.balance = this.booking.price - (this.booking.paidAmount || 0);
+  calculateBalance() {
+    const totalAdvance =
+      (+this.booking.advance1 || 0) +
+      (+this.booking.advance2 || 0) +
+      (+this.booking.advance3 || 0) +
+      (+this.booking.advance4 || 0);
+
+    this.booking.balance = this.booking.price - totalAdvance;
   }
 
-  // SUBMIT BOOKING
   onSubmit(form: NgForm) {
     if (form.invalid) return;
 
-    // FINAL request body that matches backend entity
-    const requestBody: BookingRequest = {
+    const requestBody = {
       plot: { plotId: this.booking.plotId },
       plotNo: this.booking.plotNo,
-
       layout: { layoutName: this.booking.layoutName },
-
       customer: { mobileNo: this.booking.mobileNo },
-
+      
       sqft: this.booking.sqft,
       price: this.booking.price,
       direction: this.booking.direction,
-      paidAmount: this.booking.paidAmount,
+
+      advance1: this.booking.advance1,
+      advance2: this.booking.advance2,
+      advance3: this.booking.advance3,
+      advance4: this.booking.advance4,
       balance: this.booking.balance,
 
       address: this.booking.address,
       pincode: this.booking.pincode,
       aadharNo: this.booking.aadharNo,
       panNo: this.booking.panNo,
-      status:this.booking.status,
-      regDate:this.booking.regDate,
-      regNo:this.booking.regNo
+
+      status: this.booking.status,
+      regDate: this.booking.status === 'Registered' ? this.booking.regDate : null,
+      regNo: this.booking.status === 'Registered' ? this.booking.regNo : null
     };
 
     this.bookingService.createBooking(requestBody).subscribe({
       next: () => {
-        alert("Booking Saved Successfully!");
-        form.reset();
+        alert('Booking Saved Successfully');
         this.router.navigate(['/booking-history']);
       },
-      error: () => alert("Booking Failed!")
+      error: () => alert('Booking Failed')
     });
   }
 
@@ -156,7 +149,7 @@ export class CreateBookingComponent implements OnInit {
     this.router.navigate(['/dashboard']);
   }
 
-  viewBookings() {
+  viewBookings() { 
     this.router.navigate(['/booking-history']);
-  }
+   }
 }

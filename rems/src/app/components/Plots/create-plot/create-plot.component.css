@@ -128,11 +128,11 @@ select.ng-invalid.ng-touched {
 }
 
 /* ============================
-   BUTTONS
+   BUTTONS (FIXED HERE)
 ============================ */
 .form-buttons {
   display: flex;
-  justify-content: center;
+  justify-content: flex-end;   /* BOTH buttons RIGHT */
   gap: 12px;
   margin-top: 15px;
 }

@@ -1,6 +1,10 @@
 
 <div class="form-container">
   <h2 class="form-title">View Customer</h2>
+  
+  <div style="text-align:center; margin-bottom: 16px;">
+    <img *ngIf="customer.profileImagePath" [src]="imageUrl(customer.profileImagePath)" class="avatar-large" alt="Profile">
+  </div>
 
   <div class="row">
     <i class="fa fa-user icon"></i>

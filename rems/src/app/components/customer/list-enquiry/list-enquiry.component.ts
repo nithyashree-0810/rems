@@ -23,6 +23,10 @@ export class ListEnquiryComponent {
   currentPage: number = 1;
   totalPagesArray: number[] = [];
 
+  imageUrl(path?: string) {
+    return path ? `http://localhost:8080${path}` : '';
+  }
+
   constructor(private customerService: CustomerService, private router: Router) {}
 
   ngOnInit(): void {

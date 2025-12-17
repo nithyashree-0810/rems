@@ -47,4 +47,10 @@ export class RoleserviceServiceService {
     { responseType: 'text' }   // 🔥 IMPORTANT
   );
 }
+
+uploadRoleImage(roleId: number, file: File) {
+  const form = new FormData();
+  form.append('file', file);
+  return this.http.post<Role>(`${this.baseUrl}/${roleId}/image`, form);
+}
 }

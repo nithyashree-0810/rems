@@ -30,6 +30,8 @@ public class Enquiry {
 	private Long aadharNo;
 
 	private String panNo;
+	
+	private String profileImagePath;
 
 	@Column(name = "created_date", columnDefinition = "DATETIME")
 	private LocalDateTime createdDate;

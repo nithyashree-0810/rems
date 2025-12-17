@@ -2,8 +2,9 @@ package com.techietact.myrems.helper;
 
 import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.Iterator;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellType;
@@ -18,64 +19,84 @@ import com.techietact.myrems.repository.LayoutRepository;
 
 public class ExcelHelper {
 
-    public static List<Plot> convertExcelToPlots(InputStream is, LayoutRepository layoutRepo) {
+	public static List<Plot> convertExcelToPlots(InputStream is, LayoutRepository layoutRepo) {
 
-        List<Plot> plots = new ArrayList<>();
+	    List<Plot> plots = new ArrayList<>();
 
-        try (Workbook workbook = new XSSFWorkbook(is)) {
+	    try (Workbook workbook = new XSSFWorkbook(is)) {
 
-            Sheet sheet = workbook.getSheetAt(0);
-            Iterator<Row> rows = sheet.iterator();
-            int rowNumber = 0;
+	        Sheet sheet = workbook.getSheetAt(0);
 
-            while (rows.hasNext()) {
-                Row currentRow = rows.next();
+	        // 1️⃣ Read header row
+	        Row headerRow = sheet.getRow(0);
+	        Map<String, Integer> colMap = new HashMap<>();
 
-                if (rowNumber == 0) {
-                    rowNumber++;
-                    continue;
-                }
+	        for (Cell cell : headerRow) {
+	            colMap.put(cell.getStringCellValue().trim().toLowerCase(), cell.getColumnIndex());
+	        }
 
-                Plot plot = new Plot();
+	        // 2️⃣ Read data rows
+	        for (int i = 1; i <= sheet.getLastRowNum(); i++) {
 
-                plot.setPlotNo(getStringCell(currentRow.getCell(0)));
-                plot.setSqft((int) getNumericCell(currentRow.getCell(1)));
-                plot.setDirection(getStringCell(currentRow.getCell(2)));
+	            Row row = sheet.getRow(i);
+	            if (row == null) continue;
 
-                plot.setBreadthOne(getNumericCell(currentRow.getCell(3)));
-                plot.setBreadthTwo(getNumericCell(currentRow.getCell(4)));
-                plot.setLengthOne(getNumericCell(currentRow.getCell(5)));
-                plot.setLengthTwo(getNumericCell(currentRow.getCell(6)));
+	            Plot plot = new Plot();
 
-                plot.setPrice(getNumericCell(currentRow.getCell(7)));
-                plot.setTotalSqft(getNumericCell(currentRow.getCell(8)));
+	            plot.setPlotNo(getStringCell(row.getCell(colMap.get("plot_no"))));
+	            plot.setSqft((int) getNumericCell(row.getCell(colMap.get("sqft"))));
+	            plot.setDirection(getStringCell(row.getCell(colMap.get("direction"))));
 
-                plot.setAddress(getStringCell(currentRow.getCell(9)));
-                plot.setMobile((long) getNumericCell(currentRow.getCell(10)));
-                plot.setOwnerName(getStringCell(currentRow.getCell(11)));
-                plot.setEmail(getStringCell(currentRow.getCell(12)));
+	            plot.setBreadthOne(getNumericCell(row.getCell(colMap.get("breadth_one"))));
+	            plot.setBreadthTwo(getNumericCell(row.getCell(colMap.get("breadth_two"))));
+	            plot.setLengthOne(getNumericCell(row.getCell(colMap.get("length_one"))));
+	            plot.setLengthTwo(getNumericCell(row.getCell(colMap.get("length_two"))));
 
-                plot.setBooked(getBooleanCell(currentRow.getCell(13)));
+	            plot.setPrice(getNumericCell(row.getCell(colMap.get("price"))));
+	            plot.setTotalSqft(getNumericCell(row.getCell(colMap.get("total_sqft"))));
 
-                String layoutName = getStringCell(currentRow.getCell(14));
+	            plot.setAddress(getStringCell(row.getCell(colMap.get("address"))));
+	            plot.setMobile((long) getNumericCell(row.getCell(colMap.get("mobile"))));
+	            plot.setOwnerName(getStringCell(row.getCell(colMap.get("owner_name"))));
+	            plot.setEmail(getStringCell(row.getCell(colMap.get("email"))));
 
-                if (layoutName != null && !layoutName.isEmpty()) {
-                    Layout layout = layoutRepo.getByLayoutName(layoutName)
-                            .orElseThrow(() -> new RuntimeException("Layout not found: " + layoutName));
-                    plot.setLayout(layout);
-                }
+	            plot.setDtcpApproved(
+	                    colMap.containsKey("dtcp_approved")
+	                            ? getBooleanCell(getCell(row, colMap, "dtcp_approved"))
+	                            : false
+	            );
 
-                plots.add(plot);
-            }
+	            plot.setReraApproved(
+	                    colMap.containsKey("rera_approved")
+	                            ? getBooleanCell(getCell(row, colMap, "rera_approved"))
+	                            : false
+	            );
+	            plot.setBooked(getBooleanCell(row.getCell(colMap.get("booked"))));
 
-            return plots;
+	            // Layout mapping
+	            String layoutName = getStringCell(row.getCell(colMap.get("layout_name")));
+	            Layout layout = layoutRepo.getByLayoutName(layoutName)
+	                    .orElseThrow(() -> new RuntimeException("Layout not found: " + layoutName));
+	            plot.setLayout(layout);
 
-        } catch (Exception e) {
-            throw new RuntimeException("Failed to parse Excel file: " + e.getMessage());
-        }
-    }
+	            plots.add(plot);
+	        }
 
-    private static String getStringCell(Cell cell) {
+	        return plots;
+
+	    } catch (Exception e) {
+	        throw new RuntimeException("Failed to parse Excel file: " + e.getMessage());
+	    }
+	}
+
+
+    private static Cell getCell(Row row, Map<String, Integer> colMap, String string) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
+	private static String getStringCell(Cell cell) {
         if (cell == null) return "";
         if (cell.getCellType() == CellType.STRING) return cell.getStringCellValue().trim();
         if (cell.getCellType() == CellType.NUMERIC) return String.valueOf((long) cell.getNumericCellValue());

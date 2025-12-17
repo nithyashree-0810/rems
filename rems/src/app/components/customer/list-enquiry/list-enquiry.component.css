@@ -210,3 +210,11 @@ h2 {
   transform: scale(1.05);
   background-color: #b92c38;
 }
+
+.avatar {
+  width: 40px;
+  height: 40px;
+  object-fit: cover;
+  border-radius: 50%;
+  border: 2px solid #eee;
+}

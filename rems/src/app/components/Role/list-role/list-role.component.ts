@@ -15,11 +15,11 @@ export class ListRoleComponent {
  
    allData: Role[] = [];                // All loaded customers
    filteredData: Role[] = [];           // Data filtered by search
-   paginatedCustomers: Role[] = [];    // Current page data
+  paginatedCustomers: Role[] = [];    // Current page data
  
-   totalPages: number = 0;
-   pageSize: number = 5;
-   currentPage: number = 1;
+  totalPages: number = 0;
+  pageSize: number = 10;
+  currentPage: number = 1;
   totalPagesArray: number[] = [];
 
   constructor(private roleService:RoleserviceServiceService, private router: Router) {}

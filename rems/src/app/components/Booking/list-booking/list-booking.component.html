@@ -35,7 +35,7 @@
       </thead>
 
       <tbody>
-        <tr *ngFor="let b of bookingList">
+        <tr *ngFor="let b of paginatedBookings">
           <td>{{ b.bookingId }}</td>
           <td>{{ b.layout?.layoutName }}</td>
           <td>{{ b.plot?.plotNo }}</td>
@@ -69,6 +69,18 @@
     </table>
   </div>
 
+  <div class="pagination-container" *ngIf="!loading && bookingList.length > 0">
+    <div class="pagination">
+      <button [disabled]="currentPage === 1" (click)="prevPage()">&laquo; Prev</button>
+      <button *ngFor="let page of totalPagesArray"
+              [ngClass]="{'active': page === currentPage}"
+              (click)="goToPage(page)">
+        {{ page }}
+      </button>
+      <button [disabled]="currentPage === totalPages" (click)="nextPage()">Next &raquo;</button>
+    </div>
+  </div>
+  
   <!-- No Data -->
   <div *ngIf="!loading && bookingList.length === 0" class="no-data">
     No bookings found.

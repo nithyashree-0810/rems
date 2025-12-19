@@ -10,6 +10,12 @@
            placeholder="Search Name"
            class="search-input">
 
+    <input type="text"
+           [(ngModel)]="searchPlotNo"
+           (keyup)="filterPlots()"
+           placeholder="Search Plot No"
+           class="search-input">
+
     <button class="search-btn" (click)="filterPlots()">Search</button>
   </div>
 

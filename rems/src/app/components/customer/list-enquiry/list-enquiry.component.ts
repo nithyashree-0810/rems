@@ -19,7 +19,7 @@ export class ListEnquiryComponent {
   paginatedCustomers: Enquiry[] = [];    // Current page data
 
   totalPages: number = 0;
-  pageSize: number = 5;
+  pageSize: number = 10;
   currentPage: number = 1;
   totalPagesArray: number[] = [];
 

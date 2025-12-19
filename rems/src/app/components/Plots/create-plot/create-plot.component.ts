@@ -5,6 +5,8 @@ import { Router } from '@angular/router';
 import { Plot } from '../../../models/plot';
 import { Layout } from '../../../models/layout';
 import { NgForm } from '@angular/forms';
+import { RoleserviceServiceService } from '../../../services/roleservice.service.service';
+import { Role } from '../../../models/role';
 
 @Component({
   selector: 'app-create-plot',
@@ -15,6 +17,8 @@ import { NgForm } from '@angular/forms';
 export class CreatePlotComponent implements OnInit {
 
   layouts: Layout[] = [];
+  owners: Role[] = [];
+  selectedOwnerId: number | null = null;
 
   // ✅ ngModel binding object
   newPlot: Plot = {
@@ -31,6 +35,7 @@ export class CreatePlotComponent implements OnInit {
     mobile: 0,
     ownerName: '',
     email: '',
+    layoutAddress: '',
     dtcpApproved: false,
     reraApproved: false,
     booked: false,
@@ -40,11 +45,13 @@ export class CreatePlotComponent implements OnInit {
   constructor(
     private layoutService: LayoutserviceService,
     private plotService: PlotserviceService,
-    private router: Router
+    private router: Router,
+    private roleService: RoleserviceServiceService
   ) {}
 
   ngOnInit(): void {
     this.loadLayouts();
+    this.loadOwners();
   }
 
   // ✅ Get layouts from backend
@@ -61,13 +68,30 @@ export class CreatePlotComponent implements OnInit {
   }
 
   // ✅ When dropdown changes
-  onLayoutChange(event: any): void {
-    const selectedName = event.target.value;
-    // Assign the selected Layout object
-    const selectedLayout = this.layouts.find(l => l.layoutName === selectedName);
-    if (selectedLayout) {
-      this.newPlot.layout = selectedLayout;
-      console.log('Selected layout 👉', this.newPlot.layout);
+  onLayoutChange(): void {
+    const selectedLayout = this.newPlot.layout;
+    if (selectedLayout && selectedLayout.address !== undefined) {
+      this.newPlot.layoutAddress = selectedLayout.address || '';
+    }
+  }
+
+  loadOwners(): void {
+    this.roleService.getAll().subscribe({
+      next: (data: Role[]) => {
+        this.owners = (data || []).filter(r => (r.role || '').toLowerCase().includes('owner'));
+      }
+    });
+  }
+
+  onOwnerChange(): void {
+    if (!this.selectedOwnerId) return;
+    const owner = this.owners.find(o => o.roleId === this.selectedOwnerId);
+    if (owner) {
+      const fullName = [owner.firstName || '', owner.lastName || ''].join(' ').trim();
+      this.newPlot.ownerName = fullName || owner.firstName || '';
+      this.newPlot.address = owner.address || '';
+      this.newPlot.mobile = Number(owner.mobileNo) || 0;
+      this.newPlot.email = owner.email || '';
     }
   }
 

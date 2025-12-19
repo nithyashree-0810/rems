@@ -61,6 +61,26 @@ private EnquiryRepository enquiryRepository;
 	    booking.setPlot(plot);
 	    booking.setLayout(layout);
 	    booking.setCustomer(enquiry);
+	    
+	    // ------- COPY CUSTOMER DETAILS INTO BOOKING SNAPSHOT -------
+	    if (booking.getAddress() == null) {
+	        booking.setAddress(enquiry.getAddress());
+	    }
+	    if (booking.getPincode() == 0) {
+	        booking.setPincode(enquiry.getPincode());
+	    }
+	    if (booking.getAadharNo() == null) {
+	        booking.setAadharNo(enquiry.getAadharNo());
+	    }
+	    if (booking.getPanNo() == null || booking.getPanNo().isBlank()) {
+	        booking.setPanNo(enquiry.getPanNo());
+	    } else {
+	        // keep enquiry in sync if provided in booking request
+	        if (enquiry.getPanNo() == null || !booking.getPanNo().equals(enquiry.getPanNo())) {
+	            enquiry.setPanNo(booking.getPanNo());
+	            enquiryRepository.save(enquiry);
+	        }
+	    }
 
 	    // ------- MARK PLOT AS BOOKED -------
 	    plot.setBooked(true);

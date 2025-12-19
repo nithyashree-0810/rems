@@ -32,6 +32,10 @@ export interface Booking {
   advance4:number;
   balance: number;
   plotNo: string; 
+  address?: string;
+  pincode?: number;
+  aadharNo?: string;
+  panNo?: string;
   status:string;
   regDate:Date;
   regNo:number;

@@ -26,6 +26,12 @@ getBalance(b: any): number {
 
 
   bookingList: Booking[] = [];
+  filteredData: Booking[] = [];
+  paginatedBookings: Booking[] = [];
+  pageSize: number = 10;
+  currentPage: number = 1;
+  totalPages: number = 0;
+  totalPagesArray: number[] = [];
   loading: boolean = true;
 
   constructor(
@@ -42,6 +48,9 @@ getBalance(b: any): number {
     this.bookingService.getAllBookings().subscribe({
       next: data => {
         this.bookingList = data;
+        this.filteredData = [...this.bookingList];
+        this.currentPage = 1;
+        this.applyPagination();
         this.loading = false;
       },
       error: () => {
@@ -49,6 +58,33 @@ getBalance(b: any): number {
         this.loading = false;
       }
     });
+  }
+  
+  applyPagination() {
+    this.totalPages = Math.ceil(this.filteredData.length / this.pageSize);
+    this.totalPagesArray = Array.from({ length: this.totalPages }, (_, i) => i + 1);
+    const start = (this.currentPage - 1) * this.pageSize;
+    const end = start + this.pageSize;
+    this.paginatedBookings = this.filteredData.slice(start, end);
+  }
+  
+  prevPage() {
+    if (this.currentPage > 1) {
+      this.currentPage--;
+      this.applyPagination();
+    }
+  }
+  
+  nextPage() {
+    if (this.currentPage < this.totalPages) {
+      this.currentPage++;
+      this.applyPagination();
+    }
+  }
+  
+  goToPage(page: number) {
+    this.currentPage = page;
+    this.applyPagination();
   }
 
   // Navigate to create booking page
@@ -83,6 +119,8 @@ getBalance(b: any): number {
           alert('Booking deleted successfully!');
           // Remove the deleted booking from the list without reloading
           this.bookingList = this.bookingList.filter(b => b.bookingId !== id);
+          this.filteredData = [...this.bookingList];
+          this.applyPagination();
         },
         error: () => {
           alert('Failed to delete booking!');

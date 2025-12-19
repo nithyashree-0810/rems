@@ -9,4 +9,5 @@ export class Role {
     panNo!: string;
     aadharNo!: string ;
     role!:string;
+    profileImagePath?: string;
 }

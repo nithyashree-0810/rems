@@ -29,6 +29,7 @@ export class EditRoleComponent implements OnInit {
 
   // ✅ UI multiple select
   selectedRoles: string[] = [];
+  selectedImage: File | null = null;
 
   constructor(
     private route: ActivatedRoute,
@@ -54,6 +55,11 @@ export class EditRoleComponent implements OnInit {
     });
   }
 
+  onFileChange(event: any) {
+    const file = event.target.files?.[0];
+    this.selectedImage = file || null;
+  }
+
   onSubmit(form: NgForm) {
     if (form.valid) {
 
@@ -62,8 +68,21 @@ export class EditRoleComponent implements OnInit {
 
       this.roleService.updateRole(this.roleId, this.role).subscribe({
         next: () => {
-          alert('Updated Successfully');
-          this.router.navigate(['/list-role']);
+          if (this.selectedImage) {
+            this.roleService.uploadRoleImage(this.roleId, this.selectedImage).subscribe({
+              next: () => {
+                alert('Updated Successfully');
+                this.router.navigate(['/list-role']);
+              },
+              error: () => {
+                alert('Image upload failed');
+                this.router.navigate(['/list-role']);
+              }
+            });
+          } else {
+            alert('Updated Successfully');
+            this.router.navigate(['/list-role']);
+          }
         },
         error: () => alert('Update Failed')
       });

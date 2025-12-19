@@ -11,6 +11,7 @@ import { CustomerService } from '../../../services/customer.service';
 })
 export class EditEnquiryComponent {
 customer:Enquiry=new Enquiry();
+selectedImage: File | null = null;
 constructor(private route:ActivatedRoute,private router:Router,private customerService:CustomerService){}
 
 ngOnInit(): void {
@@ -23,6 +24,10 @@ ngOnInit(): void {
     });
   }
 }
+onFileChange(event: any) {
+  const file = event.target.files?.[0];
+  this.selectedImage = file || null;
+}
 onSubmit(){
   const mobileNoStr = this.route.snapshot.paramMap.get('mobileNo');
   if(mobileNoStr){
@@ -30,8 +35,21 @@ onSubmit(){
     const mobileNo = Number(mobileNoStr); // convert string to number
     this.customerService.updateCustomer(mobileNo, this.customer).subscribe({
       next: () => {
-        alert('Customer Updated Successfully');
-        this.router.navigate(['/view-enquiries']);
+        if (this.selectedImage) {
+          this.customerService.uploadCustomerImage(mobileNo, this.selectedImage).subscribe({
+            next: () => {
+              alert('Customer Updated Successfully');
+              this.router.navigate(['/view-enquiries']);
+            },
+            error: () => {
+              alert('Image upload failed');
+              this.router.navigate(['/view-enquiries']);
+            }
+          });
+        } else {
+          alert('Customer Updated Successfully');
+          this.router.navigate(['/view-enquiries']);
+        }
       },
       error: err => console.error("Update failed:", err)
     });

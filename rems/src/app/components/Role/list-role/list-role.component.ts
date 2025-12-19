@@ -20,13 +20,17 @@ export class ListRoleComponent {
    totalPages: number = 0;
    pageSize: number = 5;
    currentPage: number = 1;
-   totalPagesArray: number[] = [];
- 
-   constructor(private roleService:RoleserviceServiceService, private router: Router) {}
- 
-   ngOnInit(): void {
-     this.loadData();
-   }
+  totalPagesArray: number[] = [];
+
+  constructor(private roleService:RoleserviceServiceService, private router: Router) {}
+
+  ngOnInit(): void {
+    this.loadData();
+  }
+  
+  imageUrl(path?: string) {
+    return path ? `http://localhost:8080${path}` : '';
+  }
  
    loadData() {
   this.roleService.getAll().subscribe((data: Role[]) => {

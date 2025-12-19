@@ -59,10 +59,11 @@ public class RoleServiceImpl implements RoleService {
         if (role.getRole() != null && !role.getRole().isEmpty()) {
             roles.setRole(role.getRole()); // already comma separated string
         }
-	    roles.setAddress(role.getAddress());
+    roles.setAddress(role.getAddress());
+    roles.setProfileImagePath(role.getProfileImagePath());
         
-	    return repository.save(roles);
-	}
+    return repository.save(roles);
+}
     
 	@Override
 	public Role getByRoleId(Long roleId) {

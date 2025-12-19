@@ -54,6 +54,7 @@ public Enquiry update(Long mobileNo, Enquiry updated) {
     existing.setEmail(updated.getEmail());
     existing.setAadharNo(updated.getAadharNo());
     //existing.setPanNo(updated.getPanNo());
+    existing.setProfileImagePath(updated.getProfileImagePath());
     return repository.save(existing);
 }
 

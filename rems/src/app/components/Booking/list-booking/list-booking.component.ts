@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { BookingService } from '../../../services/booking.service';
 import { Router } from '@angular/router';
 import { Booking } from '../../../models/bookings';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-list-booking',
@@ -36,7 +37,8 @@ getBalance(b: any): number {
 
   constructor(
     private bookingService: BookingService,
-    private router: Router
+    private router: Router,
+    private toastr: ToastrService
   ) {}
 
   ngOnInit(): void {
@@ -54,7 +56,7 @@ getBalance(b: any): number {
         this.loading = false;
       },
       error: () => {
-        alert("Failed to load bookings!");
+        this.toastr.error("Failed to load bookings!");
         this.loading = false;
       }
     });
@@ -116,14 +118,14 @@ getBalance(b: any): number {
     if (confirm('Are you sure you want to delete this booking?')) {
       this.bookingService.deleteBooking(id).subscribe({
         next: () => {
-          alert('Booking deleted successfully!');
+          this.toastr.success('Booking deleted successfully!');
           // Remove the deleted booking from the list without reloading
           this.bookingList = this.bookingList.filter(b => b.bookingId !== id);
           this.filteredData = [...this.bookingList];
           this.applyPagination();
         },
         error: () => {
-          alert('Failed to delete booking!');
+          this.toastr.error('Failed to delete booking!');
         }
       });
     }

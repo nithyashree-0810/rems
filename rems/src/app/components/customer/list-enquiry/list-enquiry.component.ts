@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { Enquiry } from '../../../models/enquiry';
 import { CustomerService } from '../../../services/customer.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-list-enquiry',
@@ -27,7 +28,7 @@ export class ListEnquiryComponent {
     return path ? `http://localhost:8080${path}` : '';
   }
 
-  constructor(private customerService: CustomerService, private router: Router) {}
+  constructor(private customerService: CustomerService, private router: Router, private toastr: ToastrService) {}
 
   ngOnInit(): void {
     this.loadData();
@@ -117,7 +118,7 @@ export class ListEnquiryComponent {
     if (confirm("Are you sure to delete this customer?")) {
       this.customerService.deleteCustomer(mobileNo).subscribe({
         next: (msg) => {
-          alert(msg);
+          this.toastr.success(msg);
           this.loadData();
         },
         error: (err) => console.error("Delete failed", err)

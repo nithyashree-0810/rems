@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Enquiry } from '../../../models/enquiry';
 import { CustomerService } from '../../../services/customer.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-edit-enquiry',
@@ -12,7 +13,7 @@ import { CustomerService } from '../../../services/customer.service';
 export class EditEnquiryComponent {
 customer:Enquiry=new Enquiry();
 selectedImage: File | null = null;
-constructor(private route:ActivatedRoute,private router:Router,private customerService:CustomerService){}
+constructor(private route:ActivatedRoute,private router:Router,private customerService:CustomerService, private toastr: ToastrService){}
 
 ngOnInit(): void {
   const mobileNoStr = this.route.snapshot.paramMap.get('mobileNo');
@@ -34,23 +35,23 @@ onSubmit(){
     debugger
     const mobileNo = Number(mobileNoStr); // convert string to number
     this.customerService.updateCustomer(mobileNo, this.customer).subscribe({
-      next: () => {
-        if (this.selectedImage) {
-          this.customerService.uploadCustomerImage(mobileNo, this.selectedImage).subscribe({
             next: () => {
-              alert('Customer Updated Successfully');
-              this.router.navigate(['/view-enquiries']);
+              if (this.selectedImage) {
+                this.customerService.uploadCustomerImage(mobileNo, this.selectedImage).subscribe({
+                  next: () => {
+                    this.toastr.success('Customer Updated Successfully');
+                    this.router.navigate(['/view-enquiries']);
+                  },
+                  error: () => {
+                    this.toastr.error('Image upload failed');
+                    this.router.navigate(['/view-enquiries']);
+                  }
+                });
+              } else {
+                this.toastr.success('Customer Updated Successfully');
+                this.router.navigate(['/view-enquiries']);
+              }
             },
-            error: () => {
-              alert('Image upload failed');
-              this.router.navigate(['/view-enquiries']);
-            }
-          });
-        } else {
-          alert('Customer Updated Successfully');
-          this.router.navigate(['/view-enquiries']);
-        }
-      },
       error: err => console.error("Update failed:", err)
     });
   }

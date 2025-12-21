@@ -45,20 +45,35 @@
 
     </div>
 
-    <!-- Direction -->
-    <div class="form-row">
-      <div class="form-group">
-        <label>Direction</label>
-        <select [(ngModel)]="newPlot.direction"
-                name="direction"
-                required>
-          <option value="">Select Direction</option>
-          <option *ngFor="let d of ['EAST','WEST','NORTH','SOUTH','SOUTHEAST','SOUTHWEST','NORTHEAST','NORTHWEST']">
-            {{ d }}
-          </option>
-        </select>
-      </div>
-    </div>
+    <!-- Direction + Survey Number -->
+<div class="form-row">
+
+  <div class="form-group">
+    <label>Direction</label>
+    <select
+      [(ngModel)]="newPlot.direction"
+      name="direction"
+      required>
+      <option value="">Select Direction</option>
+      <option *ngFor="let d of ['EAST','WEST','NORTH','SOUTH','SOUTHEAST','SOUTHWEST','NORTHEAST','NORTHWEST']">
+        {{ d }}
+      </option>
+    </select>
+  </div>
+
+  <div class="form-group">
+    <label>Survey No</label>
+    <input
+      type="text"
+      [(ngModel)]="newPlot.surveyNumber"
+      name="surveyNumber"
+      required
+    />
+  </div>
+
+</div>
+
+
 
     <!-- Dimensions -->
     <div class="form-row">

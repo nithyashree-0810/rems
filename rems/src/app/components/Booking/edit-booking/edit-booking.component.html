@@ -109,6 +109,7 @@
         <option value="">-- Select --</option>
         <option value="Registered">Registered</option>
         <option value="Unregistered">Unregistered</option>
+        <option value="Cancel">Cancel</option>
       </select>
     </div>
 
@@ -124,6 +125,29 @@
         <input type="number" class="value" formControlName="regNo" />
       </div>
     </div>
+    <!-- CANCEL DETAILS -->
+<div *ngIf="showCancelFields">
+
+  <div class="row">
+    <label class="label">Refund Amount:</label>
+    <input type="number"
+           class="value"
+           formControlName="refundAmount" />
+  </div>
+
+  <div class="row">
+    <label class="label">Refund Mode:</label>
+    <select class="value" formControlName="refundMode">
+      <option value="">-- Select Mode --</option>
+      <option value="Cash">Cash</option>
+      <option value="UPI">UPI</option>
+      <option value="Bank Transfer">Bank Transfer</option>
+      <option value="Cheque">Cheque</option>
+    </select>
+  </div>
+
+</div>
+
 
     <div class="actions">
   <button type="submit" class="save-btn">Save</button>

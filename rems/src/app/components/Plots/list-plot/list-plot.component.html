@@ -34,6 +34,7 @@
           <th>S.No</th>
           <th>Layout</th>
           <th>Plot</th>
+          <th>Survey No</th>
           <th>Owner</th>
           <th>Sqft</th>
           <th>Dir</th>
@@ -50,6 +51,7 @@
           <td>{{ (currentPage - 1) * pageSize + i + 1 }}</td>
           <td>{{ plot.layout?.layoutName }}</td>
           <td>{{ plot.plotNo }}</td>
+          <td>{{ plot.surveyNumber }}</td>
           <td>{{ plot.ownerName }}</td>
           <td>{{ plot.sqft }}</td>
           <td>{{ plot.direction }}</td>

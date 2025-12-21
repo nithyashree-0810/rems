@@ -37,7 +37,10 @@ export class CreateBookingComponent implements OnInit {
 
     status: '',
     regDate: null,
-    regNo: null
+    regNo: null,
+
+    refundAmount:0,
+    mode: null
   };
 
   layoutList: any[] = [];
@@ -133,7 +136,9 @@ export class CreateBookingComponent implements OnInit {
 
       status: this.booking.status,
       regDate: this.booking.status === 'Registered' ? this.booking.regDate : null,
-      regNo: this.booking.status === 'Registered' ? this.booking.regNo : null
+      regNo: this.booking.status === 'Registered' ? this.booking.regNo : null,
+      refundAmount: this.booking.refundAmount,
+      mode: this.booking.mode
     };
 
     this.bookingService.createBooking(requestBody).subscribe({

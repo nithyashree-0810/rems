@@ -16,11 +16,12 @@ throw new Error('Method not implemented.');
   allPlots: any[] = [];   // Full list from backend
   plots: any[] = [];      // Filtered/displayed list
   searchLayoutName: string = '';
+  searchPlotNo: string = '';
   searchMessage: string = '';
 
   // Pagination
   currentPage = 1;
-  pageSize = 5;
+  pageSize = 10;
 
   constructor(private plotService: PlotserviceService, private router: Router) {}
 
@@ -46,15 +47,20 @@ throw new Error('Method not implemented.');
 
   // Live filter plots by layout name
   filterPlots(): void {
-    const key = this.searchLayoutName.trim().toLowerCase();
+    const nameKey = this.searchLayoutName.trim().toLowerCase();
+    const plotKey = this.searchPlotNo.trim().toLowerCase();
 
-    if (!key) {
+    if (!nameKey && !plotKey) {
       this.plots = [...this.allPlots]; // restore full list
       this.searchMessage = '';
     } else {
-      this.plots = this.allPlots.filter(plot =>
-        plot.layout?.layoutName?.toLowerCase().includes(key)
-      );
+      this.plots = this.allPlots.filter(plot => {
+        const layoutName = (plot.layout?.layoutName || '').toLowerCase();
+        const plotNo = (plot.plotNo || '').toLowerCase();
+        const matchesName = !nameKey || layoutName.includes(nameKey);
+        const matchesPlot = !plotKey || plotNo.includes(plotKey);
+        return matchesName && matchesPlot;
+      });
       this.searchMessage = this.plots.length === 0 ? 'No plots found' : '';
     }
 

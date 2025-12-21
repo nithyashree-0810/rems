@@ -1,57 +1,52 @@
-<div class="container layout-container">
+<div class="container">
 
-  <h2 class="page-title"><u>List of Layouts</u></h2>
+  <h2>List of Layouts</h2>
 
-  <div class="top-bar">
+  <!-- SEARCH -->
+  <div class="search-container">
+    <input type="text"
+           [(ngModel)]="searchName"
+           (keyup)="filterLayouts()"
+           placeholder="Search Name"
+           class="search-input">
 
-    <!-- SEARCH center -->
-    <div class="search-row">
-      <input 
-        type="text"
-        [(ngModel)]="searchName"
-        (keyup)="filterLayouts()"
-        placeholder="Search Name">
+    <input type="text"
+           [(ngModel)]="searchLocation"
+           (keyup)="filterLayouts()"
+           placeholder="Search Location"
+           class="search-input">
 
-      <input 
-        type="text"
-        [(ngModel)]="searchLocation"
-        (keyup)="filterLayouts()"
-        placeholder="Search Location">
-
-      <button class="search-btn" (click)="filterLayouts()">Search</button>
-    </div>
-
-    <!-- CREATE BUTTON -->
-    <button class="create-btn" (click)="navigateToCreate()">
-      + Create Layout
-    </button>
-
+    <button class="search-btn" (click)="filterLayouts()">Search</button>
   </div>
 
+  <!-- CREATE BUTTON -->
+  <div class="top-buttons">
+    <button class="btn btn-success" (click)="navigateToCreate()">
+      <i class="fa fa-plus"></i> Create Layout
+    </button>
+  </div>
 
-  <div class="table-responsive">
+  <!-- TABLE -->
+  <div class="table-wrapper">
     <table class="layout-table">
       <thead>
         <tr>
-          <th>S.NO</th>
+          <th>S.No</th>
           <th>Layout Name</th>
           <th>Total Area</th>
           <th>Total Plots</th>
-          <th>Phone No</th>
+          <th>Phone</th>
           <th>Location</th>
           <th>Address</th>
           <th>Pincode</th>
           <th>DTCP</th>
           <th>RERA</th>
-          <th>View</th>
-          <th>Edit</th>
-          <th>Delete</th>
-          <th>Create Plot</th>
+          <th>Actions</th>
         </tr>
       </thead>
 
       <tbody>
-        <tr *ngFor="let layout of layouts; let i = index">
+        <tr *ngFor="let layout of layouts | slice:(currentPage-1)*pageSize:(currentPage)*pageSize; let i = index">
           <td>{{ (currentPage - 1) * pageSize + i + 1 }}</td>
           <td>{{ layout.layoutName }}</td>
           <td>{{ layout.area }}</td>
@@ -63,50 +58,49 @@
           <td>{{ layout.dtcpApproved ? 'Yes' : 'No' }}</td>
           <td>{{ layout.reraApproved ? 'Yes' : 'No' }}</td>
 
-          <td><i class="fa fa-eye action-icon view" (click)="viewLayout(layout.layoutName)"></i></td>
-          <td><i class="fa fa-pencil action-icon edit" (click)="editLayout(layout.layoutName)"></i></td>
-          <td><i class="fa fa-trash action-icon delete" (click)="deleteLayout(layout.layoutName)"></i></td>
-
+          <!-- ✅ FIXED ACTION ICON ALIGNMENT -->
           <td>
-            <i class="fa fa-plus action-icon create" 
-               [routerLink]="['/create-plot']">
-            </i>
+            <div class="action-icons">
+              <i class="fa fa-eye circle-icon view"
+                 (click)="viewLayout(layout.layoutName)"></i>
+
+              <i class="fa fa-pencil circle-icon edit"
+                 (click)="editLayout(layout.layoutName)"></i>
+
+              <i class="fa fa-trash circle-icon delete"
+                 (click)="deleteLayout(layout.layoutName)"></i>
+
+              <i class="fa fa-plus circle-icon book"
+                 [routerLink]="['/create-plot']"></i>
+            </div>
           </td>
         </tr>
       </tbody>
     </table>
-    
   </div>
-  <div *ngIf="noRecords" class="no-records">
-  No Records Found
-</div>
 
-  
+  <!-- NO RECORDS -->
+  <div *ngIf="noRecords" class="no-records">
+    No Records Found
+  </div>
 
   <!-- PAGINATION -->
-<!-- PAGINATION + HOME SAME LINE -->
-<div class="pagination-wrapper">
-
-  <!-- CENTER Pagination -->
   <div class="pagination-container">
-    <button (click)="prevPage()" [disabled]="currentPage === 1">« Prev</button>
+    <div class="pagination">
+      <button [disabled]="currentPage === 1" (click)="prevPage()">«</button>
 
-    <button *ngFor="let page of totalPagesArray"
-            [ngClass]="{'active': page === currentPage}"
-            (click)="goToPage(page)">
-      {{ page }}
+      <button *ngFor="let page of totalPagesArray"
+              [ngClass]="{'active': page === currentPage}"
+              (click)="goToPage(page)">
+        {{ page }}
+      </button>
+
+      <button [disabled]="currentPage === totalPages" (click)="nextPage()">»</button>
+    </div>
+
+    <button class="btn btn-danger pagination-home-btn" (click)="goHome()">
+      Home
     </button>
-
-    <button (click)="nextPage()" [disabled]="currentPage === totalPages">Next »</button>
   </div>
 
-  <!-- RIGHT Home -->
-  <button class="home-btn" (click)="goHome()">Home</button>
-
 </div>
-
-
-
-
-
-    

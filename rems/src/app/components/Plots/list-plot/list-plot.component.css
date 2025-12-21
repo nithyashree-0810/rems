@@ -2,8 +2,8 @@
 .container {
   font-family: 'Segoe UI', sans-serif;
   background-color: #f5f6fa;
-  padding: 40px 20px;
-  font-size: 14px;
+  padding: 22px 11px;
+  font-size: 13px;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
@@ -13,140 +13,95 @@
 /* Header */
 h2 {
   color: #ff7e00;
-  margin-bottom: 25px;
-  font-weight: 600;
-  text-align: center;
-  font-size: 24px;
+  margin-bottom: 16px;
+  font-size: 22px;
 }
 
-/* SEARCH BAR — pill-shaped + centered */
+/* SEARCH BAR */
 .search-container {
   width: 100%;
-  max-width: 1200px;
+  max-width: 1188px;
   display: flex;
   justify-content: center;
-  align-items: center;
-  gap: 25px;
-  margin-bottom: 25px;
+  gap: 13px;
+  margin-bottom: 14px;
 }
 
-/* Rounded pill input */
 .search-input {
-  width: 350px;
-  padding: 14px 25px;
-  border-radius: 40px;
+  width: 260px;
+  padding: 9px 16px;
+  border-radius: 24px;
+  font-size: 13px;
   border: 1px solid #ccc;
-  background: white;
-  font-size: 15px;
-  outline: none;
   text-align: center;
 }
 
-.search-input:focus {
-  border-color: #3498db;
-  box-shadow: 0 0 6px rgba(52, 152, 219, 0.4);
-}
-
-/* Blue Search Button */
 .search-btn {
-  padding: 12px 30px;
-  border: none;
-  border-radius: 12px;
+  padding: 8px 20px;
+  font-size: 13px;
+  border-radius: 9px;
   background: #3498db;
   color: white;
-  font-size: 15px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: 0.2s ease;
-}
-
-.search-btn:hover {
-  background: #1d7ecb;
-  transform: scale(1.05);
-}
-
-/* Create button container */
-.top-buttons {
-  display: flex;
-  justify-content: flex-end;
-  width: 100%;
-  max-width: 1200px;
-  margin-bottom: 15px;
-}
-
-/* CREATE BUTTON FIX */
-.btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  padding: 10px 18px;
-  font-size: 15px;
-  border-radius: 10px;
   border: none;
   cursor: pointer;
-  color: white;
-  transition: 0.2s ease;
+}
+
+/* CREATE BUTTON */
+.top-buttons {
+  width: 100%;
+  max-width: 1188px;
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 13px;
+}
+
+.btn {
+  padding: 8px 16px;
+  font-size: 13px;
+  border-radius: 9px;
 }
 
 .btn-success {
   background-color: #28a745;
 }
 
-.btn-success:hover {
-  background-color: #1e8a38;
-}
-
 /* TABLE */
 .table-wrapper {
   display: flex;
   justify-content: center;
-  width: 100%;
 }
 
 .layout-table {
-  width: 1200px;
+  width: 1188px;
   border-collapse: collapse;
   background: white;
-  border-radius: 12px;
-  overflow: hidden;
-  box-shadow: 0 0 8px rgba(0,0,0,0.08);
-  text-align: center;
+  border-radius: 11px;
+  box-shadow: 0 0 7px rgba(0,0,0,0.08);
 }
 
 .layout-table thead {
   background-color: #ff9800;
 }
 
-.layout-table thead th {
-  padding: 12px;
+.layout-table th {
+  padding: 9px;
+  font-size: 12px;
   color: white;
   text-transform: uppercase;
-  font-weight: bold;
+}
+
+.layout-table td {
+  padding: 7px;
   font-size: 13px;
-}
-
-.layout-table tbody td {
-  padding: 10px 12px;
-  border-bottom: 1px solid #f0f0f0;
-  font-size: 14px;
-}
-
-.layout-table tbody tr:hover {
-  background-color: #f4f8fd;
 }
 
 /* ACTION ICONS */
 .circle-icon {
-  cursor: pointer;
-  font-size: 15px;
-  padding: 8px;
+  font-size: 14px;
+  padding: 7px;
+  margin: 0 3px;
   border-radius: 50%;
-  transition: 0.2s ease;
-  margin: 0 4px;
-}
-
-.circle-icon:hover {
-  transform: scale(1.15);
+  cursor: pointer;
 }
 
 .view { background: #e3f2fd; color: #1976d2; }
@@ -156,50 +111,31 @@ h2 {
 
 /* PAGINATION */
 .pagination-container {
+  width: 1188px;
+  margin-top: 16px;
   display: flex;
   justify-content: center;
-  align-items: center;
-  width: 1200px;
-  margin-top: 30px;
   position: relative;
 }
 
-.pagination {
-  display: flex;
-  justify-content: center;
-  gap: 6px;
-}
-
 .pagination button {
-  padding: 6px 14px;
-  border: 1px solid #ddd;
-  color: #333;
-  background: white;
-  cursor: pointer;
-  border-radius: 4px;
-  transition: 0.2s ease;
-  font-size: 14px;
+  padding: 6px 12px;
+  font-size: 12px;
+  border-radius: 5px;
 }
 
 .pagination .active {
-  background-color: #3498db;
+  background: #3498db;
   color: white;
-  border-color: #3498db;
 }
 
 /* HOME BUTTON */
 .pagination-home-btn {
   position: absolute;
   right: 0;
-  background-color: #dc3545;
-  border: none;
-  border-radius: 6px;
-  padding: 8px 16px;
-  cursor: pointer;
+  padding: 7px 14px;
+  font-size: 12px;
+  background: #dc3545;
   color: white;
-}
-
-.pagination-home-btn:hover {
-  transform: scale(1.05);
-  background-color: #b92c38;
+  border-radius: 7px;
 }

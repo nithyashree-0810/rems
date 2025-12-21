@@ -1,21 +1,21 @@
-<div class="booking-list-container">
+<div class="container">
 
-  <!-- Title + Buttons -->
-  <div class="title-row">
-    <h2 class="page-title">Booking History</h2>
+  <!-- TITLE ONLY (NO HOME HERE) -->
+  <h2>Booking History</h2>
 
-    <div class="header-buttons">
-      <button class="btn-create" (click)="goToCreate()">+ New Booking</button>
-      <button class="btn-home" (click)="goHome()">Home</button>
-    </div>
+  <!-- CREATE BUTTON (RIGHT, LIKE OTHERS) -->
+  <div class="top-buttons">
+    <button class="btn btn-success" (click)="goToCreate()">
+      <i class="fa fa-plus"></i> New Booking
+    </button>
   </div>
 
-  <!-- Loading -->
+  <!-- LOADING -->
   <div *ngIf="loading" class="loading">Loading bookings...</div>
 
-  <!-- Table -->
-  <div class="table-wrapper">
-    <table *ngIf="!loading && bookingList.length > 0" class="booking-table">
+  <!-- TABLE -->
+  <div class="table-wrapper" *ngIf="!loading && bookingList.length > 0">
+    <table class="layout-table">
 
       <thead>
         <tr>
@@ -35,7 +35,7 @@
       </thead>
 
       <tbody>
-        <tr *ngFor="let b of bookingList">
+        <tr *ngFor="let b of paginatedBookings">
           <td>{{ b.bookingId }}</td>
           <td>{{ b.layout?.layoutName }}</td>
           <td>{{ b.plot?.plotNo }}</td>
@@ -48,19 +48,17 @@
           <td>{{ b.direction }}</td>
           <td>{{ b.status }}</td>
 
+          <!-- ACTION ICONS -->
           <td>
-            <div class="actions">
+            <div class="action-icons">
               <i class="fa fa-eye circle-icon view"
-                 [routerLink]="['/view-booking', b.bookingId]"
-                 title="View"></i>
+                 [routerLink]="['/view-booking', b.bookingId]"></i>
 
               <i class="fa fa-pencil circle-icon edit"
-                 [routerLink]="['/edit-booking', b.bookingId]"
-                 title="Edit"></i>
+                 [routerLink]="['/edit-booking', b.bookingId]"></i>
 
               <i class="fa fa-trash circle-icon delete"
-                 (click)="deleteBooking(b.bookingId)"
-                 title="Delete"></i>
+                 (click)="deleteBooking(b.bookingId)"></i>
             </div>
           </td>
         </tr>
@@ -69,8 +67,29 @@
     </table>
   </div>
 
-  <!-- No Data -->
-  <div *ngIf="!loading && bookingList.length === 0" class="no-data">
+  <!-- PAGINATION + HOME (LIKE CUSTOMER PAGE) -->
+  <div class="pagination-container" *ngIf="!loading && bookingList.length > 0">
+
+    <div class="pagination">
+      <button [disabled]="currentPage === 1" (click)="prevPage()">«</button>
+
+      <button *ngFor="let page of totalPagesArray"
+              [ngClass]="{'active': page === currentPage}"
+              (click)="goToPage(page)">
+        {{ page }}
+      </button>
+
+      <button [disabled]="currentPage === totalPages" (click)="nextPage()">»</button>
+    </div>
+
+    <!-- ✅ HOME BUTTON BOTTOM-RIGHT -->
+    <button class="btn btn-danger pagination-home-btn" (click)="goHome()">
+      Home
+    </button>
+  </div>
+
+  <!-- NO DATA -->
+  <div *ngIf="!loading && bookingList.length === 0" class="no-records">
     No bookings found.
   </div>
 

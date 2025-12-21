@@ -1,16 +1,15 @@
 <div class="container">
+
   <h2>List of Role</h2>
 
-  <!-- Search + Create Row -->
-<div class="search-create-row">
-
-  <!-- Search Section (CENTER) -->
+  <!-- SEARCH -->
   <div class="search-container">
     <input
       type="text"
       placeholder="Search Name"
       [(ngModel)]="searchName"
       (input)="onSearch()"
+      class="search-input"
     />
 
     <input
@@ -18,60 +17,75 @@
       placeholder="Search Mobile Number"
       [(ngModel)]="searchMobile"
       (input)="onSearch()"
+      class="search-input"
     />
 
-    <button class="btn btn-primary" (click)="onSearch()">
-      Search
+    <button class="search-btn" (click)="onSearch()">Search</button>
+  </div>
+
+  <!-- CREATE BUTTON -->
+  <div class="top-buttons">
+    <button class="btn btn-success" (click)="createRole()">
+      <i class="fa fa-plus"></i> Create Role
     </button>
   </div>
 
-  <!-- Create Button (RIGHT) -->
-  <button class="btn btn-success create-btn" (click)="createRole()">
-    <i class="fa fa-plus"></i> Create Role
-  </button>
-
-</div>
-
-
-  <!-- Table -->
+  <!-- TABLE -->
   <div class="table-wrapper">
     <table class="layout-table">
       <thead>
         <tr>
+          <th>Photo</th>
           <th>S.No</th>
           <th>First Name</th>
           <th>Last Name</th>
-          <th>Mobile Number</th>
+          <th>Mobile</th>
           <th>Address</th>
           <th>Aadhar No</th>
           <th>Role</th>
-          <th>View</th>
-          <th>Edit</th>
-          <th>Delete</th>
+          <th>Actions</th>
         </tr>
       </thead>
 
       <tbody>
         <tr *ngFor="let c of paginatedCustomers; let i = index">
+          <td>
+            <img *ngIf="c.profileImagePath"
+                 [src]="imageUrl(c.profileImagePath)"
+                 class="avatar"
+                 alt="Photo">
+          </td>
+
           <td>{{ (currentPage - 1) * pageSize + i + 1 }}</td>
           <td>{{ c.firstName }}</td>
           <td>{{ c.lastName }}</td>
-          <td>{{c.mobileNo}}</td>
+          <td>{{ c.mobileNo }}</td>
           <td>{{ c.address }}</td>
           <td>{{ c.aadharNo }}</td>
-          <td>{{c.role}}</td>
-          <td><i class="fa fa-eye circle-icon view" (click)="viewRole(c.roleId!)"></i></td>
-          <td><i class="fa fa-pencil circle-icon edit" (click)="editRole(c)"></i></td>
-          <td><i class="fa fa-trash circle-icon delete" (click)="deleteRole(c.roleId!)"></i></td>
+          <td>{{ c.role }}</td>
+
+          <!-- ✅ ACTION ICONS IN SAME ROW -->
+          <td>
+            <div class="action-icons">
+              <i class="fa fa-eye circle-icon view"
+                 (click)="viewRole(c.roleId!)"></i>
+
+              <i class="fa fa-pencil circle-icon edit"
+                 (click)="editRole(c)"></i>
+
+              <i class="fa fa-trash circle-icon delete"
+                 (click)="deleteRole(c.roleId!)"></i>
+            </div>
+          </td>
         </tr>
       </tbody>
     </table>
   </div>
 
-  <!-- Pagination -->
+  <!-- PAGINATION -->
   <div class="pagination-container">
     <div class="pagination">
-      <button [disabled]="currentPage === 1" (click)="prevPage()">&laquo; Prev</button>
+      <button [disabled]="currentPage === 1" (click)="prevPage()">«</button>
 
       <button *ngFor="let page of totalPagesArray"
               [ngClass]="{'active': page === currentPage}"
@@ -79,9 +93,12 @@
         {{ page }}
       </button>
 
-      <button [disabled]="currentPage === totalPages" (click)="nextPage()">Next &raquo;</button>
+      <button [disabled]="currentPage === totalPages" (click)="nextPage()">»</button>
     </div>
 
-    <button class="btn btn-danger pagination-home-btn" (click)="goHome()">Home</button>
+    <button class="btn btn-danger pagination-home-btn" (click)="goHome()">
+      Home
+    </button>
   </div>
+
 </div>

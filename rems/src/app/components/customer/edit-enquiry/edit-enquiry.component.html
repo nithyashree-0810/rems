@@ -105,9 +105,17 @@
         </div>
       </div>
 
+      <div class="row">
+        <div class="col">
+          <label class="form-label">Profile Image (optional)</label>
+          <input type="file" (change)="onFileChange($event)" accept="image/*" class="form-control">
+        </div>
+      </div>
+
       <!-- Buttons Row -->
-      <div class="buttons-row mt-3 text-center">
-        <button
+     <div class="buttons-row mt-3 d-flex justify-content-end w-100">
+
+<button
           type="submit"
           class="btn btn-primary me-2"
           [disabled]="!enquiryForm.valid"

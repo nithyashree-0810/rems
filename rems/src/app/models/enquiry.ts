@@ -9,6 +9,7 @@ export class Enquiry{
     email!: string;
     panNo!: string;
     aadharNo!: string ;
+    profileImagePath?: string;
    
 
 }

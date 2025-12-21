@@ -19,9 +19,13 @@ export class ListEnquiryComponent {
   paginatedCustomers: Enquiry[] = [];    // Current page data
 
   totalPages: number = 0;
-  pageSize: number = 5;
+  pageSize: number = 10;
   currentPage: number = 1;
   totalPagesArray: number[] = [];
+
+  imageUrl(path?: string) {
+    return path ? `http://localhost:8080${path}` : '';
+  }
 
   constructor(private customerService: CustomerService, private router: Router) {}
 

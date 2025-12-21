@@ -1,153 +1,134 @@
-/* ---------------- CONTAINER ---------------- */
-.booking-list-container {
-  width: 90%;
-  margin: auto;
-  padding-top: 40px;
+/* CONTAINER */
+.container {
   font-family: 'Segoe UI', sans-serif;
+  background-color: #f5f6fa;
+  padding: 22px 11px;
+  font-size: 13px;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
-/* ---------------- PAGE TITLE (CENTERED) ---------------- */
-.title-row {
+/* HEADER */
+h2 {
+  color: #ff7e00;
+  margin-bottom: 16px;
+  font-size: 22px;
+}
+
+/* CREATE BUTTON */
+.top-buttons {
   width: 100%;
+  max-width: 1188px;
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 13px;
+}
+
+.btn {
+  padding: 8px 16px;
+  font-size: 13px;
+  border-radius: 9px;
+  cursor: pointer;
+  border: none;
+  color: white;
+}
+
+.btn-success {
+  background-color: #28a745;
+}
+
+.btn-danger {
+  background-color: #dc3545;
+}
+
+/* TABLE */
+.table-wrapper {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+
+.layout-table {
+  width: 1188px;
+  border-collapse: collapse;
+  background: white;
+  border-radius: 11px;
+  box-shadow: 0 0 7px rgba(0,0,0,0.08);
+}
+
+.layout-table thead {
+  background-color: #ff9800;
+}
+
+.layout-table th {
+  padding: 9px;
+  font-size: 12px;
+  color: white;
+  text-transform: uppercase;
+}
+
+.layout-table td {
+  padding: 7px;
+  font-size: 13px;
+  text-align: center;
+}
+
+/* ACTION ICONS */
+.circle-icon {
+  font-size: 14px;
+  padding: 7px;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.view   { background: #e3f2fd; color: #1976d2; }
+.edit   { background: #e8f5e9; color: #388e3c; }
+.delete { background: #ffebee; color: #d32f2f; }
+
+.action-icons {
+  display: flex;
+  justify-content: center;
+  gap: 6px;
+  white-space: nowrap;
+}
+
+/* PAGINATION + HOME */
+.pagination-container {
+  width: 1188px;
+  margin-top: 16px;
   display: flex;
   justify-content: center;
   position: relative;
-  margin-bottom: 20px;
 }
 
-.page-title {
-  font-size: 32px;
-  font-weight: bold;
-  color: #e67e22;
-  text-align: center;
-  width: 100%;
+.pagination button {
+  padding: 6px 12px;
+  font-size: 12px;
+  border-radius: 5px;
 }
 
-/* ---------------- HEADER BUTTONS (RIGHT SIDE) ---------------- */
-.header-buttons {
+.pagination .active {
+  background: #3498db;
+  color: white;
+}
+
+/* ✅ HOME BUTTON — SAME AS CUSTOMER PAGE */
+.pagination-home-btn {
   position: absolute;
   right: 0;
-  top: 0;
-  display: flex;
-  gap: 15px;
+  padding: 7px 14px;
+  font-size: 12px;
+  border-radius: 7px;
 }
 
-.btn-create,
-.btn-home {
-  padding: 10px 18px;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  color: white;
-  font-size: 15px;
-}
-
-.btn-create { background-color: #27ae60; }
-.btn-home { background-color: #e74c3c; }
-
-.btn-create:hover { background-color: #239b56; }
-.btn-home:hover { background-color: #c0392b; }
-
-/* ---------------- TABLE ---------------- */
-.table-wrapper {
-  margin-top: 40px;
-}
-
-.booking-table {
-  width: 100%;
-  border-collapse: collapse;
-  background: white;
-  border-radius: 10px;
-  overflow: hidden;
-}
-
-.booking-table thead {
-  background-color: #ff9800;
-  color: white;
-}
-
-.booking-table th,
-.booking-table td {
-  padding: 12px;
-  text-align: left;
-  border-bottom: 1px solid #eee;
-}
-
-.booking-table tr:hover {
-  background-color: #fafafa;
-}
-
-/* ---------------- ACTION ICONS ---------------- */
-.actions {
-  display: flex;
-  gap: 10px;
-}
-
-.circle-icon {
-  width: 32px;
-  height: 32px;
-  line-height: 32px;
-  border-radius: 50%;
-  text-align: center;
-  cursor: pointer;
-  color: white;
-  font-size: 14px;
-}
-
-.circle-icon.view { background-color: #3498db; }
-.circle-icon.edit { background-color: #2ecc71; }
-.circle-icon.delete { background-color: #e74c3c; }
-
-.circle-icon:hover { opacity: 0.85; }
-
-/* ---------------- NO DATA / LOADING ---------------- */
-.no-data {
-  text-align: center;
-  margin-top: 20px;
-  color: #888;
-  font-size: 16px;
-}
-
+/* NO RECORDS / LOADING */
+.no-records,
 .loading {
+  margin-top: 20px;
+  font-size: 15px;
+  font-weight: 600;
+  color: #777;
   text-align: center;
-  font-size: 18px;
-  color: #555;
-}
-
-/* ---------------- PAGINATION ---------------- */
-.pagination-container {
-  margin-top: 25px;
-  display: flex;
-  justify-content: center;
-  gap: 8px;
-  width: 100%;
-}
-
-.pagination-container button {
-  padding: 8px 14px;
-  font-size: 14px;
-  border: 1px solid #ddd;
-  background: #ffffff;
-  border-radius: 6px;
-  cursor: pointer;
-  transition: 0.2s ease;
-  color: #555;
-}
-
-/* Hover state */
-.pagination-container button:hover {
-  background-color: #f5f5f5;
-}
-
-/* Active page button */
-.pagination-container button.active {
-  background-color: #ff9800;
-  color: white;
-  border-color: #ff9800;
-}
-
-/* Disabled state */
-.pagination-container button:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
 }

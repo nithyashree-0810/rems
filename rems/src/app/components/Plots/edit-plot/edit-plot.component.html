@@ -149,12 +149,21 @@
           Required
         </small>
       </div>
-
+    </div>
+    
+    <div class="form-row">
       <div class="form-group">
         <label>Price (₹)</label>
         <input type="number"
                [(ngModel)]="plot.price"
                name="price"
+               readonly />
+      </div>
+      <div class="form-group">
+        <label>Layout Address</label>
+        <input type="text"
+               [(ngModel)]="plot.layoutAddress"
+               name="layoutAddress"
                readonly />
       </div>
     </div>

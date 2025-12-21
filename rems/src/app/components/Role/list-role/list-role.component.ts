@@ -15,18 +15,22 @@ export class ListRoleComponent {
  
    allData: Role[] = [];                // All loaded customers
    filteredData: Role[] = [];           // Data filtered by search
-   paginatedCustomers: Role[] = [];    // Current page data
+  paginatedCustomers: Role[] = [];    // Current page data
  
-   totalPages: number = 0;
-   pageSize: number = 5;
-   currentPage: number = 1;
-   totalPagesArray: number[] = [];
- 
-   constructor(private roleService:RoleserviceServiceService, private router: Router) {}
- 
-   ngOnInit(): void {
-     this.loadData();
-   }
+  totalPages: number = 0;
+  pageSize: number = 10;
+  currentPage: number = 1;
+  totalPagesArray: number[] = [];
+
+  constructor(private roleService:RoleserviceServiceService, private router: Router) {}
+
+  ngOnInit(): void {
+    this.loadData();
+  }
+  
+  imageUrl(path?: string) {
+    return path ? `http://localhost:8080${path}` : '';
+  }
  
    loadData() {
   this.roleService.getAll().subscribe((data: Role[]) => {

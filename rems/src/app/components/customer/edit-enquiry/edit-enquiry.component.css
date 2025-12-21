@@ -74,7 +74,8 @@ h2 {
 /* Buttons row */
 .buttons-row {
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-end;
+    gap: 12px;
   margin-top: 20px;
 }
 
@@ -130,3 +131,4 @@ button.btn.btn-secondary:hover {
   background-color: #e46d00; /* Darker shade for hover */
   color: white;
 }
+

@@ -14,6 +14,7 @@ export class Plot {
   mobile!: number;
   ownerName!: string;
   email!: string;
+  layoutAddress?: string;
 
   // New attributes
   dtcpApproved!: boolean;

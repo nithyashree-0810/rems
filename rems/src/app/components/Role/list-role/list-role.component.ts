@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { RoleserviceServiceService } from '../../../services/roleservice.service.service';
 import { Router } from '@angular/router';
 import { Role } from '../../../models/role';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-list-role',
@@ -22,7 +23,7 @@ export class ListRoleComponent {
   currentPage: number = 1;
   totalPagesArray: number[] = [];
 
-  constructor(private roleService:RoleserviceServiceService, private router: Router) {}
+  constructor(private roleService:RoleserviceServiceService, private router: Router, private toastr: ToastrService) {}
 
   ngOnInit(): void {
     this.loadData();
@@ -124,21 +125,21 @@ export class ListRoleComponent {
      this.router.navigate(['/view-role', roleId]);
    }
  
-   deleteRole(roleId: number) {
-  if (!confirm("Are you sure to delete this?")) {
-    return;
-  }
+  deleteRole(roleId: number) {
+ if (!confirm("Are you sure to delete this?")) {
+   return;
+ }
 
   this.roleService.deleteRole(roleId).subscribe({
     next: () => {
-      alert("Deleted Successfully");
+      this.toastr.success("Deleted Successfully");
 
       // 🔥 Force reload from backend
       this.loadData();
     },
     error: err => {
       console.error("Delete failed", err);
-      alert("Delete failed");
+      this.toastr.error("Delete failed");
     }
   });
 }

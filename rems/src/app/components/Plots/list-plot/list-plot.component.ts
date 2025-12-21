@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { PlotserviceService } from '../../../services/plotservice.service';
 import { Router } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-list',
@@ -23,7 +24,7 @@ throw new Error('Method not implemented.');
   currentPage = 1;
   pageSize = 10;
 
-  constructor(private plotService: PlotserviceService, private router: Router) {}
+  constructor(private plotService: PlotserviceService, private router: Router, private toastr: ToastrService) {}
 
   ngOnInit(): void {
     this.loadPlots();
@@ -105,7 +106,7 @@ throw new Error('Method not implemented.');
   if (confirm(`Delete plot ${plotNo} in layout ${layoutName}?`)) {
     this.plotService.deletePlot(layoutName, plotNo).subscribe({
       next: () => {
-        alert("Deleted successfully ✅");
+        this.toastr.success("Deleted successfully ✅");
 
         // Remove from UI list
         this.allPlots = this.allPlots.filter(
@@ -122,7 +123,7 @@ throw new Error('Method not implemented.');
       },
       error: (err) => {
         console.error("Delete failed ❌", err);
-        alert("Delete failed");
+        this.toastr.error("Delete failed");
       }
     });
   }

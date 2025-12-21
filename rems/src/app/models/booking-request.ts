@@ -20,4 +20,6 @@ export interface BookingRequest {
   status: String;
   regDate:Date;
   regNo:number;
+  refundAmount:number;
+  mode:string;
 }

@@ -40,45 +40,59 @@
       </div>
     </div>
 
-    <!-- Rate + Direction -->
-    <div class="form-row">
-      <div class="form-group">
-        <label>SqFt Rate</label>
-        <input type="number"
-               [(ngModel)]="plot.sqft"
-               name="sqft"
-               required
-               #sqft="ngModel"
-               (input)="calculateValues()"/>
+   <!-- Rate + Direction + Survey No -->
+<div class="form-row">
 
-        <small class="error" *ngIf="sqft.invalid && sqft.touched">
-          SqFt rate required
-        </small>
-      </div>
+  <div class="form-group">
+    <label>SqFt Rate</label>
+    <input type="number"
+           [(ngModel)]="plot.sqft"
+           name="sqft"
+           required
+           #sqft="ngModel"
+           (input)="calculateValues()" />
 
-      <div class="form-group">
-        <label>Direction</label>
-        <select [(ngModel)]="plot.direction"
-                name="direction"
-                required
-                #direction="ngModel">
+    <small class="error" *ngIf="sqft.invalid && sqft.touched">
+      SqFt rate required
+    </small>
+  </div>
 
-          <option value="">Select Direction</option>
-          <option>EAST</option>
-          <option>WEST</option>
-          <option>NORTH</option>
-          <option>SOUTH</option>
-          <option>SOUTHEAST</option>
-          <option>SOUTHWEST</option>
-          <option>NORTHEAST</option>
-          <option>NORTHWEST</option>
-        </select>
+  <div class="form-group">
+    <label>Direction</label>
+    <select [(ngModel)]="plot.direction"
+            name="direction"
+            required
+            #direction="ngModel">
+      <option value="">Select Direction</option>
+      <option>EAST</option>
+      <option>WEST</option>
+      <option>NORTH</option>
+      <option>SOUTH</option>
+      <option>SOUTHEAST</option>
+      <option>SOUTHWEST</option>
+      <option>NORTHEAST</option>
+      <option>NORTHWEST</option>
+    </select>
 
-        <small class="error" *ngIf="direction.invalid && direction.touched">
-          Direction is required
-        </small>
-      </div>
-    </div>
+    <small class="error" *ngIf="direction.invalid && direction.touched">
+      Direction is required
+    </small>
+  </div>
+
+  <div class="form-group">
+    <label>Survey No</label>
+    <input type="text"
+           [(ngModel)]="plot.surveyNumber"
+           name="surveyNumber"
+           required
+           #surveyNumber="ngModel" />
+
+    <small class="error" *ngIf="surveyNumber.invalid && surveyNumber.touched">
+      Survey Number is required
+    </small>
+  </div>
+
+</div>
 
     <!-- Dimensions -->
     <div class="form-row">

@@ -41,7 +41,11 @@ private double breadthOne;
 	
 	private String address;
 	
+	private String layoutAddress;
+	
 	private Long mobile;
+	
+	private String surveyNumber;
 	
 	private String ownerName;
 	

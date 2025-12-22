@@ -3,6 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { RoleserviceServiceService } from '../../../services/roleservice.service.service';
 import { Role } from '../../../models/role';
 import { NgForm } from '@angular/forms';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-edit-role',
@@ -34,7 +35,8 @@ export class EditRoleComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private roleService: RoleserviceServiceService,
-    private router: Router
+    private router: Router,
+    private toastr: ToastrService
   ) {}
 
   ngOnInit(): void {
@@ -71,20 +73,20 @@ export class EditRoleComponent implements OnInit {
           if (this.selectedImage) {
             this.roleService.uploadRoleImage(this.roleId, this.selectedImage).subscribe({
               next: () => {
-                alert('Updated Successfully');
+                this.toastr.success('Updated Successfully');
                 this.router.navigate(['/list-role']);
               },
               error: () => {
-                alert('Image upload failed');
+                this.toastr.error('Image upload failed');
                 this.router.navigate(['/list-role']);
               }
             });
           } else {
-            alert('Updated Successfully');
+            this.toastr.success('Updated Successfully');
             this.router.navigate(['/list-role']);
           }
         },
-        error: () => alert('Update Failed')
+        error: () => this.toastr.error('Update Failed')
       });
     }
   }

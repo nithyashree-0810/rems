@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { LayoutserviceService } from '../../services/layoutservice.service';
 import { Router } from '@angular/router';
 import { Layout } from '../../models/layout';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-view-layouts',
@@ -25,7 +26,8 @@ export class ViewLayoutsComponent {
 
   constructor(
     private layoutService: LayoutserviceService,
-    private router: Router
+    private router: Router,
+    private toastr: ToastrService
   ) {}
 
   ngOnInit(): void {
@@ -127,7 +129,7 @@ export class ViewLayoutsComponent {
     if (confirm('Are you sure you want to delete this layout?')) {
       this.layoutService.deleteLayout(layoutName).subscribe({
         next: () => {
-          alert('Layout deleted successfully!');
+          this.toastr.success('Layout deleted successfully!');
           this.loadLayouts();
         },
         error: err => console.error(err)

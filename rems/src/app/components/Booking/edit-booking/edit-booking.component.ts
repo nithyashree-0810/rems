@@ -3,6 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { BookingService } from '../../../services/booking.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Booking } from '../../../models/bookings';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-edit-booking',
@@ -19,6 +20,7 @@ export class EditBookingComponent implements OnInit {
 
   // 🔥 IMPORTANT: store existing booking
   existingBooking!: Booking;
+   showCancelFields = false; 
 
   canEditAdvance1 = false;
   canEditAdvance2 = false;
@@ -29,7 +31,8 @@ export class EditBookingComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private bookingService: BookingService,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private toastr: ToastrService
   ) {}
 
   ngOnInit(): void {
@@ -109,7 +112,7 @@ export class EditBookingComponent implements OnInit {
         this.loading = false;
       },
       error: () => {
-        alert('Failed to load booking');
+        this.toastr.error('Failed to load booking');
         this.loading = false;
       }
     });
@@ -141,8 +144,27 @@ export class EditBookingComponent implements OnInit {
   }
 
   onStatusChange() {
-    this.showRegFields = this.bookingForm.value.status === 'Registered';
+  const status = this.bookingForm.value.status;
+
+  this.showRegFields = status === 'Registered';
+  this.showCancelFields = status === 'Cancel';
+
+  // optional cleanup
+  if (status !== 'Cancel') {
+    this.bookingForm.patchValue({
+      refundAmount: 0,
+      refundMode: ''
+    });
   }
+
+  if (status !== 'Registered') {
+    this.bookingForm.patchValue({
+      regDate: '',
+      regNo: ''
+    });
+  }
+}
+
 
   // ---------------- SAVE BOOKING ----------------
   saveBooking() {
@@ -173,13 +195,15 @@ export class EditBookingComponent implements OnInit {
       plotNo: existing.plotNo,
       status: raw.status,
       regDate: raw.regDate,
-      regNo: raw.regNo
+      regNo: raw.regNo,
+      refundAmount: raw.refundAmount,
+      mode: raw.mode
     };
 
     this.bookingService
       .updateBooking(this.bookingId, payload)
       .subscribe(() => {
-        alert('Booking Updated Successfully');
+        this.toastr.success('Booking Updated Successfully');
         this.goBack();
       });
   }

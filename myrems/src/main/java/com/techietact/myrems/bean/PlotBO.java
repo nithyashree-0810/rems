@@ -29,7 +29,11 @@ public class PlotBO {
 	
 	private String address;
 	
+	private String layoutAddress;
+	
 	private long mobile;
+	
+	private String surveyNumber;
 	
 	private String ownerName;
 	

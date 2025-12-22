@@ -5,6 +5,9 @@ import { Router } from '@angular/router';
 import { Plot } from '../../../models/plot';
 import { Layout } from '../../../models/layout';
 import { NgForm } from '@angular/forms';
+import { RoleserviceServiceService } from '../../../services/roleservice.service.service';
+import { Role } from '../../../models/role';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-create-plot',
@@ -15,6 +18,8 @@ import { NgForm } from '@angular/forms';
 export class CreatePlotComponent implements OnInit {
 
   layouts: Layout[] = [];
+  owners: Role[] = [];
+  selectedOwnerId: number | null = null;
 
   // ✅ ngModel binding object
   newPlot: Plot = {
@@ -29,8 +34,10 @@ export class CreatePlotComponent implements OnInit {
     price: 0,
     address: '',
     mobile: 0,
+    surveyNumber:'',
     ownerName: '',
     email: '',
+    layoutAddress: '',
     dtcpApproved: false,
     reraApproved: false,
     booked: false,
@@ -40,11 +47,14 @@ export class CreatePlotComponent implements OnInit {
   constructor(
     private layoutService: LayoutserviceService,
     private plotService: PlotserviceService,
-    private router: Router
+    private router: Router,
+    private roleService: RoleserviceServiceService,
+    private toastr: ToastrService
   ) {}
 
   ngOnInit(): void {
     this.loadLayouts();
+    this.loadOwners();
   }
 
   // ✅ Get layouts from backend
@@ -61,13 +71,30 @@ export class CreatePlotComponent implements OnInit {
   }
 
   // ✅ When dropdown changes
-  onLayoutChange(event: any): void {
-    const selectedName = event.target.value;
-    // Assign the selected Layout object
-    const selectedLayout = this.layouts.find(l => l.layoutName === selectedName);
-    if (selectedLayout) {
-      this.newPlot.layout = selectedLayout;
-      console.log('Selected layout 👉', this.newPlot.layout);
+  onLayoutChange(): void {
+    const selectedLayout = this.newPlot.layout;
+    if (selectedLayout && selectedLayout.address !== undefined) {
+      this.newPlot.layoutAddress = selectedLayout.address || '';
+    }
+  }
+
+  loadOwners(): void {
+    this.roleService.getAll().subscribe({
+      next: (data: Role[]) => {
+        this.owners = (data || []).filter(r => (r.role || '').toLowerCase().includes('owner'));
+      }
+    });
+  }
+
+  onOwnerChange(): void {
+    if (!this.selectedOwnerId) return;
+    const owner = this.owners.find(o => o.roleId === this.selectedOwnerId);
+    if (owner) {
+      const fullName = [owner.firstName || '', owner.lastName || ''].join(' ').trim();
+      this.newPlot.ownerName = fullName || owner.firstName || '';
+      this.newPlot.address = owner.address || '';
+      this.newPlot.mobile = Number(owner.mobileNo) || 0;
+      this.newPlot.email = owner.email || '';
     }
   }
 
@@ -130,7 +157,7 @@ export class CreatePlotComponent implements OnInit {
   // ✅ Save plot
   savePlot(plotForm: NgForm) {
     if (!this.newPlot.layout.layoutName) {
-      alert("Please select Layout");
+      this.toastr.warning("Please select Layout");
       return;
     }
   if (plotForm.invalid) {
@@ -142,16 +169,16 @@ export class CreatePlotComponent implements OnInit {
 
     this.plotService.createPlot(this.newPlot).subscribe({
       next: (res: string) => {
-        alert(res);   // Plot created successfully!
+        this.toastr.success(res);
         this.router.navigate(['/plots']);
         this.resetForm();
       },
       error: (error) => {
         console.error('❌ Backend error:', error);
         if (error.status === 409) {
-          alert("Plot No already exists. Try another Plot No");
+          this.toastr.error("Plot No already exists. Try another Plot No");
         } else {
-          alert('Server error. Check console');
+          this.toastr.error('Server error. Check console');
         }
       }
     });
@@ -165,10 +192,10 @@ export class CreatePlotComponent implements OnInit {
     formData.append("file", file);
 
     this.plotService.uploadPlotsExcel(formData).subscribe({
-      next: (res: string) => alert(res),
+      next: (res: string) => this.toastr.success(res),
       error: (err) => {
         console.error(err);
-        alert("Excel upload failed.");
+        this.toastr.error("Excel upload failed.");
       }
     });
   }
@@ -187,6 +214,7 @@ export class CreatePlotComponent implements OnInit {
       price: 0,
       address: '',
       mobile: 0,
+      surveyNumber:'',
       ownerName: '',
       email: '',
       dtcpApproved: false,

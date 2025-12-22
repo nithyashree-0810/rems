@@ -23,6 +23,8 @@ public class LayoutBO {
 	
 	private int pincode;
 	
+	private String surveyNo;
+	
 	private String ownerName1;
 	private String ownerName2;
 	private String ownerName3;

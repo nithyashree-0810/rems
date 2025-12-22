@@ -10,6 +10,12 @@
            placeholder="Search Name"
            class="search-input">
 
+    <input type="text"
+           [(ngModel)]="searchPlotNo"
+           (keyup)="filterPlots()"
+           placeholder="Search Plot No"
+           class="search-input">
+
     <button class="search-btn" (click)="filterPlots()">Search</button>
   </div>
 
@@ -26,15 +32,16 @@
       <thead>
         <tr>
           <th>S.No</th>
-          <th>Layout Name</th>
-          <th>Plot No</th>
-          <th>Owner Name</th>
+          <th>Layout</th>
+          <th>Plot</th>
+          <th>Survey No</th>
+          <th>Owner</th>
           <th>Sqft</th>
-          <th>Direction</th>
+          <th>Dir</th>
           <th>Price</th>
           <th>Mobile</th>
-          <th>DTCP Approved</th>
-          <th>RERA Approved</th>
+          <th>DTCP</th>
+          <th>RERA</th>
           <th>Actions</th>
         </tr>
       </thead>
@@ -44,6 +51,7 @@
           <td>{{ (currentPage - 1) * pageSize + i + 1 }}</td>
           <td>{{ plot.layout?.layoutName }}</td>
           <td>{{ plot.plotNo }}</td>
+          <td>{{ plot.surveyNumber }}</td>
           <td>{{ plot.ownerName }}</td>
           <td>{{ plot.sqft }}</td>
           <td>{{ plot.direction }}</td>
@@ -61,14 +69,12 @@
         </tr>
       </tbody>
     </table>
-
-    <div *ngIf="searchMessage" class="no-results">{{ searchMessage }}</div>
   </div>
 
   <!-- Pagination -->
   <div class="pagination-container">
     <div class="pagination">
-      <button [disabled]="currentPage === 1" (click)="prevPage()">&laquo; Prev</button>
+      <button [disabled]="currentPage === 1" (click)="prevPage()">«</button>
 
       <button *ngFor="let page of totalPagesArray"
               [ngClass]="{'active': page === currentPage}"
@@ -76,7 +82,7 @@
         {{ page }}
       </button>
 
-      <button [disabled]="currentPage === totalPages" (click)="nextPage()">Next &raquo;</button>
+      <button [disabled]="currentPage === totalPages" (click)="nextPage()">»</button>
     </div>
 
     <button class="btn btn-danger pagination-home-btn" (click)="goHome()">Home</button>

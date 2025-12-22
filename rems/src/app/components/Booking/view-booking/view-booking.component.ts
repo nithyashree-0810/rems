@@ -3,6 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { BookingService } from '../../../services/booking.service';
 import { Booking } from '../../../models/bookings';
 import { CommonModule } from '@angular/common';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-view-booking',
@@ -19,7 +20,8 @@ export class ViewBookingComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-    private bookingService: BookingService
+    private bookingService: BookingService,
+    private toastr: ToastrService
   ) {}
 
   ngOnInit(): void {
@@ -35,7 +37,7 @@ export class ViewBookingComponent implements OnInit {
       },
       error: (err) => {
         console.error(err);
-        alert('Booking not found!');
+        this.toastr.error('Booking not found!');
         this.router.navigate(['/booking-history']);
       }
     });

@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { PlotserviceService } from '../../../services/plotservice.service';
 import { LayoutserviceService } from '../../../services/layoutservice.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-edit-plot',
@@ -20,7 +21,8 @@ export class EditPlotComponent implements OnInit {
     private route: ActivatedRoute,
     private plotService: PlotserviceService,
     private router: Router,
-    private layoutService: LayoutserviceService
+    private layoutService: LayoutserviceService,
+    private toastr: ToastrService
   ) {}
 
   ngOnInit(): void {
@@ -38,7 +40,7 @@ export class EditPlotComponent implements OnInit {
           this.plot = res;
           console.log("EDIT PLOT DATA:", this.plot);
         },
-        error: () => alert("Plot not found")
+        error: () => this.toastr.error("Plot not found")
       });
 
     // Load layouts for dropdown
@@ -55,10 +57,10 @@ export class EditPlotComponent implements OnInit {
     this.plotService.updatePlotByLayoutAndPlotNo(this.layoutName, this.plotNo, this.plot)
       .subscribe({
         next: () => {
-          alert('Plot updated successfully');
+          this.toastr.success('Plot updated successfully');
           this.router.navigate(['/plots']);
         },
-        error: () => alert('Update failed')
+        error: () => this.toastr.error('Update failed')
       });
   }
 

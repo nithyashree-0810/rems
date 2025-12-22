@@ -126,6 +126,26 @@
         <small *ngIf="pincode.errors?.['pattern']">Enter valid 6-digit pincode</small>
       </div>
     </div>
+<!-- Survey Number -->
+<div class="form-group">
+  <label>Survey No:</label>
+  <input
+    type="text"
+    [(ngModel)]="layout.surveyNo"
+    name="surveyNo"
+    required
+    minlength="3"
+    #surveyNo="ngModel"
+  />
+
+  <div *ngIf="surveyNo.invalid && surveyNo.touched" class="error">
+    <small *ngIf="surveyNo.errors?.['required']">
+      Survey Number is required
+    </small>
+  </div>
+</div>
+
+
 
     <!-- Owner Names -->
     <div class="form-group">

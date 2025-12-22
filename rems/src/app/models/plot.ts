@@ -12,8 +12,10 @@ export class Plot {
   price!: number;
   address!: string;
   mobile!: number;
+  surveyNumber!: string;
   ownerName!: string;
   email!: string;
+  layoutAddress?: string;
 
   // New attributes
   dtcpApproved!: boolean;

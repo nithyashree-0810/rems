@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Enquiry } from '../../../models/enquiry';
 import { CustomerService } from '../../../services/customer.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-edit-enquiry',
@@ -11,7 +12,8 @@ import { CustomerService } from '../../../services/customer.service';
 })
 export class EditEnquiryComponent {
 customer:Enquiry=new Enquiry();
-constructor(private route:ActivatedRoute,private router:Router,private customerService:CustomerService){}
+selectedImage: File | null = null;
+constructor(private route:ActivatedRoute,private router:Router,private customerService:CustomerService, private toastr: ToastrService){}
 
 ngOnInit(): void {
   const mobileNoStr = this.route.snapshot.paramMap.get('mobileNo');
@@ -23,16 +25,33 @@ ngOnInit(): void {
     });
   }
 }
+onFileChange(event: any) {
+  const file = event.target.files?.[0];
+  this.selectedImage = file || null;
+}
 onSubmit(){
   const mobileNoStr = this.route.snapshot.paramMap.get('mobileNo');
   if(mobileNoStr){
     debugger
     const mobileNo = Number(mobileNoStr); // convert string to number
     this.customerService.updateCustomer(mobileNo, this.customer).subscribe({
-      next: () => {
-        alert('Customer Updated Successfully');
-        this.router.navigate(['/view-enquiries']);
-      },
+            next: () => {
+              if (this.selectedImage) {
+                this.customerService.uploadCustomerImage(mobileNo, this.selectedImage).subscribe({
+                  next: () => {
+                    this.toastr.success('Customer Updated Successfully');
+                    this.router.navigate(['/view-enquiries']);
+                  },
+                  error: () => {
+                    this.toastr.error('Image upload failed');
+                    this.router.navigate(['/view-enquiries']);
+                  }
+                });
+              } else {
+                this.toastr.success('Customer Updated Successfully');
+                this.router.navigate(['/view-enquiries']);
+              }
+            },
       error: err => console.error("Update failed:", err)
     });
   }

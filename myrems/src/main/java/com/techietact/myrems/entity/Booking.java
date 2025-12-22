@@ -47,6 +47,8 @@ public class Booking {
     private String status;
     private Date regDate;
     private Long regNo;
+    private Long refundAmount;
+    private String mode;
 
     // 🔥 AUTO BALANCE CALCULATION
     @PrePersist

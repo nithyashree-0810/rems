@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { PlotserviceService } from '../../../services/plotservice.service';
 import { Router } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-list',
@@ -16,13 +17,14 @@ throw new Error('Method not implemented.');
   allPlots: any[] = [];   // Full list from backend
   plots: any[] = [];      // Filtered/displayed list
   searchLayoutName: string = '';
+  searchPlotNo: string = '';
   searchMessage: string = '';
 
   // Pagination
   currentPage = 1;
-  pageSize = 5;
+  pageSize = 10;
 
-  constructor(private plotService: PlotserviceService, private router: Router) {}
+  constructor(private plotService: PlotserviceService, private router: Router, private toastr: ToastrService) {}
 
   ngOnInit(): void {
     this.loadPlots();
@@ -46,15 +48,20 @@ throw new Error('Method not implemented.');
 
   // Live filter plots by layout name
   filterPlots(): void {
-    const key = this.searchLayoutName.trim().toLowerCase();
+    const nameKey = this.searchLayoutName.trim().toLowerCase();
+    const plotKey = this.searchPlotNo.trim().toLowerCase();
 
-    if (!key) {
+    if (!nameKey && !plotKey) {
       this.plots = [...this.allPlots]; // restore full list
       this.searchMessage = '';
     } else {
-      this.plots = this.allPlots.filter(plot =>
-        plot.layout?.layoutName?.toLowerCase().includes(key)
-      );
+      this.plots = this.allPlots.filter(plot => {
+        const layoutName = (plot.layout?.layoutName || '').toLowerCase();
+        const plotNo = (plot.plotNo || '').toLowerCase();
+        const matchesName = !nameKey || layoutName.includes(nameKey);
+        const matchesPlot = !plotKey || plotNo.includes(plotKey);
+        return matchesName && matchesPlot;
+      });
       this.searchMessage = this.plots.length === 0 ? 'No plots found' : '';
     }
 
@@ -99,7 +106,7 @@ throw new Error('Method not implemented.');
   if (confirm(`Delete plot ${plotNo} in layout ${layoutName}?`)) {
     this.plotService.deletePlot(layoutName, plotNo).subscribe({
       next: () => {
-        alert("Deleted successfully ✅");
+        this.toastr.success("Deleted successfully ✅");
 
         // Remove from UI list
         this.allPlots = this.allPlots.filter(
@@ -116,7 +123,7 @@ throw new Error('Method not implemented.');
       },
       error: (err) => {
         console.error("Delete failed ❌", err);
-        alert("Delete failed");
+        this.toastr.error("Delete failed");
       }
     });
   }

@@ -46,4 +46,9 @@ public class BookingBO {
     private Date regDate;
     
     private Long regNo;
+    
+    private Long refundAmount;
+    
+    private String mode;
+    
 }

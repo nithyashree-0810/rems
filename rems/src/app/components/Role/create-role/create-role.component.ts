@@ -3,6 +3,7 @@ import { RoleserviceServiceService } from '../../../services/roleservice.service
 import { Router } from '@angular/router';
 import { Role } from '../../../models/role';
 import { NgForm } from '@angular/forms';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-create-role',
@@ -13,7 +14,7 @@ import { NgForm } from '@angular/forms';
 export class CreateRoleComponent {
 
 
-constructor(private roleService:RoleserviceServiceService,private router:Router){}
+constructor(private roleService:RoleserviceServiceService,private router:Router, private toastr: ToastrService){}
  role: Omit<Role, 'roleId'> = {
   firstName: '',
   lastName: '',
@@ -25,6 +26,12 @@ constructor(private roleService:RoleserviceServiceService,private router:Router)
   role: ''
 };
 mobileExists: boolean = false;
+selectedImage: File | null = null;
+
+onFileChange(event: any) {
+  const file = event.target.files?.[0];
+  this.selectedImage = file || null;
+}
 
 onSubmit(form: NgForm) {
   if (form.valid) {
@@ -32,21 +39,35 @@ onSubmit(form: NgForm) {
     // 1️⃣ Check Mobile Duplicate First
     this.roleService.checkMobileExists(this.role.mobileNo).subscribe(mobileExists => {
       if (mobileExists) {
-        alert('Mobile number already exists!');
+        this.toastr.warning('Mobile number already exists!');
         return;
       }
 
       // 2️⃣ EMAIL OPTIONAL → If empty, skip email check
       if (!this.role.email || this.role.email.trim() === '') {
 
-        // Direct Customer Create
         this.roleService.createRole(this.role).subscribe({
-          next: () => {
-            alert('Created Successfully!');
-            form.reset();
-            this.router.navigate(['/list-role']);
+          next: (created) => {
+            if (created && created.roleId && this.selectedImage) {
+              this.roleService.uploadRoleImage(created.roleId, this.selectedImage).subscribe({
+                next: () => {
+                  this.toastr.success('Created Successfully!');
+                  form.reset();
+                  this.router.navigate(['/list-role']);
+                },
+                error: () => {
+                  this.toastr.error('Image upload failed');
+                  form.reset();
+                  this.router.navigate(['/list-role']);
+                }
+              });
+            } else {
+              this.toastr.success('Created Successfully!');
+              form.reset();
+              this.router.navigate(['/list-role']);
+            }
           },
-          error: err => alert(err.error)
+          error: err => this.toastr.error(err.error)
         });
 
       } else {
@@ -54,18 +75,32 @@ onSubmit(form: NgForm) {
         // 3️⃣ Email is entered → check duplicate
         this.roleService.checkEmailExists(this.role.email).subscribe(emailExists => {
           if (emailExists) {
-            alert('Email already exists!');
+            this.toastr.warning('Email already exists!');
             return;
           }
 
-          // 4️⃣ Create customer if email is NOT duplicate
           this.roleService.createRole(this.role).subscribe({
-            next: () => {
-              alert('Created Successfully!');
-              form.reset();
-              this.router.navigate(['/list-role']);
+            next: (created) => {
+              if (created && created.roleId && this.selectedImage) {
+                this.roleService.uploadRoleImage(created.roleId, this.selectedImage).subscribe({
+                  next: () => {
+                    this.toastr.success('Created Successfully!');
+                    form.reset();
+                    this.router.navigate(['/list-role']);
+                  },
+                  error: () => {
+                    this.toastr.error('Image upload failed');
+                    form.reset();
+                    this.router.navigate(['/list-role']);
+                  }
+                });
+              } else {
+                this.toastr.success('Created Successfully!');
+                form.reset();
+                this.router.navigate(['/list-role']);
+              }
             },
-            error: err => alert(err.error)
+            error: err => this.toastr.error(err.error)
           });
 
         });

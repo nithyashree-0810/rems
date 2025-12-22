@@ -12,6 +12,7 @@ export class Layout {
     ownerName4?: string;
     ownerName5?: string;
     ownerName6?: string;
+    surveyNo?: string;
 
     dtcpApproved?: boolean;  
     reraApproved?: boolean;  

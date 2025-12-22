@@ -5,6 +5,7 @@ import { BookingService } from '../../../services/booking.service';
 import { PlotserviceService } from '../../../services/plotservice.service';
 import { LayoutserviceService } from '../../../services/layoutservice.service';
 import { CustomerService } from '../../../services/customer.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-create-booking',
@@ -37,7 +38,10 @@ export class CreateBookingComponent implements OnInit {
 
     status: '',
     regDate: null,
-    regNo: null
+    regNo: null,
+
+    refundAmount:0,
+    mode: null
   };
 
   layoutList: any[] = [];
@@ -48,7 +52,8 @@ export class CreateBookingComponent implements OnInit {
     private router: Router,
     private plotService: PlotserviceService,
     private layoutService: LayoutserviceService,
-    private customerService: CustomerService
+    private customerService: CustomerService,
+    private toastr: ToastrService
   ) {}
 
   ngOnInit(): void {
@@ -93,7 +98,7 @@ export class CreateBookingComponent implements OnInit {
         this.booking.aadharNo = c.aadharNo;
         this.booking.panNo = c.panNo;
       },
-      error: () => alert('Customer not found')
+      error: () => this.toastr.error('Customer not found')
     });
   }
 
@@ -133,15 +138,17 @@ export class CreateBookingComponent implements OnInit {
 
       status: this.booking.status,
       regDate: this.booking.status === 'Registered' ? this.booking.regDate : null,
-      regNo: this.booking.status === 'Registered' ? this.booking.regNo : null
+      regNo: this.booking.status === 'Registered' ? this.booking.regNo : null,
+      refundAmount: this.booking.refundAmount,
+      mode: this.booking.mode
     };
 
     this.bookingService.createBooking(requestBody).subscribe({
       next: () => {
-        alert('Booking Saved Successfully');
+        this.toastr.success('Booking Saved Successfully');
         this.router.navigate(['/booking-history']);
       },
-      error: () => alert('Booking Failed')
+      error: () => this.toastr.error('Booking Failed')
     });
   }
 

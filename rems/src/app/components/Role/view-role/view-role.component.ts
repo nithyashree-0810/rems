@@ -12,6 +12,9 @@ import { RoleserviceServiceService } from '../../../services/roleservice.service
 export class ViewRoleComponent {
 
   role: Role = new Role();
+  imageUrl(path?: string) {
+    return path ? `http://localhost:8080${path}` : '';
+  }
 
   constructor(
     private route: ActivatedRoute,

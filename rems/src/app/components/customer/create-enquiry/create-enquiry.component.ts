@@ -3,6 +3,7 @@ import { NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Enquiry } from '../../../models/enquiry';
 import { CustomerService } from '../../../services/customer.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-create-enquiry',
@@ -14,7 +15,7 @@ export class CreateEnquiryComponent {
 limitAadharLength() {
 throw new Error('Method not implemented.');
 }
-constructor(private customerService:CustomerService,private router:Router){}
+constructor(private customerService:CustomerService,private router:Router, private toastr: ToastrService){}
   enquiry:Enquiry={
 
 mobileNo: undefined as any,
@@ -31,6 +32,12 @@ mobileNo: undefined as any,
     
   }
 mobileExists: boolean = false;
+selectedImage: File | null = null;
+
+onFileChange(event: any) {
+  const file = event.target.files?.[0];
+  this.selectedImage = file || null;
+}
 
 onSubmit(form: NgForm) {
   if (form.valid) {
@@ -38,21 +45,35 @@ onSubmit(form: NgForm) {
     // 1️⃣ Check Mobile Duplicate First
     this.customerService.checkMobileExists(this.enquiry.mobileNo).subscribe(mobileExists => {
       if (mobileExists) {
-        alert('Mobile number already exists!');
+        this.toastr.warning('Mobile number already exists!');
         return;
       }
 
       // 2️⃣ EMAIL OPTIONAL → If empty, skip email check
       if (!this.enquiry.email || this.enquiry.email.trim() === '') {
 
-        // Direct Customer Create
         this.customerService.createCustomer(this.enquiry).subscribe({
-          next: () => {
-            alert('Customer Created Successfully!');
-            form.reset();
-            this.router.navigate(['/view-enquiries']);
+          next: (created) => {
+            if (this.selectedImage) {
+              this.customerService.uploadCustomerImage(this.enquiry.mobileNo, this.selectedImage).subscribe({
+                next: () => {
+                  this.toastr.success('Customer Created Successfully!');
+                  form.reset();
+                  this.router.navigate(['/view-enquiries']);
+                },
+                error: () => {
+                  this.toastr.error('Image upload failed');
+                  form.reset();
+                  this.router.navigate(['/view-enquiries']);
+                }
+              });
+            } else {
+              this.toastr.success('Customer Created Successfully!');
+              form.reset();
+              this.router.navigate(['/view-enquiries']);
+            }
           },
-          error: err => alert(err.error)
+          error: err => this.toastr.error(err.error)
         });
 
       } else {
@@ -60,18 +81,32 @@ onSubmit(form: NgForm) {
         // 3️⃣ Email is entered → check duplicate
         this.customerService.checkEmailExists(this.enquiry.email).subscribe(emailExists => {
           if (emailExists) {
-            alert('Email already exists!');
+            this.toastr.warning('Email already exists!');
             return;
           }
 
-          // 4️⃣ Create customer if email is NOT duplicate
           this.customerService.createCustomer(this.enquiry).subscribe({
-            next: () => {
-              alert('Customer Created Successfully!');
-              form.reset();
-              this.router.navigate(['/view-enquiries']);
+            next: (created) => {
+              if (this.selectedImage) {
+                this.customerService.uploadCustomerImage(this.enquiry.mobileNo, this.selectedImage).subscribe({
+                  next: () => {
+                    this.toastr.success('Customer Created Successfully!');
+                    form.reset();
+                    this.router.navigate(['/view-enquiries']);
+                  },
+                  error: () => {
+                    this.toastr.error('Image upload failed');
+                    form.reset();
+                    this.router.navigate(['/view-enquiries']);
+                  }
+                });
+              } else {
+                this.toastr.success('Customer Created Successfully!');
+                form.reset();
+                this.router.navigate(['/view-enquiries']);
+              }
             },
-            error: err => alert(err.error)
+            error: err => this.toastr.error(err.error)
           });
 
         });

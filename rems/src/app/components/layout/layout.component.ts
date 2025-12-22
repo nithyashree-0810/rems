@@ -3,6 +3,7 @@ import { Layout } from '../../models/layout';
 import { NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
 import { LayoutserviceService } from '../../services/layoutservice.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-layout',
@@ -13,19 +14,19 @@ import { LayoutserviceService } from '../../services/layoutservice.service';
 export class LayoutComponent {
 
   layout:Layout=new Layout();
-  constructor(private layoutService: LayoutserviceService,private router: Router) {}
+  constructor(private layoutService: LayoutserviceService,private router: Router, private toastr: ToastrService) {}
 
    onSubmit(form: any) {
   console.log("Form Values:", this.layout);
   if (form.valid) {
     this.layoutService.createLayout(this.layout).subscribe({
       next: () => {
-        alert('Layout created successfully!');
+        this.toastr.success('Layout created successfully!');
         this.router.navigate(['/layouts']);
       },
       error: err => {
         console.error('Error creating layout', err);
-        alert('Failed to create layout');
+        this.toastr.error('Failed to create layout');
       }
     });
   }

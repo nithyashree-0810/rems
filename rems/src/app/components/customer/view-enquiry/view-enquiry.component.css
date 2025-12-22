@@ -61,3 +61,10 @@
   background: #e65c00;
 }
 
+.avatar-large {
+  width: 120px;
+  height: 120px;
+  object-fit: cover;
+  border-radius: 50%;
+  border: 3px solid #eee;
+}

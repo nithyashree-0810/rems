@@ -2,6 +2,7 @@ import { Component, HostListener } from '@angular/core';
 import { Router } from '@angular/router';
 import { ReportService } from '../../services/report.service';
 import { DashboardServiceService } from '../../services/dashboard-service.service';
+import { ToastrService } from 'ngx-toastr';
 
 
 @Component({
@@ -17,7 +18,7 @@ export class DashboardComponent {
   totalPlots = 0;
   totalEnquiries = 0;
   totalBookings = 0;
-  constructor(private router: Router,private reportService:ReportService,private dashboardService:DashboardServiceService) {}
+  constructor(private router: Router,private reportService:ReportService,private dashboardService:DashboardServiceService, private toastr: ToastrService) {}
 
   ngOnInit(): void {
     this.loadCounts();
@@ -57,13 +58,13 @@ export class DashboardComponent {
       },
       error: (err) => {
         console.error('Report download failed', err);
-        alert('Could not download report. Check console for details.');
+        this.toastr.error('Could not download report. Check console for details.');
       }
     });
   }
 
   logout() {
-    alert('You have been logged out!');
+    this.toastr.info('You have been logged out!');
     this.router.navigate(['/']);
   }
     goTo(type: string) {

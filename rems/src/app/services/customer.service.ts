@@ -44,4 +44,10 @@ export class CustomerService {
   searchCustomers(keyword: string): Observable<Enquiry[]> {
     return this.http.get<Enquiry[]>(`${this.baseUrl}/search/${keyword}`);
   }
+
+  uploadCustomerImage(mobileNo: number, file: File) {
+    const form = new FormData();
+    form.append('file', file);
+    return this.http.post<Enquiry>(`${this.baseUrl}/${mobileNo}/image`, form);
+  }
 }

@@ -1,132 +1,123 @@
-/* ========= PROFESSIONAL UI CONTAINER (MEDIUM SIZE) ========= */
+/* ===== CONTAINER ===== */
 .form-container {
-  max-width: 560px;                /* slightly increased */
-  margin: 35px auto;
-  padding: 28px 34px;              /* slightly bigger */
+  max-width: 480px;
+  margin: 24px auto;
+  padding: 18px 20px;
   background: #ffffff;
-  border-radius: 13px;
-  box-shadow: 0px 5px 22px rgba(0, 0, 0, 0.07);
+  border-radius: 12px;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.08);
   position: relative;
+  box-sizing: border-box;
 }
 
-/* ========= TITLE ========= */
+/* ===== TITLE ===== */
 .form-title {
   text-align: center;
   color: #ff8800;
-  font-size: 24px;                 /* slightly bigger */
+  font-size: 20px;
   font-weight: 600;
-  margin-top: 3px;
-  margin-bottom: 24px;
+  margin-bottom: 14px;
 }
 
-/* ========= VIEW BUTTON ========= */
+/* ===== HEADER BUTTON ===== */
 .header-actions {
   position: absolute;
-  top: 16px;
-  right: 16px;
+  top: 10px;
+  right: 10px;
 }
 
 .header-actions .btn-success {
   background: #007bff;
-  padding: 6px 14px;               /* medium size */
-  font-size: 13px;
+  padding: 5px 10px;
+  font-size: 12px;
   border-radius: 6px;
-  border: none;
   color: white;
 }
 
-/* ========= FORM GRID ========= */
+/* ===== FORM GRID (FIXED) ===== */
 form {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 16px 20px;                  /* medium spacing */
+  gap: 8px 12px;                 /* 🔧 reduced gap */
+  box-sizing: border-box;
 }
 
-/* ========= LABELS ========= */
+/* ===== FORM GROUP ===== */
+.form-group {
+  display: flex;
+  flex-direction: column;
+}
+
+/* ===== LABEL ===== */
 label {
+  font-size: 12px;
   font-weight: 600;
-  margin-bottom: 4px;
-  font-size: 14px;
-  color: #333;
+  margin-bottom: 2px;
 }
 
-/* ========= INPUTS ========= */
+/* ===== INPUTS (NO OVERLAP) ===== */
 input[type="text"],
 input[type="number"],
 input[type="tel"] {
-  padding: 9px 12px;               /* medium height */
+  height: 30px;                  /* 🔧 fixed height */
+  padding: 4px 8px;              /* 🔧 reduced padding */
+  font-size: 12px;               /* 🔧 smaller font */
   border-radius: 6px;
   border: 1px solid #d4d4d4;
   background: #f7f7f7;
-  font-size: 14px;
-  width: 100% !important;
-  box-sizing: border-box;
+  width: 100%;
+  box-sizing: border-box;        /* 🔧 critical fix */
 }
 
 input:focus {
   outline: none;
-  background: #ffffff;
+  background: #fff;
   border-color: #ff8800;
-  box-shadow: 0 0 4px rgba(255, 136, 0, 0.35);
 }
 
-/* ========= CHECKBOX ========= */
+/* ===== CHECKBOX ===== */
 .checkbox-row {
   grid-column: span 2;
   display: flex;
-  align-items: center;
-  justify-content: flex-start;
-  gap: 50px;                 /* balanced spacing */
-  margin-top: 8px;
-  margin-bottom: 8px;
+  gap: 24px;
+  margin-top: 6px;
+  font-size: 12px;
 }
 
-.checkbox-row label {
-  font-size: 14px;
-  font-weight: 600;
+.checkbox-row input {
+  transform: scale(1.05);
 }
 
-.checkbox-row input[type="checkbox"] {
-  margin-right: 6px;
-  transform: scale(1.15);
-}
-
-/* ========= BUTTONS ========= */
+/* ===== BUTTONS ===== */
 .form-actions {
   grid-column: span 2;
   display: flex;
   justify-content: flex-end;
-  gap: 16px;
-  margin-top: 18px;
+  gap: 10px;
+  margin-top: 12px;
 }
 
 .btn {
-  padding: 9px 20px;               /* medium button size */
-  border-radius: 7px;
-  font-size: 14px;
+  padding: 6px 14px;
+  font-size: 12px;
   font-weight: 600;
+  border-radius: 6px;
   border: none;
+  cursor: pointer;
 }
 
-/* Create button */
 .create-btn {
   background: #28a745;
   color: white;
 }
-.create-btn:hover {
-  background: #218838;
-}
 
-/* Home button */
 .home-btn {
   background: #e63946;
   color: white;
 }
-.home-btn:hover {
-  background: #c62828;
-}
+
+/* ===== REQUIRED ===== */
 .required {
-  color: red !important;
+  color: red;
   font-weight: bold;
-  margin-left: 3px;
 }

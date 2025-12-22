@@ -170,6 +170,7 @@
               <option value="">-- Select Status --</option>
               <option value="Registered">Registered</option>
               <option value="Unregistered">Unregistered</option>
+              <option value="Cancel">Cancel</option>
             </select>
           </div>
 
@@ -193,6 +194,34 @@
             </div>
 
           </div>
+          <!-- CANCEL DETAILS -->
+<div *ngIf="booking.status === 'Cancel'">
+
+  <div class="form-group">
+    <label>Refund Amount:<span style="color:red">*</span></label>
+    <input type="number"
+           class="form-control"
+           name="refundAmount"
+           [(ngModel)]="booking.refundAmount"
+           required />
+  </div>
+
+  <div class="form-group">
+    <label>Refund Mode:<span style="color:red">*</span></label>
+    <select class="form-control"
+            name="mode"
+            [(ngModel)]="booking.mode"
+            required>
+      <option value="">-- Select Mode --</option>
+      <option value="Cash">Cash</option>
+      <option value="UPI">UPI</option>
+      <option value="Bank Transfer">Bank Transfer</option>
+      <option value="Cheque">Cheque</option>
+    </select>
+  </div>
+
+</div>
+
 
         </div>
       </div>

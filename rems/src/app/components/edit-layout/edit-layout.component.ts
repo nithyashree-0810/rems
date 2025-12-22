@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { Layout } from '../../models/layout';
 import { ActivatedRoute, Router } from '@angular/router';
 import { LayoutserviceService } from '../../services/layoutservice.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-edit-layout',
@@ -16,7 +17,8 @@ export class EditLayoutComponent {
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-    private layoutService: LayoutserviceService
+    private layoutService: LayoutserviceService,
+    private toastr: ToastrService
   ) {}
 
   ngOnInit(): void {
@@ -33,7 +35,7 @@ export class EditLayoutComponent {
     if (layoutName) {
       this.layoutService.updateLayout(layoutName, this.layout).subscribe({
         next: () => {
-          alert('Layout updated successfully!');
+          this.toastr.success('Layout updated successfully!');
           this.router.navigate(['/layouts']);
         },
         error: err => console.error(err)

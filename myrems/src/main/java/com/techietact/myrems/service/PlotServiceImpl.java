@@ -45,6 +45,7 @@ public class PlotServiceImpl implements PlotService {
 	    Plot plot = new Plot();
 	    BeanUtils.copyProperties(plotBo, plot);
 	    plot.setLayout(layout);
+	    plot.setLayoutAddress(layout.getAddress());
 
 	    // Step 4 → Calculate area
 	    double area = 0.0;
@@ -117,6 +118,7 @@ public class PlotServiceImpl implements PlotService {
 
 		    BeanUtils.copyProperties(newPlot, existing);
 		    existing.setLayout(layout);
+		    existing.setLayoutAddress(layout.getAddress());
 
 		    return plotRepository.save(existing);
 		}
@@ -167,6 +169,7 @@ public class PlotServiceImpl implements PlotService {
 
 	    BeanUtils.copyProperties(bo, existing);
 	    existing.setLayout(layout);
+	    existing.setLayoutAddress(layout.getAddress());
 
 	    return plotRepository.save(existing);
 	}

@@ -32,6 +32,8 @@ public class Layout {
 	private String location;
 
 	private String address;
+	
+	private String surveyNo;
 
 	private int pincode;
 

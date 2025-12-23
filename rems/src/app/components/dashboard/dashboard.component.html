@@ -1,106 +1,51 @@
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-
-<!-- TOP NAVBAR -->
-<nav class="navbar">
-  <div class="left-section">
-    <i class="fa-solid fa-building-wheat brand-icon"></i>
-    <span class="navbar-brand">Real Estate Management System</span>
-  </div>
-
-  <ul class="nav-links">
-
-    <!-- Layouts & Plots -->
-    <li class="dropdown" (click)="toggleDropdown('layouts')">
-      <a href="javascript:void(0)">Layouts & Plots <i class="fa-solid fa-chevron-down small-icon"></i></a>
-      <ul class="dropdown-menu" *ngIf="activeDropdown === 'layouts'">
-        <li><a routerLink="/create-layout">Create Layout</a></li>
-        <li><a routerLink="/layouts">View Layouts</a></li>
-        <li><a routerLink="/create-plot">Create Plot</a></li>
-        <li><a routerLink="/plots">View Plots</a></li>
-      </ul>
-    </li>
-
-    <!-- Customer Enquiry -->
-    <li class="dropdown" (click)="toggleDropdown('customer')">
-      <a href="javascript:void(0)">Customer Enquiry <i class="fa-solid fa-chevron-down small-icon"></i></a>
-      <ul class="dropdown-menu" *ngIf="activeDropdown === 'customer'">
-        <li><a routerLink="/create-enquiry">Create Enquiry</a></li>
-        <li><a routerLink="/view-enquiries">View Enquiries</a></li>
-        <li><a routerLink="/create-role">Create Role</a></li>
-        <li><a routerLink="/list-role">View Role</a></li>
-      </ul>
-    </li>
-
-    <!-- Booking -->
-    <li class="dropdown" (click)="toggleDropdown('booking')">
-      <a href="javascript:void(0)">Booking Plot <i class="fa-solid fa-chevron-down small-icon"></i></a>
-      <ul class="dropdown-menu" *ngIf="activeDropdown === 'booking'">
-        <li><a routerLink="/new-booking">New Booking</a></li>
-        <li><a routerLink="/booking-history">Booking History</a></li>
-      </ul>
-    </li>
-
-    <!-- Reports -->
-    <li class="dropdown" (click)="toggleDropdown('report')">
-      <a href="javascript:void(0)">Report <i class="fa-solid fa-chevron-down small-icon"></i></a>
-      <ul class="dropdown-menu" *ngIf="activeDropdown === 'report'">
-        <li><a href="javascript:void(0)" (click)="downloadLayoutsReport()">Layouts Report</a></li>
-        <li><a routerLink="/plot-report">Plots Report</a></li>
-        <li><a routerLink="/enquiry-report">Enquiries Report</a></li>
-        <li><a routerLink="/booking-report">Bookings Report</a></li>
-      </ul>
-    </li>
-  </ul>
-
-  <button class="logout-btn" (click)="logout()">
-    <i class="fa-solid fa-right-from-bracket"></i> Logout
-  </button>
-</nav>
-
-<!-- HERO / WELCOME BOX -->
-<section class="hero-section">
-  <div class="hero-card">
-    <i class="fa-solid fa-house-chimney hero-icon"></i>
-    <h1>Welcome to Real Estate Management System</h1>
-    <p>
-      Your powerful platform for managing properties, layouts, customer enquiries, and plot bookings.
-      Track everything in one unified dashboard with ease.
-    </p>
-  </div>
-</section>
-
-<!-- PREMIUM STAT CARDS -->
-<div class="stats-wrapper">
-<div class="stat-premium-card" (click)="goTo('layouts')">
- <div class="icon-circle">
-      <i class="fa-solid fa-map-location-dot"></i>
+<div class="dashboard-shell">
+  
+  <div class="glass-card hero-card">
+    <div class="icon-box">
+      <i class="fa-solid fa-house-chimney"></i>
     </div>
-    <h2>{{ totalLayouts }}</h2>
-    <p>Total Layouts</p>
+    <div class="hero-text">
+      <h1>Welcome to Real Estate Management System</h1>
+      <p>Your powerful platform for managing properties, layouts, customer enquiries, and plot bookings.</p>
+    </div>
   </div>
 
-  <div class="stat-premium-card" (click)="goTo('plots')">
- <div class="icon-circle">
-      <i class="fa-solid fa-vector-square"></i>
+  <div class="stats-row">
+    <div class="glass-card stat-item" (click)="goTo('layouts')">
+      <div class="icon-box"><i class="fa-solid fa-map"></i></div>
+      <span class="stat-number">{{totalLayouts}}</span>
+      <span class="stat-text">Total Layouts</span>
     </div>
-    <h2>{{ totalPlots }}</h2>
-    <p>Total Plots</p>
+    <div class="glass-card stat-item" (click)="goTo('plots')">
+      <div class="icon-box"><i class="fa-solid fa-border-all"></i></div>
+      <span class="stat-number">{{totalPlots}}</span>
+      <span class="stat-text">Total Plots</span>
+    </div>
+    <div class="glass-card stat-item" (click)="goTo('enquiries')">
+      <div class="icon-box"><i class="fa-solid fa-users"></i></div>
+      <span class="stat-number">{{totalEnquiries}}</span>
+      <span class="stat-text">Customer Enquiries</span>
+    </div>
+    <div class="glass-card stat-item" (click)="goTo('bookings')">
+      <div class="icon-box"><i class="fa-solid fa-check-double"></i></div>
+      <span class="stat-number">{{totalBookings}}</span>
+      <span class="stat-text">Bookings Completed</span>
+    </div>
   </div>
 
-<div class="stat-premium-card" (click)="goTo('enquiries')">
-<div class="icon-circle">
-      <i class="fa-solid fa-user-group"></i>
+  <div class="charts-grid">
+    <div class="glass-card">
+      <h3 class="chart-title">Monthly Bookings</h3>
+      <button class="btn-premium" (click)="goTo('bookings')">
+        <span>View Detailed Report</span>
+        <span aria-hidden="true">→</span>
+      </button>
     </div>
-    <h2>{{ totalEnquiries }}</h2>
-    <p>Customer Enquiries</p>
-  </div>
 
-<div class="stat-premium-card" (click)="goTo('bookings')">
- <div class="icon-circle">
-      <i class="fa-solid fa-file-signature"></i>
+    <div class="glass-card">
+      <h3 class="chart-title">Enquiries Overview</h3>
+      <button class="btn-premium" (click)="goTo('enquiries')">View Enquiries <i class="fa-solid fa-arrow-right"></i></button>
     </div>
-    <h2>{{ totalBookings }}</h2>
-    <p>Bookings Completed</p>
   </div>
 
 </div>

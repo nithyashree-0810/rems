@@ -7,47 +7,49 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class LayoutserviceService {
-  searchLayouts(searchName: string, searchLocation: string): Observable<Layout[]> {
-  const params: any = {};
-
-  if (searchName && searchName.trim() !== '') {
-    params['layoutName'] = searchName;
-  }
-
-  if (searchLocation && searchLocation.trim() !== '') {
-    params['location'] = searchLocation;
-  }
-
-  return this.http.get<Layout[]>(`${this.apiUrl}/search`, { params });
-}
-
 
   private apiUrl = 'http://localhost:8080/api/layouts';
 
   constructor(private http: HttpClient) {}
 
-  createLayout(layout: Layout): Observable<Layout> {
-    debugger
-    return this.http.post<Layout>(`${this.apiUrl}/create`, layout);
+  // ===================== SEARCH =====================
+  searchLayouts(searchName: string, searchLocation: string): Observable<Layout[]> {
+    const params: any = {};
+
+    if (searchName && searchName.trim() !== '') {
+      params['layoutName'] = searchName;
+    }
+
+    if (searchLocation && searchLocation.trim() !== '') {
+      params['location'] = searchLocation;
+    }
+
+    return this.http.get<Layout[]>(`${this.apiUrl}/search`, { params });
   }
 
-  getLayouts(): Observable<Layout[]> {
-    debugger
-  return this.http.get<Layout[]>(`${this.apiUrl}`);
-}
+  // ===================== CREATE WITH PDF =====================
+  createLayout(formData: FormData): Observable<Layout> {
+    return this.http.post<Layout>(`${this.apiUrl}/createWithPdf`, formData);
+  }
 
- getLayoutByName(layoutName: string): Observable<Layout> {
+  // ===================== GET ALL =====================
+  getLayouts(): Observable<Layout[]> {
+    return this.http.get<Layout[]>(`${this.apiUrl}`);
+  }
+
+  // ===================== GET BY NAME =====================
+  getLayoutByName(layoutName: string): Observable<Layout> {
     return this.http.get<Layout>(`${this.apiUrl}/${layoutName}`);
   }
 
-  // Update layout
+  // ===================== UPDATE =====================
   updateLayout(layoutName: string, layout: Layout): Observable<Layout> {
     return this.http.put<Layout>(`${this.apiUrl}/${layoutName}`, layout);
   }
 
-  // Delete layout
+  // ===================== DELETE =====================
   deleteLayout(layoutName: string): Observable<void> {
     return this.http.delete<void>(`${this.apiUrl}/${layoutName}`);
   }
- 
+
 }

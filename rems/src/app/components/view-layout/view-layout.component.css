@@ -1,43 +1,99 @@
+/* =========================
+   Card
+========================= */
 .form-container {
-  max-width: 600px;
-  margin: 20px auto;
-  padding: 20px;
+  max-width: 650px;
+  margin: 25px auto;
+  padding: 18px;
   background: #fff;
   border-radius: 12px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  box-shadow: 0 6px 25px rgba(0,0,0,0.25);
 }
 
+/* =========================
+   Title
+========================= */
 .form-title {
   text-align: center;
-  margin-bottom: 20px;
+  color: #ff7e00;
+  margin-bottom: 12px;
+  font-size: 22px;
+  font-weight: 900;
 }
 
+/* =========================
+   Row Box
+========================= */
 .row {
-  display: flex;
-  margin: 8px 0;
+  display: grid;
+  grid-template-columns: 48px 165px auto;
+  align-items: center;
+  padding: 8px 6px;
+  margin: 5px 0;
+  border-radius: 8px;
+  border: 1px solid #f1f1f1;
+  background: #fafafa;
 }
 
+/* =========================
+   Icon
+========================= */
+.icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: #fff1df;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #ff7e00;
+  font-size: 14px;
+}
+
+/* =========================
+   Text
+========================= */
 .label {
-  font-weight: bold;
-  width: 150px;   /* fixed width for labels */
-  flex-shrink: 0;
+  font-weight: 700;
+  font-size: 13px;
+  color: #2e4bff;       /* 🔥 Royal Blue Like Screenshot */
 }
 
 .value {
-  flex: 1;
-  text-align: left;
-  word-wrap: break-word; /* ensures long text wraps nicely */
+  font-size: 13px;
+  color: #222;
+  word-wrap: break-word;
 }
 
-.home-btn {
-  margin-top: 20px;
-  padding: 8px 16px;
-  background: #f44336;
-  color: white;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
-  margin-left: auto;   /* ✅ MOVE TO RIGHT */
-  display: block;      /* ✅ REQUIRED */
+/* =========================
+   Button Row
+========================= */
+.button-row {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 12px;
+}
 
+/* =========================
+   Button
+========================= */
+.home-btn {
+  width: 110px;
+  height: 32px;
+  padding: 0;
+  background: #ff7e00;
+  border: none;
+  color: #fff;
+  border-radius: 7px;
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 700;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.home-btn:hover {
+  opacity: 0.9;
 }

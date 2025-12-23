@@ -1,22 +1,46 @@
-/* Full page container */
-.booking-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+
+/* 🍊 PREMIUM ORANGE LIGHT BACKGROUND */
+.page-bg {
   min-height: 100vh;
-  background: #f6f6f6;
-  padding: 16px;                 /* reduced */
+
+  background: linear-gradient(
+      rgba(255, 165, 0, 0.25),
+      rgba(255, 102, 0, 0.25)
+    ),
+    url("https://images.pexels.com/photos/1396122/pexels-photo-1396122.jpeg");
+
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+
+  font-family: "Plus Jakarta Sans", sans-serif;
+}
+
+/* ✅ IMPORTANT — This centers your full booking card */
+.booking-container {
+  min-height: 100vh;
+  width: 100%;
+
+  display: flex;
+  justify-content: center;   /* horizontal center */
+  align-items: center;       /* vertical center */
+
+  padding: 20px;
   box-sizing: border-box;
 }
 
-/* Booking Card */
+/* ✨ GLASS EFFECT BOOKING CARD */
 .booking-card {
-  width: 720px;                  /* reduced */
-  background: #fff;
-  padding: 20px 22px;            /* reduced */
-  border-radius: 12px;
-  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.12);
+  width: 900px;
+  background: rgba(255, 255, 255, 0.96);
+  backdrop-filter: blur(10px);
+  padding: 24px 26px;
+  border-radius: 18px;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.25);
+  border: 1px solid rgba(255, 123, 0, 0.35);
   box-sizing: border-box;
+  margin: 0 auto;
 }
 
 /* Title Row */
@@ -24,12 +48,12 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 14px;           /* reduced */
+  margin-bottom: 14px;
 }
 
 /* Page Heading */
 .page-title {
-  font-size: 22px;               /* reduced */
+  font-size: 22px;
   font-weight: bold;
   color: #ff7b00;
   margin: 0;
@@ -40,14 +64,13 @@
   background-color: #ff6723;
   color: #fff;
   border: none;
-  padding: 7px 14px;             /* reduced */
-  font-size: 13px;               /* reduced */
+  padding: 7px 14px;
+  font-size: 13px;
   font-weight: 600;
   border-radius: 6px;
   cursor: pointer;
   transition: 0.3s ease;
 }
-
 .btn-view:hover {
   background-color: #e65b1f;
 }
@@ -55,9 +78,8 @@
 /* 2 Column Layout */
 .form-row {
   display: flex;
-  gap: 18px;                     /* reduced */
+  gap: 18px;
 }
-
 .form-column {
   flex: 1;
 }
@@ -66,87 +88,88 @@
 .form-group {
   display: flex;
   flex-direction: column;
-  margin-bottom: 10px;           /* reduced */
+  margin-bottom: 10px;
 }
-
 .form-group label {
-  margin-bottom: 3px;            /* reduced */
+  margin-bottom: 3px;
   font-weight: 500;
-  font-size: 13px;               /* reduced */
+  font-size: 13px;
 }
 
-/* Input & Select Styles */
+/* Inputs */
 input.form-control,
 select.form-control {
   width: 100%;
-  height: 32px;                  /* reduced */
-  padding: 4px 8px;              /* reduced */
-  font-size: 13px;               /* reduced */
+  height: 34px;
+  padding: 4px 8px;
+  font-size: 13px;
   border-radius: 6px;
   border: 1px solid #cfcfcf;
   outline: none;
   transition: border-color 0.25s ease;
   box-sizing: border-box;
 }
-
 input.form-control:focus,
 select.form-control:focus {
   border-color: #ff7a00;
+  box-shadow: 0 0 4px rgba(255, 102, 0, 0.4);
 }
 
-/* Action Buttons */
+/* Buttons Row */
 .action-buttons {
-  margin-top: 14px;              /* reduced */
+  margin-top: 14px;
   display: flex;
   justify-content: flex-end;
-  gap: 8px;                      /* reduced */
+  gap: 8px;
 }
 
-/* Green Book Button */
+/* GREEN SUBMIT */
 .btn-success {
   background-color: #28a745;
   color: white;
   border: none;
-  padding: 9px 22px;             /* reduced */
-  font-size: 14px;               /* reduced */
+  padding: 9px 22px;
+  font-size: 14px;
   border-radius: 6px;
   cursor: pointer;
   transition: 0.3s ease;
 }
-
 .btn-success:hover:not(:disabled) {
   background-color: #218838;
 }
-
 .btn-success:disabled {
   opacity: 0.7;
   cursor: not-allowed;
 }
 
-/* Red Home Button */
+/* RED HOME */
 .btn-danger {
   background-color: #dc3545;
   color: white;
   border: none;
-  padding: 9px 22px;             /* reduced */
-  font-size: 14px;               /* reduced */
+  padding: 9px 22px;
+  font-size: 14px;
   border-radius: 6px;
   cursor: pointer;
   transition: 0.3s ease;
 }
-
 .btn-danger:hover {
   background-color: #c82333;
 }
 
-/* Responsive Design */
-@media (max-width: 768px) {
+/* Responsive */
+@media (max-width: 900px) {
   .booking-card {
     width: 100%;
-    padding: 18px;               /* reduced */
   }
+}
 
+@media (max-width: 768px) {
   .form-row {
     flex-direction: column;
+  }
+
+  .booking-card {
+    padding: 18px;
   }
 }

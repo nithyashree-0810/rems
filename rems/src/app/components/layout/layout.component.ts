@@ -13,35 +13,55 @@ import { ToastrService } from 'ngx-toastr';
 })
 export class LayoutComponent {
 
-  layout:Layout=new Layout();
-  constructor(private layoutService: LayoutserviceService,private router: Router, private toastr: ToastrService) {}
+  layout: Layout = new Layout();
+  selectedPdf: File | null = null;
 
-   onSubmit(form: any) {
-  console.log("Form Values:", this.layout);
-  if (form.valid) {
-    this.layoutService.createLayout(this.layout).subscribe({
-      next: () => {
-        this.toastr.success('Layout created successfully!');
-        this.router.navigate(['/layouts']);
-      },
-      error: err => {
-        console.error('Error creating layout', err);
-        this.toastr.error('Failed to create layout');
-      }
-    });
+  constructor(
+    private layoutService: LayoutserviceService,
+    private router: Router,
+    private toastr: ToastrService
+  ) {}
+
+  onPdfSelected(event: any) {
+    this.selectedPdf = event.target.files[0];
+    console.log("Selected PDF:", this.selectedPdf);
   }
-}
 
+  onSubmit(form: NgForm) {
+
+    if (!this.selectedPdf) {
+      this.toastr.error("Please upload layout PDF");
+      return;
+    }
+
+    if (form.valid) {
+      const formData = new FormData();
+
+      formData.append(
+        "layoutData",
+        new Blob([JSON.stringify(this.layout)], { type: "application/json" })
+      );
+
+      formData.append("layoutPdf", this.selectedPdf);
+
+      this.layoutService.createLayout(formData).subscribe({
+        next: () => {
+          this.toastr.success('Layout created successfully!');
+          this.router.navigate(['/layouts']);
+        },
+        error: err => {
+          console.error('Error creating layout', err);
+          this.toastr.error('Failed to create layout');
+        }
+      });
+    }
+  }
 
   gotoView() {
-    console.log('View Layout clicked');
-    // Navigate or show layout preview
     this.router.navigate(['/layouts']);
   }
 
   goHome() {
-    console.log('Home clicked');
-    // Navigate to home screen
     this.router.navigate(['/dashboard']);
   }
 }

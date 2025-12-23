@@ -1,90 +1,79 @@
 <div class="form-container">
+
   <h2 class="form-title">View Layout</h2>
 
   <div class="row">
+    <span class="icon"><i class="fa-solid fa-layer-group"></i></span>
     <span class="label">Layout Name:</span>
     <span class="value">{{ layout.layoutName }}</span>
   </div>
 
   <div class="row">
+    <span class="icon"><i class="fa-solid fa-ruler-combined"></i></span>
     <span class="label">Total Area:</span>
     <span class="value">{{ layout.area }}</span>
   </div>
 
   <div class="row">
+    <span class="icon"><i class="fa-solid fa-border-all"></i></span>
     <span class="label">Total Plots:</span>
     <span class="value">{{ layout.noOfPlots }}</span>
   </div>
 
   <div class="row">
+    <span class="icon"><i class="fa-solid fa-phone"></i></span>
     <span class="label">Phone:</span>
     <span class="value">{{ layout.phone }}</span>
   </div>
 
   <div class="row">
+    <span class="icon"><i class="fa-solid fa-hashtag"></i></span>
     <span class="label">Survey Number:</span>
-    <span class="label">{{ layout.surveyNo}}</span>
+    <span class="value">{{ layout.surveyNo }}</span>
   </div>
 
   <div class="row">
+    <span class="icon"><i class="fa-solid fa-location-dot"></i></span>
     <span class="label">Location:</span>
     <span class="value">{{ layout.location }}</span>
   </div>
 
   <div class="row">
+    <span class="icon"><i class="fa-solid fa-house"></i></span>
     <span class="label">Address:</span>
     <span class="value">{{ layout.address }}</span>
   </div>
 
   <div class="row">
+    <span class="icon"><i class="fa-solid fa-key"></i></span>
     <span class="label">Pincode:</span>
     <span class="value">{{ layout.pincode }}</span>
   </div>
 
-  <!-- Owners Section -->
-  <div class="row" *ngIf="layout.ownerName1">
-    <span class="label">Owner 1:</span>
-    <span class="value">{{ layout.ownerName1 }}</span>
+  <!-- Owners -->
+  <div class="row" *ngIf="layout.ownerName1 || layout.ownerName2 || layout.ownerName3 || layout.ownerName4 || layout.ownerName5 || layout.ownerName6">
+    <span class="icon"><i class="fa-solid fa-user-tie"></i></span>
+    <span class="label">Owners:</span>
+    <span class="value">
+      {{ layout.ownerName1 }} {{ layout.ownerName2 }} {{ layout.ownerName3 }}
+      {{ layout.ownerName4 }} {{ layout.ownerName5 }} {{ layout.ownerName6 }}
+    </span>
   </div>
 
-  <div class="row" *ngIf="layout.ownerName2">
-    <span class="label">Owner 2:</span>
-    <span class="value">{{ layout.ownerName2 }}</span>
-  </div>
-
-  <div class="row" *ngIf="layout.ownerName3">
-    <span class="label">Owner 3:</span>
-    <span class="value">{{ layout.ownerName3 }}</span>
-  </div>
-
-  <div class="row" *ngIf="layout.ownerName4">
-    <span class="label">Owner 4:</span>
-    <span class="value">{{ layout.ownerName4 }}</span>
-  </div>
-
-  <div class="row" *ngIf="layout.ownerName5">
-    <span class="label">Owner 5:</span>
-    <span class="value">{{ layout.ownerName5 }}</span>
-  </div>
-
-  <div class="row" *ngIf="layout.ownerName6">
-    <span class="label">Owner 6:</span>
-    <span class="value">{{ layout.ownerName6 }}</span>
-  </div>
-
-  <!-- DTCP Approved -->
   <div class="row">
+    <span class="icon"><i class="fa-solid fa-check-circle"></i></span>
     <span class="label">DTCP Approved:</span>
     <span class="value">{{ layout.dtcpApproved ? 'Yes' : 'No' }}</span>
   </div>
 
-  <!-- RERA Approved -->
   <div class="row">
+    <span class="icon"><i class="fa-solid fa-file-shield"></i></span>
     <span class="label">RERA Approved:</span>
     <span class="value">{{ layout.reraApproved ? 'Yes' : 'No' }}</span>
   </div>
 
- <div class="button-row">
-  <button class="btn home-btn" (click)="goBack()">Home</button>
-</div>
+  <div class="button-row">
+    <button class="home-btn" (click)="goBack()">BACK</button>
+  </div>
 
+</div>

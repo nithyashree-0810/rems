@@ -1,1 +1,58 @@
-<p>header works!</p>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+<nav class="navbar">
+  <div class="left-section">
+    <i class="fa-solid fa-building-wheat brand-icon"></i>
+    <span class="navbar-brand">Real Estate Management System</span>
+  </div>
+
+  <ul class="nav-links">
+    <!-- Layouts & Plots -->
+    <li class="dropdown" (click)="toggleDropdown('layouts')">
+      <a href="javascript:void(0)">Layouts & Plots <i class="fa-solid fa-chevron-down small-icon"></i></a>
+      <ul class="dropdown-menu" *ngIf="activeDropdown === 'layouts'">
+        <li><a routerLink="/create-layout">Create Layout</a></li>
+        <li><a routerLink="/layouts">View Layouts</a></li>
+        <li><a routerLink="/create-plot">Create Plot</a></li>
+        <li><a routerLink="/plots">View Plots</a></li>
+      </ul>
+    </li>
+
+    <!-- Customer Enquiry -->
+    <li class="dropdown" (click)="toggleDropdown('customer')">
+      <a href="javascript:void(0)">Customer Enquiry <i class="fa-solid fa-chevron-down small-icon"></i></a>
+      <ul class="dropdown-menu" *ngIf="activeDropdown === 'customer'">
+        <li><a routerLink="/create-enquiry">Create Enquiry</a></li>
+        <li><a routerLink="/view-enquiries">View Enquiries</a></li>
+        <li><a routerLink="/create-role">Create Role</a></li>
+        <li><a routerLink="/list-role">View Role</a></li>
+      </ul>
+    </li>
+
+    <!-- Booking -->
+    <li class="dropdown" (click)="toggleDropdown('booking')">
+      <a href="javascript:void(0)">Booking Plot <i class="fa-solid fa-chevron-down small-icon"></i></a>
+      <ul class="dropdown-menu" *ngIf="activeDropdown === 'booking'">
+        <li><a routerLink="/new-booking">New Booking</a></li>
+        <li><a routerLink="/booking-history">Booking History</a></li>
+      </ul>
+    </li>
+
+    <!-- Reports -->
+    <li class="dropdown" (click)="toggleDropdown('report')">
+      <a href="javascript:void(0)">Report <i class="fa-solid fa-chevron-down small-icon"></i></a>
+      <ul class="dropdown-menu" *ngIf="activeDropdown === 'report'">
+        <li><a href="javascript:void(0)" (click)="downloadLayoutsReport()">Layouts Report</a></li>
+        <li><a routerLink="/plot-report">Plots Report</a></li>
+        <li><a routerLink="/enquiry-report">Enquiries Report</a></li>
+        <li><a routerLink="/booking-report">Bookings Report</a></li>
+      </ul>
+    </li>
+  </ul>
+
+  <div class="nav-right">
+    <button class="logout-btn" (click)="logout()">
+      <i class="fa-solid fa-right-from-bracket"></i> Logout
+    </button>
+  </div>
+</nav>

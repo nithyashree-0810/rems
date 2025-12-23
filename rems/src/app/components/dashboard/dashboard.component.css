@@ -1,201 +1,136 @@
-/* -----------------------------------------------------
-   NAVBAR (FIXED & PREMIUM UI)
------------------------------------------------------ */
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
 
-.navbar {
+.dashboard-shell {
+  max-width: 1250px;
+  margin: 0 auto;
+  padding: 40px 20px;
   display: flex;
-  justify-content: space-between;
-  align-items: center;
-  background: #ff7a18;
-  padding: 10px 25px;  /* reduced */
-  color: white;
-  font-family: 'Poppins', sans-serif;
-  position: sticky;
-  top: 0;
-  z-index: 1000;
-  box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+  flex-direction: column;
+  gap: 25px;
 }
 
-.navbar-brand {
-  font-size: 18px;  /* reduced */
-  font-weight: 600;
-  display: flex;
-  align-items: center;
-  gap: 8px;
+/* Glass Effect for all cards */
+.glass-card {
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(15px);
+  -webkit-backdrop-filter: blur(15px);
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  border-radius: 24px;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.08);
+  padding: 30px;
 }
 
-.navbar-brand i {
-  font-size: 20px;  /* reduced */
-}
-
-/* MENU LINKS */
-.nav-links {
-  display: flex;
-  gap: 25px; /* reduced */
-  list-style: none;
-  margin: 0;
-  padding: 0;
-}
-
-.nav-links li {
-  position: relative;
-  cursor: pointer;
-}
-
-.nav-links a {
-  color: white;
-  font-size: 15px; /* reduced */
-  text-decoration: none;
-  font-weight: 600;
-  display: flex;
-  align-items: center;
-  gap: 5px;
-}
-
-/* DROPDOWN MENU */
-.dropdown-menu {
-  position: absolute;
-  background: #fff;
-  color: #333;
-  list-style: none;
-  min-width: 150px; /* reduced */
-  top: 34px;
-  left: 0;
-  padding: 8px 0;
-  border-radius: 10px;
-  box-shadow: 0 8px 25px rgba(0,0,0,0.15);
-  animation: dropdownFade 0.25s ease;
-}
-
-.dropdown-menu li {
-  padding: 8px 15px; /* reduced */
-}
-
-.dropdown-menu li a {
-  color: #333;
-  font-weight: 500;
-  font-size: 14px; /* reduced */
-}
-
-/* LOGOUT BUTTON */
-.logout-btn {
-  background: white;
-  color: #ff7a18;
-  padding: 6px 18px;  /* reduced */
-  border: none;
-  border-radius: 22px;
-  font-weight: 700;
-  font-size: 13px; /* reduced */
-  cursor: pointer;
-  transition: 0.3s ease;
-}
-
-.logout-btn:hover {
-  background: #ffe1c7;
-}
-
-
-
-/* -----------------------------------------------------
-   HERO SECTION
------------------------------------------------------ */
-
-.hero-section {
-  display: flex;
-  justify-content: center;
-  margin-top: 25px; /* reduced */
-}
-
+/* Hero Section Styles */
 .hero-card {
+  display: flex;
+  align-items: center;
+  gap: 10px; /* exact gap between icon and text */
+  justify-content: center;
   text-align: center;
-  width: 70%;
-  padding: 30px 25px;  /* reduced */
-  border-radius: 18px;
-  background: #ffffff;
-  box-shadow: 0 6px 20px rgba(0,0,0,0.08);
+  padding: 34px 34px;
 }
 
-.hero-icon {
-  font-size: 55px; /* was 70px */
-  color: #ff7a18;
-  margin-bottom: 15px;
+.hero-card .icon-box {
+  width: 68px;
+  height: 68px;
+  border-radius: 20px;
+  margin: 0;
+  font-size: 28px;
+  background: linear-gradient(135deg, #ff7a18, #ff5b00);
+  box-shadow: 0 14px 26px rgba(255, 122, 24, 0.3);
+}
+
+.hero-text {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 6px;
 }
 
 .hero-card h1 {
-  font-size: 26px; /* was 32px */
+  font-family: 'Plus Jakarta Sans', 'Segoe UI', system-ui, -apple-system, sans-serif;
+  font-size: 32px;
   font-weight: 700;
-  margin-bottom: 10px;
+  margin: 0;
+  color: #1a202c;
+  line-height: 1.25;
 }
 
 .hero-card p {
-  font-size: 15px; /* was 18px */
-  line-height: 1.5;
-  color: #555;
-  width: 85%;
-  margin: auto;
+  font-family: 'Plus Jakarta Sans', 'Segoe UI', system-ui, -apple-system, sans-serif;
+  color: #4b5563;
+  font-size: 15.5px;
+  line-height: 1.6;
+  margin: 0;
 }
 
-
-
-/* -----------------------------------------------------
-   PREMIUM STAT CARDS (Reduced)
------------------------------------------------------ */
-
-.stats-wrapper {
-  display: flex;
-  justify-content: center;
-  gap: 25px;       /* reduced */
-  margin-top: 40px; /* reduced */
-  flex-wrap: wrap;
-  padding-bottom: 30px; /* reduced */
+/* Stats Row */
+.stats-row {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
 }
 
-.stat-premium-card {
-  width: 220px;            /* was 260px */
-  background: #ffffff;
-  padding: 22px 15px;      /* reduced */
-  border-radius: 22px;
+.stat-item {
   text-align: center;
-  box-shadow: 0px 12px 30px rgba(0,0,0,0.1);
-  transition: 0.3s ease-in-out;
   cursor: pointer;
+  transition: transform 0.2s ease;
 }
 
-.stat-premium-card:hover {
-  transform: translateY(-8px); /* smaller hover lift */
-  box-shadow: 0px 18px 40px rgba(0,0,0,0.15);
-}
+.stat-item:hover { transform: translateY(-5px); }
 
-/* Icon Circle */
-.icon-circle {
-  width: 60px;        /* was 75px */
-  height: 60px;
-  margin: auto;
-  border-radius: 50%;
-  background: linear-gradient(135deg, #ff7a18, #ff4b2b);
+.icon-box {
+  width: 55px;
+  height: 55px;
+  background: #ff7a18;
+  color: white;
+  border-radius: 18px;
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0px 5px 15px rgba(255,120,40,0.5);
+  margin: 0 auto 15px;
+  font-size: 22px;
+  box-shadow: 0 8px 15px rgba(255, 122, 24, 0.3);
 }
 
-.icon-circle i {
-  font-size: 26px; /* was 32px */
-  color: #fff;
+.stat-number {
+  font-size: 30px;
+  font-weight: 800;
+  display: block;
 }
 
-/* Numbers */
-.stat-premium-card h2 {
-  font-size: 28px; /* was 34px */
-  margin: 12px 0 4px 0;
+.stat-text {
+  font-size: 13px;
+  font-weight: 600;
+  color: #64748b;
+  text-transform: uppercase;
+}
+
+/* Charts Layout */
+.charts-grid {
+  display: grid;
+  grid-template-columns: 1.6fr 1.4fr;
+  gap: 25px;
+}
+
+.chart-title {
+  font-size: 18px;
+  font-weight: 800;
+  margin-bottom: 20px;
+}
+
+.btn-premium {
+  background: linear-gradient(135deg, #ff7a18 0%, #ff4d00 100%);
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 12px;
   font-weight: 700;
-  color: #222;
-}
-
-/* Labels */
-.stat-premium-card p {
-  font-size: 14px;  /* was 16px */
-  color: #555;
-  font-weight: 500;
-  letter-spacing: .3px;
+  cursor: pointer;
+  margin-top: 15px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  line-height: 1;
 }

@@ -80,7 +80,7 @@ export class CreateBookingComponent implements OnInit {
     const p = this.selectedPlot;
     this.booking.plotId = p.plotId;
     this.booking.plotNo = p.plotNo;
-    this.booking.sqft = p.sqft;
+    this.booking.sqft = p.totalSqft ?? p.sqft;
     this.booking.price = p.price;
     this.booking.direction = p.direction;
 

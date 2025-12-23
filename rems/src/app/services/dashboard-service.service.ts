@@ -11,7 +11,9 @@ export class DashboardServiceService {
 
   constructor(private http: HttpClient) {}
 
-  getDashboardCounts(): Observable<any> {
-    return this.http.get<any>(`${this.apiUrl}/dashboard-counts`);
+  getDashboardCounts(type: 'admin' | 'sales' | 'manager' = 'admin'): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}/dashboard-counts`, {
+      params: { type }
+    });
   }
 }

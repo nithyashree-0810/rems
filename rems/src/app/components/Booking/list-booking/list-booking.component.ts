@@ -11,6 +11,8 @@ import { ToastrService } from 'ngx-toastr';
   styleUrls: ['./list-booking.component.css']
 })
 export class ListBookingComponent implements OnInit {
+  searchLayoutName: string = '';
+  searchPlotNo: string = '';
   
 getTotalPaid(b: any): number {
   return (b.advance1 || 0)
@@ -24,7 +26,6 @@ getBalance(b: any): number {
   const paid = this.getTotalPaid(b);
   return price - paid;
 }
-
 
   bookingList: Booking[] = [];
   filteredData: Booking[] = [];
@@ -60,6 +61,22 @@ getBalance(b: any): number {
         this.loading = false;
       }
     });
+  }
+  
+  onSearch() {
+    const layoutKey = this.searchLayoutName.trim().toLowerCase();
+    const plotKey = this.searchPlotNo.trim().toLowerCase();
+
+    this.filteredData = this.bookingList.filter(b => {
+      const layoutName = (b.layout?.layoutName || '').toLowerCase();
+      const plotNo = ((b.plot?.plotNo as any) || (b.plotNo as any) || '').toString().toLowerCase();
+      const matchesLayout = !layoutKey || layoutName.includes(layoutKey);
+      const matchesPlot = !plotKey || plotNo.includes(plotKey);
+      return matchesLayout && matchesPlot;
+    });
+
+    this.currentPage = 1;
+    this.applyPagination();
   }
   
   applyPagination() {

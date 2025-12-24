@@ -10,6 +10,7 @@ import { ToastrService } from 'ngx-toastr';
   styleUrl: './header.component.css'
 })
 export class HeaderComponent {
+
   activeDropdown: string | null = null;
 
   constructor(

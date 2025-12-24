@@ -1,23 +1,58 @@
-/* CONTAINER */
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+
+/* PAGE BACKGROUND - DARK PREMIUM */
+.page-bg {
+  min-height: 100vh;
+
+  background: linear-gradient(
+      rgba(0, 0, 0, 0.75),
+      rgba(0, 0, 0, 0.75)
+    ),
+    url("https://images.pexels.com/photos/1396122/pexels-photo-1396122.jpeg");
+
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+/* MAIN HOLDER */
+.dashboard-shell {
+  max-width: 1250px;
+  width: 100%;
+  padding: 40px 20px;
+  font-family: "Plus Jakarta Sans", sans-serif;
+}
+
+/* GLASS EFFECT */
+.glass-card {
+  background: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(12px);
+  border-radius: 18px;
+  box-shadow: 0 12px 35px rgba(0,0,0,0.3);
+}
+
+/* ORIGINAL PAGE STYLES (unchanged UI) */
 .container {
-  font-family: 'Segoe UI', sans-serif;
-  background-color: #f5f6fa;
   padding: 22px 11px;
   font-size: 13px;
-  min-height: 100vh;
   display: flex;
   flex-direction: column;
   align-items: center;
 }
 
-/* Header */
 h2 {
-  color: #ff7e00;
+  color: #ffffff;
   margin-bottom: 16px;
-  font-size: 22px;
+  font-size: 26px;
+  font-weight: 800;
+  text-shadow: 0 3px 10px rgba(0,0,0,0.6);
 }
 
-/* SEARCH BAR */
+/* SEARCH SECTION */
 .search-container {
   width: 100%;
   max-width: 1188px;
@@ -38,12 +73,10 @@ h2 {
 
 .search-btn {
   padding: 8px 20px;
-  font-size: 13px;
   border-radius: 9px;
   background: #3498db;
   color: white;
   border: none;
-  cursor: pointer;
 }
 
 /* CREATE BUTTON */
@@ -55,28 +88,21 @@ h2 {
   margin-bottom: 13px;
 }
 
-.btn {
-  padding: 8px 16px;
-  font-size: 13px;
-  border-radius: 9px;
-}
-
 .btn-success {
   background-color: #28a745;
+  color: white;
+  border-radius: 9px;
+  padding: 8px 16px;
+  border: none;
 }
 
 /* TABLE */
-.table-wrapper {
-  display: flex;
-  justify-content: center;
-}
-
 .layout-table {
   width: 1188px;
   border-collapse: collapse;
   background: white;
   border-radius: 11px;
-  box-shadow: 0 0 7px rgba(0,0,0,0.08);
+  box-shadow: 0 0 10px rgba(0,0,0,0.1);
 }
 
 .layout-table thead {
@@ -85,29 +111,25 @@ h2 {
 
 .layout-table th {
   padding: 9px;
-  font-size: 12px;
   color: white;
-  text-transform: uppercase;
 }
 
 .layout-table td {
   padding: 7px;
-  font-size: 13px;
+  text-align: center;
 }
 
 /* ACTION ICONS */
 .circle-icon {
-  font-size: 14px;
   padding: 7px;
-  margin: 0 3px;
   border-radius: 50%;
   cursor: pointer;
 }
 
-.view { background: #e3f2fd; color: #1976d2; }
-.edit { background: #e8f5e9; color: #388e3c; }
+.view   { background: #e3f2fd; color: #1976d2; }
+.edit   { background: #e8f5e9; color: #388e3c; }
 .delete { background: #ffebee; color: #d32f2f; }
-.book { background: #e0f7fa; color: #00695c; }
+.book   { background: #e0f7fa; color: #00695c; }
 
 /* PAGINATION */
 .pagination-container {
@@ -120,22 +142,14 @@ h2 {
 
 .pagination button {
   padding: 6px 12px;
-  font-size: 12px;
-  border-radius: 5px;
 }
 
-.pagination .active {
-  background: #3498db;
-  color: white;
-}
-
-/* HOME BUTTON */
 .pagination-home-btn {
   position: absolute;
   right: 0;
   padding: 7px 14px;
-  font-size: 12px;
   background: #dc3545;
   color: white;
   border-radius: 7px;
+  border: none;
 }

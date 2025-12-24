@@ -1,60 +1,63 @@
 <div class="form-container">
   <h2 class="form-title">View Role</h2>
-  
+
+  <!-- Profile -->
   <div style="text-align:center; margin-bottom: 16px;">
-    <img *ngIf="role.profileImagePath" [src]="imageUrl(role.profileImagePath)" class="avatar-large" alt="Profile">
+    <img *ngIf="role.profileImagePath" 
+         [src]="imageUrl(role.profileImagePath)" 
+         class="avatar-large" alt="Profile">
   </div>
 
   <div class="row">
+    <span class="icon"><i class="fa-solid fa-user"></i></span>
     <span class="label">First Name</span>
-    <span class="colon">:</span>
     <span class="value">{{ role.firstName }}</span>
   </div>
 
   <div class="row">
+    <span class="icon"><i class="fa-solid fa-user"></i></span>
     <span class="label">Last Name</span>
-    <span class="colon">:</span>
     <span class="value">{{ role.lastName }}</span>
   </div>
 
   <div class="row">
+    <span class="icon"><i class="fa-solid fa-phone"></i></span>
     <span class="label">Mobile Number</span>
-    <span class="colon">:</span>
     <span class="value">{{ role.mobileNo }}</span>
   </div>
 
   <div class="row">
+    <span class="icon"><i class="fa-solid fa-id-card"></i></span>
     <span class="label">Aadhar Number</span>
-    <span class="colon">:</span>
     <span class="value">{{ role.aadharNo }}</span>
   </div>
 
   <div class="row">
+    <span class="icon"><i class="fa-solid fa-envelope"></i></span>
     <span class="label">Email</span>
-    <span class="colon">:</span>
     <span class="value">{{ role.email }}</span>
   </div>
 
   <div class="row">
+    <span class="icon"><i class="fa-solid fa-house"></i></span>
     <span class="label">Address</span>
-    <span class="colon">:</span>
     <span class="value">{{ role.address }}</span>
   </div>
 
   <div class="row">
+    <span class="icon"><i class="fa-solid fa-user-shield"></i></span>
     <span class="label">Role</span>
-    <span class="colon">:</span>
     <span class="value">{{ role.role }}</span>
   </div>
 
- <div class="row">
-  <span class="label">Pan Number</span>
-  <span class="colon">:</span>
-  <span class="value">{{role.panNo}}</span>
- </div>
+  <div class="row">
+    <span class="icon"><i class="fa-solid fa-id-badge"></i></span>
+    <span class="label">Pan Number</span>
+    <span class="value">{{ role.panNo }}</span>
+  </div>
 
- <div class="button-row">
-  <button class="btn home-btn" (click)="goBack()">Home</button>
-</div>
+  <div class="button-row">
+    <button class="home-btn" (click)="goBack()">Home</button>
+  </div>
 
 </div>

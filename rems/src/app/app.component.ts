@@ -13,19 +13,27 @@ export class AppComponent {
   showHeaderFooter = false;
 
   constructor(private router: Router) {
-    // Check initial route
+
+    // check initial load
     this.updateHeaderFooterVisibility(this.router.url);
-    
-    // Listen to route changes
-    this.router.events.pipe(
-      filter(event => event instanceof NavigationEnd)
-    ).subscribe((event: any) => {
-      this.updateHeaderFooterVisibility(event.url);
-    });
+
+    // check on every route change
+    this.router.events
+      .pipe(filter(event => event instanceof NavigationEnd))
+      .subscribe((event: NavigationEnd) => {
+        this.updateHeaderFooterVisibility(event.urlAfterRedirects);
+      });
   }
 
   private updateHeaderFooterVisibility(url: string): void {
-    // Hide header and footer on login page
-    this.showHeaderFooter = url !== '/' && url !== '';
+
+    // Normalize URL (remove query params)
+    const cleanUrl = url.split('?')[0];
+
+    // Hide header + footer ONLY on login page
+    this.showHeaderFooter =
+      !(cleanUrl === '/' ||
+        cleanUrl === '/login' ||
+        cleanUrl.startsWith('/auth/login'));
   }
 }

@@ -1,1 +1,99 @@
-<p>header works!</p>
+<link rel="stylesheet"
+  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+<nav class="navbar">
+  <div class="left-section">
+    <i class="fa-solid fa-building-wheat brand-icon"></i>
+    <span class="navbar-brand">Real Estate Management System</span>
+  </div>
+
+  <ul class="nav-links">
+
+    <!-- Layout & Plots -->
+    <li class="dropdown">
+      <a href="javascript:void(0)" (click)="toggleDropdown('layouts')">
+        Layouts & Plots
+        <i class="fa-solid fa-chevron-down small-icon"></i>
+      </a>
+
+      <ul class="dropdown-menu" *ngIf="activeDropdown==='layouts'">
+        <li><a routerLink="/create-layout">Create Layout</a></li>
+        <li><a routerLink="/layouts">View Layouts</a></li>
+
+        <li><a routerLink="/create-plot">Create Plot</a></li>
+        <li><a routerLink="/plots">View Plots</a></li>
+      </ul>
+    </li>
+
+    <!-- Customer -->
+    <li class="dropdown">
+      <a href="javascript:void(0)" (click)="toggleDropdown('customer')">
+        Customer Enquiry
+        <i class="fa-solid fa-chevron-down small-icon"></i>
+      </a>
+
+      <ul class="dropdown-menu" *ngIf="activeDropdown==='customer'">
+        <li><a routerLink="/create-enquiry">Create Enquiry</a></li>
+        <li><a routerLink="/view-enquiries">View Enquiries</a></li>
+
+        <li><a routerLink="/create-role">Create Role</a></li>
+        <li><a routerLink="/list-role">View Role</a></li>
+      </ul>
+    </li>
+
+    <!-- Booking -->
+    <li class="dropdown">
+      <a href="javascript:void(0)" (click)="toggleDropdown('booking')">
+        Booking Plot
+        <i class="fa-solid fa-chevron-down small-icon"></i>
+      </a>
+
+      <ul class="dropdown-menu" *ngIf="activeDropdown==='booking'">
+        <li><a routerLink="/new-booking">New Booking</a></li>
+        <li><a routerLink="/booking-history">Booking History</a></li>
+      </ul>
+    </li>
+
+    <!-- Reports -->
+    <li class="dropdown">
+      <a href="javascript:void(0)" (click)="toggleDropdown('report')">
+        Report
+        <i class="fa-solid fa-chevron-down small-icon"></i>
+      </a>
+
+      <ul class="dropdown-menu" *ngIf="activeDropdown==='report'">
+
+        <li>
+          <a routerLink="/layouts" (click)="$event.stopPropagation()">
+            Layouts Report
+          </a>
+        </li>
+
+        <li>
+          <a routerLink="/plots" (click)="$event.stopPropagation()">
+            Plots Report
+          </a>
+        </li>
+
+        <li>
+          <a routerLink="/view-enquiries" (click)="$event.stopPropagation()">
+            Enquiries Report
+          </a>
+        </li>
+
+        <li>
+          <a routerLink="/booking-history" (click)="$event.stopPropagation()">
+            Bookings Report
+          </a>
+        </li>
+
+      </ul>
+    </li>
+  </ul>
+
+  <div class="nav-right">
+    <button class="logout-btn" (click)="logout()">
+      <i class="fa-solid fa-right-from-bracket"></i> Logout
+    </button>
+  </div>
+</nav>

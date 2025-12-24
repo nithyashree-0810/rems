@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { PlotserviceService } from '../../../services/plotservice.service';
 import { Plot } from '../../../models/plot';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-view-plot',
@@ -18,7 +19,8 @@ export class ViewPlotComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private plotService: PlotserviceService,
-    private router: Router
+    private router: Router,
+    private toastr: ToastrService
   ) {}
 
   ngOnInit(): void {
@@ -36,7 +38,7 @@ export class ViewPlotComponent implements OnInit {
           },
           error: (err) => {
             console.error("Error loading plot ❌", err);
-            alert("Plot not found");
+            this.toastr.error("Plot not found");
           }
         });
     }

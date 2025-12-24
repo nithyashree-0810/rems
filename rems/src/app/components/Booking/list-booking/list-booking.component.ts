@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { BookingService } from '../../../services/booking.service';
 import { Router } from '@angular/router';
 import { Booking } from '../../../models/bookings';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-list-booking',
@@ -10,6 +11,8 @@ import { Booking } from '../../../models/bookings';
   styleUrls: ['./list-booking.component.css']
 })
 export class ListBookingComponent implements OnInit {
+  searchLayoutName: string = '';
+  searchPlotNo: string = '';
   
 getTotalPaid(b: any): number {
   return (b.advance1 || 0)
@@ -24,7 +27,6 @@ getBalance(b: any): number {
   return price - paid;
 }
 
-
   bookingList: Booking[] = [];
   filteredData: Booking[] = [];
   paginatedBookings: Booking[] = [];
@@ -36,7 +38,8 @@ getBalance(b: any): number {
 
   constructor(
     private bookingService: BookingService,
-    private router: Router
+    private router: Router,
+    private toastr: ToastrService
   ) {}
 
   ngOnInit(): void {
@@ -54,10 +57,26 @@ getBalance(b: any): number {
         this.loading = false;
       },
       error: () => {
-        alert("Failed to load bookings!");
+        this.toastr.error("Failed to load bookings!");
         this.loading = false;
       }
     });
+  }
+  
+  onSearch() {
+    const layoutKey = this.searchLayoutName.trim().toLowerCase();
+    const plotKey = this.searchPlotNo.trim().toLowerCase();
+
+    this.filteredData = this.bookingList.filter(b => {
+      const layoutName = (b.layout?.layoutName || '').toLowerCase();
+      const plotNo = ((b.plot?.plotNo as any) || (b.plotNo as any) || '').toString().toLowerCase();
+      const matchesLayout = !layoutKey || layoutName.includes(layoutKey);
+      const matchesPlot = !plotKey || plotNo.includes(plotKey);
+      return matchesLayout && matchesPlot;
+    });
+
+    this.currentPage = 1;
+    this.applyPagination();
   }
   
   applyPagination() {
@@ -116,14 +135,14 @@ getBalance(b: any): number {
     if (confirm('Are you sure you want to delete this booking?')) {
       this.bookingService.deleteBooking(id).subscribe({
         next: () => {
-          alert('Booking deleted successfully!');
+          this.toastr.success('Booking deleted successfully!');
           // Remove the deleted booking from the list without reloading
           this.bookingList = this.bookingList.filter(b => b.bookingId !== id);
           this.filteredData = [...this.bookingList];
           this.applyPagination();
         },
         error: () => {
-          alert('Failed to delete booking!');
+          this.toastr.error('Failed to delete booking!');
         }
       });
     }

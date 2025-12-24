@@ -1,11 +1,50 @@
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+
+/* 🌌 DARK PREMIUM BACKGROUND */
+.page-bg {
+  min-height: 100vh;
+
+  background: linear-gradient(
+      rgba(0, 0, 0, 0.88),
+      rgba(0, 0, 0, 0.88)
+    ),
+    url("https://images.pexels.com/photos/1396122/pexels-photo-1396122.jpeg");
+
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: "Plus Jakarta Sans", sans-serif;
+}
+
+/* MAIN HOLDER */
+.dashboard-shell {
+  max-width: 1100px;
+  width: 100%;
+  padding: 40px 20px;
+}
+
+/* GLASS EFFECT CARD */
+.glass-card {
+  background: rgba(255, 255, 255, 0.92);
+  backdrop-filter: blur(12px);
+  border-radius: 18px;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.35);
+  padding: 35px;
+}
+
+/* ---------------- Your Existing Form CSS ---------------- */
+
 /* Center the whole form */
 .center-page {
   display: flex;
   justify-content: center;
   align-items: center;
-  min-height: 100vh;   /* full screen center */
-  padding: 20px;
-  background: #f9f9f9; /* light background */
+  padding: 5px;
+  background: transparent;
 }
 
 /* Card styling */
@@ -20,10 +59,10 @@
 
 /* Heading */
 .enquiry-card h3 {
-  text-align: left;       /* left-align the heading */
-  margin-bottom: 20px;    
-  color: #ff6600;         /* orange color */
-  font-weight: 600;
+  text-align: left;
+  margin-bottom: 20px;
+  color: #ff6600;
+  font-weight: 700;
 }
 
 /* Form row */
@@ -31,7 +70,7 @@
   display: flex;
   flex-wrap: wrap;
   margin-bottom: 15px;
-  gap: 20px; /* space between columns */
+  gap: 20px;
 }
 
 /* Each column */
@@ -58,26 +97,20 @@ input[type="email"] {
   transition: border-color 0.3s;
 }
 
-/* Input focus style */
+/* Focus */
 input:focus {
   outline: none;
   border-color: #ff6600;
   box-shadow: 0 0 4px rgba(255, 102, 0, 0.4);
 }
 
-/* Invalid input style */
+/* Invalid */
 .is-invalid {
   border-color: red !important;
 }
 
-/* Error messages */
-.text-danger {
-  color: red;
-  font-size: 12px;
-  margin-top: 3px;
-}
-
-/* Error message for email custom */
+/* Error */
+.text-danger,
 .error-message {
   color: red;
   font-size: 12px;
@@ -120,24 +153,17 @@ button.btn-danger {
 button:hover:not(:disabled) {
   opacity: 0.9;
 }
-/* Table layout fix */
+
+/* Table fix if you use table */
 table {
   width: 100%;
   border-collapse: collapse;
-  table-layout: fixed; /* make column widths uniform */
+  table-layout: fixed;
 }
 
-/* FIRST NAME column - left align */
 th:nth-child(2),
 td:nth-child(2) {
   text-align: left;
-  padding-left: 40px; /* adjust value until looks perfect */
-  width: 200px;       /* optional - keeps same width for all rows */
+  padding-left: 40px;
+  width: 200px;
 }
-/* ul {
-  padding-left: 0;
-  margin-left: 0;
-  list-style: none;
-} */
- /* component.css */
-

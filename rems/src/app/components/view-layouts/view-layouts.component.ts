@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { LayoutserviceService } from '../../services/layoutservice.service';
 import { Router } from '@angular/router';
 import { Layout } from '../../models/layout';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-view-layouts',
@@ -14,8 +15,8 @@ export class ViewLayoutsComponent {
   searchName: string = "";
   searchLocation: string = "";
 
-  allLayouts: Layout[] = [];    // Full data
-  layouts: Layout[] = [];       // Pagination display
+  allLayouts: Layout[] = [];   
+  layouts: Layout[] = [];      
 
   currentPage = 1;
   pageSize = 10;
@@ -25,14 +26,15 @@ export class ViewLayoutsComponent {
 
   constructor(
     private layoutService: LayoutserviceService,
-    private router: Router
+    private router: Router,
+    private toastr: ToastrService
   ) {}
 
   ngOnInit(): void {
     this.loadLayouts();
   }
 
-  // 🔥 Load full list initially
+  // Load Data
   loadLayouts() {
     this.layoutService.getLayouts().subscribe((data: Layout[]) => {
       this.allLayouts = data;
@@ -42,18 +44,16 @@ export class ViewLayoutsComponent {
     });
   }
 
-  // 🔍 Search using input OR button click
+  // Search Filter
   filterLayouts() {
     const name = this.searchName.trim().toLowerCase();
     const loc = this.searchLocation.trim().toLowerCase();
 
-    // 🚨 If both empty → Load full list again
     if (name === "" && loc === "") {
       this.loadLayouts();
       return;
     }
 
-    // 🔥 Filter logic
     const filtered = this.allLayouts.filter(layout =>
       (name === "" || layout.layoutName?.toLowerCase().includes(name)) &&
       (loc === "" || layout.location?.toLowerCase().includes(loc))
@@ -68,7 +68,7 @@ export class ViewLayoutsComponent {
     this.applyPaginationAfterSearch(filtered);
   }
 
-  // 📄 Normal Pagination
+  // Normal Pagination
   applyPagination() {
     this.totalPages = Math.ceil(this.allLayouts.length / this.pageSize);
 
@@ -78,7 +78,7 @@ export class ViewLayoutsComponent {
     this.layouts = this.allLayouts.slice(startIndex, endIndex);
   }
 
-  // 📄 Pagination for Search Results
+  // Pagination for Search
   applyPaginationAfterSearch(filteredData: Layout[]) {
     const startIndex = (this.currentPage - 1) * this.pageSize;
     const endIndex = startIndex + this.pageSize;
@@ -86,11 +86,7 @@ export class ViewLayoutsComponent {
     this.layouts = filteredData.slice(startIndex, endIndex);
   }
 
-  // Pagination Helpers
-  get totalPagesArray() {
-    return Array.from({ length: this.totalPages }, (_, i) => i + 1);
-  }
-
+  // Pagination Controls
   prevPage() {
     if (this.currentPage > 1) {
       this.currentPage--;
@@ -105,12 +101,7 @@ export class ViewLayoutsComponent {
     }
   }
 
-  goToPage(page: number) {
-    this.currentPage = page;
-    this.applyPagination();
-  }
-
-  // Navigation Buttons
+  // Navigation
   navigateToCreate() {
     this.router.navigate(['/create-layout']);
   }
@@ -127,12 +118,18 @@ export class ViewLayoutsComponent {
     if (confirm('Are you sure you want to delete this layout?')) {
       this.layoutService.deleteLayout(layoutName).subscribe({
         next: () => {
-          alert('Layout deleted successfully!');
+          this.toastr.success('Layout deleted successfully!');
           this.loadLayouts();
         },
         error: err => console.error(err)
       });
     }
+  }
+
+  // ⭐ View PDF from Spring Boot API
+  viewPdf(layoutName: string) {
+    const url = `http://localhost:8080/api/layouts/pdf/${layoutName}`;
+    window.open(url, "_blank");
   }
 
   goHome() {

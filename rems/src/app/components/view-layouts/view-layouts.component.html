@@ -42,6 +42,7 @@
           <th>Pincode</th>
           <th>DTCP</th>
           <th>RERA</th>
+          <th>PDF</th>
           <th>Actions</th>
         </tr>
       </thead>
@@ -60,7 +61,15 @@
           <td>{{ layout.dtcpApproved ? 'Yes' : 'No' }}</td>
           <td>{{ layout.reraApproved ? 'Yes' : 'No' }}</td>
 
-          <!-- ✅ FIXED ACTION ICON ALIGNMENT -->
+          <td>
+            <button *ngIf="layout.pdfPath"
+                    class="pdf-btn"
+                    (click)="viewPdf(layout.layoutName)">
+              View PDF
+            </button>
+            <span *ngIf="!layout.pdfPath">-</span>
+          </td>
+
           <td>
             <div class="action-icons">
               <i class="fa fa-eye circle-icon view"
@@ -90,13 +99,6 @@
   <div class="pagination-container">
     <div class="pagination">
       <button [disabled]="currentPage === 1" (click)="prevPage()">«</button>
-
-      <button *ngFor="let page of totalPagesArray"
-              [ngClass]="{'active': page === currentPage}"
-              (click)="goToPage(page)">
-        {{ page }}
-      </button>
-
       <button [disabled]="currentPage === totalPages" (click)="nextPage()">»</button>
     </div>
 

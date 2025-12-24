@@ -7,6 +7,7 @@ import { Layout } from '../../../models/layout';
 import { NgForm } from '@angular/forms';
 import { RoleserviceServiceService } from '../../../services/roleservice.service.service';
 import { Role } from '../../../models/role';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-create-plot',
@@ -47,7 +48,8 @@ export class CreatePlotComponent implements OnInit {
     private layoutService: LayoutserviceService,
     private plotService: PlotserviceService,
     private router: Router,
-    private roleService: RoleserviceServiceService
+    private roleService: RoleserviceServiceService,
+    private toastr: ToastrService
   ) {}
 
   ngOnInit(): void {
@@ -155,7 +157,7 @@ export class CreatePlotComponent implements OnInit {
   // ✅ Save plot
   savePlot(plotForm: NgForm) {
     if (!this.newPlot.layout.layoutName) {
-      alert("Please select Layout");
+      this.toastr.warning("Please select Layout");
       return;
     }
   if (plotForm.invalid) {
@@ -167,16 +169,16 @@ export class CreatePlotComponent implements OnInit {
 
     this.plotService.createPlot(this.newPlot).subscribe({
       next: (res: string) => {
-        alert(res);   // Plot created successfully!
+        this.toastr.success(res);
         this.router.navigate(['/plots']);
         this.resetForm();
       },
       error: (error) => {
         console.error('❌ Backend error:', error);
         if (error.status === 409) {
-          alert("Plot No already exists. Try another Plot No");
+          this.toastr.error("Plot No already exists. Try another Plot No");
         } else {
-          alert('Server error. Check console');
+          this.toastr.error('Server error. Check console');
         }
       }
     });
@@ -190,10 +192,10 @@ export class CreatePlotComponent implements OnInit {
     formData.append("file", file);
 
     this.plotService.uploadPlotsExcel(formData).subscribe({
-      next: (res: string) => alert(res),
+      next: (res: string) => this.toastr.success(res),
       error: (err) => {
         console.error(err);
-        alert("Excel upload failed.");
+        this.toastr.error("Excel upload failed.");
       }
     });
   }

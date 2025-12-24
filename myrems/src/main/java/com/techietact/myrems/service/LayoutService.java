@@ -7,30 +7,28 @@ import com.techietact.myrems.entity.Layout;
 
 public interface LayoutService {
 
-	Layout createLayout(LayoutBO layoutBO);
+    Layout createLayout(LayoutBO layoutBO);
 
-	 //List<LayoutBO> getAllLayouts();
+    LayoutBO updateLayout(String layoutName, LayoutBO layoutBO);
 
-	//LayoutBO getLayoutById(Long id);
+    void deleteLayout(String layoutName);
 
-	LayoutBO updateLayout(String layoutName, LayoutBO layoutBO);
+    List<Layout> findAllLayoutsAsc();
 
-	void deleteLayout(String layoutName);
+    LayoutBO getLayoutByLayoutName(String layoutName);
 
-	//Page<Layout> getLayouts(int page, int size);
+    List<Layout> getAllLayouts();
 
-	List<Layout> findAllLayoutsAsc();
+    List<Layout> findByLayoutNameAndLocation(String layoutName , String location);
 
-	LayoutBO getLayoutByLayoutName(String layoutName);
+    List<Layout> findByLayoutName(String layoutName);
 
-	List<Layout> getAllLayouts();
-	
-	List<Layout> findByLayoutNameAndLocation(String layoutName , String location);
-	
-	List<Layout> findByLayoutName(String layoutName);
-	
-	List<Layout> findByLocation(String location);
+    List<Layout> findByLocation(String location);
 
-	List<Layout> searchLayouts(String layoutName, String location);
-	
+    List<Layout> searchLayouts(String layoutName, String location);
+
+    Layout saveLayout(Layout savedLayout);
+
+    // ⭐ IMPORTANT
+    Layout getLayoutEntity(String layoutName);
 }

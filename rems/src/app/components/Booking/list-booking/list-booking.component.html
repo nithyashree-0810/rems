@@ -3,6 +3,22 @@
   <!-- TITLE ONLY (NO HOME HERE) -->
   <h2>Booking History</h2>
 
+  <div class="search-container">
+    <input type="text"
+           [(ngModel)]="searchLayoutName"
+           (keyup)="onSearch()"
+           placeholder="Search Name"
+           class="search-input">
+
+    <input type="text"
+           [(ngModel)]="searchPlotNo"
+           (keyup)="onSearch()"
+           placeholder="Search Plot No"
+           class="search-input">
+
+    <button class="search-btn" (click)="onSearch()">Search</button>
+  </div>
+
   <!-- CREATE BUTTON (RIGHT, LIKE OTHERS) -->
   <div class="top-buttons">
     <button class="btn btn-success" (click)="goToCreate()">
@@ -72,13 +88,6 @@
 
     <div class="pagination">
       <button [disabled]="currentPage === 1" (click)="prevPage()">«</button>
-
-      <button *ngFor="let page of totalPagesArray"
-              [ngClass]="{'active': page === currentPage}"
-              (click)="goToPage(page)">
-        {{ page }}
-      </button>
-
       <button [disabled]="currentPage === totalPages" (click)="nextPage()">»</button>
     </div>
 

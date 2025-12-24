@@ -5,6 +5,7 @@ import { BookingService } from '../../../services/booking.service';
 import { PlotserviceService } from '../../../services/plotservice.service';
 import { LayoutserviceService } from '../../../services/layoutservice.service';
 import { CustomerService } from '../../../services/customer.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-create-booking',
@@ -51,7 +52,8 @@ export class CreateBookingComponent implements OnInit {
     private router: Router,
     private plotService: PlotserviceService,
     private layoutService: LayoutserviceService,
-    private customerService: CustomerService
+    private customerService: CustomerService,
+    private toastr: ToastrService
   ) {}
 
   ngOnInit(): void {
@@ -78,7 +80,7 @@ export class CreateBookingComponent implements OnInit {
     const p = this.selectedPlot;
     this.booking.plotId = p.plotId;
     this.booking.plotNo = p.plotNo;
-    this.booking.sqft = p.sqft;
+    this.booking.sqft = p.totalSqft ?? p.sqft;
     this.booking.price = p.price;
     this.booking.direction = p.direction;
 
@@ -96,7 +98,7 @@ export class CreateBookingComponent implements OnInit {
         this.booking.aadharNo = c.aadharNo;
         this.booking.panNo = c.panNo;
       },
-      error: () => alert('Customer not found')
+      error: () => this.toastr.error('Customer not found')
     });
   }
 
@@ -143,10 +145,10 @@ export class CreateBookingComponent implements OnInit {
 
     this.bookingService.createBooking(requestBody).subscribe({
       next: () => {
-        alert('Booking Saved Successfully');
+        this.toastr.success('Booking Saved Successfully');
         this.router.navigate(['/booking-history']);
       },
-      error: () => alert('Booking Failed')
+      error: () => this.toastr.error('Booking Failed')
     });
   }
 

@@ -7,6 +7,7 @@ import { LoginComponent } from './components/login/login.component';
 import { LayoutComponent } from './components/layout/layout.component';
 
 import { HeaderComponent } from './components/header/header.component';
+import { FooterComponent } from './components/footer/footer.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ViewLayoutsComponent } from './components/view-layouts/view-layouts.component';
@@ -43,6 +44,7 @@ import { ViewRoleComponent } from './components/Role/view-role/view-role.compone
     LayoutComponent,
     EditLayoutComponent,
     HeaderComponent,
+    FooterComponent,
     DashboardComponent,
     ViewLayoutsComponent,
     

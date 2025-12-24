@@ -1,59 +1,105 @@
+/* =========================
+   Card
+========================= */
 .form-container {
   max-width: 600px;
-  margin: 20px auto;
-  padding: 20px;
+  margin: 25px auto;
+  padding: 18px;
   background: #fff;
   border-radius: 12px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  box-shadow: 0 8px 25px rgba(0,0,0,0.25);
 }
 
+/* =========================
+   Title
+========================= */
 .form-title {
   text-align: center;
-  margin-bottom: 20px;
+  color: #ff7e00;
+  margin-bottom: 12px;
+  font-size: 22px;
+  font-weight: 900;
 }
 
+/* =========================
+   Row Box
+========================= */
 .row {
+  display: grid;
+  grid-template-columns: 48px 150px auto;
+  align-items: center;
+  padding: 8px;
+  margin: 6px 0;
+  border-radius: 8px;
+  border: 1px solid #f1f1f1;
+  background: #fafafa;
+}
+
+/* =========================
+   Icon
+========================= */
+.icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: #fff1df;
   display: flex;
-  margin: 8px 0;
+  justify-content: center;
+  align-items: center;
+  color: #ff7e00;
+  font-size: 16px;
 }
 
+/* =========================
+   Attribute Text
+========================= */
 .label {
-  font-weight: 600;
-  width: 120px;        /* 🔽 reduced */
-  flex-shrink: 0;
-}
-
-.colon {
-  width: 15px;
-  text-align: center;
+  font-weight: 700;
+  font-size: 13px;
+  color: #304ffe;    /* 🔥 Royal blue like your screenshot */
 }
 
 .value {
-  flex: 1;
-  text-align: left;
-  word-wrap: break-word; /* ensures long text wraps nicely */
+  font-size: 13px;
+  color: #222;
+  word-wrap: break-word;
 }
 
+/* =========================
+   Button Row
+========================= */
 .button-row {
   display: flex;
-  justify-content: flex-end;  /* right side */
-  margin-top: 25px;
+  justify-content: flex-end;
+  margin-top: 18px;
 }
 
+/* =========================
+   Button
+========================= */
 .home-btn {
-  padding: 8px 18px;
-  background: #f44336;
-  color: #fff;
+  width: 110px;
+  height: 32px;
+  background: #ff7e00;
   border: none;
-  border-radius: 6px;
-  font-size: 14px;
+  color: #fff;
+  border-radius: 7px;
+  font-size: 12px;
+  font-weight: 700;
   cursor: pointer;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .home-btn:hover {
-  background: #d32f2f;
+  opacity: 0.9;
 }
 
+/* =========================
+   Avatar (if using)
+========================= */
 .avatar-large {
   width: 120px;
   height: 120px;

@@ -1,47 +1,58 @@
-<div class="login-container">
-    <ngx-spinner
-    bdColor="rgba(0,0,0,0.5)"
-    size="medium"
-    color="#fff"
-    type="ball-clip-rotate"
-    [fullScreen]="true">
-  </ngx-spinner>
+<div class="lux-bg">
+
+  <!-- Floating Glow Lights -->
+  <div class="particles">
+    <span *ngFor="let p of particles"
+          [style.top.%]="p.top"
+          [style.left.%]="p.left"
+          [style.animationDelay.s]="p.delay">
+    </span>
+  </div>
+
+  <!-- Login Glass Card -->
   <div class="login-card">
 
-    <!-- Header -->
-    <div class="card-header">
-      <h2>Welcome<br>To Real Estate Portal</h2>
-      <p>Manage properties, bookings, clients and more—all in one place.</p>
+    <div class="header">
+      <h1>Welcome Back 👋</h1>
+      <p>Sign in to Real Estate Portal</p>
     </div>
 
-    <!-- Body -->
-    <div class="card-body">
+    <div class="glass-panel">
       <form #loginForm="ngForm" (ngSubmit)="onSubmit(loginForm)">
 
         <label>Username</label>
-        <input
-          type="email"
-          name="email"
-          [(ngModel)]="login.email"
-          placeholder="Enter your email"
-          required />
+        <div class="input-box">
+          <span class="icon">📧</span>
+          <input type="email" name="email"
+                 [(ngModel)]="login.email"
+                 placeholder="admin@gmail.com" required />
+        </div>
 
         <label>Password</label>
-        <input
-          type="password"
-          name="password"
-          [(ngModel)]="login.password"
-          placeholder="Enter your password"
-          required />
+        <div class="input-box">
+          <span class="icon">🔒</span>
+          <input type="password" name="password"
+                 [(ngModel)]="login.password"
+                 placeholder="Enter password" required />
+        </div>
 
         <div class="forgot">Forgot password?</div>
 
-        <button type="submit" [disabled]="!loginForm.valid">
-          LOGIN
+        <button type="submit">
+          Sign In
         </button>
 
       </form>
     </div>
+
+    <div class="secure">
+      🔐 Secured Login <br>
+      Trusted by <b>Real Estate Professionals</b>
+    </div>
+
+    <p class="copy">
+      © 2025 Real Estate Management System
+    </p>
 
   </div>
 

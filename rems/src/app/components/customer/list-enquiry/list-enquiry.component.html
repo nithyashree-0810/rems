@@ -4,21 +4,17 @@
 
   <!-- SEARCH -->
   <div class="search-container">
-    <input
-      type="text"
-      placeholder="Search Name"
-      [(ngModel)]="searchName"
-      (input)="onSearch()"
-      class="search-input"
-    />
+    <input type="text"
+           [(ngModel)]="searchName"
+           (keyup)="onSearch()"
+           placeholder="Search Name"
+           class="search-input">
 
-    <input
-      type="text"
-      placeholder="Search Mobile Number"
-      [(ngModel)]="searchMobile"
-      (input)="onSearch()"
-      class="search-input"
-    />
+    <input type="text"
+           [(ngModel)]="searchMobile"
+           (keyup)="onSearch()"
+           placeholder="Search Mobile Number"
+           class="search-input">
 
     <button class="search-btn" (click)="onSearch()">Search</button>
   </div>
@@ -47,11 +43,14 @@
 
       <tbody>
         <tr *ngFor="let c of paginatedCustomers; let i = index">
+
+          <!-- Profile Image -->
           <td>
-            <img *ngIf="c.profileImagePath"
-                 [src]="imageUrl(c.profileImagePath)"
-                 class="avatar"
-                 alt="Photo">
+            <div class="img-wrapper">
+              <img *ngIf="c.profileImagePath"
+                   [src]="imageUrl(c.profileImagePath)"
+                   alt="Photo">
+            </div>
           </td>
 
           <td>{{ (currentPage - 1) * pageSize + i + 1 }}</td>
@@ -60,9 +59,9 @@
           <td>{{ c.address }}</td>
           <td>{{ c.mobileNo }}</td>
 
-          <!-- ✅ ALL ACTIONS IN ONE ROW -->
           <td>
             <div class="action-icons">
+
               <i class="fa fa-eye circle-icon view"
                  (click)="viewcustomer(c.mobileNo)"></i>
 
@@ -71,6 +70,7 @@
 
               <i class="fa fa-trash circle-icon delete"
                  (click)="deleteCustomer(c.mobileNo)"></i>
+
             </div>
           </td>
         </tr>

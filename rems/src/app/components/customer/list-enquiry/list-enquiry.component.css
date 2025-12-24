@@ -1,10 +1,46 @@
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+
+/* 🌌 DARK PREMIUM BACKGROUND */
+.page-bg {
+  min-height: 100vh;
+
+  background: linear-gradient(
+      rgba(0, 0, 0, 0.80),
+      rgba(0, 0, 0, 0.80)
+    ),
+    url("https://images.pexels.com/photos/1396122/pexels-photo-1396122.jpeg");
+
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+/* MAIN WRAPPER */
+.dashboard-shell {
+  max-width: 1250px;
+  width: 100%;
+  padding: 40px 20px;
+  font-family: "Plus Jakarta Sans", sans-serif;
+}
+
+/* GLASS EFFECT */
+.glass-card {
+  background: rgba(255, 255, 255, 0.92);
+  backdrop-filter: blur(12px);
+  border-radius: 18px;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.35);
+}
+
+/* ---------------- ORIGINAL YOUR CSS BELOW ---------------- */
+
 /* CONTAINER */
 .container {
-  font-family: 'Segoe UI', sans-serif;
-  background-color: #f5f6fa;
   padding: 22px 11px;
   font-size: 13px;
-  min-height: 100vh;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -13,8 +49,9 @@
 /* HEADER */
 h2 {
   color: #ff7e00;
+  font-size: 26px;
   margin-bottom: 16px;
-  font-size: 22px;
+  font-weight: 800;
 }
 
 /* SEARCH BAR */
@@ -43,7 +80,6 @@ h2 {
   background: #3498db;
   color: white;
   border: none;
-  cursor: pointer;
 }
 
 /* CREATE BUTTON */
@@ -62,15 +98,8 @@ h2 {
   cursor: pointer;
 }
 
-.btn-success {
-  background-color: #28a745;
-  color: white;
-}
-
-.btn-danger {
-  background-color: #dc3545;
-  color: white;
-}
+.btn-success { background: #28a745; color: white; }
+.btn-danger  { background: #dc3545; color: white; }
 
 /* TABLE */
 .table-wrapper {
@@ -83,11 +112,11 @@ h2 {
   border-collapse: collapse;
   background: white;
   border-radius: 11px;
-  box-shadow: 0 0 7px rgba(0,0,0,0.08);
+  box-shadow: 0 0 15px rgba(0,0,0,0.15);
 }
 
 .layout-table thead {
-  background-color: #ff9800;
+  background: #ff9800;
 }
 
 .layout-table th {
@@ -103,15 +132,6 @@ h2 {
   text-align: center;
 }
 
-/* AVATAR */
-.avatar {
-  width: 38px;
-  height: 38px;
-  border-radius: 50%;
-  object-fit: cover;
-  border: 2px solid #eee;
-}
-
 /* ACTION ICONS */
 .circle-icon {
   font-size: 14px;
@@ -124,13 +144,10 @@ h2 {
 .edit   { background: #e8f5e9; color: #388e3c; }
 .delete { background: #ffebee; color: #d32f2f; }
 
-/* ✅ ACTION ICON ALIGNMENT */
 .action-icons {
   display: flex;
   justify-content: center;
-  align-items: center;
   gap: 6px;
-  white-space: nowrap;
 }
 
 /* PAGINATION */
@@ -144,7 +161,6 @@ h2 {
 
 .pagination button {
   padding: 6px 12px;
-  font-size: 12px;
   border-radius: 5px;
 }
 
@@ -153,11 +169,9 @@ h2 {
   color: white;
 }
 
-/* HOME BUTTON */
 .pagination-home-btn {
   position: absolute;
   right: 0;
   padding: 7px 14px;
-  font-size: 12px;
   border-radius: 7px;
 }

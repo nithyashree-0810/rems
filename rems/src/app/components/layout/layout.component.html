@@ -50,6 +50,35 @@
       <input type="text" name="surveyNo" [(ngModel)]="layout.surveyNo" required>
     </div>
 
+
+    <!-- ================= PDF Upload ================= -->
+    <div class="form-group" style="grid-column: span 2;">
+      <label>Upload Layout PDF <span class="required">*</span></label>
+
+      <input type="file"
+             accept="application/pdf"
+             (change)="onPdfSelected($event)"
+             required>
+
+      <!-- Preview below input -->
+      <div class="pdf-preview" *ngIf="selectedPdf">
+        <div class="pdf-icon">📄</div>
+
+        <div class="pdf-details">
+          <b>{{ selectedPdf.name }}</b>
+          <span>{{ (selectedPdf.size / 1024) | number:'1.0-1' }} KB</span>
+        </div>
+
+        <button type="button"
+                class="remove-pdf"
+                (click)="selectedPdf = null">
+          ✖
+        </button>
+      </div>
+    </div>
+    <!-- ================================================= -->
+
+
     <div class="form-group">
       <label>Owner Name 1</label>
       <input type="text" name="ownerName1" [(ngModel)]="layout.ownerName1">
@@ -80,6 +109,8 @@
       <input type="text" name="ownerName6" [(ngModel)]="layout.ownerName6">
     </div>
 
+
+    <!-- Checkboxes -->
     <div class="checkbox-row">
       <label>
         <input type="checkbox" name="dtcpApproved" [(ngModel)]="layout.dtcpApproved">
@@ -91,6 +122,7 @@
         RERA Approved
       </label>
     </div>
+
 
     <div class="form-actions">
       <button type="submit" class="btn create-btn" [disabled]="layoutForm.invalid">

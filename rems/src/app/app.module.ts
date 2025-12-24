@@ -35,6 +35,8 @@ import { CreateRoleComponent } from './components/Role/create-role/create-role.c
 import { EditRoleComponent } from './components/Role/edit-role/edit-role.component';
 import { ListRoleComponent } from './components/Role/list-role/list-role.component';
 import { ViewRoleComponent } from './components/Role/view-role/view-role.component';
+import { LayoutReportComponent } from './components/layout-report/layout-report.component';
+
 
 
 @NgModule({
@@ -66,6 +68,7 @@ import { ViewRoleComponent } from './components/Role/view-role/view-role.compone
     EditRoleComponent,
     ListRoleComponent,
     ViewRoleComponent,
+    LayoutReportComponent,
    
   ],
   imports: [

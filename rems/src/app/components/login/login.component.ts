@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Login } from '../../models/login';
@@ -9,11 +9,13 @@ import { NgxSpinnerService } from 'ngx-spinner';
   selector: 'app-login',
   standalone: false,
   templateUrl: './login.component.html',
-  styleUrl: './login.component.css'
+  styleUrls: ['./login.component.css']
 })
-export class LoginComponent {
+export class LoginComponent implements OnInit, OnDestroy {
 
   login: Login = new Login();
+
+  particles: Array<{ top: number; left: number; delay: number }> = [];
 
   private readonly validEmail = 'admin@gmail.com';
   private readonly validPassword = 'admin123';
@@ -24,25 +26,46 @@ export class LoginComponent {
     private spinner: NgxSpinnerService
   ) {}
 
-  onSubmit(form: NgForm) {
+  ngOnInit(): void {
+    this.generateParticles();
+  }
 
-    this.spinner.show(); // Show loading
+  // ✨ Floating Glow Particles
+  generateParticles(): void {
+    this.particles = Array.from({ length: 40 }).map(() => ({
+      top: Math.random() * 100,
+      left: Math.random() * 100,
+      delay: Math.random() * 4
+    }));
+  }
 
-    setTimeout(() => { // simulate server delay
+  // ✅ Login Handler
+  onSubmit(form: NgForm): void {
 
-      if (this.login.email === this.validEmail && this.login.password === this.validPassword) {
-        
+    if (form.invalid) {
+      this.toastr.warning('Please enter email & password');
+      return;
+    }
+
+    this.spinner.show();
+
+    setTimeout(() => {
+      if (
+        this.login.email === this.validEmail &&
+        this.login.password === this.validPassword
+      ) {
         this.toastr.success('Login Successful');
         this.spinner.hide();
-
         this.router.navigate(['/dashboard']);
-
-      } else {
-
+      } 
+      else {
         this.toastr.error('Invalid Email or Password');
         this.spinner.hide();
       }
+    }, 1200);
+  }
 
-    }, 1500); // 1.5 sec loading effect
+  ngOnDestroy(): void {
+    // nothing to clean now — safe component 👍
   }
 }

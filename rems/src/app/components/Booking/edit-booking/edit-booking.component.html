@@ -34,7 +34,7 @@
       <input type="number" class="value" formControlName="price" readonly />
     </div>
 
-    <!-- ADVANCES -->
+    <!-- ================= ADVANCE 1 ================= -->
     <div class="row">
       <label class="label">Advance 1:</label>
       <input type="number"
@@ -44,6 +44,25 @@
              (input)="calculateBalance()" />
     </div>
 
+    <div *ngIf="bookingForm.value.advance1 > 0">
+      <div class="row">
+        <label class="label">Advance 1 Date:</label>
+        <input type="date" class="value" formControlName="advance1Date" />
+      </div>
+
+      <div class="row">
+        <label class="label">Advance 1 Mode:</label>
+        <select class="value" formControlName="advance1Mode">
+          <option value="">-- Select Mode --</option>
+          <option>Cash</option>
+          <option>UPI</option>
+          <option>Bank Transfer</option>
+          <option>Cheque</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- ================= ADVANCE 2 ================= -->
     <div class="row">
       <label class="label">Advance 2:</label>
       <input type="number"
@@ -53,6 +72,25 @@
              (input)="calculateBalance()" />
     </div>
 
+    <div *ngIf="bookingForm.value.advance2 > 0">
+      <div class="row">
+        <label class="label">Advance 2 Date:</label>
+        <input type="date" class="value" formControlName="advance2Date" />
+      </div>
+
+      <div class="row">
+        <label class="label">Advance 2 Mode:</label>
+        <select class="value" formControlName="advance2Mode">
+          <option value="">-- Select Mode --</option>
+          <option>Cash</option>
+          <option>UPI</option>
+          <option>Bank Transfer</option>
+          <option>Cheque</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- ================= ADVANCE 3 ================= -->
     <div class="row">
       <label class="label">Advance 3:</label>
       <input type="number"
@@ -62,6 +100,25 @@
              (input)="calculateBalance()" />
     </div>
 
+    <div *ngIf="bookingForm.value.advance3 > 0">
+      <div class="row">
+        <label class="label">Advance 3 Date:</label>
+        <input type="date" class="value" formControlName="advance3Date" />
+      </div>
+
+      <div class="row">
+        <label class="label">Advance 3 Mode:</label>
+        <select class="value" formControlName="advance3Mode">
+          <option value="">-- Select Mode --</option>
+          <option>Cash</option>
+          <option>UPI</option>
+          <option>Bank Transfer</option>
+          <option>Cheque</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- ================= ADVANCE 4 ================= -->
     <div class="row">
       <label class="label">Advance 4:</label>
       <input type="number"
@@ -71,35 +128,28 @@
              (input)="calculateBalance()" />
     </div>
 
+    <div *ngIf="bookingForm.value.advance4 > 0">
+      <div class="row">
+        <label class="label">Advance 4 Date:</label>
+        <input type="date" class="value" formControlName="advance4Date" />
+      </div>
+
+      <div class="row">
+        <label class="label">Advance 4 Mode:</label>
+        <select class="value" formControlName="advance4Mode">
+          <option value="">-- Select Mode --</option>
+          <option>Cash</option>
+          <option>UPI</option>
+          <option>Bank Transfer</option>
+          <option>Cheque</option>
+        </select>
+      </div>
+    </div>
+
     <!-- BALANCE -->
     <div class="row">
       <label class="label">Balance:</label>
       <input type="number" class="value" formControlName="balance" readonly />
-    </div>
-
-    <div class="row">
-      <label class="label">Direction:</label>
-      <input class="value" formControlName="direction" readonly />
-    </div>
-
-    <div class="row">
-      <label class="label">Address:</label>
-      <input class="value" formControlName="address" readonly />
-    </div>
-
-    <div class="row">
-      <label class="label">Pincode:</label>
-      <input class="value" formControlName="pincode" readonly />
-    </div>
-
-    <div class="row">
-      <label class="label">Aadhar No:</label>
-      <input class="value" formControlName="aadharNo" />
-    </div>
-
-    <div class="row">
-      <label class="label">PAN No:</label>
-      <input class="value" formControlName="panNo" />
     </div>
 
     <!-- STATUS -->
@@ -125,34 +175,30 @@
         <input type="number" class="value" formControlName="regNo" />
       </div>
     </div>
+
     <!-- CANCEL DETAILS -->
-<div *ngIf="showCancelFields">
+    <div *ngIf="showCancelFields">
+      <div class="row">
+        <label class="label">Refund Amount:</label>
+        <input type="number" class="value" formControlName="refundAmount" />
+      </div>
 
-  <div class="row">
-    <label class="label">Refund Amount:</label>
-    <input type="number"
-           class="value"
-           formControlName="refundAmount" />
-  </div>
-
-  <div class="row">
-    <label class="label">Refund Mode:</label>
-    <select class="value" formControlName="refundMode">
-      <option value="">-- Select Mode --</option>
-      <option value="Cash">Cash</option>
-      <option value="UPI">UPI</option>
-      <option value="Bank Transfer">Bank Transfer</option>
-      <option value="Cheque">Cheque</option>
-    </select>
-  </div>
-
-</div>
-
+      <div class="row">
+        <label class="label">Refund Mode:</label>
+        <select class="value" formControlName="refundMode">
+          <option value="">-- Select Mode --</option>
+          <option>Cash</option>
+          <option>UPI</option>
+          <option>Bank Transfer</option>
+          <option>Cheque</option>
+        </select>
+      </div>
+    </div>
 
     <div class="actions">
-  <button type="submit" class="save-btn">Save</button>
-  <button type="button" class="home-btn" (click)="goBack()">Cancel</button>
-</div>
+      <button type="submit" class="save-btn">Save</button>
+      <button type="button" class="home-btn" (click)="goBack()">Cancel</button>
+    </div>
 
   </form>
 </div>

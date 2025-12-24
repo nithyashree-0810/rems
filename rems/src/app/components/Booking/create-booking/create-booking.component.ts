@@ -24,13 +24,27 @@ export class CreateBookingComponent implements OnInit {
     sqft: 0,
     price: 0,
     direction: '',
+
     advance1: 0,
+    advance1Date: null,
+    advance1Mode: '',
+
     advance2: 0,
+    advance2Date: null,
+    advance2Mode: '',
+
     advance3: 0,
+    advance3Date: null,
+    advance3Mode: '',
+
     advance4: 0,
+    advance4Date: null,
+    advance4Mode: '',
+
     balance: 0,
 
     mobileNo: '',
+    firstName: '',
     address: '',
     pincode: null,
     aadharNo: null,
@@ -40,7 +54,7 @@ export class CreateBookingComponent implements OnInit {
     regDate: null,
     regNo: null,
 
-    refundAmount:0,
+    refundAmount: 0,
     mode: null
   };
 
@@ -92,7 +106,7 @@ export class CreateBookingComponent implements OnInit {
 
     this.customerService.getCustomerByMobile(this.booking.mobileNo).subscribe({
       next: c => {
-        this.booking.firstName=c.firstName;
+        this.booking.firstName = c.firstName;
         this.booking.address = c.address;
         this.booking.pincode = c.pincode;
         this.booking.aadharNo = c.aadharNo;
@@ -120,15 +134,27 @@ export class CreateBookingComponent implements OnInit {
       plotNo: this.booking.plotNo,
       layout: { layoutName: this.booking.layoutName },
       customer: { mobileNo: this.booking.mobileNo },
-      
+
       sqft: this.booking.sqft,
       price: this.booking.price,
       direction: this.booking.direction,
 
       advance1: this.booking.advance1,
+      advance1Date: this.booking.advance1Date,
+      advance1Mode: this.booking.advance1Mode,
+
       advance2: this.booking.advance2,
+      advance2Date: this.booking.advance2Date,
+      advance2Mode: this.booking.advance2Mode,
+
       advance3: this.booking.advance3,
+      advance3Date: this.booking.advance3Date,
+      advance3Mode: this.booking.advance3Mode,
+
       advance4: this.booking.advance4,
+      advance4Date: this.booking.advance4Date,
+      advance4Mode: this.booking.advance4Mode,
+
       balance: this.booking.balance,
 
       address: this.booking.address,
@@ -139,6 +165,7 @@ export class CreateBookingComponent implements OnInit {
       status: this.booking.status,
       regDate: this.booking.status === 'Registered' ? this.booking.regDate : null,
       regNo: this.booking.status === 'Registered' ? this.booking.regNo : null,
+
       refundAmount: this.booking.refundAmount,
       mode: this.booking.mode
     };
@@ -156,7 +183,7 @@ export class CreateBookingComponent implements OnInit {
     this.router.navigate(['/dashboard']);
   }
 
-  viewBookings() { 
+  viewBookings() {
     this.router.navigate(['/booking-history']);
-   }
+  }
 }

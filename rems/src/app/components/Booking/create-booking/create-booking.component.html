@@ -1,20 +1,23 @@
-<div class="booking-container">
+
+  <div class="booking-container">
   <div class="booking-card">
 
+    <!-- TITLE -->
     <div class="title-row">
       <h2 class="page-title">Book Plot</h2>
       <button class="btn-view" (click)="viewBookings()">View Bookings</button>
     </div>
 
     <form #bookingForm="ngForm" (ngSubmit)="onSubmit(bookingForm)">
+
       <div class="form-row">
 
-        <!-- ================= LEFT SIDE ================= -->
+        <!-- ================= LEFT COLUMN ================= -->
         <div class="form-column">
 
-          <!-- LAYOUT -->
+          <!-- Layout -->
           <div class="form-group">
-            <label>Layout Name:<span style="color:red">*</span></label>
+            <label>Layout Name:<span class="req">*</span></label>
             <select class="form-control"
                     name="layoutName"
                     [(ngModel)]="booking.layoutName"
@@ -28,45 +31,41 @@
             </select>
           </div>
 
-          <!-- PLOT -->
+          <!-- Plot -->
           <div class="form-group">
-            <label>Plot No:<span style="color:red">*</span></label>
+            <label>Plot No:<span class="req">*</span></label>
             <select class="form-control"
                     name="selectedPlot"
                     [(ngModel)]="selectedPlot"
                     (change)="onPlotChange()"
                     required>
               <option value="">-- Select Plot --</option>
-              <option *ngFor="let p of plotList"
-                      [ngValue]="p">
+              <option *ngFor="let p of plotList" [ngValue]="p">
                 {{ p.plotNo }}
               </option>
             </select>
           </div>
 
-          <!-- PLOT DETAILS -->
+          <!-- Plot Details -->
           <div class="form-group">
             <label>Square Feet:</label>
-            <input type="number" class="form-control"
-                   name="sqft" readonly
-                   [(ngModel)]="booking.sqft">
+            <input type="number" class="form-control" readonly
+                   name="sqft" [(ngModel)]="booking.sqft">
           </div>
 
           <div class="form-group">
             <label>Price:</label>
-            <input type="number" class="form-control"
-                   name="price" readonly
-                   [(ngModel)]="booking.price">
+            <input type="number" class="form-control" readonly
+                   name="price" [(ngModel)]="booking.price">
           </div>
 
           <div class="form-group">
             <label>Direction:</label>
-            <input type="text" class="form-control"
-                   name="direction" readonly
-                   [(ngModel)]="booking.direction">
+            <input type="text" class="form-control" readonly
+                   name="direction" [(ngModel)]="booking.direction">
           </div>
 
-          <!-- ADVANCE PAYMENTS -->
+          <!-- ================= ADVANCE 1 ================= -->
           <div class="form-group">
             <label>Advance 1:</label>
             <input type="number" class="form-control"
@@ -75,6 +74,31 @@
                    (input)="calculateBalance()">
           </div>
 
+          <div *ngIf="booking.advance1 && booking.advance1 > 0">
+            <div class="form-group">
+              <label>Advance 1 Date:<span class="req">*</span></label>
+              <input type="date" class="form-control"
+                     name="advance1Date"
+                     [(ngModel)]="booking.advance1Date"
+                     required>
+            </div>
+
+            <div class="form-group">
+              <label>Advance 1 Mode:<span class="req">*</span></label>
+              <select class="form-control"
+                      name="advance1Mode"
+                      [(ngModel)]="booking.advance1Mode"
+                      required>
+                <option value="">-- Select Mode --</option>
+                <option>Cash</option>
+                <option>UPI</option>
+                <option>Bank Transfer</option>
+                <option>Cheque</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- ================= ADVANCE 2 ================= -->
           <div class="form-group">
             <label>Advance 2:</label>
             <input type="number" class="form-control"
@@ -83,6 +107,29 @@
                    (input)="calculateBalance()">
           </div>
 
+          <div *ngIf="booking.advance2 && booking.advance2 > 0">
+            <div class="form-group">
+              <label>Advance 2 Date:</label>
+              <input type="date" class="form-control"
+                     name="advance2Date"
+                     [(ngModel)]="booking.advance2Date">
+            </div>
+
+            <div class="form-group">
+              <label>Advance 2 Mode:</label>
+              <select class="form-control"
+                      name="advance2Mode"
+                      [(ngModel)]="booking.advance2Mode">
+                <option value="">-- Select Mode --</option>
+                <option>Cash</option>
+                <option>UPI</option>
+                <option>Bank Transfer</option>
+                <option>Cheque</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- ================= ADVANCE 3 ================= -->
           <div class="form-group">
             <label>Advance 3:</label>
             <input type="number" class="form-control"
@@ -91,6 +138,29 @@
                    (input)="calculateBalance()">
           </div>
 
+          <div *ngIf="booking.advance3 && booking.advance3 > 0">
+            <div class="form-group">
+              <label>Advance 3 Date:</label>
+              <input type="date" class="form-control"
+                     name="advance3Date"
+                     [(ngModel)]="booking.advance3Date">
+            </div>
+
+            <div class="form-group">
+              <label>Advance 3 Mode:</label>
+              <select class="form-control"
+                      name="advance3Mode"
+                      [(ngModel)]="booking.advance3Mode">
+                <option value="">-- Select Mode --</option>
+                <option>Cash</option>
+                <option>UPI</option>
+                <option>Bank Transfer</option>
+                <option>Cheque</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- ================= ADVANCE 4 ================= -->
           <div class="form-group">
             <label>Advance 4:</label>
             <input type="number" class="form-control"
@@ -99,22 +169,42 @@
                    (input)="calculateBalance()">
           </div>
 
-          <!-- BALANCE -->
+          <div *ngIf="booking.advance4 && booking.advance4 > 0">
+            <div class="form-group">
+              <label>Advance 4 Date:</label>
+              <input type="date" class="form-control"
+                     name="advance4Date"
+                     [(ngModel)]="booking.advance4Date">
+            </div>
+
+            <div class="form-group">
+              <label>Advance 4 Mode:</label>
+              <select class="form-control"
+                      name="advance4Mode"
+                      [(ngModel)]="booking.advance4Mode">
+                <option value="">-- Select Mode --</option>
+                <option>Cash</option>
+                <option>UPI</option>
+                <option>Bank Transfer</option>
+                <option>Cheque</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Balance -->
           <div class="form-group">
             <label>Balance:</label>
-            <input type="number" class="form-control"
-                   name="balance"
-                   readonly
-                   [(ngModel)]="booking.balance">
+            <input type="number" class="form-control" readonly
+                   name="balance" [(ngModel)]="booking.balance">
           </div>
 
         </div>
 
-        <!-- ================= RIGHT SIDE ================= -->
+        <!-- ================= RIGHT COLUMN ================= -->
         <div class="form-column">
 
           <div class="form-group">
-            <label>Mobile Number:<span style="color:red">*</span></label>
+            <label>Mobile No:<span class="req">*</span></label>
             <input type="tel" class="form-control"
                    name="mobileNo"
                    [(ngModel)]="booking.mobileNo"
@@ -124,109 +214,39 @@
 
           <div class="form-group">
             <label>Customer Name:</label>
-            <input type="text" class="form-control"
-                   name="firstName"
-                   readonly
-                   [(ngModel)]="booking.firstName">
+            <input type="text" class="form-control" readonly
+                   name="firstName" [(ngModel)]="booking.firstName">
           </div>
 
           <div class="form-group">
             <label>Address:</label>
-            <input type="text" class="form-control"
-                   name="address"
-                   readonly
-                   [(ngModel)]="booking.address">
+            <input type="text" class="form-control" readonly
+                   name="address" [(ngModel)]="booking.address">
           </div>
 
           <div class="form-group">
             <label>Pincode:</label>
-            <input type="number" class="form-control"
-                   name="pincode"
-                   readonly
-                   [(ngModel)]="booking.pincode">
+            <input type="number" class="form-control" readonly
+                   name="pincode" [(ngModel)]="booking.pincode">
           </div>
 
           <div class="form-group">
-            <label>Aadhaar Number:</label>
-            <input type="text" class="form-control"
-                   name="aadharNo"
-                   [(ngModel)]="booking.aadharNo">
-          </div>
-
-          <div class="form-group">
-            <label>PAN Number:</label>
-            <input type="text" class="form-control"
-                   name="panNo"
-                   [(ngModel)]="booking.panNo">
-          </div>
-
-          <!-- STATUS -->
-          <div class="form-group">
-            <label>Status:<span style="color:red">*</span></label>
+            <label>Status:<span class="req">*</span></label>
             <select class="form-control"
                     name="status"
                     [(ngModel)]="booking.status"
                     required>
               <option value="">-- Select Status --</option>
-              <option value="Registered">Registered</option>
-              <option value="Unregistered">Unregistered</option>
-              <option value="Cancel">Cancel</option>
+              <option>Registered</option>
+              <option>Unregistered</option>
+              <option>Cancel</option>
             </select>
           </div>
-
-          <!-- REGISTERED DETAILS -->
-          <div *ngIf="booking.status === 'Registered'">
-
-            <div class="form-group">
-              <label>Registration Date:<span style="color:red">*</span></label>
-              <input type="date" class="form-control"
-                     name="regDate"
-                     [(ngModel)]="booking.regDate"
-                     required>
-            </div>
-
-            <div class="form-group">
-              <label>Registration No:<span style="color:red">*</span></label>
-              <input type="number" class="form-control"
-                     name="regNo"
-                     [(ngModel)]="booking.regNo"
-                     required>
-            </div>
-
-          </div>
-          <!-- CANCEL DETAILS -->
-<div *ngIf="booking.status === 'Cancel'">
-
-  <div class="form-group">
-    <label>Refund Amount:<span style="color:red">*</span></label>
-    <input type="number"
-           class="form-control"
-           name="refundAmount"
-           [(ngModel)]="booking.refundAmount"
-           required />
-  </div>
-
-  <div class="form-group">
-    <label>Refund Mode:<span style="color:red">*</span></label>
-    <select class="form-control"
-            name="mode"
-            [(ngModel)]="booking.mode"
-            required>
-      <option value="">-- Select Mode --</option>
-      <option value="Cash">Cash</option>
-      <option value="UPI">UPI</option>
-      <option value="Bank Transfer">Bank Transfer</option>
-      <option value="Cheque">Cheque</option>
-    </select>
-  </div>
-
-</div>
-
 
         </div>
       </div>
 
-      <!-- ACTION BUTTONS -->
+      <!-- ACTIONS -->
       <div class="action-buttons">
         <button type="submit"
                 class="btn btn-success"
@@ -245,3 +265,4 @@
 
   </div>
 </div>
+

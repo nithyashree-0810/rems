@@ -1,25 +1,21 @@
 @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
 
-/* 🌌 DARK PREMIUM BACKGROUND */
+/* PAGE BACKGROUND */
 .page-bg {
   min-height: 100vh;
-
   background: linear-gradient(
-      rgba(0, 0, 0, 0.80),
-      rgba(0, 0, 0, 0.80)
+      rgba(0, 0, 0, 0.85),
+      rgba(0, 0, 0, 0.85)
     ),
     url("https://images.pexels.com/photos/1396122/pexels-photo-1396122.jpeg");
-
   background-size: cover;
   background-position: center;
   background-attachment: fixed;
-
   display: flex;
   justify-content: center;
   align-items: flex-start;
 }
 
-/* MAIN WRAPPER */
 .dashboard-shell {
   max-width: 1250px;
   width: 100%;
@@ -27,17 +23,16 @@
   font-family: "Plus Jakarta Sans", sans-serif;
 }
 
-/* GLASS EFFECT */
 .glass-card {
   background: rgba(255, 255, 255, 0.92);
   backdrop-filter: blur(12px);
   border-radius: 18px;
   box-shadow: 0 12px 40px rgba(0, 0, 0, 0.35);
+  width: 100%;
 }
 
-/* ---------------- ORIGINAL YOUR CSS BELOW ---------------- */
+/* ---------------------------------------------------------- */
 
-/* CONTAINER */
 .container {
   padding: 22px 11px;
   font-size: 13px;
@@ -46,15 +41,15 @@
   align-items: center;
 }
 
-/* HEADER */
 h2 {
   color: #ff7e00;
-  font-size: 26px;
   margin-bottom: 16px;
+  font-size: 28px;
   font-weight: 800;
+  text-align: center;
 }
 
-/* SEARCH BAR */
+/* SEARCH */
 .search-container {
   width: 100%;
   max-width: 1188px;
@@ -66,20 +61,22 @@ h2 {
 
 .search-input {
   width: 260px;
-  padding: 9px 16px;
-  border-radius: 24px;
-  font-size: 13px;
+  padding: 10px 16px;
+  border-radius: 25px;
   border: 1px solid #ccc;
+  font-size: 13px;
   text-align: center;
+  box-shadow: 0 0 8px rgba(0,0,0,0.1);
 }
 
 .search-btn {
-  padding: 8px 20px;
+  padding: 8px 22px;
   font-size: 13px;
   border-radius: 9px;
   background: #3498db;
   color: white;
   border: none;
+  cursor: pointer;
 }
 
 /* CREATE BUTTON */
@@ -92,10 +89,11 @@ h2 {
 }
 
 .btn {
-  padding: 8px 16px;
+  padding: 9px 16px;
   font-size: 13px;
   border-radius: 9px;
   cursor: pointer;
+  border: none;
 }
 
 .btn-success { background: #28a745; color: white; }
@@ -103,6 +101,7 @@ h2 {
 
 /* TABLE */
 .table-wrapper {
+  width: 100%;
   display: flex;
   justify-content: center;
 }
@@ -112,7 +111,8 @@ h2 {
   border-collapse: collapse;
   background: white;
   border-radius: 11px;
-  box-shadow: 0 0 15px rgba(0,0,0,0.15);
+  overflow: hidden;
+  box-shadow: 0 8px 18px rgba(0,0,0,0.3);
 }
 
 .layout-table thead {
@@ -120,16 +120,35 @@ h2 {
 }
 
 .layout-table th {
-  padding: 9px;
+  padding: 10px;
   font-size: 12px;
   color: white;
   text-transform: uppercase;
 }
 
 .layout-table td {
-  padding: 7px;
+  padding: 8px;
   font-size: 13px;
   text-align: center;
+}
+
+/* ---------------- PROFILE IMAGE FIX ---------------- */
+.img-wrapper {
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+  overflow: hidden;
+  margin: auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #f1f1f1;
+}
+
+.img-wrapper img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 /* ACTION ICONS */
@@ -138,6 +157,11 @@ h2 {
   padding: 7px;
   border-radius: 50%;
   cursor: pointer;
+  transition: 0.2s;
+}
+
+.circle-icon:hover {
+  transform: scale(1.1);
 }
 
 .view   { background: #e3f2fd; color: #1976d2; }
@@ -147,6 +171,7 @@ h2 {
 .action-icons {
   display: flex;
   justify-content: center;
+  align-items: center;
   gap: 6px;
 }
 
@@ -161,7 +186,15 @@ h2 {
 
 .pagination button {
   padding: 6px 12px;
-  border-radius: 5px;
+  font-size: 12px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  cursor: pointer;
+}
+
+.pagination button:hover {
+  background: #3498db;
+  color: white;
 }
 
 .pagination .active {
@@ -169,9 +202,15 @@ h2 {
   color: white;
 }
 
+.pagination button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
 .pagination-home-btn {
   position: absolute;
   right: 0;
   padding: 7px 14px;
+  font-size: 12px;
   border-radius: 7px;
 }

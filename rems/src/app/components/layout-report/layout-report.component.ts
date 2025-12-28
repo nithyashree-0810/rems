@@ -4,9 +4,6 @@ import { Subject, takeUntil } from 'rxjs';
 import { BookingService } from '../../services/booking.service';
 import { LayoutserviceService } from '../../services/layoutservice.service';
 
-import { jsPDF } from 'jspdf';
-import html2canvas from 'html2canvas';
-
 @Component({
   selector: 'app-layout-report',
   standalone: false,
@@ -88,7 +85,6 @@ export class LayoutReportComponent implements OnInit, OnDestroy {
     const map: any = {};
 
     this.bookings.forEach(b => {
-
       const name =
         b.layoutName ||
         b.layout?.layoutName ||
@@ -109,23 +105,6 @@ export class LayoutReportComponent implements OnInit, OnDestroy {
       }))
       .sort((a, b) => b.sold - a.sold)
       .slice(0, 5);
-  }
-
-  // ================= EXPORT PDF =================
-  exportToPDF() {
-    const reportElement = document.getElementById('layoutReportPage');
-    if (!reportElement) return;
-
-    html2canvas(reportElement, { scale: 2 }).then(canvas => {
-      const imageData = canvas.toDataURL('image/png');
-      const pdf = new jsPDF('p', 'mm', 'a4');
-
-      const pdfWidth = pdf.internal.pageSize.getWidth();
-      const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
-
-      pdf.addImage(imageData, 'PNG', 0, 0, pdfWidth, pdfHeight);
-      pdf.save('Layout_Report.pdf');
-    });
   }
 
   ngOnDestroy(): void {

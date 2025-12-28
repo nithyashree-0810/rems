@@ -1,8 +1,17 @@
 package com.techietact.myrems.entity;
 
+import java.time.LocalDate;
 import java.util.Date;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.PrePersist;
+import jakarta.persistence.PreUpdate;
+import jakarta.persistence.Table;
 import lombok.Data;
 
 @Data
@@ -32,9 +41,20 @@ public class Booking {
 
     // 🔹 PAYMENTS
     private int advance1;
+    private LocalDate advance1Date;
+    private String advance1Mode;
+
     private int advance2;
+    private LocalDate advance2Date;
+    private String advance2Mode;
+
     private int advance3;
+    private LocalDate advance3Date;
+    private String advance3Mode;
+
     private int advance4;
+    private LocalDate advance4Date;
+    private String advance4Mode;
 
     private double balance;
 

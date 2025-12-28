@@ -1,15 +1,11 @@
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
 
 html, body {
-  margin: 0;
-  padding: 0;
   height: 100%;
+  margin: 0;
 }
 
 body {
-  /* Use the exact name of your house image from your assets folder */
-  background: linear-gradient(rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0.15)), 
-              url('assets/images/dashboard-bg.png') no-repeat center center fixed;
-  background-size: cover;
   font-family: 'Plus Jakarta Sans', sans-serif;
+  background: #ffffff;
 }

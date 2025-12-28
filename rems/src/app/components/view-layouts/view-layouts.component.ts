@@ -8,15 +8,15 @@ import { ToastrService } from 'ngx-toastr';
   selector: 'app-view-layouts',
   standalone: false,
   templateUrl: './view-layouts.component.html',
-  styleUrl: './view-layouts.component.css'
+  styleUrls: ['./view-layouts.component.css'] // ✅ FIXED (styleUrl → styleUrls)
 })
 export class ViewLayoutsComponent {
 
   searchName: string = "";
   searchLocation: string = "";
 
-  allLayouts: Layout[] = [];   
-  layouts: Layout[] = [];      
+  allLayouts: Layout[] = [];
+  layouts: Layout[] = [];
 
   currentPage = 1;
   pageSize = 10;
@@ -68,25 +68,19 @@ export class ViewLayoutsComponent {
     this.applyPaginationAfterSearch(filtered);
   }
 
-  // Normal Pagination
   applyPagination() {
     this.totalPages = Math.ceil(this.allLayouts.length / this.pageSize);
-
     const startIndex = (this.currentPage - 1) * this.pageSize;
     const endIndex = startIndex + this.pageSize;
-
     this.layouts = this.allLayouts.slice(startIndex, endIndex);
   }
 
-  // Pagination for Search
   applyPaginationAfterSearch(filteredData: Layout[]) {
     const startIndex = (this.currentPage - 1) * this.pageSize;
     const endIndex = startIndex + this.pageSize;
-
     this.layouts = filteredData.slice(startIndex, endIndex);
   }
 
-  // Pagination Controls
   prevPage() {
     if (this.currentPage > 1) {
       this.currentPage--;
@@ -101,7 +95,6 @@ export class ViewLayoutsComponent {
     }
   }
 
-  // Navigation
   navigateToCreate() {
     this.router.navigate(['/create-layout']);
   }
@@ -126,7 +119,6 @@ export class ViewLayoutsComponent {
     }
   }
 
-  // ⭐ View PDF from Spring Boot API
   viewPdf(layoutName: string) {
     const url = `http://localhost:8080/api/layouts/pdf/${layoutName}`;
     window.open(url, "_blank");

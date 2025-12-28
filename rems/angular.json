@@ -26,7 +26,6 @@
             "outputPath": "dist/rems",
             "index": "src/index.html",
             "browser": "src/main.ts",
-            
             "polyfills": [
               "zone.js"
             ],
@@ -34,17 +33,17 @@
             "assets": [
               {
                 "glob": "**/*",
-                "input": "public"
+                "input": "src/assets",
+                "output": "assets"
               }
             ],
-           "styles": [
-  "node_modules/@fortawesome/fontawesome-free/css/all.min.css",
-  "node_modules/ngx-toastr/toastr.css",
-  "node_modules/ngx-spinner/animations/ball-clip-rotate.css",
-  "node_modules/ngx-spinner/animations/ball-scale-multiple.css",
-  "src/styles.css"
-]
-,
+            "styles": [
+              "node_modules/@fortawesome/fontawesome-free/css/all.min.css",
+              "node_modules/ngx-toastr/toastr.css",
+              "node_modules/ngx-spinner/animations/ball-clip-rotate.css",
+              "node_modules/ngx-spinner/animations/ball-scale-multiple.css",
+              "src/styles.css"
+            ],
             "scripts": []
           },
           "configurations": {
@@ -69,7 +68,7 @@
               "sourceMap": true
             }
           },
-          "defaultConfiguration": "production"
+          "defaultConfiguration": "development"
         },
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
@@ -97,7 +96,8 @@
             "assets": [
               {
                 "glob": "**/*",
-                "input": "public"
+                "input": "src/assets",
+                "output": "assets"
               }
             ],
             "styles": [

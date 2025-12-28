@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Login } from '../../models/login';
@@ -15,8 +15,6 @@ export class LoginComponent implements OnInit, OnDestroy {
 
   login: Login = new Login();
 
-  particles: Array<{ top: number; left: number; delay: number }> = [];
-
   private readonly validEmail = 'admin@gmail.com';
   private readonly validPassword = 'admin123';
 
@@ -27,45 +25,36 @@ export class LoginComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    this.generateParticles();
+    document.body.classList.add('login-page');
   }
 
-  // ✨ Floating Glow Particles
-  generateParticles(): void {
-    this.particles = Array.from({ length: 40 }).map(() => ({
-      top: Math.random() * 100,
-      left: Math.random() * 100,
-      delay: Math.random() * 4
-    }));
+  ngOnDestroy(): void {
+    document.body.classList.remove('login-page');
   }
 
-  // ✅ Login Handler
   onSubmit(form: NgForm): void {
 
     if (form.invalid) {
-      this.toastr.warning('Please enter email & password');
+      this.toastr.warning('Please fill all required fields');
       return;
     }
 
     this.spinner.show();
 
     setTimeout(() => {
+
       if (
         this.login.email === this.validEmail &&
         this.login.password === this.validPassword
       ) {
+        this.spinner.hide();
         this.toastr.success('Login Successful');
-        this.spinner.hide();
         this.router.navigate(['/dashboard']);
-      } 
-      else {
-        this.toastr.error('Invalid Email or Password');
+      } else {
         this.spinner.hide();
+        this.toastr.error('Invalid Email or Password');
       }
-    }, 1200);
-  }
 
-  ngOnDestroy(): void {
-    // nothing to clean now — safe component 👍
+    }, 1500);
   }
 }

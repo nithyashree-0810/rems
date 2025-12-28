@@ -3,20 +3,23 @@
 /* 🌌 DARK PREMIUM BACKGROUND */
 .page-bg {
   min-height: 100vh;
-
   background: linear-gradient(
       rgba(0, 0, 0, 0.85),
       rgba(0, 0, 0, 0.85)
     ),
     url("https://images.pexels.com/photos/1396122/pexels-photo-1396122.jpeg");
-
   background-size: cover;
   background-position: center;
   background-attachment: fixed;
-
   display: flex;
   justify-content: center;
   align-items: flex-start;
+}
+
+/* ✅ FIX: DISABLE DASHBOARD BG ON LOGIN PAGE ONLY */
+body.login-page .page-bg {
+  background: none !important;
+  min-height: auto !important;
 }
 
 /* MAIN HOLDER */

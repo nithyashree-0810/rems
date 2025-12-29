@@ -3,6 +3,7 @@ import { BookingService } from '../../../services/booking.service';
 import { Router } from '@angular/router';
 import { Booking } from '../../../models/bookings';
 import { ToastrService } from 'ngx-toastr';
+import { ReportService } from '../../../services/report.service';
 
 @Component({
   selector: 'app-list-booking',
@@ -39,7 +40,8 @@ getBalance(b: any): number {
   constructor(
     private bookingService: BookingService,
     private router: Router,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    private reportService: ReportService
   ) {}
 
   ngOnInit(): void {
@@ -146,5 +148,24 @@ getBalance(b: any): number {
         }
       });
     }
+  }
+
+  downloadBookingsReport(): void {
+    this.reportService.downloadBookingsReport().subscribe({
+      next: (blob: Blob) => {
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'bookings-report.pdf';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        window.URL.revokeObjectURL(url);
+      },
+      error: (err) => {
+        console.error('Failed to download bookings report', err);
+        this.toastr.error('Failed to download bookings report');
+      }
+    });
   }
 }

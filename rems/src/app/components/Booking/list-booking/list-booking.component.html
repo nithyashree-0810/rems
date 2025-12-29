@@ -19,10 +19,14 @@
     <button class="search-btn" (click)="onSearch()">Search</button>
   </div>
 
-  <!-- CREATE BUTTON (RIGHT, LIKE OTHERS) -->
+  <!-- CREATE + REPORT BUTTONS -->
   <div class="top-buttons">
     <button class="btn btn-success" (click)="goToCreate()">
       <i class="fa fa-plus"></i> New Booking
+    </button>
+
+    <button class="btn btn-primary" style="margin-left: auto;" (click)="downloadBookingsReport()">
+      <i class="fa fa-file-pdf"></i> Download Bookings PDF
     </button>
   </div>
 

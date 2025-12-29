@@ -35,8 +35,6 @@ import { EditRoleComponent } from './components/Role/edit-role/edit-role.compone
 import { ListRoleComponent } from './components/Role/list-role/list-role.component';
 import { ViewRoleComponent } from './components/Role/view-role/view-role.component';
 
-// Reports
-import { LayoutReportComponent } from './components/layout-report/layout-report.component';
 
 const routes: Routes = [
 
@@ -73,9 +71,6 @@ const routes: Routes = [
   { path: 'edit-role/:roleId', component: EditRoleComponent },
   { path: 'list-role', component: ListRoleComponent },
   { path: 'view-role/:roleId', component: ViewRoleComponent },
-
-  /** Reports */
-  { path: 'reports/layout', component: LayoutReportComponent },
 
   /** 404 Fallback */
   { path: '**', redirectTo: '', pathMatch: 'full' }

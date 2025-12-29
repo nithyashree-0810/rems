@@ -9,3 +9,60 @@ body {
   font-family: 'Plus Jakarta Sans', sans-serif;
   background: #ffffff;
 }
+/* ==================================================
+ GLOBAL PREMIUM EXPORT PDF BUTTON – LIGHT BLUE
+================================================== */
+
+.btn-export-green {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  height: 45px;
+  padding: 0 22px;
+
+  /* 🔵 LIGHT BLUE GRADIENT */
+  background: linear-gradient(135deg, #4facfe, #00c6ff);
+  color: #ffffff;
+
+  font-weight: 800;
+  letter-spacing: 0.4px;
+
+  border-radius: 10px;
+  border: none;
+  cursor: pointer;
+
+  box-shadow: 0 10px 25px rgba(79, 172, 254, 0.45);
+  transition: all 0.3s ease;
+}
+
+.btn-export-green i {
+  font-size: 18px;
+}
+
+/* Hover */
+.btn-export-green:hover {
+  transform: translateY(-2px) scale(1.04);
+  box-shadow: 0 14px 32px rgba(79, 172, 254, 0.75);
+}
+
+/* Click */
+.btn-export-green:active {
+  transform: scale(0.96);
+}
+
+/* Glow Effect */
+.btn-export-green::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 10px;
+  box-shadow: 0 0 20px rgba(79, 172, 254, 0.8);
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.btn-export-green:hover::after {
+  opacity: 1;
+}

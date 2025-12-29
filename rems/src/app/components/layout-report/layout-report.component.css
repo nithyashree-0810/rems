@@ -114,11 +114,60 @@ select,
   margin-left: auto;
 }
 
-/* Export */
+/* Export (original – kept as-is) */
 .btn-export-green {
   background: #0ccb8e;
   color: white;
 }
+
+
+
+/* ===============================
+ PREMIUM EXPORT PDF BUTTON
+=============================== */
+
+.btn-export-green {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: linear-gradient(135deg, #00c9a7, #0ccb8e);
+  color: white;
+  font-weight: 800;
+  letter-spacing: .4px;
+  box-shadow: 0 10px 25px rgba(12, 203, 142, 0.45);
+  transition: all 0.3s ease;
+}
+
+.btn-export-green i {
+  font-size: 18px;
+}
+
+/* Hover Effect */
+.btn-export-green:hover {
+  transform: translateY(-2px) scale(1.04);
+  box-shadow: 0 14px 32px rgba(12, 203, 142, 0.7);
+}
+
+/* Click Effect */
+.btn-export-green:active {
+  transform: scale(0.96);
+}
+
+/* Optional glow pulse */
+.btn-export-green::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 10px;
+  box-shadow: 0 0 0 rgba(12, 203, 142, 0.7);
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.btn-export-green:hover::after {
+  opacity: 1;
+}
+
 
 
 
@@ -190,4 +239,67 @@ th, td {
 
 .col-name {
   text-align: left;
+}
+
+
+/* ===================================================
+ ✅ FIX ONLY (NO REMOVAL, NO CHANGE ABOVE)
+=================================================== */
+
+.btn-export-green {
+  position: relative; /* 🔥 THIS FIXES GLOW & ALIGNMENT */
+}
+/* ===================================================
+ 🔵 FORCE LIGHT BLUE EXPORT BUTTON (FINAL OVERRIDE)
+=================================================== */
+
+.btn-export-green {
+  background: linear-gradient(135deg, #4facfe, #00c6ff) !important;
+  box-shadow: 0 10px 25px rgba(79, 172, 254, 0.55) !important;
+}
+/* ===============================
+ 🔥 PREMIUM DOWNLOAD PDF BUTTON
+=============================== */
+
+.download-pdf-btn,
+button[title="Download Layouts PDF"],
+button:has(i.fa-file-pdf) {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  padding: 10px 18px;
+  border-radius: 12px;
+
+  background: linear-gradient(135deg, #4facfe, #00c6ff);
+  color: #fff;
+
+  font-weight: 700;
+  font-size: 14px;
+  letter-spacing: 0.3px;
+
+  border: none;
+  cursor: pointer;
+
+  box-shadow: 0 10px 25px rgba(0, 198, 255, 0.45);
+  transition: all 0.3s ease;
+}
+
+/* Icon style */
+.download-pdf-btn i,
+button:has(i.fa-file-pdf) i {
+  font-size: 16px;
+}
+
+/* Hover effect */
+.download-pdf-btn:hover,
+button:has(i.fa-file-pdf):hover {
+  transform: translateY(-2px) scale(1.05);
+  box-shadow: 0 14px 35px rgba(0, 198, 255, 0.7);
+}
+
+/* Click effect */
+.download-pdf-btn:active,
+button:has(i.fa-file-pdf):active {
+  transform: scale(0.96);
 }

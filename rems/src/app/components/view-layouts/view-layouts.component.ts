@@ -3,6 +3,7 @@ import { LayoutserviceService } from '../../services/layoutservice.service';
 import { Router } from '@angular/router';
 import { Layout } from '../../models/layout';
 import { ToastrService } from 'ngx-toastr';
+import { ReportService } from '../../services/report.service';
 
 @Component({
   selector: 'app-view-layouts',
@@ -27,7 +28,8 @@ export class ViewLayoutsComponent {
   constructor(
     private layoutService: LayoutserviceService,
     private router: Router,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    private reportService: ReportService
   ) {}
 
   ngOnInit(): void {
@@ -122,6 +124,25 @@ export class ViewLayoutsComponent {
   viewPdf(layoutName: string) {
     const url = `http://localhost:8080/api/layouts/pdf/${layoutName}`;
     window.open(url, "_blank");
+  }
+
+  downloadLayoutsReport() {
+    this.reportService.downloadLayoutsReport().subscribe({
+      next: (blob: Blob) => {
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'layouts-report.pdf';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        window.URL.revokeObjectURL(url);
+      },
+      error: (err) => {
+        console.error('Failed to download layouts report', err);
+        this.toastr.error('Failed to download layouts report');
+      }
+    });
   }
 
   goHome() {

@@ -101,5 +101,11 @@ input:focus, select:focus {
 .btn-home:hover {
   background-color: #c82333;
 }
+.required {
+  color: #e11d48;   /* red star */
+  font-weight: 700;
+  margin-left: 4px;
+}
+
 
 

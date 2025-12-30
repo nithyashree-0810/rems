@@ -27,9 +27,17 @@ export interface Booking {
   price: number;
   direction: string;
   advance1: number;
+  advance1Date:Date;
+  advance1Mode:string;
   advance2:number;
+  advance2Date:Date;
+  advance2Mode:string;
   advance3:number;
+  advance3Date:Date;
+  advance3Mode:string;
   advance4:number;
+  advance4Date:Date;
+  advance4Mode:string;
   balance: number;
   plotNo: string; 
   address?: string;

@@ -1,15 +1,68 @@
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
 
 html, body {
-  margin: 0;
-  padding: 0;
   height: 100%;
+  margin: 0;
 }
 
 body {
-  /* Use the exact name of your house image from your assets folder */
-  background: linear-gradient(rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0.15)), 
-              url('assets/images/dashboard-bg.png') no-repeat center center fixed;
-  background-size: cover;
   font-family: 'Plus Jakarta Sans', sans-serif;
+  background: #ffffff;
+}
+/* ==================================================
+ GLOBAL PREMIUM EXPORT PDF BUTTON – LIGHT BLUE
+================================================== */
+
+.btn-export-green {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  height: 45px;
+  padding: 0 22px;
+
+  /* 🔵 LIGHT BLUE GRADIENT */
+  background: linear-gradient(135deg, #4facfe, #00c6ff);
+  color: #ffffff;
+
+  font-weight: 800;
+  letter-spacing: 0.4px;
+
+  border-radius: 10px;
+  border: none;
+  cursor: pointer;
+
+  box-shadow: 0 10px 25px rgba(79, 172, 254, 0.45);
+  transition: all 0.3s ease;
+}
+
+.btn-export-green i {
+  font-size: 18px;
+}
+
+/* Hover */
+.btn-export-green:hover {
+  transform: translateY(-2px) scale(1.04);
+  box-shadow: 0 14px 32px rgba(79, 172, 254, 0.75);
+}
+
+/* Click */
+.btn-export-green:active {
+  transform: scale(0.96);
+}
+
+/* Glow Effect */
+.btn-export-green::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 10px;
+  box-shadow: 0 0 20px rgba(79, 172, 254, 0.8);
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.btn-export-green:hover::after {
+  opacity: 1;
 }

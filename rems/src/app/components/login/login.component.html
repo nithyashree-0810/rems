@@ -1,48 +1,108 @@
-<div class="login-container">
-    <ngx-spinner
-    bdColor="rgba(0,0,0,0.5)"
-    size="medium"
-    color="#fff"
-    type="ball-clip-rotate"
-    [fullScreen]="true">
-  </ngx-spinner>
-  <div class="login-card">
+<div class="login-page">
 
-    <!-- Header -->
-    <div class="card-header">
-      <h2>Welcome<br>To Real Estate Portal</h2>
-      <p>Manage properties, bookings, clients and more—all in one place.</p>
+  <!-- LEFT IMAGE SECTION -->
+  <div class="left-section"
+       [style.background-image]="'url(/assets/images/house-ui-v2.png)'">
+    <div class="brand">
+      <div class="brand-logo">
+        <div class="logo-icon"></div>
+      </div>
+      <h2>REMS</h2>
+      <span>Real Estate Management System</span>
     </div>
+  </div>
 
-    <!-- Body -->
-    <div class="card-body">
+  <!-- RIGHT LOGIN SECTION -->
+  <div class="right-section">
+    <div class="login-card">
+
+      <div class="logo">
+        <div class="home-icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+               xmlns="http://www.w3.org/2000/svg">
+            <path d="M3 12L5 10M5 10L12 3L19 10M5 10V20C5 20.5523
+            5.44772 21 6 21H9M19 10L21 12M19 10V20C19
+            20.5523 18.5523 21 18 21H15M9 21C9.55228
+            21 10 20.5523 10 20V16C10 15.4477 10.4477
+            15 11 15H13C13.5523 15 14 15.4477 14
+            16V20C14 20.5523 14.4477 21 15 21M9
+            21H15"
+            stroke="#3b82f6" stroke-width="2"
+            stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <h3>PropertyGrid</h3>
+      </div>
+
+      <h2 class="title">Welcome Back!</h2>
+      <p class="subtitle">Sign into your account</p>
+
       <form #loginForm="ngForm" (ngSubmit)="onSubmit(loginForm)">
 
-        <label>Username</label>
-        <input
-          type="email"
-          name="email"
-          [(ngModel)]="login.email"
-          placeholder="Enter your email"
-          required />
+        <div class="input-group">
+          <span class="input-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none"
+                 xmlns="http://www.w3.org/2000/svg">
+              <path d="M4 4H20C21.1 4 22 4.9 22 6V18C22
+              19.1 21.1 20 20 20H4C2.9 20 2 19.1
+              2 18V6C2 4.9 2.9 4 4 4Z"
+              stroke="#9ca3af" stroke-width="2"
+              stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M22 6L12 13L2 6"
+              stroke="#9ca3af" stroke-width="2"
+              stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </span>
+          <input type="email"
+                 placeholder="Enter your email"
+                 [(ngModel)]="login.email"
+                 name="email"
+                 required />
+        </div>
 
-        <label>Password</label>
-        <input
-          type="password"
-          name="password"
-          [(ngModel)]="login.password"
-          placeholder="Enter your password"
-          required />
+        <div class="input-group">
+          <span class="input-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none"
+                 xmlns="http://www.w3.org/2000/svg">
+              <rect x="3" y="11" width="18" height="11"
+                    rx="2" ry="2"
+                    stroke="#9ca3af" stroke-width="2"/>
+              <path d="M7 11V7C7 5.67392 7.52678
+              4.40215 8.46447 3.46447C9.40215
+              2.52678 10.6739 2 12 2C13.3261
+              2 14.5979 2.52678 15.5355
+              3.46447C16.4732 4.40215
+              17 5.67392 17 7V11"
+              stroke="#9ca3af" stroke-width="2"/>
+            </svg>
+          </span>
+          <input type="password"
+                 placeholder="Enter your password"
+                 [(ngModel)]="login.password"
+                 name="password"
+                 required />
+        </div>
 
-        <div class="forgot">Forgot password?</div>
+        <div class="options">
+          <label>
+            <input type="checkbox"
+                   [(ngModel)]="login.rememberMe"
+                   name="rememberMe" />
+            Remember me
+          </label>
+          <a href="#">Forgot password?</a>
+        </div>
 
-        <button type="submit" [disabled]="!loginForm.valid">
-          LOGIN
-        </button>
+        <button type="submit">Log In</button>
+
+        <p class="register">
+          Don't have an account?
+          <a href="#">Register</a>
+        </p>
 
       </form>
-    </div>
 
+    </div>
   </div>
 
 </div>

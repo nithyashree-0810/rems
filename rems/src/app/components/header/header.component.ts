@@ -1,6 +1,5 @@
 import { Component, HostListener } from '@angular/core';
 import { Router } from '@angular/router';
-import { ReportService } from '../../services/report.service';
 import { ToastrService } from 'ngx-toastr';
 
 @Component({
@@ -15,7 +14,6 @@ export class HeaderComponent {
 
   constructor(
     private router: Router,
-    private reportService: ReportService,
     private toastr: ToastrService
   ) {}
 
@@ -29,25 +27,6 @@ export class HeaderComponent {
     if (!target.closest('.dropdown')) {
       this.activeDropdown = null;
     }
-  }
-
-  downloadLayoutsReport() {
-    this.reportService.downloadLayoutsReport().subscribe({
-      next: (blob: Blob) => {
-        const url = window.URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = 'layouts.csv';
-        document.body.appendChild(a);
-        a.click();
-        a.remove();
-        window.URL.revokeObjectURL(url);
-      },
-      error: (err) => {
-        console.error('Report download failed', err);
-        this.toastr.error('Could not download report. Check console for details.');
-      }
-    });
   }
 
   logout() {

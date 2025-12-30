@@ -20,4 +20,22 @@ export class ReportService {
       responseType: 'blob' // IMPORTANT
     });
   }
+
+  downloadBookingsReport(): Observable<Blob> {
+    return this.http.get(`${this.baseUrl}/bookings`, {
+      responseType: 'blob'
+    });
+  }
+
+  downloadEnquiriesReport(): Observable<Blob> {
+    return this.http.get(`${this.baseUrl}/enquiries`, {
+      responseType: 'blob'
+    });
+  }
+
+  downloadPlotsReport(): Observable<Blob> {
+    return this.http.get(`${this.baseUrl}/plots`, {
+      responseType: 'blob'
+    });
+  }
 }

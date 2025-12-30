@@ -37,6 +37,7 @@ import { ListRoleComponent } from './components/Role/list-role/list-role.compone
 import { ViewRoleComponent } from './components/Role/view-role/view-role.component';
 
 
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -65,8 +66,7 @@ import { ViewRoleComponent } from './components/Role/view-role/view-role.compone
     CreateRoleComponent,
     EditRoleComponent,
     ListRoleComponent,
-    ViewRoleComponent,
-   
+    ViewRoleComponent
   ],
   imports: [
     BrowserModule,

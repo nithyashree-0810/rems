@@ -1,5 +1,23 @@
 @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
 
+/* ✅ FIXED: BACKGROUND WRAPPER (ONLY OPACITY CHANGED) */
+.dashboard-bg {
+  min-height: 100vh;
+  width: 100%;
+  background:
+    linear-gradient(
+      rgba(255, 255, 255, 0.10), /* 🔧 FIXED (was 0.92) */
+      rgba(255, 255, 255, 0.10)  /* 🔧 FIXED (was 0.92) */
+    ),
+    url('/assets/images/dashboard-bg.png');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  padding-bottom: 60px;
+}
+
+/* ================= YOUR EXISTING CODE (UNCHANGED) ================= */
+
 .dashboard-shell {
   max-width: 1250px;
   margin: 0 auto;
@@ -24,7 +42,7 @@
 .hero-card {
   display: flex;
   align-items: center;
-  gap: 10px; /* exact gap between icon and text */
+  gap: 10px;
   justify-content: center;
   text-align: center;
   padding: 34px 34px;
@@ -78,7 +96,9 @@
   transition: transform 0.2s ease;
 }
 
-.stat-item:hover { transform: translateY(-5px); }
+.stat-item:hover {
+  transform: translateY(-5px);
+}
 
 .icon-box {
   width: 55px;

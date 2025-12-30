@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Login } from '../../models/login';
@@ -9,9 +9,9 @@ import { NgxSpinnerService } from 'ngx-spinner';
   selector: 'app-login',
   standalone: false,
   templateUrl: './login.component.html',
-  styleUrl: './login.component.css'
+  styleUrls: ['./login.component.css']
 })
-export class LoginComponent {
+export class LoginComponent implements OnInit, OnDestroy {
 
   login: Login = new Login();
 
@@ -24,25 +24,37 @@ export class LoginComponent {
     private spinner: NgxSpinnerService
   ) {}
 
-  onSubmit(form: NgForm) {
+  ngOnInit(): void {
+    document.body.classList.add('login-page');
+  }
 
-    this.spinner.show(); // Show loading
+  ngOnDestroy(): void {
+    document.body.classList.remove('login-page');
+  }
 
-    setTimeout(() => { // simulate server delay
+  onSubmit(form: NgForm): void {
 
-      if (this.login.email === this.validEmail && this.login.password === this.validPassword) {
-        
+    if (form.invalid) {
+      this.toastr.warning('Please fill all required fields');
+      return;
+    }
+
+    this.spinner.show();
+
+    setTimeout(() => {
+
+      if (
+        this.login.email === this.validEmail &&
+        this.login.password === this.validPassword
+      ) {
+        this.spinner.hide();
         this.toastr.success('Login Successful');
-        this.spinner.hide();
-
         this.router.navigate(['/dashboard']);
-
       } else {
-
-        this.toastr.error('Invalid Email or Password');
         this.spinner.hide();
+        this.toastr.error('Invalid Email or Password');
       }
 
-    }, 1500); // 1.5 sec loading effect
+    }, 1500);
   }
 }

@@ -19,10 +19,14 @@
     <button class="search-btn" (click)="filterPlots()">Search</button>
   </div>
 
-  <!-- Create Button -->
+  <!-- Create + Report Buttons -->
   <div class="top-buttons">
     <button class="btn btn-success" routerLink="/create-plot">
       <i class="fa fa-plus"></i> Create Plot
+    </button>
+
+    <button class="btn btn-primary" style="margin-left: auto;" (click)="downloadPlotsReport()">
+      <i class="fa fa-file-pdf"></i> Download Plots PDF
     </button>
   </div>
 

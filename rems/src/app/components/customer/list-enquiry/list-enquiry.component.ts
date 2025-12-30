@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { Enquiry } from '../../../models/enquiry';
 import { CustomerService } from '../../../services/customer.service';
 import { ToastrService } from 'ngx-toastr';
+import { ReportService } from '../../../services/report.service';
 
 @Component({
   selector: 'app-list-enquiry',
@@ -17,7 +18,7 @@ export class ListEnquiryComponent {
 
   allData: Enquiry[] = [];                // All loaded customers
   filteredData: Enquiry[] = [];           // Data filtered by search
-  paginatedCustomers: Enquiry[] = [];    // Current page data
+  paginatedCustomers: Enquiry[] = [];     // Current page data
 
   totalPages: number = 0;
   pageSize: number = 10;
@@ -28,7 +29,13 @@ export class ListEnquiryComponent {
     return path ? `http://localhost:8080${path}` : '';
   }
 
-  constructor(private customerService: CustomerService, private router: Router, private toastr: ToastrService) {}
+  // ✅ ONLY ONE CONSTRUCTOR (FIXED)
+  constructor(
+    private customerService: CustomerService,
+    private router: Router,
+    private toastr: ToastrService,
+    private reportService: ReportService
+  ) {}
 
   ngOnInit(): void {
     this.loadData();
@@ -37,7 +44,6 @@ export class ListEnquiryComponent {
   loadData() {
     this.customerService.getAllCustomers().subscribe((data: Enquiry[]) => {
 
-      // Clean whitespace
       this.allData = data.map(c => ({
         ...c,
         firstName: c.firstName?.trim(),
@@ -45,9 +51,7 @@ export class ListEnquiryComponent {
         address: c.address?.trim()
       }));
 
-      // Initially filteredData = allData
       this.filteredData = [...this.allData];
-
       this.currentPage = 1;
       this.applyPagination();
     });
@@ -68,17 +72,14 @@ export class ListEnquiryComponent {
     this.applyPagination();
   }
 
-  // Search using both name and mobile number, combined with AND condition
   onSearch() {
     const nameKeyword = this.searchName.trim().toLowerCase();
     const mobileKeyword = this.searchMobile.trim();
 
     this.filteredData = this.allData.filter(c => {
       const fullName = (c.firstName + ' ' + c.lastName).toLowerCase();
-
       const matchesName = nameKeyword ? fullName.includes(nameKeyword) : true;
       const matchesMobile = mobileKeyword ? c.mobileNo?.toString().includes(mobileKeyword) : true;
-
       return matchesName && matchesMobile;
     });
 
@@ -128,5 +129,24 @@ export class ListEnquiryComponent {
 
   goHome() {
     this.router.navigate(['/dashboard']);
+  }
+
+  downloadEnquiriesReport(): void {
+    this.reportService.downloadEnquiriesReport().subscribe({
+      next: (blob: Blob) => {
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'customers-report.pdf';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        window.URL.revokeObjectURL(url);
+      },
+      error: (err) => {
+        console.error('Failed to download customers report', err);
+        this.toastr.error('Failed to download customers report');
+      }
+    });
   }
 }

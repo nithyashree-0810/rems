@@ -1,0 +1,305 @@
+/* ===============================
+ PREMIUM CITY NIGHT THEME
+=============================== */
+
+.reports-shell {
+  padding: 25px;
+  min-height: 100vh;
+  color: white;
+  background: url("/assets/images/city-bg.jpg") no-repeat center center / cover;
+  position: relative;
+}
+
+/* Dark Overlay */
+.reports-shell::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+      rgba(0, 0, 0, 0.75),
+      rgba(0, 0, 0, 0.9)
+  );
+}
+
+.reports-shell * {
+  position: relative;
+  z-index: 1;
+}
+
+
+/* ===============================
+ TITLE
+=============================== */
+.title {
+  font-size: 28px;
+  margin-bottom: 25px;
+  font-weight: 800;
+  text-align: center;
+}
+
+
+
+/* ===============================
+ FILTER HEADER ALIGNMENT
+=============================== */
+
+.filters {
+  display: flex;
+  align-items: center;
+  gap: 22px;
+  width: 100%;
+  margin-bottom: 10px;
+}
+
+/* Label */
+.filters > div label {
+  display: block;
+  margin-bottom: 4px;
+  font-size: 13px;
+  color: #ffffffcc;
+}
+
+
+/* White Boxes */
+select,
+.static-box {
+  height: 45px;
+  width: 250px;
+  border-radius: 10px;
+  background: rgba(255,255,255,.95);
+  color: black;
+  border: 1px solid #ccc;
+  padding-left: 12px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+}
+
+
+/* ===============================
+ BUTTONS
+=============================== */
+
+.actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.actions button,
+.export button {
+  height: 45px;
+  border-radius: 10px;
+  padding: 0 18px;
+  border: none;
+  cursor: pointer;
+  font-weight: 700;
+}
+
+/* Generate */
+.btn-generate {
+  background: #6a6dfd;
+  color: white;
+}
+
+/* Clear */
+.btn-clear {
+  background: transparent;
+  border: 1px solid #aaa;
+  color: white;
+}
+
+/* Right Align Export Button */
+.export {
+  margin-left: auto;
+}
+
+/* Export (original – kept as-is) */
+.btn-export-green {
+  background: #0ccb8e;
+  color: white;
+}
+
+
+
+/* ===============================
+ PREMIUM EXPORT PDF BUTTON
+=============================== */
+
+.btn-export-green {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: linear-gradient(135deg, #00c9a7, #0ccb8e);
+  color: white;
+  font-weight: 800;
+  letter-spacing: .4px;
+  box-shadow: 0 10px 25px rgba(12, 203, 142, 0.45);
+  transition: all 0.3s ease;
+}
+
+.btn-export-green i {
+  font-size: 18px;
+}
+
+/* Hover Effect */
+.btn-export-green:hover {
+  transform: translateY(-2px) scale(1.04);
+  box-shadow: 0 14px 32px rgba(12, 203, 142, 0.7);
+}
+
+/* Click Effect */
+.btn-export-green:active {
+  transform: scale(0.96);
+}
+
+/* Optional glow pulse */
+.btn-export-green::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 10px;
+  box-shadow: 0 0 0 rgba(12, 203, 142, 0.7);
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.btn-export-green:hover::after {
+  opacity: 1;
+}
+
+
+
+
+/* ===============================
+ STAT CARDS
+=============================== */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 22px;
+  margin-top: 25px;
+}
+
+.stat {
+  background: white;
+  border-radius: 18px;
+  padding: 25px;
+  text-align: center;
+  color: black;
+}
+
+.stat h3 {
+  color: #2ea3ff;
+  font-size: 34px;
+  font-weight: 900;
+}
+
+
+
+/* ===============================
+ TABLE
+=============================== */
+
+.table-box {
+  margin-top: 30px;
+  background: white;
+  border-radius: 18px;
+  padding: 18px;
+  color: black;
+}
+
+.table-box h3 {
+  font-size: 20px;
+  margin-bottom: 10px;
+}
+
+table {
+  width: 100%;
+  color: black;
+  border-collapse: collapse;
+}
+
+thead {
+  background: rgb(232, 105, 8);
+  color: white;
+}
+
+th, td {
+  padding: 12px;
+}
+
+
+/* Column Alignment */
+.col-rank,
+.col-sold {
+  text-align: center;
+  width: 150px;
+}
+
+.col-name {
+  text-align: left;
+}
+
+
+/* ===================================================
+ ✅ FIX ONLY (NO REMOVAL, NO CHANGE ABOVE)
+=================================================== */
+
+.btn-export-green {
+  position: relative; /* 🔥 THIS FIXES GLOW & ALIGNMENT */
+}
+/* ===================================================
+ 🔵 FORCE LIGHT BLUE EXPORT BUTTON (FINAL OVERRIDE)
+=================================================== */
+
+.btn-export-green {
+  background: linear-gradient(135deg, #4facfe, #00c6ff) !important;
+  box-shadow: 0 10px 25px rgba(79, 172, 254, 0.55) !important;
+}
+/* ===============================
+ 🔥 PREMIUM DOWNLOAD PDF BUTTON
+=============================== */
+
+.download-pdf-btn,
+button[title="Download Layouts PDF"],
+button:has(i.fa-file-pdf) {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  padding: 10px 18px;
+  border-radius: 12px;
+
+  background: linear-gradient(135deg, #4facfe, #00c6ff);
+  color: #fff;
+
+  font-weight: 700;
+  font-size: 14px;
+  letter-spacing: 0.3px;
+
+  border: none;
+  cursor: pointer;
+
+  box-shadow: 0 10px 25px rgba(0, 198, 255, 0.45);
+  transition: all 0.3s ease;
+}
+
+/* Icon style */
+.download-pdf-btn i,
+button:has(i.fa-file-pdf) i {
+  font-size: 16px;
+}
+
+/* Hover effect */
+.download-pdf-btn:hover,
+button:has(i.fa-file-pdf):hover {
+  transform: translateY(-2px) scale(1.05);
+  box-shadow: 0 14px 35px rgba(0, 198, 255, 0.7);
+}
+
+/* Click effect */
+.download-pdf-btn:active,
+button:has(i.fa-file-pdf):active {
+  transform: scale(0.96);
+}

@@ -50,9 +50,20 @@ export class EditBookingComponent implements OnInit {
       price: [{ value: 0, disabled: true }],
 
       advance1: [0],
-      advance2: [0],
-      advance3: [0],
-      advance4: [0],
+  advance1Date: [''],
+  advance1Mode: [''],
+
+  advance2: [0],
+  advance2Date: [''],
+  advance2Mode: [''],
+
+  advance3: [0],
+  advance3Date: [''],
+  advance3Mode: [''],
+
+  advance4: [0],
+  advance4Date: [''],
+  advance4Mode: [''],
       balance: [{ value: 0, disabled: true }],
 
       direction: [{ value: '', disabled: true }],
@@ -88,10 +99,21 @@ export class EditBookingComponent implements OnInit {
           sqft: data.sqft,
           price: data.price,
 
-          advance1: data.advance1,
-          advance2: data.advance2,
-          advance3: data.advance3,
-          advance4: data.advance4,
+           advance1: data.advance1,
+  advance1Date: data.advance1Date,
+  advance1Mode: data.advance1Mode,
+
+  advance2: data.advance2,
+  advance2Date: data.advance2Date,
+  advance2Mode: data.advance2Mode,
+
+  advance3: data.advance3,
+  advance3Date: data.advance3Date,
+  advance3Mode: data.advance3Mode,
+
+  advance4: data.advance4,
+  advance4Date: data.advance4Date,
+  advance4Mode: data.advance4Mode,
           balance: data.balance,
 
           direction: data.direction,
@@ -187,9 +209,20 @@ export class EditBookingComponent implements OnInit {
       direction: existing.direction,
 
       advance1: raw.advance1,
-      advance2: raw.advance2,
-      advance3: raw.advance3,
-      advance4: raw.advance4,
+advance1Date: raw.advance1Date,
+advance1Mode: raw.advance1Mode,
+
+advance2: raw.advance2,
+advance2Date: raw.advance2Date,
+advance2Mode: raw.advance2Mode,
+
+advance3: raw.advance3,
+advance3Date: raw.advance3Date,
+advance3Mode: raw.advance3Mode,
+
+advance4: raw.advance4,
+advance4Date: raw.advance4Date,
+advance4Mode: raw.advance4Mode,
       balance: raw.balance,
 
       plotNo: existing.plotNo,

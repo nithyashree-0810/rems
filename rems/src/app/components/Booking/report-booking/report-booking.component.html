@@ -21,8 +21,9 @@
 
   <!-- CREATE + REPORT BUTTONS -->
   <div class="top-buttons">
-    <button class="btn btn-success" (click)="goToCreate()">
-      <i class="fa fa-plus"></i> New Booking
+
+    <button class="btn btn-primary" style="margin-left: auto;" (click)="downloadBookingsReport()">
+      <i class="fa fa-file-pdf"></i> Download Bookings PDF
     </button>
   </div>
 
@@ -46,7 +47,6 @@
           <th>Balance</th>
           <th>Direction</th>
           <th>Status</th>
-          <th>Actions</th>
         </tr>
       </thead>
 
@@ -63,20 +63,6 @@
           <td>{{ getBalance(b) | currency:'INR' }}</td>
           <td>{{ b.direction }}</td>
           <td>{{ b.status }}</td>
-
-          <!-- ACTION ICONS -->
-          <td>
-            <div class="action-icons">
-              <i class="fa fa-eye circle-icon view"
-                 [routerLink]="['/view-booking', b.bookingId]"></i>
-
-              <i class="fa fa-pencil circle-icon edit"
-                 [routerLink]="['/edit-booking', b.bookingId]"></i>
-
-              <i class="fa fa-trash circle-icon delete"
-                 (click)="deleteBooking(b.bookingId)"></i>
-            </div>
-          </td>
         </tr>
       </tbody>
 

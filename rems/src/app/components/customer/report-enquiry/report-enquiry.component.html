@@ -21,8 +21,9 @@
 
   <!-- CREATE + REPORT BUTTONS -->
   <div class="top-buttons">
-    <button class="btn btn-success" (click)="createEnquiry()">
-      <i class="fa fa-plus"></i> Create Customer
+
+    <button class="btn btn-primary" style="margin-left: auto;" (click)="downloadEnquiriesReport()">
+      <i class="fa fa-file-pdf"></i> Download Customers PDF
     </button>
   </div>
 
@@ -37,7 +38,6 @@
           <th>Last Name</th>
           <th>Address</th>
           <th>Mobile</th>
-          <th>Actions</th>
         </tr>
       </thead>
 
@@ -58,21 +58,6 @@
           <td>{{ c.lastName }}</td>
           <td>{{ c.address }}</td>
           <td>{{ c.mobileNo }}</td>
-
-          <td>
-            <div class="action-icons">
-
-              <i class="fa fa-eye circle-icon view"
-                 (click)="viewcustomer(c.mobileNo)"></i>
-
-              <i class="fa fa-pencil circle-icon edit"
-                 (click)="editCustomer(c)"></i>
-
-              <i class="fa fa-trash circle-icon delete"
-                 (click)="deleteCustomer(c.mobileNo)"></i>
-
-            </div>
-          </td>
         </tr>
       </tbody>
     </table>

@@ -1,17 +1,18 @@
 import { Component } from '@angular/core';
-import { Router } from '@angular/router';
 import { Enquiry } from '../../../models/enquiry';
 import { CustomerService } from '../../../services/customer.service';
+import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { ReportService } from '../../../services/report.service';
 
 @Component({
-  selector: 'app-list-enquiry',
+  selector: 'app-report-enquiry',
   standalone: false,
-  templateUrl: './list-enquiry.component.html',
-  styleUrl: './list-enquiry.component.css'
+  templateUrl: './report-enquiry.component.html',
+  styleUrl: './report-enquiry.component.css'
 })
-export class ListEnquiryComponent {
+export class ReportEnquiryComponent {
+
 
   searchName: string = "";
   searchMobile: string = "";
@@ -131,5 +132,35 @@ export class ListEnquiryComponent {
     this.router.navigate(['/dashboard']);
   }
 
+  downloadEnquiriesReport(): void {
+
+  // 🔹 search irundha → filtered data
+  // 🔹 search illa na → all data
+  const dataToDownload =
+    (this.searchName || this.searchMobile)
+      ? this.filteredData
+      : this.allData;
+
+  if (!dataToDownload || dataToDownload.length === 0) {
+    this.toastr.warning('No data to download');
+    return;
+  }
+
+  this.reportService.downloadEnquiriesReport(dataToDownload).subscribe({
+    next: (blob: Blob) => {
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'customers-report.pdf';
+      a.click();
+      window.URL.revokeObjectURL(url);
+    },
+    error: () => {
+      this.toastr.error('Failed to download customers report');
+    }
+  });
+}
 
 }
+
+

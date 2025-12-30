@@ -19,10 +19,14 @@
     <button class="search-btn" (click)="filterLayouts()">Search</button>
   </div>
 
-  <!-- CREATE BUTTON -->
+  <!-- CREATE + REPORT BUTTONS -->
   <div class="top-buttons">
     <button class="btn btn-success" (click)="navigateToCreate()">
       <i class="fa fa-plus"></i> Create Layout
+    </button>
+
+    <button class="btn btn-primary" style="margin-left: auto;" (click)="downloadLayoutsReport()">
+      <i class="fa fa-file-pdf"></i> Download Layouts PDF
     </button>
   </div>
 

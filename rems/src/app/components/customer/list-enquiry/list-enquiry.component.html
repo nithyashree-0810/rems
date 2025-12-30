@@ -19,10 +19,14 @@
     <button class="search-btn" (click)="onSearch()">Search</button>
   </div>
 
-  <!-- CREATE BUTTON -->
+  <!-- CREATE + REPORT BUTTONS -->
   <div class="top-buttons">
     <button class="btn btn-success" (click)="createEnquiry()">
       <i class="fa fa-plus"></i> Create Customer
+    </button>
+
+    <button class="btn btn-primary" style="margin-left: auto;" (click)="downloadEnquiriesReport()">
+      <i class="fa fa-file-pdf"></i> Download Customers PDF
     </button>
   </div>
 

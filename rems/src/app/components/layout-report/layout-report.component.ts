@@ -3,6 +3,7 @@ import { Subject, takeUntil } from 'rxjs';
 
 import { BookingService } from '../../services/booking.service';
 import { LayoutserviceService } from '../../services/layoutservice.service';
+import { ReportService } from '../../services/report.service';
 
 @Component({
   selector: 'app-layout-report',
@@ -29,7 +30,8 @@ export class LayoutReportComponent implements OnInit, OnDestroy {
 
   constructor(
     private layoutService: LayoutserviceService,
-    private bookingService: BookingService
+    private bookingService: BookingService,
+    private reportService: ReportService
   ) {}
 
   ngOnInit(): void {
@@ -105,6 +107,25 @@ export class LayoutReportComponent implements OnInit, OnDestroy {
       }))
       .sort((a, b) => b.sold - a.sold)
       .slice(0, 5);
+  }
+
+  // ================= EXPORT PDF =================
+  exportReportPdf(): void {
+    this.reportService.downloadLayoutsReport().subscribe({
+      next: (blob: Blob) => {
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'layouts-report.pdf';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        window.URL.revokeObjectURL(url);
+      },
+      error: (err) => {
+        console.error('Failed to download layouts report PDF', err);
+      }
+    });
   }
 
   ngOnDestroy(): void {

@@ -1,156 +1,95 @@
 <div class="center-page">
   <div class="enquiry-card">
-    <h3 style="text-align: center;">Customer Enquiry Form</h3>
+
+    <h3>Customer Enquiry Form</h3>
 
     <form #enquiryForm="ngForm" (ngSubmit)="onSubmit(enquiryForm)">
 
-      <!-- Row 1: First Name & Last Name -->
       <div class="row">
         <div class="col">
-          <label class="dark-label">First Name:</label>
-          <input
-            type="text"
-            name="firstName"
-            [(ngModel)]="enquiry.firstName"
-            required
-            minlength="2"
-            maxlength="15"
-            pattern="^[a-zA-Z]+$"
-            placeholder="Enter First Name"
+          <label class="dark-label">
+            First Name <span class="required">*</span>
+          </label>
+          <input type="text" name="firstName" [(ngModel)]="enquiry.firstName"
+            required minlength="2" maxlength="15" pattern="^[a-zA-Z]+$"
             #firstName="ngModel"
-            [class.is-invalid]="firstName.invalid && firstName.touched"
-          />
-          <p *ngIf="firstName.invalid && firstName.touched" class="text-danger">
-            Valid First Name required
-          </p>
+            [class.is-invalid]="firstName.invalid && firstName.touched">
         </div>
 
         <div class="col">
-          <label class="dark-label">Last Name:</label>
-          <input
-            type="text"
-            name="lastName"
-            [(ngModel)]="enquiry.lastName"
-            required
-            minlength="1"
-            maxlength="15"
-            pattern="^[a-zA-Z]+$"
-            placeholder="Enter Last Name"
+          <label class="dark-label">
+            Last Name <span class="required">*</span>
+          </label>
+          <input type="text" name="lastName" [(ngModel)]="enquiry.lastName"
+            required pattern="^[a-zA-Z]+$"
             #lastName="ngModel"
-            [class.is-invalid]="lastName.invalid && lastName.touched"
-          />
-          <p *ngIf="lastName.invalid && lastName.touched" class="text-danger">
-            Valid Last Name required
-          </p>
+            [class.is-invalid]="lastName.invalid && lastName.touched">
         </div>
       </div>
 
-      <!-- Row 2: Father Name & Mobile -->
-      
-
-        <div class="col">
-          <label class="dark-label">Mobile:</label>
-          <input
-  type="text"
-  name="mobileNo"
-  [(ngModel)]="enquiry.mobileNo"
-  required
-  maxlength="10"
-  inputmode="numeric"
-  pattern="[0-9]*"
-  placeholder="Enter 10-digit Mobile Number"
-  #mobileNo="ngModel"
-  (input)="enquiry.mobileNo = +('' + enquiry.mobileNo).slice(0,10)"
-
-  [class.is-invalid]="mobileNo.invalid && mobileNo.touched"
-/>
-
-        </div>
-      
-
-      <!-- Row 3: Email & Address -->
       <div class="row">
         <div class="col">
-          <label class="dark-label">Email (optional):</label>
-          <input
-            type="email"
-            name="email"
-            [(ngModel)]="enquiry.email"
-            placeholder="Enter Email"
-            pattern="^$|^[a-zA-Z._%+-]+@gmail\.com$"
-            #email="ngModel"
-          />
-          <p *ngIf="email.invalid && email.touched" class="text-danger">
-            Only gmail.com allowed
-          </p>
+          <label class="dark-label">
+            Mobile <span class="required">*</span>
+          </label>
+          <input type="text" name="mobileNo" [(ngModel)]="enquiry.mobileNo"
+            required maxlength="10" pattern="[0-9]*"
+            #mobileNo="ngModel"
+            [class.is-invalid]="mobileNo.invalid && mobileNo.touched">
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col">
+          <label class="dark-label">Email (optional)</label>
+          <input type="email" name="email" [(ngModel)]="enquiry.email">
         </div>
 
         <div class="col">
-          <label class="dark-label">Address:</label>
-          <input
-            type="text"
-            name="address"
-            [(ngModel)]="enquiry.address"
-            required
-            minlength="5"
-            placeholder="Enter Address"
+          <label class="dark-label">
+            Address <span class="required">*</span>
+          </label>
+          <input type="text" name="address" [(ngModel)]="enquiry.address"
+            required minlength="5"
             #address="ngModel"
-            [class.is-invalid]="address.invalid && address.touched"
-          />
-          <p *ngIf="address.invalid && address.touched" class="text-danger">
-            Address minimum 5 characters
-          </p>
-        </div>
-      </div>
-      
-      <div class="row">
-        <div class="col">
-          <label class="dark-label">Profile Image (optional):</label>
-          <input type="file" (change)="onFileChange($event)" accept="image/*" />
+            [class.is-invalid]="address.invalid && address.touched">
         </div>
       </div>
 
-      <!-- Row 4: Pincode & Aadhaar -->
       <div class="row">
         <div class="col">
-          <label class="dark-label">Pincode:</label>
-          <input
-            type="text"
-            name="pincode"
-            [(ngModel)]="enquiry.pincode"
-            required
-            pattern="^[0-9]{6}$"
-            placeholder="Enter 6-digit Pincode"
+          <label class="dark-label">
+            Pincode <span class="required">*</span>
+          </label>
+          <input type="text" name="pincode" [(ngModel)]="enquiry.pincode"
+            required pattern="^[0-9]{6}$"
             #pincode="ngModel"
-            [class.is-invalid]="pincode.invalid && pincode.touched"
-          />
-          <p *ngIf="pincode.invalid && pincode.touched" class="text-danger">
-            Valid 6-digit pincode required
-          </p>
-        </div>
-
-        <div class="col">
-          <label class="dark-label">Aadhaar:</label>
-          <input
-  type="text"
-  name="aadharNo"
-  [(ngModel)]="enquiry.aadharNo"
-  required
-  maxlength="12"
-  inputmode="numeric"
-  pattern="[0-9]*"
-  placeholder="Enter 12-digit Aadhaar"
-  (input)="limitAadharLength()"
-  #aadharNo="ngModel"
-  [class.is-invalid]="aadharNo.invalid && aadharNo.touched"
-/>
-
+            [class.is-invalid]="pincode.invalid && pincode.touched">
         </div>
       </div>
 
-      <!-- Buttons -->
-      <div class="buttons-row mt-3 text-center">
-        <button type="submit" class="btn btn-success me-2" [disabled]="!enquiryForm.valid">
+      <div class="row">
+        <div class="col">
+          <label class="dark-label">
+            Aadhaar <span class="required">*</span>
+          </label>
+          <input type="text" name="aadharNo" [(ngModel)]="enquiry.aadharNo"
+            required maxlength="12" pattern="[0-9]*"
+            #aadharNo="ngModel"
+            [class.is-invalid]="aadharNo.invalid && aadharNo.touched">
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col">
+          <label class="dark-label">Profile Image (optional)</label>
+          <input type="file" (change)="onFileChange($event)" accept="image/*">
+        </div>
+      </div>
+
+      <div class="buttons-row">
+        <button type="submit" class="btn btn-success"
+          [disabled]="!enquiryForm.valid">
           Create Customer
         </button>
         <button type="button" class="btn btn-danger" (click)="goHome()">

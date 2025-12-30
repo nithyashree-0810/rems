@@ -12,6 +12,8 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -125,10 +127,13 @@ public class ReportController {
        📄 LAYOUTS REPORT
     ========================================================= */
 
-    @GetMapping("/layouts")
-    public ResponseEntity<byte[]> layoutsReport() {
+    @PostMapping("/layouts/report")
+    public ResponseEntity<byte[]> layoutsReport(@RequestBody(required = false) List<Layout> layouts) {
         try {
-            List<Layout> layouts = layoutRepository.findAll();
+            // If no layouts sent, fetch all
+            if (layouts == null || layouts.isEmpty()) {
+                layouts = layoutRepository.findAll();
+            }
 
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
             Document document = new Document(PageSize.A4.rotate(), 25, 25, 25, 25);
@@ -178,14 +183,14 @@ public class ReportController {
         }
     }
 
+
     /* =========================================================
        📄 BOOKINGS REPORT
     ========================================================= */
 
-    @GetMapping("/bookings")
-    public ResponseEntity<byte[]> bookingsReport() {
+    @PostMapping("/bookings")
+    public ResponseEntity<byte[]> bookingsReport(@RequestBody List<Booking> bookings) {
         try {
-            List<Booking> bookings = bookingRepository.findAll();
 
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
             Document document = new Document(PageSize.A4.rotate(), 25, 25, 25, 25);
@@ -198,7 +203,7 @@ public class ReportController {
             table.setWidthPercentage(100);
             table.setHeaderRows(1);
 
-            addHeader(table, "ID");
+            addHeader(table, "S.No");
             addHeader(table, "Layout");
             addHeader(table, "Plot");
             addHeader(table, "Customer");
@@ -209,11 +214,18 @@ public class ReportController {
 
             int i = 1;
             for (Booking b : bookings) {
-                Color bg = i++ % 2 == 0 ? new Color(245,245,245) : Color.WHITE;
-                double paid = b.getAdvance1()+b.getAdvance2()+b.getAdvance3()+b.getAdvance4();
+
+                Color bg = i % 2 == 0 ? new Color(245,245,245) : Color.WHITE;
+
+                double paid =
+                    b.getAdvance1() +
+                    b.getAdvance2() +
+                    b.getAdvance3() +
+                    b.getAdvance4();
+
                 double balance = b.getPrice() - paid;
 
-                addCell(table, b.getBookingId(), bg, Element.ALIGN_CENTER);
+                addCell(table, i++, bg, Element.ALIGN_CENTER);
                 addCell(table, b.getLayout().getLayoutName(), bg, Element.ALIGN_LEFT);
                 addCell(table, b.getPlot().getPlotNo(), bg, Element.ALIGN_CENTER);
                 addCell(table, b.getCustomer().getFirstName(), bg, Element.ALIGN_LEFT);
@@ -234,14 +246,20 @@ public class ReportController {
         }
     }
 
+
     /* =========================================================
        📄 PLOTS REPORT
     ========================================================= */
 
-    @GetMapping("/plots")
-    public ResponseEntity<byte[]> plotsReport() {
+    @PostMapping("/plots")
+    public ResponseEntity<byte[]> plotsReport(
+            @RequestBody(required = false) List<Plot> plots) {
+
         try {
-            List<Plot> plots = plotRepository.findAll();
+            // 🔹 Filter illa na → ALL plots
+            if (plots == null || plots.isEmpty()) {
+                plots = plotRepository.findAll();
+            }
 
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
             Document document = new Document(PageSize.A4.rotate(), 25, 25, 25, 25);
@@ -272,7 +290,8 @@ public class ReportController {
                 addCell(table, p.getOwnerName(), bg, Element.ALIGN_LEFT);
                 addCell(table, p.getSqft(), bg, Element.ALIGN_RIGHT);
                 addCell(table, p.getPrice(), bg, Element.ALIGN_RIGHT);
-                addCell(table, p.isBooked() ? "BOOKED" : "AVAILABLE", bg, Element.ALIGN_CENTER);
+                addCell(table, p.isBooked() ? "BOOKED" : "AVAILABLE",
+                        bg, Element.ALIGN_CENTER);
             }
 
             document.add(table);
@@ -286,14 +305,20 @@ public class ReportController {
         }
     }
 
+
     /* =========================================================
        📄 ENQUIRIES REPORT  ✅ NEW
     ========================================================= */
 
-    @GetMapping("/enquiries")
-    public ResponseEntity<byte[]> enquiriesReport() {
+    @PostMapping("/enquiries")
+    public ResponseEntity<byte[]> enquiriesReport(
+            @RequestBody(required = false) List<Enquiry> enquiries) {
+
         try {
-            List<Enquiry> enquiries = enquiryRepository.findAll();
+            // 🔹 If frontend body empty / null → fetch all
+            if (enquiries == null || enquiries.isEmpty()) {
+                enquiries = enquiryRepository.findAll();
+            }
 
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
             Document document = new Document(PageSize.A4.rotate(), 25, 25, 25, 25);
@@ -318,11 +343,13 @@ public class ReportController {
                 Color bg = i % 2 == 0 ? new Color(245,245,245) : Color.WHITE;
 
                 addCell(table, i++, bg, Element.ALIGN_CENTER);
-                addCell(table, e.getFirstName() + " " + e.getLastName(), bg, Element.ALIGN_LEFT);
+                addCell(table,
+                        e.getFirstName() + " " + e.getLastName(),
+                        bg, Element.ALIGN_LEFT);
                 addCell(table, e.getMobileNo(), bg, Element.ALIGN_CENTER);
-                addCell(table, e.getAddress(), bg, Element.ALIGN_LEFT);      // ✅ FIXED
-                addCell(table, e.getPincode(), bg, Element.ALIGN_CENTER);    // optional but useful
-                addCell(table, e.getCreatedDate(), bg, Element.ALIGN_CENTER); // ✅ FIXED
+                addCell(table, e.getAddress(), bg, Element.ALIGN_LEFT);
+                addCell(table, e.getAddress(), bg, Element.ALIGN_LEFT);
+                addCell(table, e.getCreatedDate(), bg, Element.ALIGN_CENTER);
             }
 
             document.add(table);
@@ -335,4 +362,5 @@ public class ReportController {
             return ResponseEntity.internalServerError().build();
         }
     }
+
 }

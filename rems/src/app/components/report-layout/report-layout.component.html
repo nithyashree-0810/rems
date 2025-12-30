@@ -21,8 +21,9 @@
 
   <!-- CREATE + REPORT BUTTONS -->
   <div class="top-buttons">
-    <button class="btn btn-success" (click)="navigateToCreate()">
-      <i class="fa fa-plus"></i> Create Layout
+
+    <button class="btn btn-primary" style="margin-left: auto;" (click)="downloadLayoutsReport()">
+      <i class="fa fa-file-pdf"></i> Download Layouts PDF
     </button>
   </div>
 
@@ -43,7 +44,6 @@
           <th>DTCP</th>
           <th>RERA</th>
           <th>PDF</th>
-          <th>Actions</th>
         </tr>
       </thead>
 
@@ -68,22 +68,6 @@
               View PDF
             </button>
             <span *ngIf="!layout.pdfPath">-</span>
-          </td>
-
-          <td>
-            <div class="action-icons">
-              <i class="fa fa-eye circle-icon view"
-                 (click)="viewLayout(layout.layoutName)"></i>
-
-              <i class="fa fa-pencil circle-icon edit"
-                 (click)="editLayout(layout.layoutName)"></i>
-
-              <i class="fa fa-trash circle-icon delete"
-                 (click)="deleteLayout(layout.layoutName)"></i>
-
-              <i class="fa fa-plus circle-icon book"
-                 [routerLink]="['/create-plot']"></i>
-            </div>
           </td>
         </tr>
       </tbody>

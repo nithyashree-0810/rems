@@ -21,8 +21,9 @@
 
   <!-- Create + Report Buttons -->
   <div class="top-buttons">
-    <button class="btn btn-success" routerLink="/create-plot">
-      <i class="fa fa-plus"></i> Create Plot
+
+    <button class="btn btn-primary" style="margin-left: auto;" (click)="downloadPlotsReport()">
+      <i class="fa fa-file-pdf"></i> Download Plots PDF
     </button>
   </div>
 
@@ -42,7 +43,6 @@
           <th>Mobile</th>
           <th>DTCP</th>
           <th>RERA</th>
-          <th>Actions</th>
         </tr>
       </thead>
 
@@ -59,13 +59,6 @@
           <td>{{ plot.mobile }}</td>
           <td>{{ plot.dtcpApproved ? 'Yes' : 'No' }}</td>
           <td>{{ plot.reraApproved ? 'Yes' : 'No' }}</td>
-
-          <td>
-            <i class="fa fa-eye circle-icon view" (click)="viewPlot(plot.layout.layoutName, plot.plotNo)"></i>
-            <i class="fa fa-pencil circle-icon edit" (click)="editPlot(plot.layout.layoutName, plot.plotNo)"></i>
-            <i class="fa fa-trash circle-icon delete" (click)="deletePlot(plot.layout.layoutName, plot.plotNo)"></i>
-            <i class="fa fa-book circle-icon book" (click)="bookPlot(plot.layout.layoutName, plot.plotNo)"></i>
-          </td>
         </tr>
       </tbody>
     </table>

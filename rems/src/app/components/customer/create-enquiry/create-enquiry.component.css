@@ -3,77 +3,57 @@
 /* 🌌 DARK PREMIUM BACKGROUND */
 .page-bg {
   min-height: 100vh;
-
-  background: linear-gradient(
-      rgba(0, 0, 0, 0.88),
-      rgba(0, 0, 0, 0.88)
-    ),
+  background: linear-gradient(rgba(0,0,0,0.88), rgba(0,0,0,0.88)),
     url("https://images.pexels.com/photos/1396122/pexels-photo-1396122.jpeg");
-
   background-size: cover;
   background-position: center;
   background-attachment: fixed;
-
   display: flex;
   justify-content: center;
-  align-items: center;
+  align-items: flex-start;
   font-family: "Plus Jakarta Sans", sans-serif;
 }
 
-/* MAIN HOLDER */
-.dashboard-shell {
-  max-width: 1100px;
-  width: 100%;
-  padding: 40px 20px;
+/* ⭐ REQUIRED STAR */
+.required {
+  color: #e11d48;
+  font-weight: 700;
+  margin-left: 4px;
 }
 
-/* GLASS EFFECT CARD */
-.glass-card {
-  background: rgba(255, 255, 255, 0.92);
-  backdrop-filter: blur(12px);
-  border-radius: 18px;
-  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.35);
-  padding: 35px;
-}
-
-/* ---------------- Your Existing Form CSS ---------------- */
-
-/* Center the whole form */
+/* Center page */
 .center-page {
   display: flex;
   justify-content: center;
-  align-items: center;
-  padding: 5px;
-  background: transparent;
+  padding: 30px 0 40px;
 }
 
-/* Card styling */
+/* Form card */
 .enquiry-card {
   width: 100%;
-  max-width: 800px;
+  max-width: 550px;
   background: #fff;
-  border-radius: 10px;
-  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-  padding: 30px;
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.12);
+  padding: 18px 22px;
 }
 
 /* Heading */
 .enquiry-card h3 {
-  text-align: left;
-  margin-bottom: 20px;
+  text-align: center;
+  margin-bottom: 14px;
   color: #ff6600;
   font-weight: 700;
 }
 
-/* Form row */
+/* Rows */
 .row {
   display: flex;
   flex-wrap: wrap;
-  margin-bottom: 15px;
-  gap: 20px;
+  gap: 14px;
+  margin-bottom: 8px;
 }
 
-/* Each column */
 .col {
   flex: 1;
   min-width: 250px;
@@ -81,40 +61,36 @@
   flex-direction: column;
 }
 
-/* Labels */
 .dark-label {
   font-weight: 600;
-  margin-bottom: 5px;
+  font-size: 13px;
+  margin-bottom: 3px;
 }
 
-/* Input fields */
+/* Inputs */
 input[type="text"],
 input[type="email"] {
-  padding: 8px 12px;
+  padding: 6px 10px;
   border-radius: 5px;
   border: 1px solid #ccc;
-  font-size: 14px;
-  transition: border-color 0.3s;
+  font-size: 13px;
+  height: 34px;
 }
 
-/* Focus */
 input:focus {
   outline: none;
   border-color: #ff6600;
-  box-shadow: 0 0 4px rgba(255, 102, 0, 0.4);
+  box-shadow: 0 0 4px rgba(255,102,0,0.4);
 }
 
-/* Invalid */
 .is-invalid {
   border-color: red !important;
 }
 
-/* Error */
-.text-danger,
-.error-message {
+.text-danger {
   color: red;
   font-size: 12px;
-  margin-top: 3px;
+  margin-top: 2px;
 }
 
 /* Buttons row */
@@ -122,48 +98,39 @@ input:focus {
   display: flex;
   gap: 10px;
   justify-content: flex-end;
-  margin-top: 20px;
+  margin-top: 12px;
 }
 
-/* Buttons */
+/* Base button */
 button {
-  padding: 8px 18px;
+  padding: 7px 16px;
   border-radius: 5px;
   border: none;
-  font-size: 14px;
+  font-size: 13px;
   cursor: pointer;
-  transition: 0.3s;
 }
 
-button.btn-success {
-  background: #28a745;
-  color: #fff;
+/* ✅ CREATE CUSTOMER - GREEN */
+.btn-success {
+  background-color: #16a34a;
+  color: #ffffff;
 }
 
-button.btn-success:disabled {
-  background: #ccc;
+.btn-success:hover:not(:disabled) {
+  background-color: #15803d;
+}
+
+.btn-success:disabled {
+  background-color: #9ca3af;
   cursor: not-allowed;
 }
 
-button.btn-danger {
-  background: #dc3545;
-  color: #fff;
+/* ✅ HOME - RED */
+.btn-danger {
+  background-color: #dc2626;
+  color: #ffffff;
 }
 
-button:hover:not(:disabled) {
-  opacity: 0.9;
-}
-
-/* Table fix if you use table */
-table {
-  width: 100%;
-  border-collapse: collapse;
-  table-layout: fixed;
-}
-
-th:nth-child(2),
-td:nth-child(2) {
-  text-align: left;
-  padding-left: 40px;
-  width: 200px;
+.btn-danger:hover {
+  background-color: #b91c1c;
 }

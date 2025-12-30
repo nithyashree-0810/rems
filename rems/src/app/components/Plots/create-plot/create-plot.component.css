@@ -116,3 +116,9 @@
     flex-direction: column;
   }
 }
+.required {
+  color: #e11d48;
+  font-weight: 700;
+  margin-left: 4px;
+}
+

@@ -7,7 +7,9 @@
       <!-- Row 1: First Name & Last Name -->
       <div class="row">
         <div class="col">
-          <label>First Name:</label>
+          <label>
+            First Name <span class="required">*</span>
+          </label>
           <input
             type="text"
             name="firstName"
@@ -25,7 +27,9 @@
         </div>
 
         <div class="col">
-          <label>Last Name:</label>
+          <label>
+            Last Name <span class="required">*</span>
+          </label>
           <input
             type="text"
             name="lastName"
@@ -46,7 +50,9 @@
       <!-- Row 2: Mobile & Email -->
       <div class="row">
         <div class="col">
-          <label>Mobile:</label>
+          <label>
+            Mobile <span class="required">*</span>
+          </label>
           <input
             type="text"
             name="mobileNo"
@@ -83,7 +89,9 @@
       <!-- Row 3: Address & Aadhaar -->
       <div class="row">
         <div class="col">
-          <label>Address:</label>
+          <label>
+            Address <span class="required">*</span>
+          </label>
           <input
             type="text"
             name="address"
@@ -100,7 +108,9 @@
         </div>
 
         <div class="col">
-          <label>Aadhaar:</label>
+          <label>
+            Aadhaar <span class="required">*</span>
+          </label>
           <input
             type="text"
             name="aadharNo"
@@ -137,7 +147,9 @@
         </div>
 
         <div class="col">
-          <label>Role:</label>
+          <label>
+            Role <span class="required">*</span>
+          </label>
           <select
             name="role"
             [(ngModel)]="role.role"
@@ -156,6 +168,7 @@
         </div>
       </div>
 
+      <!-- Profile Image -->
       <div class="row">
         <div class="col">
           <label>Profile Image (optional)</label>
@@ -163,22 +176,22 @@
         </div>
       </div>
 
-     <!-- Buttons Row -->
-<div class="buttons-row">
-  <button
-    type="submit"
-    class="btn btn-create"
-    [disabled]="!roleForm.valid">
-    Create Role
-  </button>
+      <!-- Buttons -->
+      <div class="buttons-row">
+        <button
+          type="submit"
+          class="btn btn-create"
+          [disabled]="!roleForm.valid">
+          Create Role
+        </button>
 
-  <button
-    type="button"
-    class="btn btn-home"
-    (click)="goHome()">
-    Home
-  </button>
-</div>
+        <button
+          type="button"
+          class="btn btn-home"
+          (click)="goHome()">
+          Home
+        </button>
+      </div>
 
     </form>
   </div>

@@ -83,6 +83,9 @@ export class ListPlotComponent implements OnInit {
     this.currentPage = page;
   }
 
+  goToCreate() {
+    this.router.navigate(['/new-booking']);
+  }
   goHome(): void {
     this.router.navigate(['/dashboard']);
   }

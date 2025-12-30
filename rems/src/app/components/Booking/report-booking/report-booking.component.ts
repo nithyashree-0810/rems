@@ -1,17 +1,18 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { BookingService } from '../../../services/booking.service';
 import { Router } from '@angular/router';
-import { Booking } from '../../../models/bookings';
 import { ToastrService } from 'ngx-toastr';
 import { ReportService } from '../../../services/report.service';
+import { Booking } from '../../../models/bookings';
 
 @Component({
-  selector: 'app-list-booking',
-    standalone: false,
-  templateUrl: './list-booking.component.html',
-  styleUrls: ['./list-booking.component.css']
+  selector: 'app-report-booking',
+  standalone: false,
+  templateUrl: './report-booking.component.html',
+  styleUrl: './report-booking.component.css'
 })
-export class ListBookingComponent implements OnInit {
+export class ReportBookingComponent {
+
   searchLayoutName: string = '';
   searchPlotNo: string = '';
   
@@ -149,4 +150,30 @@ getBalance(b: any): number {
       });
     }
   }
+
+  downloadBookingsReport(): void {
+  // send filteredData or paginatedBookings depending on your needs
+  const dataToSend = this.filteredData; 
+
+  this.reportService.downloadBookingsReport(dataToSend).subscribe({
+    next: (blob: Blob) => {
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'bookings-report.pdf';
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      window.URL.revokeObjectURL(url);
+      this.toastr.success('Bookings report downloaded successfully!');
+    },
+    error: (err: any) => {
+      console.error('Failed to download bookings report', err);
+      this.toastr.error('Failed to download bookings report');
+    }
+  });
 }
+
+
+}
+

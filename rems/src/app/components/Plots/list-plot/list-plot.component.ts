@@ -116,22 +116,6 @@ export class ListPlotComponent implements OnInit {
     }
   }
 
-  downloadPlotsReport(): void {
-    this.reportService.downloadPlotsReport().subscribe({
-      next: (blob: Blob) => {
-        const url = window.URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = 'plots-report.pdf';
-        a.click();
-        window.URL.revokeObjectURL(url);
-      },
-      error: (err: any) => {
-        console.error('Failed to download plots report', err);
-        this.toastr.error('Failed to download plots report');
-      }
-    });
-  }
 
   // ✅ ONLY ADDED METHOD (FIX)
   bookPlot(layoutName: string, plotNo: string): void {

@@ -1,54 +1,61 @@
-<div class="dashboard-shell">
-  
-  <div class="glass-card hero-card">
-    <div class="icon-box">
-      <i class="fa-solid fa-house-chimney"></i>
-    </div>
-    <div class="hero-text">
-      <h1>Welcome to Real Estate Management System</h1>
-      <p>Your powerful platform for managing properties, layouts, customer enquiries, and plot bookings.</p>
-    </div>
-  </div>
+<!-- ✅ NEW WRAPPER (ADDED, NOT REMOVING ANYTHING) -->
+<div class="dashboard-bg">
 
-  <div class="stats-row">
-    <div class="glass-card stat-item">
-      <div class="icon-box"><i class="fa-solid fa-map"></i></div>
-      <span class="stat-number">{{ totalLayouts }}</span>
-      <span class="stat-text">Total Layouts</span>
+  <div class="dashboard-shell">
+
+    <div class="glass-card hero-card">
+      <div class="icon-box">
+        <i class="fa-solid fa-house-chimney"></i>
+      </div>
+      <div class="hero-text">
+        <h1>Welcome to Real Estate Management System</h1>
+        <p>Your powerful platform for managing properties, layouts, customer enquiries, and plot bookings.</p>
+      </div>
     </div>
 
-    <div class="glass-card stat-item">
-      <div class="icon-box"><i class="fa-solid fa-border-all"></i></div>
-      <span class="stat-number">{{ totalPlots }}</span>
-      <span class="stat-text">Total Plots</span>
+    <div class="stats-row">
+      <div class="glass-card stat-item">
+        <div class="icon-box"><i class="fa-solid fa-map"></i></div>
+        <span class="stat-number">{{ totalLayouts }}</span>
+        <span class="stat-text">Total Layouts</span>
+      </div>
+
+      <div class="glass-card stat-item">
+        <div class="icon-box"><i class="fa-solid fa-border-all"></i></div>
+        <span class="stat-number">{{ totalPlots }}</span>
+        <span class="stat-text">Total Plots</span>
+      </div>
+
+      <div class="glass-card stat-item">
+        <div class="icon-box"><i class="fa-solid fa-users"></i></div>
+        <span class="stat-number">{{ totalEnquiries }}</span>
+        <span class="stat-text">Customer Enquiries</span>
+      </div>
+
+      <div class="glass-card stat-item">
+        <div class="icon-box"><i class="fa-solid fa-check-double"></i></div>
+        <span class="stat-number">{{ totalBookings }}</span>
+        <span class="stat-text">Bookings Completed</span>
+      </div>
     </div>
 
-    <div class="glass-card stat-item">
-      <div class="icon-box"><i class="fa-solid fa-users"></i></div>
-      <span class="stat-number">{{ totalEnquiries }}</span>
-      <span class="stat-text">Customer Enquiries</span>
+    <div class="charts-grid">
+      <div class="glass-card">
+        <h3 class="chart-title">Monthly Bookings</h3>
+        <button class="btn-premium" (click)="goTo('bookings')">
+          <span>View Detailed Report</span>
+          <span aria-hidden="true">→</span>
+        </button>
+      </div>
+
+      <div class="glass-card">
+        <h3 class="chart-title">Enquiries Overview</h3>
+        <button class="btn-premium" (click)="goTo('enquiries')">
+          View Enquiries <i class="fa-solid fa-arrow-right"></i>
+        </button>
+      </div>
     </div>
 
-    <div class="glass-card stat-item">
-      <div class="icon-box"><i class="fa-solid fa-check-double"></i></div>
-      <span class="stat-number">{{ totalBookings }}</span>
-      <span class="stat-text">Bookings Completed</span>
-    </div>
-  </div>
-
-  <div class="charts-grid">
-    <div class="glass-card">
-      <h3 class="chart-title">Monthly Bookings</h3>
-      <button class="btn-premium" (click)="goTo('bookings')">
-        <span>View Detailed Report</span>
-        <span aria-hidden="true">→</span>
-      </button>
-    </div>
-
-    <div class="glass-card">
-      <h3 class="chart-title">Enquiries Overview</h3>
-      <button class="btn-premium" (click)="goTo('enquiries')">View Enquiries <i class="fa-solid fa-arrow-right"></i></button>
-    </div>
   </div>
 
 </div>

@@ -34,9 +34,11 @@ import { CreateRoleComponent } from './components/Role/create-role/create-role.c
 import { EditRoleComponent } from './components/Role/edit-role/edit-role.component';
 import { ListRoleComponent } from './components/Role/list-role/list-role.component';
 import { ViewRoleComponent } from './components/Role/view-role/view-role.component';
+import { ReportEnquiryComponent } from './components/customer/report-enquiry/report-enquiry.component';
+import { ReportPlotComponent } from './components/Plots/report-plot/report-plot.component';
+import { ReportBookingComponent } from './components/Booking/report-booking/report-booking.component';
+import { ReportLayoutComponent } from './components/report-layout/report-layout.component';
 
-// Reports
-import { LayoutReportComponent } from './components/layout-report/layout-report.component';
 
 const routes: Routes = [
 
@@ -49,33 +51,34 @@ const routes: Routes = [
   { path: 'layouts', component: ViewLayoutsComponent },
   { path: 'edit-layout/:layoutName', component: EditLayoutComponent },
   { path: 'view-layout/:layoutName', component: ViewLayoutComponent },
+  { path: 'report-layout', component: ReportLayoutComponent },
 
   /** Booking Routes */
   { path: 'new-booking', component: CreateBookingComponent },
   { path: 'booking-history', component: ListBookingComponent },
   { path: 'view-booking/:id', component: ViewBookingComponent },
   { path: 'edit-booking/:id', component: EditBookingComponent },
+  { path: 'report-booking', component: ReportBookingComponent },
 
   /** Customer / Enquiry Routes */
   { path: 'create-enquiry', component: CreateEnquiryComponent },
   { path: 'view-enquiries', component: ListEnquiryComponent },
   { path: 'edit-enquiry/:mobileNo', component: EditEnquiryComponent },
   { path: 'view-customer/:mobileNo', component: ViewEnquiryComponent },
+  { path: 'report-enquiry', component:ReportEnquiryComponent },
 
   /** Plot Routes */
   { path: 'create-plot', component: CreatePlotComponent },
   { path: 'plots', component: ListPlotComponent },
   { path: 'edit-plot/:layoutName/:plotNo', component: EditPlotComponent },
   { path: 'view-plot/:layoutName/:plotNo', component: ViewPlotComponent },
+   { path: 'report-plot', component: ReportPlotComponent },
 
   /** Role Routes */
   { path: 'create-role', component: CreateRoleComponent },
   { path: 'edit-role/:roleId', component: EditRoleComponent },
   { path: 'list-role', component: ListRoleComponent },
   { path: 'view-role/:roleId', component: ViewRoleComponent },
-
-  /** Reports */
-  { path: 'reports/layout', component: LayoutReportComponent },
 
   /** 404 Fallback */
   { path: '**', redirectTo: '', pathMatch: 'full' }

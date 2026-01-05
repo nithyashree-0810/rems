@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { PlotserviceService } from '../../../services/plotservice.service';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
+import { ReportService } from '../../../services/report.service';
 
 @Component({
   selector: 'app-list',
@@ -10,32 +11,32 @@ import { ToastrService } from 'ngx-toastr';
   styleUrls: ['./list-plot.component.css']
 })
 export class ListPlotComponent implements OnInit {
-bookPlot(arg0: any,arg1: any) {
-throw new Error('Method not implemented.');
-}
 
-  allPlots: any[] = [];   // Full list from backend
-  plots: any[] = [];      // Filtered/displayed list
+  allPlots: any[] = [];
+  plots: any[] = [];
   searchLayoutName: string = '';
   searchPlotNo: string = '';
   searchMessage: string = '';
 
-  // Pagination
   currentPage = 1;
   pageSize = 10;
 
-  constructor(private plotService: PlotserviceService, private router: Router, private toastr: ToastrService) {}
+  constructor(
+    private plotService: PlotserviceService,
+    private router: Router,
+    private toastr: ToastrService,
+    private reportService: ReportService
+  ) {}
 
   ngOnInit(): void {
     this.loadPlots();
   }
 
-  // Load all plots from backend
   loadPlots(): void {
     this.plotService.getPlots().subscribe({
       next: (data: any[]) => {
-        this.allPlots = data.reverse();  // full list
-        this.plots = [...this.allPlots]; // currently displayed
+        this.allPlots = data.reverse();
+        this.plots = [...this.allPlots];
         this.searchMessage = '';
         this.currentPage = 1;
       },
@@ -46,35 +47,28 @@ throw new Error('Method not implemented.');
     });
   }
 
-  // Live filter plots by layout name
   filterPlots(): void {
     const nameKey = this.searchLayoutName.trim().toLowerCase();
     const plotKey = this.searchPlotNo.trim().toLowerCase();
 
     if (!nameKey && !plotKey) {
-      this.plots = [...this.allPlots]; // restore full list
+      this.plots = [...this.allPlots];
       this.searchMessage = '';
     } else {
       this.plots = this.allPlots.filter(plot => {
         const layoutName = (plot.layout?.layoutName || '').toLowerCase();
         const plotNo = (plot.plotNo || '').toLowerCase();
-        const matchesName = !nameKey || layoutName.includes(nameKey);
-        const matchesPlot = !plotKey || plotNo.includes(plotKey);
-        return matchesName && matchesPlot;
+        return (!nameKey || layoutName.includes(nameKey)) &&
+               (!plotKey || plotNo.includes(plotKey));
       });
       this.searchMessage = this.plots.length === 0 ? 'No plots found' : '';
     }
 
-    this.currentPage = 1; // reset pagination
+    this.currentPage = 1;
   }
 
-  // Pagination helpers
   get totalPages(): number {
     return Math.ceil(this.plots.length / this.pageSize);
-  }
-
-  get totalPagesArray(): number[] {
-    return Array.from({ length: this.totalPages }, (_, i) => i + 1);
   }
 
   prevPage(): void {
@@ -89,43 +83,45 @@ throw new Error('Method not implemented.');
     this.currentPage = page;
   }
 
-  // Navigation
+  goToCreate() {
+    this.router.navigate(['/new-booking']);
+  }
   goHome(): void {
     this.router.navigate(['/dashboard']);
   }
 
   viewPlot(layoutName: string, plotNo: string): void {
-  this.router.navigate(['/view-plot', layoutName, plotNo]);
-}
+    this.router.navigate(['/view-plot', layoutName, plotNo]);
+  }
 
   editPlot(layoutName: string, plotNo: string): void {
-  this.router.navigate(['/edit-plot', layoutName, plotNo]);
-}
+    this.router.navigate(['/edit-plot', layoutName, plotNo]);
+  }
 
   deletePlot(layoutName: string, plotNo: string): void {
-  if (confirm(`Delete plot ${plotNo} in layout ${layoutName}?`)) {
-    this.plotService.deletePlot(layoutName, plotNo).subscribe({
-      next: () => {
-        this.toastr.success("Deleted successfully ✅");
+    if (confirm(`Delete plot ${plotNo} in layout ${layoutName}?`)) {
+      this.plotService.deletePlot(layoutName, plotNo).subscribe({
+        next: () => {
+          this.toastr.success('Deleted successfully ✅');
 
-        // Remove from UI list
-        this.allPlots = this.allPlots.filter(
-          p => !(p.plotNo === plotNo && p.layout?.layoutName === layoutName)
-        );
-
-        this.plots = this.plots.filter(
-          p => !(p.plotNo === plotNo && p.layout?.layoutName === layoutName)
-        );
-
-        if (this.currentPage > this.totalPages) {
-          this.currentPage = this.totalPages;
+          this.allPlots = this.allPlots.filter(
+            p => !(p.plotNo === plotNo && p.layout?.layoutName === layoutName)
+          );
+          this.plots = this.plots.filter(
+            p => !(p.plotNo === plotNo && p.layout?.layoutName === layoutName)
+          );
+        },
+        error: (err: any) => {
+          console.error('Delete failed ❌', err);
+          this.toastr.error('Delete failed');
         }
-      },
-      error: (err) => {
-        console.error("Delete failed ❌", err);
-        this.toastr.error("Delete failed");
-      }
-    });
+      });
+    }
   }
-}
+
+
+  // ✅ ONLY ADDED METHOD (FIX)
+  bookPlot(layoutName: string, plotNo: string): void {
+    this.router.navigate(['/book-plot', layoutName, plotNo]);
+  }
 }

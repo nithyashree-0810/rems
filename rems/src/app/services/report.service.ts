@@ -1,6 +1,8 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { Booking } from '../models/bookings';
+import { Layout } from '../models/layout';
 
 @Injectable({
   providedIn: 'root'
@@ -11,13 +13,41 @@ export class ReportService {
 
   constructor(private http: HttpClient) { }
 
-  downloadLayoutsReport(): Observable<Blob> {
-    const headers = new HttpHeaders({
-      // any auth headers go here
-    });
-    return this.http.get(`${this.baseUrl}/layouts`, {
-      headers,
-      responseType: 'blob' // IMPORTANT
-    });
+  downloadLayoutsReport(filteredLayouts: Layout[]): Observable<Blob> {
+  const headers = new HttpHeaders({
+    // any auth headers go here
+  });
+
+  return this.http.post(
+    `${this.baseUrl}/layouts/report`,
+    filteredLayouts, // send filtered layouts from UI
+    { headers, responseType: 'blob' } // must be outside the body
+  );
+}
+
+
+ downloadBookingsReport(bookings: Booking[]): Observable<Blob> {
+    return this.http.post(
+      `${this.baseUrl}/bookings`,
+      bookings,
+      { responseType: 'blob' }
+    );
   }
+
+
+  downloadEnquiriesReport(data: any[]): Observable<Blob> {
+  return this.http.post(
+    `${this.baseUrl}/enquiries`,
+    data,
+    { responseType: 'blob' }
+  );
+}
+
+  downloadPlotsReport(data: any[]): Observable<Blob> {
+  return this.http.post(
+    `${this.baseUrl}/plots`,
+    data,
+    { responseType: 'blob' }
+  );
+}
 }

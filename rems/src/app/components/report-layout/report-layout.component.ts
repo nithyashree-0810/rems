@@ -1,23 +1,23 @@
 import { Component } from '@angular/core';
 import { LayoutserviceService } from '../../services/layoutservice.service';
-import { Router } from '@angular/router';
 import { Layout } from '../../models/layout';
+import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { ReportService } from '../../services/report.service';
 
 @Component({
-  selector: 'app-view-layouts',
+  selector: 'app-report-layout',
   standalone: false,
-  templateUrl: './view-layouts.component.html',
-  styleUrls: ['./view-layouts.component.css'] // ✅ FIXED (styleUrl → styleUrls)
+  templateUrl: './report-layout.component.html',
+  styleUrl: './report-layout.component.css'
 })
-export class ViewLayoutsComponent {
-
+export class ReportLayoutComponent {
   searchName: string = "";
   searchLocation: string = "";
 
   allLayouts: Layout[] = [];
   layouts: Layout[] = [];
+  filteredData: Layout[] = [];
 
   currentPage = 1;
   pageSize = 10;
@@ -126,8 +126,38 @@ export class ViewLayoutsComponent {
     window.open(url, "_blank");
   }
 
+  downloadLayoutsReport(): void {
+
+  let dataToSend: Layout[] = [];
+
+  // If search box is empty → send ALL layouts
+  if (!this.searchName && !this.searchLocation) {
+    dataToSend = this.allLayouts;
+  }
+  else {
+    // User applied search → send currently filtered list
+    dataToSend = this.layouts;
+  }
+
+  this.reportService.downloadLayoutsReport(dataToSend).subscribe({
+    next: (blob: Blob) => {
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'layouts-report.pdf';
+      a.click();
+      window.URL.revokeObjectURL(url);
+      this.toastr.success('Layouts report downloaded successfully!');
+    },
+    error: () => {
+      this.toastr.error('Failed to download layouts report');
+    }
+  });
+}
+
 
   goHome() {
     this.router.navigate(['/dashboard']);
   }
 }
+

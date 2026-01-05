@@ -35,7 +35,10 @@ import { CreateRoleComponent } from './components/Role/create-role/create-role.c
 import { EditRoleComponent } from './components/Role/edit-role/edit-role.component';
 import { ListRoleComponent } from './components/Role/list-role/list-role.component';
 import { ViewRoleComponent } from './components/Role/view-role/view-role.component';
-import { LayoutReportComponent } from './components/layout-report/layout-report.component';
+import { ReportEnquiryComponent } from './components/customer/report-enquiry/report-enquiry.component';
+import { ReportPlotComponent } from './components/Plots/report-plot/report-plot.component';
+import { ReportBookingComponent } from './components/Booking/report-booking/report-booking.component';
+import { ReportLayoutComponent } from './components/report-layout/report-layout.component';
 
 
 
@@ -55,21 +58,26 @@ import { LayoutReportComponent } from './components/layout-report/layout-report.
     EditEnquiryComponent,
     ListEnquiryComponent,
     ViewEnquiryComponent,
+    ReportEnquiryComponent,
     //Booking
     CreateBookingComponent,
     ListBookingComponent,
     EditBookingComponent,
+    ReportBookingComponent,
     ViewLayoutsComponent,
     CreatePlotComponent,
     ListPlotComponent, 
     EditPlotComponent,
     ViewPlotComponent,
+    ReportPlotComponent,
     CreateRoleComponent,
     EditRoleComponent,
     ListRoleComponent,
     ViewRoleComponent,
-    LayoutReportComponent,
-   
+    ReportEnquiryComponent,
+    ReportPlotComponent,
+    ReportBookingComponent,
+    ReportLayoutComponent,
   ],
   imports: [
     BrowserModule,

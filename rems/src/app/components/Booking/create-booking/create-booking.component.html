@@ -239,9 +239,35 @@
               <option value="">-- Select Status --</option>
               <option>Registered</option>
               <option>Unregistered</option>
-              <option>Cancel</option>
             </select>
           </div>
+
+          <div *ngIf="booking.status === 'Registered'">
+
+  <div class="form-group">
+    <label>Registered Date:<span class="req">*</span></label>
+    <input type="date"
+           class="form-control"
+           name="registeredDate"
+           [(ngModel)]="booking.registeredDate"
+           required>
+  </div>
+
+  <div class="form-group">
+    <label>Registered Mode:<span class="req">*</span></label>
+    <select class="form-control"
+            name="registeredMode"
+            [(ngModel)]="booking.registeredMode"
+            required>
+      <option value="">-- Select Mode --</option>
+      <option>Cash</option>
+      <option>UPI</option>
+      <option>Bank Transfer</option>
+      <option>Cheque</option>
+    </select>
+  </div>
+
+</div>
 
         </div>
       </div>

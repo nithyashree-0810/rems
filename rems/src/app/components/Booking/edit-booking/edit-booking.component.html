@@ -177,23 +177,38 @@
     </div>
 
     <!-- CANCEL DETAILS -->
-    <div *ngIf="showCancelFields">
-      <div class="row">
-        <label class="label">Refund Amount:</label>
-        <input type="number" class="value" formControlName="refundAmount" />
-      </div>
+    <!-- CANCEL DETAILS -->
+<div *ngIf="showCancelFields">
 
-      <div class="row">
-        <label class="label">Refund Mode:</label>
-        <select class="value" formControlName="refundMode">
-          <option value="">-- Select Mode --</option>
-          <option>Cash</option>
-          <option>UPI</option>
-          <option>Bank Transfer</option>
-          <option>Cheque</option>
-        </select>
-      </div>
-    </div>
+  <div class="row">
+    <label class="label">Refund Amount (Paid):</label>
+    <input type="number"
+           class="value"
+           formControlName="refundAmount" />
+  </div>
+
+  <div class="row">
+    <label class="label">Refund Mode:</label>
+    <select class="value" formControlName="refundMode">
+      <option value="">-- Select Mode --</option>
+      <option>Cash</option>
+      <option>UPI</option>
+      <option>Bank Transfer</option>
+      <option>Cheque</option>
+    </select>
+  </div>
+
+  <!-- 👇 NEW : Remaining Refund (READ ONLY) -->
+  <div class="row">
+    <label class="label">Remaining Refund:</label>
+    <input type="number"
+           class="value"
+           formControlName="remainingRefund"
+           readonly />
+  </div>
+
+</div>
+
 
     <div class="actions">
       <button type="submit" class="save-btn">Save</button>

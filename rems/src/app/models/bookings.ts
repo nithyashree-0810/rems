@@ -47,6 +47,8 @@ export interface Booking {
   status:string;
   regDate:Date;
   regNo:number;
-  refundAmount:number;
-  mode:string;
+  refundedAmount?: number;
+remainingRefund?: number;
+refundDate?: Date;
+refundMode?: string;
 }

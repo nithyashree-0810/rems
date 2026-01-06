@@ -1,7 +1,7 @@
 .form-container {
-  max-width: 550px;
+  max-width: 760px;
   margin: 40px auto;
-  padding: 25px;
+  padding: 18px;
   border-radius: 12px;
   background: #ffffff;
   box-shadow: 0 6px 15px rgba(0,0,0,0.1);
@@ -16,32 +16,53 @@
   margin-bottom: 25px;
 }
 
+.details-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+}
+
 .row {
-  display: flex;
+  display: grid;
+  grid-template-columns: 36px 170px 14px auto;
   align-items: center;
-  margin: 12px 0;
-  padding: 8px 0;
-  border-bottom: 1px solid #f2f2f2;
+  padding: 6px 8px;
+  margin: 4px 0;
+  border-radius: 8px;
+  border: 1px solid #f1f1f1;
+  background: #fafafa;
+  gap: 8px;
 }
 
 .icon {
-  font-size: 18px;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: #fff1df;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   color: #ff6600;
-  margin-right: 12px;
-  width: 24px;
-  text-align: center;
+  font-size: 12px;
 }
 
 .label {
-  font-weight: bold;
+  font-weight: 700;
+  font-size: 12px;
   color: hsl(244, 87%, 43%);
-  flex: 1;
+  white-space: nowrap;
 }
 
 .value {
   color: hsl(0, 0%, 4%);
-  flex: 2;
-  text-align: right;
+  font-size: 12px;
+  word-wrap: break-word;
+}
+
+.colon {
+  font-weight: 700;
+  color: hsl(244, 87%, 43%);
+  text-align: center;
 }
 
 .home-btn {

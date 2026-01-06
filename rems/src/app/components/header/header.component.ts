@@ -1,5 +1,5 @@
 import { Component, HostListener } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, NavigationEnd } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 
 @Component({
@@ -15,10 +15,21 @@ export class HeaderComponent {
   constructor(
     private router: Router,
     private toastr: ToastrService
-  ) {}
+  ) {
+    // 🔥 Close dropdown on every route change
+    this.router.events.subscribe(event => {
+      if (event instanceof NavigationEnd) {
+        this.activeDropdown = null;
+      }
+    });
+  }
 
   toggleDropdown(menu: string) {
     this.activeDropdown = this.activeDropdown === menu ? null : menu;
+  }
+
+  closeDropdown() {
+    this.activeDropdown = null;
   }
 
   @HostListener('document:click', ['$event'])

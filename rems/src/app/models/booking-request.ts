@@ -28,6 +28,9 @@ export interface BookingRequest {
   status: String;
   regDate:Date;
   regNo:number;
-  refundAmount:number;
-  mode:string;
+  refundedAmount?: number;      // already refunded
+  refundNow?: number;           // current refund
+  remainingRefund?: number;     // balance - refunded
+  refundDate?: Date;
+  refundMode?: string;
 }

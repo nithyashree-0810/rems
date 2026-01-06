@@ -3,17 +3,14 @@
 /* 🌌 DARK PREMIUM BACKGROUND */
 .page-bg {
   min-height: 100vh;
-
   background: linear-gradient(
       rgba(0, 0, 0, 0.85),
       rgba(0, 0, 0, 0.85)
     ),
     url("https://images.pexels.com/photos/1396122/pexels-photo-1396122.jpeg");
-
   background-size: cover;
   background-position: center;
   background-attachment: fixed;
-
   display: flex;
   justify-content: center;
   align-items: flex-start;
@@ -36,10 +33,9 @@
 }
 
 /* ------------------------------------------------
-   BELOW IS YOUR SAME CSS (unchanged UI styling)
+   PAGE CONTENT
 ------------------------------------------------ */
 
-/* CONTAINER */
 .container {
   padding: 22px 11px;
   font-size: 13px;
@@ -48,7 +44,7 @@
   align-items: center;
 }
 
-/* HEADER */
+/* TITLE */
 h2 {
   color: #ff7e00;
   margin-bottom: 16px;
@@ -56,14 +52,21 @@ h2 {
   font-weight: 800;
 }
 
-/* SEARCH BAR */
-.search-container {
+/* SEARCH + CREATE SAME ROW */
+.search-create-row {
   width: 100%;
   max-width: 1188px;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+  margin-bottom: 14px;
+}
+
+/* SEARCH */
+.search-container {
   display: flex;
   justify-content: center;
   gap: 13px;
-  margin-bottom: 14px;
 }
 
 .search-input {
@@ -72,6 +75,7 @@ h2 {
   border-radius: 24px;
   border: 1px solid #ccc;
   text-align: center;
+  font-size: 13px;
 }
 
 .search-btn {
@@ -86,11 +90,8 @@ h2 {
 
 /* CREATE BUTTON */
 .top-buttons {
-  width: 100%;
-  max-width: 1188px;
   display: flex;
   justify-content: flex-end;
-  margin-bottom: 13px;
 }
 
 .btn {
@@ -98,10 +99,25 @@ h2 {
   font-size: 13px;
   border-radius: 9px;
   cursor: pointer;
+  border: none;
 }
 
-.btn-success { background: #28a745; color: white; }
-.btn-danger  { background: #dc3545; color: white; }
+.btn-success {
+  background: #28a745;
+  color: white;
+}
+
+.btn-danger {
+  background: #dc3545;
+  color: white;
+}
+
+/* LOADING */
+.loading {
+  margin-top: 20px;
+  font-size: 14px;
+  color: #444;
+}
 
 /* TABLE */
 .table-wrapper {
@@ -114,10 +130,13 @@ h2 {
   border-collapse: collapse;
   background: white;
   border-radius: 11px;
+  overflow: hidden;
   box-shadow: 0 0 7px rgba(0,0,0,0.1);
 }
 
-.layout-table thead { background: #ff9800; }
+.layout-table thead {
+  background: #ff9800;
+}
 
 .layout-table th {
   padding: 9px;
@@ -130,18 +149,17 @@ h2 {
   padding: 7px;
   font-size: 13px;
   text-align: center;
-}
-
-/* AVATAR */
-.avatar {
-  width: 38px;
-  height: 38px;
-  border-radius: 50%;
-  object-fit: cover;
-  border: 2px solid #eee;
+  border-bottom: 1px solid #eee;
 }
 
 /* ACTION ICONS */
+.action-icons {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 6px;
+}
+
 .circle-icon {
   font-size: 14px;
   padding: 7px;
@@ -149,15 +167,19 @@ h2 {
   cursor: pointer;
 }
 
-.view   { background: #e3f2fd; color: #1976d2; }
-.edit   { background: #e8f5e9; color: #388e3c; }
-.delete { background: #ffebee; color: #d32f2f; }
+.view {
+  background: #e3f2fd;
+  color: #1976d2;
+}
 
-.action-icons {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 6px;
+.edit {
+  background: #e8f5e9;
+  color: #388e3c;
+}
+
+.delete {
+  background: #ffebee;
+  color: #d32f2f;
 }
 
 /* PAGINATION */
@@ -173,11 +195,13 @@ h2 {
   padding: 6px 12px;
   font-size: 12px;
   border-radius: 5px;
+  border: 1px solid #ccc;
+  cursor: pointer;
 }
 
-.pagination .active {
-  background: #3498db;
-  color: white;
+.pagination button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
 }
 
 /* HOME BUTTON */
@@ -187,4 +211,29 @@ h2 {
   padding: 7px 14px;
   font-size: 12px;
   border-radius: 7px;
+}
+
+/* NO DATA */
+.no-records {
+  margin-top: 20px;
+  font-size: 14px;
+  color: #666;
+}
+
+/* RESPONSIVE */
+@media (max-width: 992px) {
+  .layout-table,
+  .pagination-container,
+  .search-create-row {
+    width: 100%;
+  }
+
+  .search-create-row {
+    grid-template-columns: 1fr;
+    row-gap: 10px;
+  }
+
+  .top-buttons {
+    justify-content: center;
+  }
 }

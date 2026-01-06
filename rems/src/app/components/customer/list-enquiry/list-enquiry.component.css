@@ -1,6 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
 
-/* PAGE BACKGROUND */
+/* 🌌 PAGE BACKGROUND */
 .page-bg {
   min-height: 100vh;
   background: linear-gradient(
@@ -16,6 +16,7 @@
   align-items: flex-start;
 }
 
+/* DASHBOARD */
 .dashboard-shell {
   max-width: 1250px;
   width: 100%;
@@ -31,8 +32,7 @@
   width: 100%;
 }
 
-/* ---------------------------------------------------------- */
-
+/* CONTAINER */
 .container {
   padding: 22px 11px;
   font-size: 13px;
@@ -41,6 +41,7 @@
   align-items: center;
 }
 
+/* TITLE */
 h2 {
   color: #ff7e00;
   margin-bottom: 16px;
@@ -49,14 +50,21 @@ h2 {
   text-align: center;
 }
 
-/* SEARCH */
-.search-container {
+/* 🔥 SEARCH + CREATE SAME LINE */
+.search-create-row {
   width: 100%;
   max-width: 1188px;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+  margin-bottom: 14px;
+}
+
+/* SEARCH */
+.search-container {
   display: flex;
   justify-content: center;
   gap: 13px;
-  margin-bottom: 14px;
 }
 
 .search-input {
@@ -81,11 +89,8 @@ h2 {
 
 /* CREATE BUTTON */
 .top-buttons {
-  width: 100%;
-  max-width: 1188px;
   display: flex;
   justify-content: flex-end;
-  margin-bottom: 13px;
 }
 
 .btn {
@@ -132,7 +137,7 @@ h2 {
   text-align: center;
 }
 
-/* ---------------- PROFILE IMAGE FIX ---------------- */
+/* PROFILE IMAGE */
 .img-wrapper {
   width: 45px;
   height: 45px;
@@ -152,6 +157,13 @@ h2 {
 }
 
 /* ACTION ICONS */
+.action-icons {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 6px;
+}
+
 .circle-icon {
   font-size: 14px;
   padding: 7px;
@@ -167,13 +179,6 @@ h2 {
 .view   { background: #e3f2fd; color: #1976d2; }
 .edit   { background: #e8f5e9; color: #388e3c; }
 .delete { background: #ffebee; color: #d32f2f; }
-
-.action-icons {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 6px;
-}
 
 /* PAGINATION */
 .pagination-container {
@@ -197,11 +202,6 @@ h2 {
   color: white;
 }
 
-.pagination .active {
-  background: #3498db;
-  color: white;
-}
-
 .pagination button:disabled {
   opacity: 0.5;
   cursor: not-allowed;
@@ -213,4 +213,21 @@ h2 {
   padding: 7px 14px;
   font-size: 12px;
   border-radius: 7px;
+}
+
+/* RESPONSIVE */
+@media (max-width: 992px) {
+  .search-create-row {
+    grid-template-columns: 1fr;
+    row-gap: 10px;
+  }
+
+  .top-buttons {
+    justify-content: center;
+  }
+
+  .layout-table,
+  .pagination-container {
+    width: 100%;
+  }
 }

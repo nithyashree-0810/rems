@@ -2,7 +2,9 @@
 
   <h2>List of Customers</h2>
 
-  <!-- SEARCH -->
+ <!-- SEARCH + CREATE SAME ROW -->
+<div class="search-create-row">
+
   <div class="search-container">
     <input type="text"
            [(ngModel)]="searchName"
@@ -19,12 +21,14 @@
     <button class="search-btn" (click)="onSearch()">Search</button>
   </div>
 
-  <!-- CREATE + REPORT BUTTONS -->
   <div class="top-buttons">
     <button class="btn btn-success" (click)="createEnquiry()">
       <i class="fa fa-plus"></i> Create Customer
     </button>
   </div>
+
+</div>
+
 
   <!-- TABLE -->
   <div class="table-wrapper">

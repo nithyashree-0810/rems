@@ -2,7 +2,10 @@
 
   <h2>List of Plots</h2>
 
-  <!-- Search Section -->
+<!-- SEARCH + CREATE SAME LINE -->
+<div class="search-create-row">
+
+  <!-- SEARCH (CENTER) -->
   <div class="search-container">
     <input type="text"
            [(ngModel)]="searchLayoutName"
@@ -19,12 +22,14 @@
     <button class="search-btn" (click)="filterPlots()">Search</button>
   </div>
 
-  <!-- Create + Report Buttons -->
+  <!-- CREATE (RIGHT) -->
   <div class="top-buttons">
     <button class="btn btn-success" routerLink="/create-plot">
       <i class="fa fa-plus"></i> Create Plot
     </button>
   </div>
+
+</div>
 
   <!-- Table -->
   <div class="table-wrapper">
@@ -53,7 +58,7 @@
           <td>{{ plot.plotNo }}</td>
           <td>{{ plot.surveyNumber }}</td>
           <td>{{ plot.ownerName }}</td>
-          <td>{{ plot.sqft }}</td>
+          <td>{{ plot.totalSqft }}</td>
           <td>{{ plot.direction }}</td>
           <td>₹ {{ plot.price }}</td>
           <td>{{ plot.mobile }}</td>

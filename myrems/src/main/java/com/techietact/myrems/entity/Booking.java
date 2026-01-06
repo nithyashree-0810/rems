@@ -67,8 +67,11 @@ public class Booking {
     private String status;
     private Date regDate;
     private Long regNo;
-    private Long refundAmount;
-    private String mode;
+    private Long refundedAmount;     // already refunded
+    private Long refundNow;          // current refund entry
+    private Double remainingRefund;    // balance - refundedAmount
+    private LocalDate refundDate;
+    private String refundMode;
 
     // 🔥 AUTO BALANCE CALCULATION
     @PrePersist

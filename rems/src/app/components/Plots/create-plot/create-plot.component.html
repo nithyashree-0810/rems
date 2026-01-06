@@ -23,7 +23,7 @@
     <div class="form-row">
 
       <div class="form-group">
-        <label>Layout</label>
+        <label>Layout <span class="required">*</span></label>
         <select [(ngModel)]="newPlot.layout"
                 name="layout"
                 required
@@ -36,7 +36,7 @@
       </div>
 
       <div class="form-group">
-        <label>Plot No</label>
+        <label>Plot No <span class="required">*</span></label>
         <input type="text"
                [(ngModel)]="newPlot.plotNo"
                name="plotNo"
@@ -46,39 +46,34 @@
     </div>
 
     <!-- Direction + Survey Number -->
-<div class="form-row">
+    <div class="form-row">
 
-  <div class="form-group">
-    <label>Direction</label>
-    <select
-      [(ngModel)]="newPlot.direction"
-      name="direction"
-      required>
-      <option value="">Select Direction</option>
-      <option *ngFor="let d of ['EAST','WEST','NORTH','SOUTH','SOUTHEAST','SOUTHWEST','NORTHEAST','NORTHWEST']">
-        {{ d }}
-      </option>
-    </select>
-  </div>
+      <div class="form-group">
+        <label>Direction <span class="required">*</span></label>
+        <select [(ngModel)]="newPlot.direction"
+                name="direction"
+                required>
+          <option value="">Select Direction</option>
+          <option *ngFor="let d of ['EAST','WEST','NORTH','SOUTH','SOUTHEAST','SOUTHWEST','NORTHEAST','NORTHWEST']">
+            {{ d }}
+          </option>
+        </select>
+      </div>
 
-  <div class="form-group">
-    <label>Survey No</label>
-    <input
-      type="text"
-      [(ngModel)]="newPlot.surveyNumber"
-      name="surveyNumber"
-      required
-    />
-  </div>
+      <div class="form-group">
+        <label>Survey No <span class="required">*</span></label>
+        <input type="text"
+               [(ngModel)]="newPlot.surveyNumber"
+               name="surveyNumber"
+               required>
+      </div>
 
-</div>
-
-
+    </div>
 
     <!-- Dimensions -->
     <div class="form-row">
       <div class="form-group">
-        <label>Total SqFt</label>
+        <label>Total SqFt </label>
         <input type="number"
                [(ngModel)]="newPlot.totalSqft"
                name="totalSqft"
@@ -122,7 +117,7 @@
       </div>
 
       <div class="form-group">
-        <label>SqFt Rate</label>
+        <label>SqFt Rate <span class="required">*</span></label>
         <input type="number"
                [(ngModel)]="newPlot.sqft"
                name="sqft"
@@ -133,20 +128,26 @@
     <!-- Price -->
     <div class="form-row">
       <div class="form-group">
-        <label>Price</label>
-        <input type="number" [(ngModel)]="newPlot.price" name="price" readonly>
+        <label>Price <span class="required">*</span></label>
+        <input type="number"
+               [(ngModel)]="newPlot.price"
+               name="price"
+               readonly>
       </div>
 
       <div class="form-group">
-        <label>Layout Address</label>
-        <input type="text" [(ngModel)]="newPlot.layoutAddress" name="layoutAddress" readonly>
+        <label>Layout Address <span class="required">*</span></label>
+        <input type="text"
+               [(ngModel)]="newPlot.layoutAddress"
+               name="layoutAddress"
+               readonly>
       </div>
     </div>
 
     <!-- Owner -->
     <div class="form-row">
       <div class="form-group">
-        <label>Owner</label>
+        <label>Owner <span class="required">*</span></label>
         <select [(ngModel)]="selectedOwnerId"
                 name="ownerId"
                 (change)="onOwnerChange()"
@@ -159,14 +160,16 @@
       </div>
 
       <div class="form-group">
-        <label>Address</label>
-        <input type="text" [(ngModel)]="newPlot.address" name="address">
+        <label>Address <span class="required">*</span></label>
+        <input type="text"
+               [(ngModel)]="newPlot.address"
+               name="address">
       </div>
     </div>
 
     <div class="form-row">
       <div class="form-group">
-        <label>Mobile</label>
+        <label>Mobile <span class="required">*</span></label>
         <input type="tel"
                [(ngModel)]="newPlot.mobile"
                name="mobile"
@@ -175,32 +178,47 @@
 
       <div class="form-group">
         <label>Email</label>
-        <input type="email" [(ngModel)]="newPlot.email" name="email">
+        <input type="email"
+               [(ngModel)]="newPlot.email"
+               name="email">
       </div>
     </div>
 
     <!-- Checkboxes -->
     <div class="form-row">
       <div class="form-group">
-        <label><input type="checkbox" [(ngModel)]="newPlot.dtcpApproved" name="dtcpApproved"> DTCP</label>
+        <label>
+          <input type="checkbox" [(ngModel)]="newPlot.dtcpApproved" name="dtcpApproved">
+          DTCP 
+        </label>
       </div>
 
       <div class="form-group">
-        <label><input type="checkbox" [(ngModel)]="newPlot.reraApproved" name="reraApproved"> RERA</label>
+        <label>
+          <input type="checkbox" [(ngModel)]="newPlot.reraApproved" name="reraApproved">
+          RERA 
+        </label>
       </div>
 
       <div class="form-group">
-        <label><input type="checkbox" [(ngModel)]="newPlot.booked" name="booked"> Booked</label>
+        <label>
+          <input type="checkbox" [(ngModel)]="newPlot.booked" name="booked">
+          Booked 
+        </label>
       </div>
     </div>
 
     <!-- Buttons -->
     <div class="form-buttons">
-      <button class="btn save-btn" type="submit" [disabled]="plotForm.invalid">
+      <button class="btn save-btn"
+              type="submit"
+              [disabled]="plotForm.invalid">
         Save
       </button>
 
-      <button class="btn home-btn" type="button" (click)="goHome()">
+      <button class="btn home-btn"
+              type="button"
+              (click)="goHome()">
         Home
       </button>
     </div>

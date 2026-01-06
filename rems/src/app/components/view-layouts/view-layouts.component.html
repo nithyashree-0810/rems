@@ -2,6 +2,9 @@
 
   <h2>List of Layouts</h2>
 
+  <!-- SEARCH + CREATE ROW -->
+<div class="search-create-row">
+
   <!-- SEARCH -->
   <div class="search-container">
     <input type="text"
@@ -19,12 +22,15 @@
     <button class="search-btn" (click)="filterLayouts()">Search</button>
   </div>
 
-  <!-- CREATE + REPORT BUTTONS -->
+  <!-- CREATE BUTTON -->
   <div class="top-buttons">
     <button class="btn btn-success" (click)="navigateToCreate()">
       <i class="fa fa-plus"></i> Create Layout
     </button>
   </div>
+
+</div>
+
 
   <!-- TABLE -->
   <div class="table-wrapper">
@@ -48,7 +54,8 @@
       </thead>
 
       <tbody>
-        <tr *ngFor="let layout of layouts | slice:(currentPage-1)*pageSize:(currentPage)*pageSize; let i = index">
+        <tr *ngFor="let layout of layouts; let i = index">
+
           <td>{{ (currentPage - 1) * pageSize + i + 1 }}</td>
           <td>{{ layout.layoutName }}</td>
           <td>{{ layout.area }}</td>

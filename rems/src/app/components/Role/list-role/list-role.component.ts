@@ -41,12 +41,15 @@ export class ListRoleComponent {
     this.filteredData = [];
     this.paginatedCustomers = [];
 
-    this.allData = data.map(c => ({
-      ...c,
-      firstName: c.firstName?.trim(),
-      lastName: c.lastName?.trim(),
-      address: c.address?.trim()
-    }));
+    this.allData = [...data]
+  .reverse()
+  .map(c => ({
+    ...c,
+    firstName: c.firstName?.trim(),
+    lastName: c.lastName?.trim(),
+    address: c.address?.trim()
+  }));
+
 
     this.filteredData = [...this.allData];
     this.currentPage = 1;

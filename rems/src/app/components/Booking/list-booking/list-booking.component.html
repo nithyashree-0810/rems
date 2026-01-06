@@ -3,6 +3,10 @@
   <!-- TITLE ONLY (NO HOME HERE) -->
   <h2>Booking History</h2>
 
+  <!-- SEARCH + CREATE ROW -->
+<div class="search-create-row">
+
+  <!-- SEARCH (CENTER) -->
   <div class="search-container">
     <input type="text"
            [(ngModel)]="searchLayoutName"
@@ -19,12 +23,14 @@
     <button class="search-btn" (click)="onSearch()">Search</button>
   </div>
 
-  <!-- CREATE + REPORT BUTTONS -->
+  <!-- CREATE (RIGHT) -->
   <div class="top-buttons">
     <button class="btn btn-success" (click)="goToCreate()">
       <i class="fa fa-plus"></i> New Booking
     </button>
   </div>
+
+</div>
 
   <!-- LOADING -->
   <div *ngIf="loading" class="loading">Loading bookings...</div>

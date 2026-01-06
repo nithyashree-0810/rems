@@ -11,13 +11,12 @@
   background-size: cover;
   background-position: center;
   background-attachment: fixed;
-
   display: flex;
   justify-content: center;
   align-items: flex-start;
 }
 
-/* MAIN HOLDER */
+/* DASHBOARD HOLDER */
 .dashboard-shell {
   max-width: 1250px;
   width: 100%;
@@ -25,17 +24,13 @@
   font-family: "Plus Jakarta Sans", sans-serif;
 }
 
-/* GLASS EFFECT CARD */
+/* GLASS CARD */
 .glass-card {
   background: rgba(255, 255, 255, 0.92);
   backdrop-filter: blur(12px);
   border-radius: 18px;
   box-shadow: 0 12px 40px rgba(0, 0, 0, 0.35);
 }
-
-/* ------------------------------------------------
-   YOUR UI CSS  (unchanged)
------------------------------------------------- */
 
 /* CONTAINER */
 .container {
@@ -46,7 +41,7 @@
   align-items: center;
 }
 
-/* HEADER */
+/* TITLE */
 h2 {
   color: #ff7e00;
   margin-bottom: 16px;
@@ -54,14 +49,21 @@ h2 {
   font-weight: 800;
 }
 
-/* SEARCH BAR */
-.search-container {
+/* 🔥 SEARCH + CREATE SAME LINE */
+.search-create-row {
   width: 100%;
   max-width: 1188px;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+  margin-bottom: 14px;
+}
+
+/* SEARCH */
+.search-container {
   display: flex;
   justify-content: center;
   gap: 13px;
-  margin-bottom: 14px;
 }
 
 .search-input {
@@ -70,6 +72,7 @@ h2 {
   border-radius: 24px;
   border: 1px solid #ccc;
   text-align: center;
+  font-size: 13px;
 }
 
 .search-btn {
@@ -84,11 +87,8 @@ h2 {
 
 /* CREATE BUTTON */
 .top-buttons {
-  width: 100%;
-  max-width: 1188px;
   display: flex;
   justify-content: flex-end;
-  margin-bottom: 13px;
 }
 
 .btn {
@@ -96,6 +96,7 @@ h2 {
   font-size: 13px;
   border-radius: 9px;
   cursor: pointer;
+  border: none;
 }
 
 .btn-success { background: #28a745; color: white; }
@@ -105,6 +106,7 @@ h2 {
 .table-wrapper {
   display: flex;
   justify-content: center;
+  width: 100%;
 }
 
 .layout-table {
@@ -115,7 +117,9 @@ h2 {
   box-shadow: 0 0 7px rgba(0,0,0,0.1);
 }
 
-.layout-table thead { background: #ff9800; }
+.layout-table thead {
+  background: #ff9800;
+}
 
 .layout-table th {
   padding: 9px;
@@ -140,23 +144,28 @@ h2 {
 }
 
 /* ACTION ICONS */
-.circle-icon {
-  font-size: 14px;
-  padding: 7px;
-  border-radius: 50%;
-  cursor: pointer;
-}
-
-.view   { background: #e3f2fd; color: #1976d2; }
-.edit   { background: #e8f5e9; color: #388e3c; }
-.delete { background: #ffebee; color: #d32f2f; }
-
 .action-icons {
   display: flex;
   justify-content: center;
   align-items: center;
   gap: 6px;
 }
+
+.circle-icon {
+  font-size: 14px;
+  padding: 7px;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.circle-icon:hover {
+  transform: scale(1.1);
+}
+
+.view   { background: #e3f2fd; color: #1976d2; }
+.edit   { background: #e8f5e9; color: #388e3c; }
+.delete { background: #ffebee; color: #d32f2f; }
 
 /* PAGINATION */
 .pagination-container {
@@ -185,4 +194,21 @@ h2 {
   padding: 7px 14px;
   font-size: 12px;
   border-radius: 7px;
+}
+
+/* RESPONSIVE */
+@media (max-width: 992px) {
+  .search-create-row {
+    grid-template-columns: 1fr;
+    row-gap: 10px;
+  }
+
+  .top-buttons {
+    justify-content: center;
+  }
+
+  .layout-table,
+  .pagination-container {
+    width: 100%;
+  }
 }

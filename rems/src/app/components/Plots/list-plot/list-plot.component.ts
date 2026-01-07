@@ -17,7 +17,7 @@ export class ListPlotComponent implements OnInit {
   searchLayoutName: string = '';
   searchPlotNo: string = '';
   searchMessage: string = '';
-
+  pages: number[] = [];
   currentPage = 1;
   pageSize = 10;
 
@@ -39,6 +39,7 @@ export class ListPlotComponent implements OnInit {
         this.plots = [...this.allPlots];
         this.searchMessage = '';
         this.currentPage = 1;
+        this.calculatePages();
       },
       error: (err: any) => {
         console.error('Error loading plots:', err);
@@ -65,6 +66,9 @@ export class ListPlotComponent implements OnInit {
     }
 
     this.currentPage = 1;
+    this.currentPage = 1;
+this.calculatePages(); // ✅ ADD THIS
+
   }
 
   get totalPages(): number {
@@ -104,6 +108,12 @@ export class ListPlotComponent implements OnInit {
         next: () => {
           this.toastr.success('Deleted successfully ✅');
 
+          this.calculatePages();
+
+if (this.currentPage > this.totalPages) {
+  this.currentPage = this.totalPages || 1;
+}
+
           this.allPlots = this.allPlots.filter(
             p => !(p.plotNo === plotNo && p.layout?.layoutName === layoutName)
           );
@@ -118,6 +128,11 @@ export class ListPlotComponent implements OnInit {
       });
     }
   }
+
+  calculatePages(): void {
+  const total = Math.ceil(this.plots.length / this.pageSize);
+  this.pages = Array.from({ length: total }, (_, i) => i + 1);
+}
 
 
   // ✅ ONLY ADDED METHOD (FIX)

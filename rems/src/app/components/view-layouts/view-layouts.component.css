@@ -151,6 +151,10 @@ h2 {
   text-align: center;
 }
 
+.layout-table td.left-align {
+  text-align: left;
+}
+
 /* ================================
    ACTION ICONS
 ================================ */
@@ -182,19 +186,29 @@ h2 {
 ================================ */
 .pagination-container {
   width: 1188px;
-  margin-top: 16px;
+  margin-top: 28px;
   display: flex;
+  align-items: center;
   justify-content: center;
   position: relative;
 }
 
+.pagination {
+  display: flex;
+  align-items: center;
+}
+
+
 .pagination button {
-  padding: 6px 12px;
+  padding: 6px 14px;
   font-size: 12px;
   border-radius: 6px;
   border: 1px solid #ccc;
   cursor: pointer;
+  margin: 0 4px;          /* ✅ Prev 1 2 3 Next spacing */
+  background: white;
 }
+
 
 .pagination button:hover {
   background: #3498db;
@@ -206,11 +220,21 @@ h2 {
   cursor: not-allowed;
 }
 
-/* HOME BUTTON */
+.pagination button.active {
+  background: #3498db;
+  color: #fff;
+  font-weight: 600;
+  border-color: #3498db;
+}
+
+
 .pagination-home-btn {
   position: absolute;
   right: 0;
+  top: 50%;
+  transform: translateY(-50%); /* 🔥 same straight line */
   padding: 7px 14px;
   font-size: 12px;
   border-radius: 7px;
 }
+

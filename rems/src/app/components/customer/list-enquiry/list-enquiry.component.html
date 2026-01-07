@@ -35,7 +35,7 @@
     <table class="layout-table">
       <thead>
         <tr>
-          <th>Photo</th>
+          <th>Image</th>
           <th>S.No</th>
           <th>First Name</th>
           <th>Last Name</th>
@@ -58,8 +58,8 @@
           </td>
 
           <td>{{ (currentPage - 1) * pageSize + i + 1 }}</td>
-          <td>{{ c.firstName }}</td>
-          <td>{{ c.lastName }}</td>
+          <td class="left-align">{{ c.firstName }}</td>
+          <td class="left-align">{{ c.lastName }}</td>
           <td>{{ c.address }}</td>
           <td>{{ c.mobileNo }}</td>
 
@@ -82,16 +82,28 @@
     </table>
   </div>
 
-  <!-- PAGINATION -->
-  <div class="pagination-container">
-    <div class="pagination">
-      <button [disabled]="currentPage === 1" (click)="prevPage()">«</button>
-      <button [disabled]="currentPage === totalPages" (click)="nextPage()">»</button>
-    </div>
+ <!-- PAGINATION -->
+<div class="pagination-container">
+  <div class="pagination">
+    <!-- Prev Button -->
+    <button [disabled]="currentPage === 1" (click)="prevPage()">« Prev</button>
 
-    <button class="btn btn-danger pagination-home-btn" (click)="goHome()">
-      Home
+    <!-- Page Numbers -->
+    <button *ngFor="let page of pages"
+            [class.active]="page === currentPage"
+            (click)="goToPage(page)">
+      {{ page }}
     </button>
+
+    <!-- Next Button -->
+    <button [disabled]="currentPage === totalPages" (click)="nextPage()">Next »</button>
   </div>
+
+  <!-- Home Button -->
+  <button class="btn btn-danger pagination-home-btn" (click)="goHome()">
+    Home
+  </button>
+</div>
+
 
 </div>

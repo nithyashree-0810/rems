@@ -33,7 +33,7 @@ public class PlotBO {
 	
 	private long mobile;
 	
-	private String surveyNumber;
+	private String surveyNo;
 	
 	private String ownerName;
 	

@@ -45,7 +45,7 @@ private double breadthOne;
 	
 	private Long mobile;
 	
-	private String surveyNumber;
+	private String surveyNo;
 	
 	private String ownerName;
 	

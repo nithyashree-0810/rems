@@ -21,7 +21,8 @@ export class ListRoleComponent {
   totalPages: number = 0;
   pageSize: number = 10;
   currentPage: number = 1;
-  totalPagesArray: number[] = [];
+ pages: number[] = [];
+
 
   constructor(private roleService:RoleserviceServiceService, private router: Router, private toastr: ToastrService) {}
 
@@ -58,14 +59,15 @@ export class ListRoleComponent {
 }
 
  
-   applyPagination() {
+  applyPagination() {
   this.totalPages = Math.ceil(this.filteredData.length / this.pageSize);
 
   if (this.currentPage > this.totalPages) {
     this.currentPage = this.totalPages || 1;
   }
 
-  this.totalPagesArray = Array.from(
+  // 🔥 pages for pagination buttons
+  this.pages = Array.from(
     { length: this.totalPages },
     (_, i) => i + 1
   );

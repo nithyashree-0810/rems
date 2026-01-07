@@ -37,10 +37,10 @@
       <thead>
         <tr>
           <th>S.No</th>
-          <th>Layout</th>
+          <th class="text-left">Layout</th>
           <th>Plot</th>
-          <th>Survey No</th>
-          <th>Owner</th>
+          <th class="text-left">Survey No</th>
+         <th class="text-left">Owner</th>
           <th>Sqft</th>
           <th>Dir</th>
           <th>Price</th>
@@ -54,10 +54,10 @@
       <tbody>
         <tr *ngFor="let plot of plots | slice:(currentPage-1)*pageSize:(currentPage)*pageSize; let i = index">
           <td>{{ (currentPage - 1) * pageSize + i + 1 }}</td>
-          <td>{{ plot.layout?.layoutName }}</td>
+          <td class="text-left">{{ plot.layout?.layoutName }}</td>
           <td>{{ plot.plotNo }}</td>
-          <td>{{ plot.surveyNumber }}</td>
-          <td>{{ plot.ownerName }}</td>
+          <td class="text-left">{{ plot.surveyNo }}</td>
+          <td class="text-left">{{ plot.ownerName }}</td>
           <td>{{ plot.totalSqft }}</td>
           <td>{{ plot.direction }}</td>
           <td>₹ {{ plot.price }}</td>
@@ -76,14 +76,39 @@
     </table>
   </div>
 
-  <!-- Pagination -->
   <div class="pagination-container">
-    <div class="pagination">
-      <button [disabled]="currentPage === 1" (click)="prevPage()">«</button>
-      <button [disabled]="currentPage === totalPages" (click)="nextPage()">»</button>
-    </div>
 
-    <button class="btn btn-danger pagination-home-btn" (click)="goHome()">Home</button>
+  <div class="pagination">
+
+    <!-- PREV -->
+    <button
+  [disabled]="currentPage === 1"
+  (click)="prevPage()">
+  « Prev
+</button>
+   
+<!-- PAGE NUMBERS -->
+    <button
+      *ngFor="let page of pages"
+      (click)="goToPage(page)"
+      [class.active]="currentPage === page">
+      {{ page }}
+    </button>
+
+    <!-- NEXT -->
+    <button
+  [disabled]="currentPage === totalPages"
+  (click)="nextPage()">
+  Next »
+</button>
+
   </div>
+
+  <button class="btn btn-danger pagination-home-btn" (click)="goHome()">
+    Home
+  </button>
+
+</div>
+
 
 </div>

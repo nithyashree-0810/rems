@@ -137,6 +137,10 @@ h2 {
   text-align: center;
 }
 
+.layout-table td.left-align {
+  text-align: left;
+}
+
 /* PROFILE IMAGE */
 .img-wrapper {
   width: 45px;
@@ -214,6 +218,27 @@ h2 {
   font-size: 12px;
   border-radius: 7px;
 }
+/* PAGINATION FIX + ENHANCEMENT */
+.pagination {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+}
+
+/* Active page */
+.pagination button.active {
+  background: #3498db;
+  color: white;
+  background: #3498db;
+  font-weight: 600;
+}
+
+/* Disabled hover fix */
+.pagination button:disabled:hover {
+  background: none;
+  color: inherit;
+}
+
 
 /* RESPONSIVE */
 @media (max-width: 992px) {

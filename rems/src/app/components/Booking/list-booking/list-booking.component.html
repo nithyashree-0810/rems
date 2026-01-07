@@ -59,9 +59,9 @@
       <tbody>
         <tr *ngFor="let b of paginatedBookings">
           <td>{{ b.bookingId }}</td>
-          <td>{{ b.layout?.layoutName }}</td>
+          <td class="left-align">{{ b.layout?.layoutName }}</td>
           <td>{{ b.plot?.plotNo }}</td>
-          <td>{{ b.customer?.firstName }}</td>
+          <td class="left-align">{{ b.customer?.firstName }}</td>
           <td>{{ b.customer?.mobileNo }}</td>
           <td>{{ b.sqft }}</td>
           <td>{{ b.price | currency:'INR' }}</td>
@@ -90,18 +90,29 @@
   </div>
 
   <!-- PAGINATION + HOME (LIKE CUSTOMER PAGE) -->
-  <div class="pagination-container" *ngIf="!loading && bookingList.length > 0">
+<div class="pagination-container" *ngIf="!loading && bookingList.length > 0">
 
-    <div class="pagination">
-      <button [disabled]="currentPage === 1" (click)="prevPage()">«</button>
-      <button [disabled]="currentPage === totalPages" (click)="nextPage()">»</button>
-    </div>
+  <div class="pagination">
+    <!-- Prev -->
+    <button [disabled]="currentPage === 1" (click)="prevPage()">« Prev</button>
 
-    <!-- ✅ HOME BUTTON BOTTOM-RIGHT -->
-    <button class="btn btn-danger pagination-home-btn" (click)="goHome()">
-      Home
+    <!-- Page Numbers -->
+    <button *ngFor="let page of pages"
+            [class.active]="page === currentPage"
+            (click)="goToPage(page)">
+      {{ page }}
     </button>
+
+    <!-- Next -->
+    <button [disabled]="currentPage === totalPages" (click)="nextPage()">Next »</button>
   </div>
+
+  <!-- Home Button -->
+  <button class="btn btn-danger pagination-home-btn" (click)="goHome()">
+    Home
+  </button>
+
+</div>
 
   <!-- NO DATA -->
   <div *ngIf="!loading && bookingList.length === 0" class="no-records">

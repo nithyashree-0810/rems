@@ -152,6 +152,10 @@ h2 {
   border-bottom: 1px solid #eee;
 }
 
+.layout-table td.left-align {
+  text-align: left;
+}
+
 /* ACTION ICONS */
 .action-icons {
   display: flex;
@@ -185,24 +189,34 @@ h2 {
 /* PAGINATION */
 .pagination-container {
   width: 1188px;
-  margin-top: 16px;
+  margin-top: 24px;
   display: flex;
-  justify-content: center;
+  align-items: center;        /* ✅ same straight line */
+  justify-content: center;    /* ✅ pagination center */
   position: relative;
+}
+
+.pagination {
+  display: flex;
+  align-items: center;
+  gap: 6px;
 }
 
 .pagination button {
   padding: 6px 12px;
   font-size: 12px;
   border-radius: 5px;
-  border: 1px solid #ccc;
-  cursor: pointer;
+  box-shadow: none;        /* Remove shadow */
+  border: 1px solid #ccc;  /* Optional: for visible border */
+  background: #f0f0f0;     /* Optional: normal button color */
 }
 
-.pagination button:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
+.pagination .active {
+  background: #3498db;
+  color: white;
+  box-shadow: none;       /* Remove shadow */
 }
+
 
 /* HOME BUTTON */
 .pagination-home-btn {

@@ -1,88 +1,143 @@
-/* Container for the booking details */
-.form-container {
-  max-width: 760px;
-  margin: 30px auto;
-  padding: 18px;
-  background: #fff;
-  border-radius: 12px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  font-family: 'Segoe UI', sans-serif;
+/* =========================
+   Global Font
+========================= */
+body, .form-container, .row, .label, .value, .colon, .btn-back, .home-btn {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
-/* Title of the form */
+/* =========================
+   Card Container
+========================= */
+.form-container {
+  max-width: 900px;
+  margin: 30px auto;
+  padding: 25px;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+}
+
+/* =========================
+   Form Title
+========================= */
 .form-title {
   text-align: center;
   color: #ff7e00;
   font-size: 24px;
+  font-weight: 900;
   margin-bottom: 25px;
 }
 
-/* Each row containing label and value */
+/* =========================
+   Details Grid
+========================= */
 .details-grid {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 8px;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
 }
 
+@media (max-width: 768px) {
+  .details-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* =========================
+   Row Box
+========================= */
 .row {
   display: grid;
-  grid-template-columns: 36px 170px 14px auto;
+  grid-template-columns: 36px 160px 14px auto;
   align-items: center;
-  padding: 6px 8px;
+  padding: 10px;
   margin: 4px 0;
-  border-radius: 8px;
-  border: 1px solid #f1f1f1;
   background: #fafafa;
+  border: 1px solid #eee;
+  border-radius: 8px;
   gap: 8px;
 }
 
-/* Label on the left */
+/* =========================
+   Icon
+========================= */
+.icon {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: #fff1df;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #ff7e00;
+  font-size: 12px;
+}
+
+.row i {
+  font-size: 18px;
+  color: #ffb74d;
+}
+
+/* =========================
+   Text Styling
+========================= */
 .label {
   font-weight: 700;
-  font-size: 12px;
-  color: #304ffe;
+  font-size: 13px;
+  color: #0d6efd; /* Royal Blue */
   white-space: nowrap;
 }
 
-/* Value on the right */
 .value {
-  font-size: 12px;
-  color: #555;
+  font-size: 13px;
+  color: #333;
   word-wrap: break-word;
 }
 
 .colon {
   font-weight: 700;
-  color: #304ffe;
+  color: #0d6efd;
   text-align: center;
 }
 
-/* Buttons */
-.btn-success {
+/* =========================
+   Button Row
+========================= */
+.btn-row, .button-row {
+  grid-column: span 2;
+  display: flex;
+  justify-content: flex-end;
   margin-top: 20px;
-  padding: 10px 20px;
-  background: #28a745;
-  color: white;
+}
+
+/* =========================
+   Buttons
+========================= */
+.btn-back, .home-btn {
+  background-color: #ff7e00;
+  color: #ffffff;
   border: none;
   border-radius: 8px;
   cursor: pointer;
-  transition: 0.3s;
+  font-weight: 600;
+  font-size: 13px;
+  padding: 10px 22px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.3s ease, opacity 0.3s ease;
 }
 
-.btn-success:hover {
-  background: #1e8a38;
+.btn-back:hover, .home-btn:hover {
+  background-color: #e66a00;
+  opacity: 0.9;
 }
 
-/* Loading message */
+/* =========================
+   Loading Text
+========================= */
 .loading {
   text-align: center;
   font-size: 18px;
-  color: #555;
   margin-top: 40px;
 }
-.btn-row {
-  display: flex;
-  justify-content: flex-end; /* RIGHT side */
-  margin-top: 20px;
-}
-

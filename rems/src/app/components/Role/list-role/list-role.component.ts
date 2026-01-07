@@ -21,7 +21,8 @@ export class ListRoleComponent {
   totalPages: number = 0;
   pageSize: number = 10;
   currentPage: number = 1;
-  totalPagesArray: number[] = [];
+ pages: number[] = [];
+
 
   constructor(private roleService:RoleserviceServiceService, private router: Router, private toastr: ToastrService) {}
 
@@ -41,12 +42,15 @@ export class ListRoleComponent {
     this.filteredData = [];
     this.paginatedCustomers = [];
 
-    this.allData = data.map(c => ({
-      ...c,
-      firstName: c.firstName?.trim(),
-      lastName: c.lastName?.trim(),
-      address: c.address?.trim()
-    }));
+    this.allData = [...data]
+  .reverse()
+  .map(c => ({
+    ...c,
+    firstName: c.firstName?.trim(),
+    lastName: c.lastName?.trim(),
+    address: c.address?.trim()
+  }));
+
 
     this.filteredData = [...this.allData];
     this.currentPage = 1;
@@ -55,14 +59,15 @@ export class ListRoleComponent {
 }
 
  
-   applyPagination() {
+  applyPagination() {
   this.totalPages = Math.ceil(this.filteredData.length / this.pageSize);
 
   if (this.currentPage > this.totalPages) {
     this.currentPage = this.totalPages || 1;
   }
 
-  this.totalPagesArray = Array.from(
+  // 🔥 pages for pagination buttons
+  this.pages = Array.from(
     { length: this.totalPages },
     (_, i) => i + 1
   );

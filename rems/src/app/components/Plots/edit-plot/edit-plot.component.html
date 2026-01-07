@@ -82,12 +82,12 @@
   <div class="form-group">
     <label>Survey No</label>
     <input type="text"
-           [(ngModel)]="plot.surveyNumber"
-           name="surveyNumber"
+           [(ngModel)]="plot.surveyNo"
+           name="surveyNo"
            required
-           #surveyNumber="ngModel" />
+           #surveyNo="ngModel" />
 
-    <small class="error" *ngIf="surveyNumber.invalid && surveyNumber.touched">
+    <small class="error" *ngIf="surveyNo.invalid && surveyNo.touched">
       Survey Number is required
     </small>
   </div>

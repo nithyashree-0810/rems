@@ -75,7 +75,12 @@ export class EditBookingComponent implements OnInit {
 
       status: ['', Validators.required],
       regDate: [''],
-      regNo: ['']
+      regNo: [''],
+        refundedAmount: [{ value: 0, disabled: true }],   // already refunded
+  refundNow: [0],                                   // current refund
+  remainingRefund: [{ value: 0, disabled: true }], // balance - refunded
+  refundDate: [''],
+  refundMode: ['']
     });
 
     this.loadBooking();
@@ -125,9 +130,14 @@ export class EditBookingComponent implements OnInit {
 
           status: data.status,
           regDate: data.regDate,
-          regNo: data.regNo
+          regNo: data.regNo,
+           refundedAmount: data.refundedAmount || 0,
+  remainingRefund: data.remainingRefund || data.balance,
+  refundDate: data.refundDate,
+  refundMode: data.refundMode
         });
 
+        this.showCancelFields = data.status === 'Cancel';
         this.showRegFields = data.status === 'Registered';
         this.setAdvanceEditPermissions();
         this.calculateBalance();
@@ -171,11 +181,13 @@ export class EditBookingComponent implements OnInit {
   this.showRegFields = status === 'Registered';
   this.showCancelFields = status === 'Cancel';
 
-  // optional cleanup
-  if (status !== 'Cancel') {
+  if (status === 'Cancel') {
+    const raw = this.bookingForm.getRawValue();
+    const refunded = raw.refundedAmount || 0;
+    const balance = raw.balance;
+
     this.bookingForm.patchValue({
-      refundAmount: 0,
-      refundMode: ''
+      remainingRefund: balance - refunded
     });
   }
 
@@ -185,6 +197,27 @@ export class EditBookingComponent implements OnInit {
       regNo: ''
     });
   }
+}
+calculateRefund() {
+  const raw = this.bookingForm.getRawValue();
+
+  const balance = raw.balance;
+  const alreadyRefunded = raw.refundedAmount || 0;
+  const refundNow = raw.refundNow || 0;
+
+  const totalRefunded = alreadyRefunded + refundNow;
+
+  if (totalRefunded > balance) {
+    this.toastr.error('Refund amount exceeds balance');
+    this.bookingForm.patchValue({ refundNow: 0 });
+    return;
+  }
+
+  this.bookingForm.patchValue({
+    refundedAmount: totalRefunded,
+    remainingRefund: balance - totalRefunded,
+    refundNow: 0
+  });
 }
 
 
@@ -229,8 +262,10 @@ advance4Mode: raw.advance4Mode,
       status: raw.status,
       regDate: raw.regDate,
       regNo: raw.regNo,
-      refundAmount: raw.refundAmount,
-      mode: raw.mode
+      refundedAmount: raw.refundedAmount,
+    remainingRefund: raw.remainingRefund,
+    refundDate: raw.refundDate,
+    refundMode: raw.refundMode
     };
 
     this.bookingService

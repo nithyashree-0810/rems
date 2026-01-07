@@ -48,7 +48,8 @@
       </thead>
 
       <tbody>
-        <tr *ngFor="let layout of layouts | slice:(currentPage-1)*pageSize:(currentPage)*pageSize; let i = index">
+        <tr *ngFor="let layout of layouts; let i = index">
+
           <td>{{ (currentPage - 1) * pageSize + i + 1 }}</td>
           <td>{{ layout.layoutName }}</td>
           <td>{{ layout.area }}</td>

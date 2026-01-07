@@ -104,24 +104,39 @@ private EnquiryRepository enquiryRepository;
 
 	@Override
 	public Booking updateBooking(Long id, Booking booking) {
-	    Booking book = bookingRepository.findById(id).orElse(null);
-	    if (book == null) {
-	        throw new RuntimeException("Booking not found with id " + id);
-	    }
 
+	    Booking book = bookingRepository.findById(id)
+	            .orElseThrow(() -> new RuntimeException("Booking not found with id " + id));
+
+	    // ================= BASIC DETAILS =================
 	    book.setPlot(booking.getPlot());
 	    book.setLayout(booking.getLayout());
 	    book.setCustomer(booking.getCustomer());
 	    book.setSqft(booking.getSqft());
 	    book.setPrice(booking.getPrice());
-	    book.setAdvance1(booking.getAdvance1());
-	    book.setAdvance2(booking.getAdvance2());
-	    book.setAdvance3(booking.getAdvance3());
-	    book.setAdvance4(booking.getAdvance4());
-	    book.setBalance(booking.getBalance());
 	    book.setDirection(booking.getDirection());
 
-	    // Customer details
+	    // ================= ADVANCES =================
+	    book.setAdvance1(booking.getAdvance1());
+	    book.setAdvance1Date(booking.getAdvance1Date());
+	    book.setAdvance1Mode(booking.getAdvance1Mode());
+
+	    book.setAdvance2(booking.getAdvance2());
+	    book.setAdvance2Date(booking.getAdvance2Date());
+	    book.setAdvance2Mode(booking.getAdvance2Mode());
+
+	    book.setAdvance3(booking.getAdvance3());
+	    book.setAdvance3Date(booking.getAdvance3Date());
+	    book.setAdvance3Mode(booking.getAdvance3Mode());
+
+	    book.setAdvance4(booking.getAdvance4());
+	    book.setAdvance4Date(booking.getAdvance4Date());
+	    book.setAdvance4Mode(booking.getAdvance4Mode());
+
+	    // ❗ Balance normal-aa irukkanum (DO NOT CHANGE for refund)
+	    book.setBalance(booking.getBalance());
+
+	    // ================= CUSTOMER SNAPSHOT =================
 	    if (booking.getCustomer() != null) {
 	        book.setAddress(booking.getCustomer().getAddress());
 	        book.setPincode(booking.getCustomer().getPincode());
@@ -129,13 +144,33 @@ private EnquiryRepository enquiryRepository;
 	        book.setPanNo(booking.getCustomer().getPanNo());
 	    }
 
+	    // ================= STATUS =================
 	    book.setStatus(booking.getStatus());
 	    book.setRegDate(booking.getRegDate());
 	    book.setRegNo(booking.getRegNo());
-	    // -----------------------------
+
+	    // ================= CANCEL / REFUND LOGIC =================
+	    if ("Cancel".equalsIgnoreCase(booking.getStatus())) {
+
+	        double balance = book.getBalance(); // original balance
+	        long refunded = book.getRefundedAmount() == null ? 0 : book.getRefundedAmount();
+	        long refundNow = booking.getRefundNow() == null ? 0 : booking.getRefundNow();
+
+	        long totalRefunded = refunded + refundNow;
+
+	        if (totalRefunded > balance) {
+	            throw new RuntimeException("Refund amount exceeds balance");
+	        }
+
+	        book.setRefundedAmount(totalRefunded);
+	        book.setRemainingRefund(balance - totalRefunded);
+	        book.setRefundDate(booking.getRefundDate());
+	        book.setRefundMode(booking.getRefundMode());
+	    }
 
 	    return bookingRepository.save(book);
 	}
+
 
 
 

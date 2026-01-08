@@ -35,8 +35,8 @@ public class LayoutController {
     }
 
     @GetMapping("/{layoutName}")
-    public LayoutBO getLayout(@PathVariable String layoutName) {
-        return layoutService.getLayoutByLayoutName(layoutName);
+    public Layout getLayout(@PathVariable String layoutName) {
+        return layoutService.getLayoutEntity(layoutName);
     }
 
     @PutMapping("/{layoutName}")

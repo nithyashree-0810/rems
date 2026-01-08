@@ -227,7 +227,6 @@
   <!-- File input for new PDF -->
   <input type="file"
          accept="application/pdf"
-         [(ngModel)]="layout.pdfPath"
          (change)="onPdfSelected($event)">
 
   <!-- Old PDF preview (shown only if no new PDF is selected) -->

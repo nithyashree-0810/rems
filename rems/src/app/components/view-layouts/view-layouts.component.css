@@ -39,10 +39,9 @@ body.login-page .page-bg {
   width: 100%;
 }
 
-/* ------------------------------------
-   YOUR SAME UI CSS (no changes)
------------------------------------- */
-
+/* ================================
+   MAIN CONTAINER
+================================ */
 .container {
   padding: 22px 11px;
   font-size: 13px;
@@ -51,6 +50,7 @@ body.login-page .page-bg {
   align-items: center;
 }
 
+/* TITLE */
 h2 {
   color: #ff7e00;
   margin-bottom: 16px;
@@ -59,14 +59,23 @@ h2 {
   text-align: center;
 }
 
-/* SEARCH BAR */
-.search-container {
+/* ================================
+   SEARCH + CREATE SAME LINE
+================================ */
+.search-create-row {
   width: 100%;
   max-width: 1188px;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+  margin-bottom: 14px;
+}
+
+/* SEARCH (CENTER) */
+.search-container {
   display: flex;
   justify-content: center;
   gap: 13px;
-  margin-bottom: 14px;
 }
 
 .search-input {
@@ -89,15 +98,13 @@ h2 {
   cursor: pointer;
 }
 
-/* CREATE BUTTON */
+/* CREATE BUTTON (RIGHT) */
 .top-buttons {
-  width: 100%;
-  max-width: 1188px;
   display: flex;
   justify-content: flex-end;
-  margin-bottom: 13px;
 }
 
+/* COMMON BUTTONS */
 .btn {
   padding: 9px 16px;
   font-size: 13px;
@@ -109,7 +116,9 @@ h2 {
 .btn-success { background: #28a745; color: white; }
 .btn-danger  { background: #dc3545; color: white; }
 
-/* TABLE */
+/* ================================
+   TABLE
+================================ */
 .table-wrapper {
   display: flex;
   justify-content: center;
@@ -125,7 +134,9 @@ h2 {
   box-shadow: 0 8px 18px rgba(0,0,0,0.3);
 }
 
-.layout-table thead { background: #ff9800; }
+.layout-table thead {
+  background: #ff9800;
+}
 
 .layout-table th {
   padding: 10px;
@@ -140,7 +151,13 @@ h2 {
   text-align: center;
 }
 
-/* ACTION ICONS */
+.layout-table td.left-align {
+  text-align: left;
+}
+
+/* ================================
+   ACTION ICONS
+================================ */
 .circle-icon {
   font-size: 14px;
   padding: 7px;
@@ -149,7 +166,9 @@ h2 {
   transition: 0.2s;
 }
 
-.circle-icon:hover { transform: scale(1.1); }
+.circle-icon:hover {
+  transform: scale(1.1);
+}
 
 .view   { background: #e3f2fd; color: #1976d2; }
 .edit   { background: #e8f5e9; color: #388e3c; }
@@ -162,29 +181,36 @@ h2 {
   gap: 6px;
 }
 
-/* PAGINATION */
+/* ================================
+   PAGINATION
+================================ */
 .pagination-container {
   width: 1188px;
-  margin-top: 16px;
+  margin-top: 28px;
   display: flex;
+  align-items: center;
   justify-content: center;
   position: relative;
 }
 
+.pagination {
+  display: flex;
+  align-items: center;
+}
+
+
 .pagination button {
-  padding: 6px 12px;
+  padding: 6px 14px;
   font-size: 12px;
   border-radius: 6px;
   border: 1px solid #ccc;
   cursor: pointer;
+  margin: 0 4px;          /* ✅ Prev 1 2 3 Next spacing */
+  background: white;
 }
+
 
 .pagination button:hover {
-  background: #3498db;
-  color: white;
-}
-
-.pagination .active {
   background: #3498db;
   color: white;
 }
@@ -194,11 +220,53 @@ h2 {
   cursor: not-allowed;
 }
 
-/* HOME BUTTON */
+.pagination button.active {
+  background: #3498db;
+  color: #fff;
+  font-weight: 600;
+  border-color: #3498db;
+}
+
+
 .pagination-home-btn {
   position: absolute;
   right: 0;
+  top: 50%;
+  transform: translateY(-50%); /* 🔥 same straight line */
   padding: 7px 14px;
   font-size: 12px;
   border-radius: 7px;
+}
+
+/* PDF View Button */
+.pdf-view-btn {
+  background-color: #fff3e0;
+  color: #ff7a00;
+  border: 1px solid #ffcc99;
+  border-radius: 14px;
+  padding: 4px 12px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition: all 0.2s ease-in-out;
+}
+
+.pdf-view-btn:hover {
+  background-color: #ff7a00;
+  color: #ffffff;
+}
+
+/* No PDF */
+.no-pdf {
+  color: #999;
+  font-style: italic;
+}
+
+/* Center align LAYOUT MAP column (optional but recommended) */
+.layout-table td:nth-child(12),
+.layout-table th:nth-child(12) {
+  text-align: center;
 }

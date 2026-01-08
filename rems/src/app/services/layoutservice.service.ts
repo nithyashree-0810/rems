@@ -43,9 +43,14 @@ export class LayoutserviceService {
   }
 
   // ===================== UPDATE =====================
-  updateLayout(layoutName: string, layout: Layout): Observable<Layout> {
-    return this.http.put<Layout>(`${this.apiUrl}/${layoutName}`, layout);
-  }
+  updateLayout(layoutName: string, formData: FormData) {
+  return this.http.put(
+    `${this.apiUrl}/updateWithPdf/${layoutName}`,
+    formData
+  );
+}
+
+
 
   // ===================== DELETE =====================
   deleteLayout(layoutName: string): Observable<void> {

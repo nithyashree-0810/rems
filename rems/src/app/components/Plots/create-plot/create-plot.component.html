@@ -63,7 +63,7 @@
       <div class="form-group">
         <label>Survey No <span class="required">*</span></label>
         <input type="text"
-               [(ngModel)]="newPlot.surveyNumber"
+               [(ngModel)]="newPlot.surveyNo"
                name="surveyNumber"
                required>
       </div>
@@ -74,7 +74,7 @@
     <div class="form-row">
       <div class="form-group">
         <label>Total SqFt </label>
-        <input type="number"
+        <input type="text"
                [(ngModel)]="newPlot.totalSqft"
                name="totalSqft"
                (input)="calculateValues()">
@@ -82,7 +82,7 @@
 
       <div class="form-group">
         <label>Breadth 1</label>
-        <input type="number"
+        <input type="text"
                [(ngModel)]="newPlot.breadthOne"
                name="breadthOne"
                (input)="calculateValues()">
@@ -92,7 +92,7 @@
     <div class="form-row">
       <div class="form-group">
         <label>Breadth 2</label>
-        <input type="number"
+        <input type="text"
                [(ngModel)]="newPlot.breadthTwo"
                name="breadthTwo"
                (input)="calculateValues()">
@@ -100,7 +100,7 @@
 
       <div class="form-group">
         <label>Length 1</label>
-        <input type="number"
+        <input type="text"
                [(ngModel)]="newPlot.lengthOne"
                name="lengthOne"
                (input)="calculateValues()">
@@ -110,7 +110,7 @@
     <div class="form-row">
       <div class="form-group">
         <label>Length 2</label>
-        <input type="number"
+        <input type="text"
                [(ngModel)]="newPlot.lengthTwo"
                name="lengthTwo"
                (input)="calculateValues()">
@@ -118,7 +118,7 @@
 
       <div class="form-group">
         <label>SqFt Rate <span class="required">*</span></label>
-        <input type="number"
+        <input type="text"
                [(ngModel)]="newPlot.sqft"
                name="sqft"
                (input)="calculateValues()">
@@ -129,7 +129,7 @@
     <div class="form-row">
       <div class="form-group">
         <label>Price <span class="required">*</span></label>
-        <input type="number"
+        <input type="text"
                [(ngModel)]="newPlot.price"
                name="price"
                readonly>

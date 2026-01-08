@@ -2,74 +2,118 @@
 
   <h2 class="form-title">View Layout</h2>
 
-  <div class="row">
-    <span class="icon"><i class="fa-solid fa-layer-group"></i></span>
-    <span class="label">Layout Name:</span>
-    <span class="value">{{ layout.layoutName }}</span>
-  </div>
+  <div class="details-grid">
+    <div class="row">
+      <span class="icon"><i class="fa-solid fa-layer-group"></i></span>
+      <span class="label">Layout Name</span>
+      <span class="colon">:</span>
+      <span class="value">{{ layout.layoutName }}</span>
+    </div>
 
-  <div class="row">
-    <span class="icon"><i class="fa-solid fa-ruler-combined"></i></span>
-    <span class="label">Total Area:</span>
-    <span class="value">{{ layout.area }}</span>
-  </div>
+    <div class="row">
+      <span class="icon"><i class="fa-solid fa-ruler-combined"></i></span>
+      <span class="label">Total Area</span>
+      <span class="colon">:</span>
+      <span class="value">{{ layout.area }}</span>
+    </div>
 
-  <div class="row">
-    <span class="icon"><i class="fa-solid fa-border-all"></i></span>
-    <span class="label">Total Plots:</span>
-    <span class="value">{{ layout.noOfPlots }}</span>
-  </div>
+    <div class="row">
+      <span class="icon"><i class="fa-solid fa-border-all"></i></span>
+      <span class="label">Total Plots</span>
+      <span class="colon">:</span>
+      <span class="value">{{ layout.noOfPlots }}</span>
+    </div>
 
-  <div class="row">
-    <span class="icon"><i class="fa-solid fa-phone"></i></span>
-    <span class="label">Phone:</span>
-    <span class="value">{{ layout.phone }}</span>
-  </div>
+    <div class="row">
+      <span class="icon"><i class="fa-solid fa-phone"></i></span>
+      <span class="label">Phone</span>
+      <span class="colon">:</span>
+      <span class="value">{{ layout.phone }}</span>
+    </div>
 
-  <div class="row">
-    <span class="icon"><i class="fa-solid fa-hashtag"></i></span>
-    <span class="label">Survey Number:</span>
-    <span class="value">{{ layout.surveyNo }}</span>
-  </div>
+    <div class="row">
+      <span class="icon"><i class="fa-solid fa-hashtag"></i></span>
+      <span class="label">Survey Number</span>
+      <span class="colon">:</span>
+      <span class="value">{{ layout.surveyNo }}</span>
+    </div>
 
-  <div class="row">
-    <span class="icon"><i class="fa-solid fa-location-dot"></i></span>
-    <span class="label">Location:</span>
-    <span class="value">{{ layout.location }}</span>
-  </div>
+    <div class="row">
+      <span class="icon"><i class="fa-solid fa-location-dot"></i></span>
+      <span class="label">Location</span>
+      <span class="colon">:</span>
+      <span class="value">{{ layout.location }}</span>
+    </div>
 
-  <div class="row">
-    <span class="icon"><i class="fa-solid fa-house"></i></span>
-    <span class="label">Address:</span>
-    <span class="value">{{ layout.address }}</span>
-  </div>
+    <div class="row">
+      <span class="icon"><i class="fa-solid fa-house"></i></span>
+      <span class="label">Address</span>
+      <span class="colon">:</span>
+      <span class="value">{{ layout.address }}</span>
+    </div>
 
-  <div class="row">
-    <span class="icon"><i class="fa-solid fa-key"></i></span>
-    <span class="label">Pincode:</span>
-    <span class="value">{{ layout.pincode }}</span>
-  </div>
+    <div class="row">
+      <span class="icon"><i class="fa-solid fa-key"></i></span>
+      <span class="label">Pincode</span>
+      <span class="colon">:</span>
+      <span class="value">{{ layout.pincode }}</span>
+    </div>
 
-  <!-- Owners -->
-  <div class="row" *ngIf="layout.ownerName1 || layout.ownerName2 || layout.ownerName3 || layout.ownerName4 || layout.ownerName5 || layout.ownerName6">
-    <span class="icon"><i class="fa-solid fa-user-tie"></i></span>
-    <span class="label">Owners:</span>
-    <span class="value">
-      {{ layout.ownerName1 }} {{ layout.ownerName2 }} {{ layout.ownerName3 }}
-      {{ layout.ownerName4 }} {{ layout.ownerName5 }} {{ layout.ownerName6 }}
-    </span>
-  </div>
+    <div class="row">
+      <span class="icon"><i class="fa-solid fa-check-circle"></i></span>
+      <span class="label">DTCP Approved</span>
+      <span class="colon">:</span>
+      <span class="value">{{ layout.dtcpApproved ? 'Yes' : 'No' }}</span>
+    </div>
 
-  <div class="row">
-    <span class="icon"><i class="fa-solid fa-check-circle"></i></span>
-    <span class="label">DTCP Approved:</span>
-    <span class="value">{{ layout.dtcpApproved ? 'Yes' : 'No' }}</span>
-  </div>
+    <div class="row">
+      <span class="icon"><i class="fa-solid fa-file-shield"></i></span>
+      <span class="label">RERA Approved</span>
+      <span class="colon">:</span>
+      <span class="value">{{ layout.reraApproved ? 'Yes' : 'No' }}</span>
+    </div>
 
-  <div class="row">
-    <span class="icon"><i class="fa-solid fa-file-shield"></i></span>
-    <span class="label">RERA Approved:</span>
-    <span class="value">{{ layout.reraApproved ? 'Yes' : 'No' }}</span>
+    <div class="row">
+      <span class="icon"><i class="fa-solid fa-user"></i></span>
+      <span class="label">Owner Name 1</span>
+      <span class="colon">:</span>
+      <span class="value">{{ layout.ownerName1 }}</span>
+    </div>
+
+    <div class="row">
+      <span class="icon"><i class="fa-solid fa-user"></i></span>
+      <span class="label">Owner Name 2</span>
+      <span class="colon">:</span>
+      <span class="value">{{ layout.ownerName2 }}</span>
+    </div>
+
+    <div class="row">
+      <span class="icon"><i class="fa-solid fa-user"></i></span>
+      <span class="label">Owner Name 3</span>
+      <span class="colon">:</span>
+      <span class="value">{{ layout.ownerName3 }}</span>
+    </div>
+
+    <div class="row">
+      <span class="icon"><i class="fa-solid fa-user"></i></span>
+      <span class="label">Owner Name 4</span>
+      <span class="colon">:</span>
+      <span class="value">{{ layout.ownerName4 }}</span>
+    </div>
+
+    <div class="row">
+      <span class="icon"><i class="fa-solid fa-user"></i></span>
+      <span class="label">Owner Name 5</span>
+      <span class="colon">:</span>
+      <span class="value">{{ layout.ownerName5 }}</span>
+    </div>
+
+    <div class="row">
+      <span class="icon"><i class="fa-solid fa-user"></i></span>
+      <span class="label">Owner Name 6</span>
+      <span class="colon">:</span>
+      <span class="value">{{ layout.ownerName6 }}</span>
+    </div>
   </div>
 
   <div class="button-row">

@@ -1,27 +1,28 @@
 <link rel="stylesheet"
-  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
 <nav class="navbar">
+  <!-- LEFT -->
   <div class="left-section">
     <i class="fa-solid fa-building-wheat brand-icon"></i>
     <span class="navbar-brand">Real Estate Management System</span>
   </div>
 
+  <!-- CENTER MENU -->
   <ul class="nav-links">
 
-    <!-- Layout & Plots -->
+    <!-- Layouts -->
     <li class="dropdown">
       <a href="javascript:void(0)" (click)="toggleDropdown('layouts')">
         Layouts & Plots
         <i class="fa-solid fa-chevron-down small-icon"></i>
       </a>
 
-      <ul class="dropdown-menu" *ngIf="activeDropdown==='layouts'">
-        <li><a routerLink="/create-layout">Create Layout</a></li>
-        <li><a routerLink="/layouts">View Layouts</a></li>
-
-        <li><a routerLink="/create-plot">Create Plot</a></li>
-        <li><a routerLink="/plots">View Plots</a></li>
+      <ul class="dropdown-menu" *ngIf="activeDropdown === 'layouts'">
+        <li><a routerLink="/create-layout" (click)="closeDropdown()">Create Layout</a></li>
+        <li><a routerLink="/layouts" (click)="closeDropdown()">View Layouts</a></li>
+        <li><a routerLink="/create-plot" (click)="closeDropdown()">Create Plot</a></li>
+        <li><a routerLink="/plots" (click)="closeDropdown()">View Plots</a></li>
       </ul>
     </li>
 
@@ -32,12 +33,11 @@
         <i class="fa-solid fa-chevron-down small-icon"></i>
       </a>
 
-      <ul class="dropdown-menu" *ngIf="activeDropdown==='customer'">
-        <li><a routerLink="/create-enquiry">Create Enquiry</a></li>
-        <li><a routerLink="/view-enquiries">View Enquiries</a></li>
-
-        <li><a routerLink="/create-role">Create Role</a></li>
-        <li><a routerLink="/list-role">View Role</a></li>
+      <ul class="dropdown-menu" *ngIf="activeDropdown === 'customer'">
+        <li><a routerLink="/create-enquiry" (click)="closeDropdown()">Create Enquiry</a></li>
+        <li><a routerLink="/view-enquiries" (click)="closeDropdown()">View Enquiries</a></li>
+        <li><a routerLink="/create-role" (click)="closeDropdown()">Create Role</a></li>
+        <li><a routerLink="/list-role" (click)="closeDropdown()">View Role</a></li>
       </ul>
     </li>
 
@@ -48,49 +48,30 @@
         <i class="fa-solid fa-chevron-down small-icon"></i>
       </a>
 
-      <ul class="dropdown-menu" *ngIf="activeDropdown==='booking'">
-        <li><a routerLink="/new-booking">New Booking</a></li>
-        <li><a routerLink="/booking-history">Booking History</a></li>
+      <ul class="dropdown-menu" *ngIf="activeDropdown === 'booking'">
+        <li><a routerLink="/new-booking" (click)="closeDropdown()">New Booking</a></li>
+        <li><a routerLink="/booking-history" (click)="closeDropdown()">Booking History</a></li>
       </ul>
     </li>
 
-    <!-- Reports -->
+    <!-- Report -->
     <li class="dropdown">
       <a href="javascript:void(0)" (click)="toggleDropdown('report')">
         Report
         <i class="fa-solid fa-chevron-down small-icon"></i>
       </a>
 
-      <ul class="dropdown-menu" *ngIf="activeDropdown==='report'">
-
-        <li>
-          <a routerLink="/report-layout" (click)="$event.stopPropagation()">
-            Layouts Report
-          </a>
-        </li>
-
-        <li>
-          <a routerLink="/report-plot" (click)="$event.stopPropagation()">
-            Plots Report
-          </a>
-        </li>
-
-        <li>
-          <a routerLink="/report-enquiry" (click)="$event.stopPropagation()">
-            Enquiries Report
-          </a>
-        </li>
-
-        <li>
-          <a routerLink="/report-booking" (click)="$event.stopPropagation()">
-            Bookings Report
-          </a>
-        </li>
-
+      <ul class="dropdown-menu" *ngIf="activeDropdown === 'report'">
+        <li><a routerLink="/report-layout" (click)="closeDropdown()">Layouts Report</a></li>
+        <li><a routerLink="/report-plot" (click)="closeDropdown()">Plots Report</a></li>
+        <li><a routerLink="/report-enquiry" (click)="closeDropdown()">Enquiries Report</a></li>
+        <li><a routerLink="/report-booking" (click)="closeDropdown()">Bookings Report</a></li>
       </ul>
     </li>
+
   </ul>
 
+  <!-- RIGHT -->
   <div class="nav-right">
     <button class="logout-btn" (click)="logout()">
       <i class="fa-solid fa-right-from-bracket"></i> Logout

@@ -9,19 +9,22 @@ import { ReportService } from '../../services/report.service';
   selector: 'app-view-layouts',
   standalone: false,
   templateUrl: './view-layouts.component.html',
-  styleUrls: ['./view-layouts.component.css'] // ✅ FIXED (styleUrl → styleUrls)
+  styleUrls: ['./view-layouts.component.css']
 })
 export class ViewLayoutsComponent {
 
   searchName: string = "";
   searchLocation: string = "";
 
-  allLayouts: Layout[] = [];
-  layouts: Layout[] = [];
+  allLayouts: Layout[] = [];        // Full data from server
+  filteredLayouts: Layout[] = [];   // Filtered after search
+  layouts: Layout[] = [];           // Current paginated slice
 
   currentPage = 1;
   pageSize = 10;
   totalPages = 1;
+  pages: number[] = [];
+
 
   noRecords: boolean = false;
 
@@ -36,51 +39,51 @@ export class ViewLayoutsComponent {
     this.loadLayouts();
   }
 
-  // Load Data
+  // Load layouts from server
   loadLayouts() {
     this.layoutService.getLayouts().subscribe((data: Layout[]) => {
       this.allLayouts = data;
+      this.filteredLayouts = [...data]; // Initially, filtered = all
       this.noRecords = data.length === 0;
       this.currentPage = 1;
+      this.totalPages = Math.ceil(this.filteredLayouts.length / this.pageSize);
       this.applyPagination();
+       this.calculatePages(); 
     });
   }
 
-  // Search Filter
+  // Filter layouts by name & location
   filterLayouts() {
     const name = this.searchName.trim().toLowerCase();
     const loc = this.searchLocation.trim().toLowerCase();
 
     if (name === "" && loc === "") {
-      this.loadLayouts();
-      return;
+      this.filteredLayouts = [...this.allLayouts];
+    } else {
+      this.filteredLayouts = this.allLayouts.filter(layout =>
+        (name === "" || layout.layoutName?.toLowerCase().includes(name)) &&
+        (loc === "" || layout.location?.toLowerCase().includes(loc))
+      );
     }
 
-    const filtered = this.allLayouts.filter(layout =>
-      (name === "" || layout.layoutName?.toLowerCase().includes(name)) &&
-      (loc === "" || layout.location?.toLowerCase().includes(loc))
-    );
-
-    this.noRecords = filtered.length === 0;
-
-    this.layouts = filtered;
+    this.noRecords = this.filteredLayouts.length === 0;
     this.currentPage = 1;
-    this.totalPages = Math.ceil(filtered.length / this.pageSize);
-
-    this.applyPaginationAfterSearch(filtered);
+    this.totalPages = Math.ceil(this.filteredLayouts.length / this.pageSize);
+    this.applyPagination();
+    this.calculatePages();
   }
 
+  goToPage(page: number) {
+  this.currentPage = page;
+  this.applyPagination();
+}
+
+
+  // Apply pagination to the filtered list
   applyPagination() {
-    this.totalPages = Math.ceil(this.allLayouts.length / this.pageSize);
     const startIndex = (this.currentPage - 1) * this.pageSize;
     const endIndex = startIndex + this.pageSize;
-    this.layouts = this.allLayouts.slice(startIndex, endIndex);
-  }
-
-  applyPaginationAfterSearch(filteredData: Layout[]) {
-    const startIndex = (this.currentPage - 1) * this.pageSize;
-    const endIndex = startIndex + this.pageSize;
-    this.layouts = filteredData.slice(startIndex, endIndex);
+    this.layouts = this.filteredLayouts.slice(startIndex, endIndex);
   }
 
   prevPage() {
@@ -125,6 +128,13 @@ export class ViewLayoutsComponent {
     const url = `http://localhost:8080/api/layouts/pdf/${layoutName}`;
     window.open(url, "_blank");
   }
+
+  calculatePages(): void {
+  this.pages = Array.from(
+    { length: this.totalPages },
+    (_, i) => i + 1
+  );
+}
 
 
   goHome() {

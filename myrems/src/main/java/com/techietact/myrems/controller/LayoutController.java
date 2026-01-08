@@ -35,8 +35,8 @@ public class LayoutController {
     }
 
     @GetMapping("/{layoutName}")
-    public LayoutBO getLayout(@PathVariable String layoutName) {
-        return layoutService.getLayoutByLayoutName(layoutName);
+    public Layout getLayout(@PathVariable String layoutName) {
+        return layoutService.getLayoutEntity(layoutName);
     }
 
     @PutMapping("/{layoutName}")
@@ -88,4 +88,37 @@ public class LayoutController {
                 .contentType(MediaType.APPLICATION_PDF)
                 .body(new FileSystemResource(pdfFile));
     }
+    
+    @PutMapping(
+    	    value = "/updateWithPdf/{layoutName}",
+    	    consumes = MediaType.MULTIPART_FORM_DATA_VALUE
+    	)
+    	public ResponseEntity<Layout> updateLayoutWithPdf(
+    	        @PathVariable String layoutName,
+    	        @RequestPart("layoutData") LayoutBO layoutBO,
+    	        @RequestPart(value = "layoutPdf", required = false) MultipartFile file
+    	) throws Exception {
+
+    	    Layout existingLayout = layoutService.getLayoutEntity(layoutName);
+
+    	    // ✅ If new PDF uploaded → save it
+    	    if (file != null && !file.isEmpty()) {
+
+    	        File dir = new File(PDF_UPLOAD_PATH);
+    	        if (!dir.exists()) dir.mkdirs();
+
+    	        String filePath = PDF_UPLOAD_PATH + file.getOriginalFilename();
+    	        file.transferTo(new File(filePath));
+
+    	        existingLayout.setPdfPath(filePath);
+    	    }
+    	    // else → old pdfPath automatically retained
+
+    	    // ✅ update other fields
+    	    layoutService.updateLayoutFromBO(existingLayout, layoutBO);
+
+    	    Layout saved = layoutService.saveLayout(existingLayout);
+    	    return ResponseEntity.ok(saved);
+    	}
+
 }

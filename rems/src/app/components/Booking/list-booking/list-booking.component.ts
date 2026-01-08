@@ -34,7 +34,7 @@ getBalance(b: any): number {
   pageSize: number = 10;
   currentPage: number = 1;
   totalPages: number = 0;
-  totalPagesArray: number[] = [];
+  pages: number[] = [];
   loading: boolean = true;
 
   constructor(
@@ -83,7 +83,7 @@ getBalance(b: any): number {
   
   applyPagination() {
     this.totalPages = Math.ceil(this.filteredData.length / this.pageSize);
-    this.totalPagesArray = Array.from({ length: this.totalPages }, (_, i) => i + 1);
+    this.pages = Array.from({ length: this.totalPages }, (_, i) => i + 1);
     const start = (this.currentPage - 1) * this.pageSize;
     const end = start + this.pageSize;
     this.paginatedBookings = this.filteredData.slice(start, end);

@@ -34,7 +34,7 @@ export class CreatePlotComponent implements OnInit {
     price: 0,
     address: '',
     mobile: 0,
-    surveyNumber:'',
+    surveyNo:'',
     ownerName: '',
     email: '',
     layoutAddress: '',
@@ -71,12 +71,18 @@ export class CreatePlotComponent implements OnInit {
   }
 
   // ✅ When dropdown changes
-  onLayoutChange(): void {
-    const selectedLayout = this.newPlot.layout;
-    if (selectedLayout && selectedLayout.address !== undefined) {
-      this.newPlot.layoutAddress = selectedLayout.address || '';
-    }
+ onLayoutChange(): void {
+  const selectedLayout = this.newPlot.layout;
+
+  if (selectedLayout) {
+    // ✅ Layout address auto fill
+    this.newPlot.layoutAddress = selectedLayout.address || '';
+
+    // ✅ Survey No auto fill (IMPORTANT)
+    this.newPlot.surveyNo = selectedLayout.surveyNo || '';
   }
+}
+
 
   loadOwners(): void {
     this.roleService.getAll().subscribe({
@@ -214,7 +220,7 @@ export class CreatePlotComponent implements OnInit {
       price: 0,
       address: '',
       mobile: 0,
-      surveyNumber:'',
+      surveyNo:'',
       ownerName: '',
       email: '',
       dtcpApproved: false,

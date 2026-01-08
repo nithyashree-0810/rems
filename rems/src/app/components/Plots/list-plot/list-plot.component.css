@@ -172,6 +172,11 @@ h2 {
   border-bottom: 1px solid #eee;
 }
 
+.layout-table td.text-left {
+  text-align: left;
+  padding-left: 12px; /* optional for some spacing */
+}
+
 .layout-table tbody tr:hover {
   background: #f9f9f9;
 }
@@ -213,7 +218,9 @@ h2 {
   border-radius: 6px;
   border: 1px solid #ccc;
   cursor: pointer;
+  margin: 0 4px;   /* ✅ SPACE BETWEEN 1 2 3 */
 }
+
 
 .pagination button:hover {
   background: #3498db;
@@ -224,6 +231,15 @@ h2 {
   opacity: 0.5;
   cursor: not-allowed;
 }
+
+/* ACTIVE PAGE NUMBER */
+.pagination button.active {
+  background: #3498db;
+  color: #fff;
+  font-weight: 600;
+  border-color: #3498db;
+}
+
 
 /* HOME BUTTON */
 .pagination-home-btn {

@@ -93,4 +93,11 @@ public class LayoutServiceImpl implements LayoutService {
 		// TODO Auto-generated method stub
 		return null;
 	}
+	
+	 @Override
+	    public void updateLayoutFromBO(Layout existingLayout, LayoutBO layoutBO) {
+	        // Copy all fields from BO to entity except pdfPath
+	        BeanUtils.copyProperties(layoutBO, existingLayout, "pdfPath");
+	    }
+
 }

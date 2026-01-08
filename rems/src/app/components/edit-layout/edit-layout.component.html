@@ -220,6 +220,41 @@
       />
     </div>
 
+  <!-- PDF Upload Section -->
+<div class="form-group" style="grid-column: span 2;">
+  <label>Layout PDF</label>
+
+  <!-- File input for new PDF -->
+  <input type="file"
+         accept="application/pdf"
+         [(ngModel)]="layout.pdfPath"
+         (change)="onPdfSelected($event)">
+
+  <!-- Old PDF preview (shown only if no new PDF is selected) -->
+  <div class="pdf-preview" *ngIf="oldPdfUrl && !selectedPdf">
+    <div class="pdf-icon">📄</div>
+    <div class="pdf-details">
+      <b>{{ currentPdfName || 'Current PDF' }}</b>
+      <a [href]="oldPdfUrl" target="_blank">View</a>
+      <small>Existing uploaded PDF</small>
+    </div>
+  </div>
+
+  <!-- New PDF preview (shown when a new file is selected) -->
+  <div class="pdf-preview" *ngIf="selectedPdf">
+    <div class="pdf-icon">📄</div>
+    <div class="pdf-details">
+      <b>{{ selectedPdf.name }}</b>
+      <span>{{ (selectedPdf.size / 1024) | number:'1.0-1' }} KB</span>
+    </div>
+    <button type="button"
+            class="remove-pdf"
+            (click)="selectedPdf = null">
+      ✖
+    </button>
+  </div>
+</div>
+
     <!-- DTCP Approved -->
     <div class="form-group">
       <label>

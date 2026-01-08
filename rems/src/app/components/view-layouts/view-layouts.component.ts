@@ -23,6 +23,8 @@ export class ViewLayoutsComponent {
   currentPage = 1;
   pageSize = 10;
   totalPages = 1;
+  pages: number[] = [];
+
 
   noRecords: boolean = false;
 
@@ -46,6 +48,7 @@ export class ViewLayoutsComponent {
       this.currentPage = 1;
       this.totalPages = Math.ceil(this.filteredLayouts.length / this.pageSize);
       this.applyPagination();
+       this.calculatePages(); 
     });
   }
 
@@ -67,7 +70,14 @@ export class ViewLayoutsComponent {
     this.currentPage = 1;
     this.totalPages = Math.ceil(this.filteredLayouts.length / this.pageSize);
     this.applyPagination();
+    this.calculatePages();
   }
+
+  goToPage(page: number) {
+  this.currentPage = page;
+  this.applyPagination();
+}
+
 
   // Apply pagination to the filtered list
   applyPagination() {
@@ -118,6 +128,14 @@ export class ViewLayoutsComponent {
     const url = `http://localhost:8080/api/layouts/pdf/${layoutName}`;
     window.open(url, "_blank");
   }
+
+  calculatePages(): void {
+  this.pages = Array.from(
+    { length: this.totalPages },
+    (_, i) => i + 1
+  );
+}
+
 
   goHome() {
     this.router.navigate(['/dashboard']);

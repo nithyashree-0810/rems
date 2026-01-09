@@ -69,15 +69,19 @@
           <td>{{ layout.reraApproved ? 'Yes' : 'No' }}</td>
 
           <td>
-            <button *ngIf="layout.pdfPath"
-   href="javascript:void(0)"
-   class="pdf-link"
-   (click)="viewPdf(layout.layoutName)">
-  {{ layout.pdfPath.split('/').pop() }}
-</button>
+  <ng-container *ngIf="layout.pdfPath; else noPdf">
+    <button
+      class="pdf-view-btn"
+      title="View Layout PDF"
+      (click)="viewPdf(layout.layoutName)">
+      📄 View
+    </button>
+  </ng-container>
 
-<span *ngIf="!layout.pdfPath">-</span>
-
+  <ng-template #noPdf>
+    <span class="no-pdf">-</span>
+  </ng-template>
+</td>
 
           <td>
             <div class="action-icons">

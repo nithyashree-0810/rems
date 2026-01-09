@@ -238,3 +238,35 @@ h2 {
   border-radius: 7px;
 }
 
+/* PDF View Button */
+.pdf-view-btn {
+  background-color: #fff3e0;
+  color: #ff7a00;
+  border: 1px solid #ffcc99;
+  border-radius: 14px;
+  padding: 4px 12px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition: all 0.2s ease-in-out;
+}
+
+.pdf-view-btn:hover {
+  background-color: #ff7a00;
+  color: #ffffff;
+}
+
+/* No PDF */
+.no-pdf {
+  color: #999;
+  font-style: italic;
+}
+
+/* Center align LAYOUT MAP column (optional but recommended) */
+.layout-table td:nth-child(12),
+.layout-table th:nth-child(12) {
+  text-align: center;
+}

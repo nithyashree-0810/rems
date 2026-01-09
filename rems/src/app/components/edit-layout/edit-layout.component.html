@@ -227,19 +227,21 @@
   <!-- File input for new PDF -->
   <input type="file"
          accept="application/pdf"
-         [(ngModel)]="layout.pdfPath"
          (change)="onPdfSelected($event)">
 
   <!-- Old PDF preview (shown only if no new PDF is selected) -->
-  <div class="pdf-preview" *ngIf="oldPdfUrl && !selectedPdf">
-    <div class="pdf-icon">📄</div>
-    <div class="pdf-details">
-      <b>{{ currentPdfName || 'Current PDF' }}</b>
-      <a [href]="oldPdfUrl" target="_blank">View</a>
-      <small>Existing uploaded PDF</small>
-    </div>
+  <div class="pdf-preview-card" *ngIf="oldPdfUrl && !selectedPdf">
+  <div class="pdf-left">
+    📄
   </div>
-
+  <div class="pdf-right">
+    <div class="pdf-title">Current PDF</div>
+    <a class="pdf-view-link" [href]="oldPdfUrl" target="_blank">
+      View PDF
+    </a>
+    <div class="pdf-note">Existing uploaded document</div>
+  </div>
+</div>
   <!-- New PDF preview (shown when a new file is selected) -->
   <div class="pdf-preview" *ngIf="selectedPdf">
     <div class="pdf-icon">📄</div>

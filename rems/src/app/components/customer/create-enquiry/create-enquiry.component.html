@@ -27,46 +27,51 @@
         </div>
       </div>
 
-      <div class="row">
-        <div class="col">
-          <label class="dark-label">
-            Mobile <span class="required">*</span>
-          </label>
-          <input type="text" name="mobileNo" [(ngModel)]="enquiry.mobileNo"
-            required maxlength="10" pattern="[0-9]*"
-            #mobileNo="ngModel"
-            [class.is-invalid]="mobileNo.invalid && mobileNo.touched">
-        </div>
-      </div>
+    <div class="row">
+  <div class="col">
+    <label class="dark-label">
+      Mobile <span class="required">*</span>
+    </label>
+    <input type="text" name="mobileNo" [(ngModel)]="enquiry.mobileNo"
+      required maxlength="10" pattern="[0-9]*"
+      #mobileNo="ngModel"
+      [class.is-invalid]="mobileNo.invalid && mobileNo.touched">
+  </div>
 
-      <div class="row">
-        <div class="col">
-          <label class="dark-label">Email (optional)</label>
-          <input type="email" name="email" [(ngModel)]="enquiry.email">
-        </div>
+  <div class="col">
+    <label class="dark-label">Email (optional)</label>
+    <input type="email" name="email" [(ngModel)]="enquiry.email">
+  </div>
+</div>
 
-        <div class="col">
-          <label class="dark-label">
-            Address <span class="required">*</span>
-          </label>
-          <input type="text" name="address" [(ngModel)]="enquiry.address"
-            required minlength="5"
-            #address="ngModel"
-            [class.is-invalid]="address.invalid && address.touched">
-        </div>
-      </div>
+       <div class="row">
+  <div class="col">
+    <label class="dark-label">
+      Address <span class="required">*</span>
+    </label>
+    <input type="text" name="address" [(ngModel)]="enquiry.address"
+      required minlength="5"
+      #address="ngModel"
+      [class.is-invalid]="address.invalid && address.touched">
+  </div>
 
-      <div class="row">
-        <div class="col">
-          <label class="dark-label">
-            Pincode <span class="required">*</span>
-          </label>
-          <input type="text" name="pincode" [(ngModel)]="enquiry.pincode"
-            required pattern="^[0-9]{6}$"
-            #pincode="ngModel"
-            [class.is-invalid]="pincode.invalid && pincode.touched">
-        </div>
-      </div>
+  <div class="col">
+    <label class="dark-label">
+      Pincode <span class="required">*</span>
+    </label>
+    <input type="text"
+           name="pincode"
+           [(ngModel)]="enquiry.pincode"
+           required
+           maxlength="6"
+           pattern="^[0-9]{6}$"
+           inputmode="numeric"
+           onkeypress="return event.charCode >= 48 && event.charCode <= 57"
+           #pincode="ngModel"
+           [class.is-invalid]="pincode.invalid && pincode.touched">
+  </div>
+</div>
+
 
       <div class="row">
         <div class="col">

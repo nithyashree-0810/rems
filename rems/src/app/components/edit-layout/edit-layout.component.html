@@ -11,7 +11,7 @@
         [(ngModel)]="layout.layoutName" 
         name="layoutName" 
         required 
-        readonly 
+        disabled 
         minlength="3"
         pattern="^[A-Za-z ]+$"
         #layoutName="ngModel"
@@ -60,18 +60,18 @@
     <!-- Phone -->
     <div class="form-group">
       <label>Phone:</label>
-      <input 
-        type="tel" 
-        [(ngModel)]="layout.phone" 
-        name="phone" 
-        required 
-        pattern="^[6-9]\d{9}$" 
-        #phone="ngModel"
-      />
-      <div *ngIf="phone.invalid && phone.touched" class="error">
-        <small *ngIf="phone.errors?.['required']">Phone number is required</small>
-        <small *ngIf="phone.errors?.['pattern']">Enter a valid 10-digit number</small>
-      </div>
+      <input
+  type="text"
+  [(ngModel)]="layout.phone"
+  name="phone"
+  required
+  maxlength="10"
+  pattern="^[6-9][0-9]{9}$"
+  inputmode="numeric"
+  oninput="this.value = this.value.replace(/[^0-9]/g,'').slice(0,10)"
+  #phone="ngModel"
+/>
+
     </div>
 
     <!-- Location -->
@@ -113,18 +113,17 @@
     <!-- Pincode -->
     <div class="form-group">
       <label>Pincode:</label>
-      <input 
-        type="number" 
-        [(ngModel)]="layout.pincode" 
-        name="pincode" 
-        required 
-        pattern="^[1-9][0-9]{5}$" 
-        #pincode="ngModel"
-      />
-      <div *ngIf="pincode.invalid && pincode.touched" class="error">
-        <small *ngIf="pincode.errors?.['required']">Pincode is required</small>
-        <small *ngIf="pincode.errors?.['pattern']">Enter valid 6-digit pincode</small>
-      </div>
+    <input
+  type="text"
+  [(ngModel)]="layout.pincode"
+  name="pincode"
+  required
+  maxlength="6"
+  pattern="^[1-9][0-9]{5}$"
+  inputmode="numeric"
+  oninput="this.value = this.value.replace(/[^0-9]/g,'').slice(0,6)"
+  #pincode="ngModel"
+/>
     </div>
 <!-- Survey Number -->
 <div class="form-group">

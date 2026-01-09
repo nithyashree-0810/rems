@@ -48,13 +48,7 @@
     <input type="number"
            [(ngModel)]="plot.sqft"
            name="sqft"
-           required
-           #sqft="ngModel"
-           (input)="calculateValues()" />
-
-    <small class="error" *ngIf="sqft.invalid && sqft.touched">
-      SqFt rate required
-    </small>
+           readonly/>
   </div>
 
   <div class="form-group">
@@ -267,8 +261,8 @@
 
       <button class="btn home-btn" 
               type="button" 
-              (click)="goHome()">
-        Home
+              (click)="goBackToList()">
+        Back
       </button>
     </div>
 

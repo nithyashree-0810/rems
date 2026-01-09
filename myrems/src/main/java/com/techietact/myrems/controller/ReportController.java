@@ -327,14 +327,13 @@ public class ReportController {
 
             addCompanyHeader(document, "Customer Enquiries Report");
 
-            PdfPTable table = new PdfPTable(6);
+            PdfPTable table = new PdfPTable(5);
             table.setWidthPercentage(100);
             table.setHeaderRows(1);
 
             addHeader(table, "S.No");
             addHeader(table, "Customer Name");
             addHeader(table, "Mobile");
-            addHeader(table, "Location");
             addHeader(table, "Address");
             addHeader(table, "Date");
 
@@ -347,7 +346,6 @@ public class ReportController {
                         e.getFirstName() + " " + e.getLastName(),
                         bg, Element.ALIGN_LEFT);
                 addCell(table, e.getMobileNo(), bg, Element.ALIGN_CENTER);
-                addCell(table, e.getAddress(), bg, Element.ALIGN_LEFT);
                 addCell(table, e.getAddress(), bg, Element.ALIGN_LEFT);
                 addCell(table, e.getCreatedDate(), bg, Element.ALIGN_CENTER);
             }

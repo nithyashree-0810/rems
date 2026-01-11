@@ -57,7 +57,6 @@ onSubmit(){
   }
 }
 goHome(){
-  this.router.navigate(['/dashboard'])
+  this.router.navigate(['/view-enquiries'])
 }
-
 }

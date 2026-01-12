@@ -163,22 +163,34 @@ h2 {
 /* PAGINATION */
 .pagination-container {
   width: 1188px;
-  margin-top: 16px;
+  margin-top: 24px;
   display: flex;
-  justify-content: center;
+  align-items: center;        /* ✅ same straight line */
+  justify-content: center;    /* ✅ pagination center */
   position: relative;
+}
+
+.pagination {
+  display: flex;
+  align-items: center;
+  gap: 6px;
 }
 
 .pagination button {
   padding: 6px 12px;
   font-size: 12px;
   border-radius: 5px;
+  box-shadow: none;        /* Remove shadow */
+  border: 1px solid #ccc;  /* Optional: for visible border */
+  background: #f0f0f0;     /* Optional: normal button color */
 }
 
 .pagination .active {
   background: #3498db;
   color: white;
+  box-shadow: none;       /* Remove shadow */
 }
+
 
 /* HOME BUTTON */
 .pagination-home-btn {

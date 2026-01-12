@@ -25,6 +25,7 @@ export class ReportEnquiryComponent {
   pageSize: number = 10;
   currentPage: number = 1;
   totalPagesArray: number[] = [];
+  pages:number[] = [];
 
   imageUrl(path?: string) {
     return path ? `http://localhost:8080${path}` : '';
@@ -58,15 +59,21 @@ export class ReportEnquiryComponent {
     });
   }
 
-  applyPagination() {
-    this.totalPages = Math.ceil(this.filteredData.length / this.pageSize);
-    this.totalPagesArray = Array.from({ length: this.totalPages }, (_, i) => i + 1);
+ applyPagination() {
+  this.totalPages = Math.ceil(this.filteredData.length / this.pageSize);
 
-    const start = (this.currentPage - 1) * this.pageSize;
-    const end = start + this.pageSize;
+  // 🔥 HTML expects `pages`
+  this.pages = Array.from(
+    { length: this.totalPages },
+    (_, i) => i + 1
+  );
 
-    this.paginatedCustomers = this.filteredData.slice(start, end);
-  }
+  const start = (this.currentPage - 1) * this.pageSize;
+  const end = start + this.pageSize;
+
+  this.paginatedCustomers = this.filteredData.slice(start, end);
+}
+
 
   fetchLayouts(page: number) {
     this.currentPage = page;

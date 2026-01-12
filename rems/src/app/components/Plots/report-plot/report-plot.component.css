@@ -131,7 +131,6 @@ h2 {
 .delete { background: #ffebee; color: #d32f2f; }
 .book   { background: #e0f7fa; color: #00695c; }
 
-/* PAGINATION */
 .pagination-container {
   width: 1188px;
   margin-top: 16px;
@@ -142,14 +141,38 @@ h2 {
 
 .pagination button {
   padding: 6px 12px;
+  font-size: 12px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  cursor: pointer;
+  margin: 0 4px;   /* ✅ SPACE BETWEEN 1 2 3 */
 }
 
+
+.pagination button:hover {
+  background: #3498db;
+  color: white;
+}
+
+.pagination button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* ACTIVE PAGE NUMBER */
+.pagination button.active {
+  background: #3498db;
+  color: #fff;
+  font-weight: 600;
+  border-color: #3498db;
+}
+
+
+/* HOME BUTTON */
 .pagination-home-btn {
   position: absolute;
   right: 0;
   padding: 7px 14px;
-  background: #dc3545;
-  color: white;
+  font-size: 12px;
   border-radius: 7px;
-  border: none;
 }

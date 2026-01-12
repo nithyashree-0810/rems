@@ -51,7 +51,7 @@
           <td>{{ (currentPage - 1) * pageSize + i + 1 }}</td>
           <td>{{ plot.layout?.layoutName }}</td>
           <td>{{ plot.plotNo }}</td>
-          <td>{{ plot.surveyNumber }}</td>
+          <td>{{ plot.surveyNo }}</td>
           <td>{{ plot.ownerName }}</td>
           <td>{{ plot.sqft }}</td>
           <td>{{ plot.direction }}</td>
@@ -64,12 +64,33 @@
     </table>
   </div>
 
-  <!-- Pagination -->
   <div class="pagination-container">
-    <div class="pagination">
-      <button [disabled]="currentPage === 1" (click)="prevPage()">«</button>
-      <button [disabled]="currentPage === totalPages" (click)="nextPage()">»</button>
-    </div>
+
+  <div class="pagination">
+
+    <!-- PREV -->
+    <button
+  [disabled]="currentPage === 1"
+  (click)="prevPage()">
+  « Prev
+</button>
+   
+<!-- PAGE NUMBERS -->
+    <button
+      *ngFor="let page of pages"
+      (click)="goToPage(page)"
+      [class.active]="currentPage === page">
+      {{ page }}
+    </button>
+
+    <!-- NEXT -->
+    <button
+  [disabled]="currentPage === totalPages"
+  (click)="nextPage()">
+  Next »
+</button>
+
+  </div>
 
     <button class="btn btn-danger pagination-home-btn" (click)="goHome()">Home</button>
   </div>

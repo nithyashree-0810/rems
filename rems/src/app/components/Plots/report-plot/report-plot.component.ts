@@ -21,6 +21,7 @@ export class ReportPlotComponent {
   
     currentPage = 1;
     pageSize = 10;
+    pages:number[]=[];
   
     constructor(
       private plotService: PlotserviceService,
@@ -40,6 +41,7 @@ export class ReportPlotComponent {
           this.plots = [...this.allPlots];
           this.searchMessage = '';
           this.currentPage = 1;
+          this.updatePages();
         },
         error: (err: any) => {
           console.error('Error loading plots:', err);
@@ -66,6 +68,8 @@ export class ReportPlotComponent {
       }
   
       this.currentPage = 1;
+      this.updatePages();
+
     }
   
     get totalPages(): number {
@@ -138,6 +142,13 @@ export class ReportPlotComponent {
       this.toastr.error('Failed to download plots report');
     }
   });
+}
+
+updatePages(): void {
+  this.pages = Array.from(
+    { length: this.totalPages },
+    (_, i) => i + 1
+  );
 }
   
     // ✅ ONLY ADDED METHOD (FIX)

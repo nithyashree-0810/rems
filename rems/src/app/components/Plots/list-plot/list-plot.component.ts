@@ -137,6 +137,22 @@ if (this.currentPage > this.totalPages) {
 
   // ✅ ONLY ADDED METHOD (FIX)
   bookPlot(layoutName: string, plotNo: string): void {
-    this.router.navigate(['/book-plot', layoutName, plotNo]);
+  this.router.navigate(
+    ['/new-booking'],
+    { queryParams: { layoutName, plotNo } }
+  );
+}
+
+onBookClick(plot: any) {
+
+  // 🔴 Already booked
+  if (plot.booked) {
+    alert('Already Booked');
+    return; // ⛔ stop navigation
   }
+
+  // 🟢 Not booked → old behaviour
+  this.bookPlot(plot.layout.layoutName, plot.plotNo);
+}
+
 }

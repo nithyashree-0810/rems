@@ -249,3 +249,18 @@ h2 {
   font-size: 12px;
   border-radius: 7px;
 }
+
+.circle-icon.disabled {
+  opacity: 0.4;
+  pointer-events: none;
+  cursor: not-allowed;
+}
+
+.booked-label {
+  color: red;
+  font-weight: 600;
+  font-size: 12px;
+  display: block;
+  margin-top: 4px;
+}
+

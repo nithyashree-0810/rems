@@ -6,6 +6,8 @@ import { PlotserviceService } from '../../../services/plotservice.service';
 import { LayoutserviceService } from '../../../services/layoutservice.service';
 import { CustomerService } from '../../../services/customer.service';
 import { ToastrService } from 'ngx-toastr';
+import { ActivatedRoute } from '@angular/router';
+
 
 @Component({
   selector: 'app-create-booking',
@@ -64,6 +66,7 @@ export class CreateBookingComponent implements OnInit {
   constructor(
     private bookingService: BookingService,
     private router: Router,
+    private route: ActivatedRoute,  
     private plotService: PlotserviceService,
     private layoutService: LayoutserviceService,
     private customerService: CustomerService,
@@ -71,8 +74,35 @@ export class CreateBookingComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.loadLayouts();
-  }
+  this.loadLayouts();
+
+  this.route.queryParams.subscribe(params => {
+    const layoutName = params['layoutName'];
+    const plotNo = params['plotNo'];
+
+    if (layoutName && plotNo) {
+      this.booking.layoutName = layoutName;
+
+      this.plotService.getPlotsByLayout(layoutName).subscribe(plots => {
+
+        // ❌ already booked plot-a remove pannrom
+        this.plotList = plots.filter(p => !p.booked);
+
+        const selected = this.plotList.find(p => p.plotNo === plotNo);
+
+        if (!selected) {
+          this.toastr.error('This plot is already booked ❌');
+          this.router.navigate(['/list-plots']);
+          return;
+        }
+
+        this.selectedPlot = selected;
+        this.onPlotChange();
+      });
+    }
+  });
+}
+
 
   loadLayouts() {
     this.layoutService.getLayouts().subscribe(data => {
@@ -171,12 +201,19 @@ export class CreateBookingComponent implements OnInit {
     };
 
     this.bookingService.createBooking(requestBody).subscribe({
+  next: () => {
+    // ✅ Mark plot as booked
+    this.plotService.markAsBooked(this.booking.plotId).subscribe({
       next: () => {
-        this.toastr.success('Booking Saved Successfully');
+        this.toastr.success('Booking Saved Successfully ✅');
         this.router.navigate(['/booking-history']);
       },
-      error: () => this.toastr.error('Booking Failed')
+      error: () => this.toastr.error('Failed to mark plot as booked')
     });
+  },
+  error: () => this.toastr.error('Booking Failed ❌')
+});
+
   }
 
   goHome() {

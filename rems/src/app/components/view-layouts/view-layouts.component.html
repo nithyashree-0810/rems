@@ -10,7 +10,7 @@
     <input type="text"
            [(ngModel)]="searchName"
            (keyup)="filterLayouts()"
-           placeholder="Search Name"
+           placeholder="Search Layout Name"
            class="search-input">
 
     <input type="text"
@@ -68,13 +68,13 @@
           <td>{{ layout.dtcpApproved ? 'Yes' : 'No' }}</td>
           <td>{{ layout.reraApproved ? 'Yes' : 'No' }}</td>
 
-          <td>
+      <td>
   <ng-container *ngIf="layout.pdfPath; else noPdf">
     <button
       class="pdf-view-btn"
-      title="View Layout PDF"
+      [title]="getPdfName(layout.pdfPath)"
       (click)="viewPdf(layout.layoutName)">
-      📄 View
+      📄 {{ getPdfName(layout.pdfPath) }}
     </button>
   </ng-container>
 

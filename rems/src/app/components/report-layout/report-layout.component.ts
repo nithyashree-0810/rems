@@ -22,6 +22,7 @@ export class ReportLayoutComponent {
   currentPage = 1;
   pageSize = 10;
   totalPages = 1;
+pages: number[] = [];
 
   noRecords: boolean = false;
 
@@ -37,52 +38,54 @@ export class ReportLayoutComponent {
   }
 
   // Load Data
-  loadLayouts() {
-    this.layoutService.getLayouts().subscribe((data: Layout[]) => {
-      this.allLayouts = data;
-      this.noRecords = data.length === 0;
-      this.currentPage = 1;
-      this.applyPagination();
-    });
-  }
-
+loadLayouts() {
+  this.layoutService.getLayouts().subscribe((data: Layout[]) => {
+    this.allLayouts = data;
+    this.filteredData = [...data];
+    this.noRecords = data.length === 0;
+    this.currentPage = 1;
+    this.applyPagination();
+  });
+}
   // Search Filter
   filterLayouts() {
-    const name = this.searchName.trim().toLowerCase();
-    const loc = this.searchLocation.trim().toLowerCase();
+  const name = this.searchName.trim().toLowerCase();
+  const loc = this.searchLocation.trim().toLowerCase();
 
-    if (name === "" && loc === "") {
-      this.loadLayouts();
-      return;
-    }
+  this.filteredData = this.allLayouts.filter(layout =>
+    (!name || layout.layoutName?.toLowerCase().includes(name)) &&
+    (!loc || layout.location?.toLowerCase().includes(loc))
+  );
 
-    const filtered = this.allLayouts.filter(layout =>
-      (name === "" || layout.layoutName?.toLowerCase().includes(name)) &&
-      (loc === "" || layout.location?.toLowerCase().includes(loc))
-    );
-
-    this.noRecords = filtered.length === 0;
-
-    this.layouts = filtered;
-    this.currentPage = 1;
-    this.totalPages = Math.ceil(filtered.length / this.pageSize);
-
-    this.applyPaginationAfterSearch(filtered);
-  }
+  this.noRecords = this.filteredData.length === 0;
+  this.currentPage = 1;
+  this.applyPagination();
+}
 
   applyPagination() {
-    this.totalPages = Math.ceil(this.allLayouts.length / this.pageSize);
-    const startIndex = (this.currentPage - 1) * this.pageSize;
-    const endIndex = startIndex + this.pageSize;
-    this.layouts = this.allLayouts.slice(startIndex, endIndex);
-  }
+  // 🔥 always paginate using filteredData
+  this.totalPages = Math.ceil(this.filteredData.length / this.pageSize);
 
-  applyPaginationAfterSearch(filteredData: Layout[]) {
-    const startIndex = (this.currentPage - 1) * this.pageSize;
-    const endIndex = startIndex + this.pageSize;
-    this.layouts = filteredData.slice(startIndex, endIndex);
-  }
+  // 🔥 HTML pagination buttons
+  this.pages = Array.from(
+    { length: this.totalPages },
+    (_, i) => i + 1
+  );
 
+  const startIndex = (this.currentPage - 1) * this.pageSize;
+  const endIndex = startIndex + this.pageSize;
+
+  this.layouts = this.filteredData.slice(startIndex, endIndex);
+}
+
+goToPage(page: number) {
+  if (page >= 1 && page <= this.totalPages) {
+    this.currentPage = page;
+    this.applyPagination();
+  }
+}
+
+ 
   prevPage() {
     if (this.currentPage > 1) {
       this.currentPage--;
@@ -154,6 +157,7 @@ export class ReportLayoutComponent {
     }
   });
 }
+
 
 
   goHome() {

@@ -16,15 +16,14 @@ export class ViewLayoutsComponent {
   searchName: string = "";
   searchLocation: string = "";
 
-  allLayouts: Layout[] = [];        // Full data from server
-  filteredLayouts: Layout[] = [];   // Filtered after search
-  layouts: Layout[] = [];           // Current paginated slice
+  allLayouts: Layout[] = [];
+  filteredLayouts: Layout[] = [];
+  layouts: Layout[] = [];
 
   currentPage = 1;
   pageSize = 10;
   totalPages = 1;
   pages: number[] = [];
-
 
   noRecords: boolean = false;
 
@@ -39,20 +38,29 @@ export class ViewLayoutsComponent {
     this.loadLayouts();
   }
 
-  // Load layouts from server
+  // =========================
+  // ✅ FIXED METHOD (ONLY ADDITION)
+  // =========================
+  getPdfName(pdfPath: string | null): string {
+    if (!pdfPath) {
+      return '';
+    }
+    return pdfPath.split(/[/\\]/).pop() || '';
+  }
+  // =========================
+
   loadLayouts() {
     this.layoutService.getLayouts().subscribe((data: Layout[]) => {
       this.allLayouts = data;
-      this.filteredLayouts = [...data]; // Initially, filtered = all
+      this.filteredLayouts = [...data];
       this.noRecords = data.length === 0;
       this.currentPage = 1;
       this.totalPages = Math.ceil(this.filteredLayouts.length / this.pageSize);
       this.applyPagination();
-       this.calculatePages(); 
+      this.calculatePages();
     });
   }
 
-  // Filter layouts by name & location
   filterLayouts() {
     const name = this.searchName.trim().toLowerCase();
     const loc = this.searchLocation.trim().toLowerCase();
@@ -74,12 +82,10 @@ export class ViewLayoutsComponent {
   }
 
   goToPage(page: number) {
-  this.currentPage = page;
-  this.applyPagination();
-}
+    this.currentPage = page;
+    this.applyPagination();
+  }
 
-
-  // Apply pagination to the filtered list
   applyPagination() {
     const startIndex = (this.currentPage - 1) * this.pageSize;
     const endIndex = startIndex + this.pageSize;
@@ -130,12 +136,11 @@ export class ViewLayoutsComponent {
   }
 
   calculatePages(): void {
-  this.pages = Array.from(
-    { length: this.totalPages },
-    (_, i) => i + 1
-  );
-}
-
+    this.pages = Array.from(
+      { length: this.totalPages },
+      (_, i) => i + 1
+    );
+  }
 
   goHome() {
     this.router.navigate(['/dashboard']);

@@ -181,7 +181,15 @@ public class PlotServiceImpl implements PlotService {
 	}
 
 
+	@Override
+    public void markAsBooked(Long plotId) {
 
+        Plot plot = plotRepository.findById(plotId)
+                .orElseThrow(() -> new RuntimeException("Plot not found"));
+
+        plot.setBooked(true);   // ✅ IMPORTANT
+        plotRepository.save(plot);
+    }
 
 		
 	}

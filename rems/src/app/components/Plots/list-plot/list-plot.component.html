@@ -69,7 +69,11 @@
             <i class="fa fa-eye circle-icon view" (click)="viewPlot(plot.layout.layoutName, plot.plotNo)"></i>
             <i class="fa fa-pencil circle-icon edit" (click)="editPlot(plot.layout.layoutName, plot.plotNo)"></i>
             <i class="fa fa-trash circle-icon delete" (click)="deletePlot(plot.layout.layoutName, plot.plotNo)"></i>
-            <i class="fa fa-book circle-icon book" (click)="goToCreate()"></i>
+            <i
+  class="fa fa-book circle-icon book"
+  [class.disabled]="plot.booked"
+  (click)="onBookClick(plot)">
+</i>
           </td>
         </tr>
       </tbody>

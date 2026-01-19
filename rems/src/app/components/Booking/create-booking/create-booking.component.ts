@@ -216,6 +216,21 @@ export class CreateBookingComponent implements OnInit {
 
   }
 
+  onMobileInput(event: any) {
+  let value = event.target.value;
+
+  // 🔹 Numbers only
+  value = value.replace(/\D/g, '');
+
+  // 🔹 Max 10 digits only
+  if (value.length > 10) {
+    value = value.slice(0, 10);
+  }
+
+  this.booking.mobileNo = value;
+}
+
+
   goHome() {
     this.router.navigate(['/dashboard']);
   }

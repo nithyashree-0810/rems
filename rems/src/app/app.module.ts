@@ -39,6 +39,7 @@ import { ReportEnquiryComponent } from './components/customer/report-enquiry/rep
 import { ReportPlotComponent } from './components/Plots/report-plot/report-plot.component';
 import { ReportBookingComponent } from './components/Booking/report-booking/report-booking.component';
 import { ReportLayoutComponent } from './components/report-layout/report-layout.component';
+import { ReportRoleComponent } from './components/Role/report-role/report-role.component';
 
 
 
@@ -78,6 +79,7 @@ import { ReportLayoutComponent } from './components/report-layout/report-layout.
     ReportPlotComponent,
     ReportBookingComponent,
     ReportLayoutComponent,
+    ReportRoleComponent,
   ],
   imports: [
     BrowserModule,

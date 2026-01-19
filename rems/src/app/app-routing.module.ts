@@ -38,6 +38,7 @@ import { ReportEnquiryComponent } from './components/customer/report-enquiry/rep
 import { ReportPlotComponent } from './components/Plots/report-plot/report-plot.component';
 import { ReportBookingComponent } from './components/Booking/report-booking/report-booking.component';
 import { ReportLayoutComponent } from './components/report-layout/report-layout.component';
+import { ReportRoleComponent } from './components/Role/report-role/report-role.component';
 
 
 const routes: Routes = [
@@ -79,6 +80,7 @@ const routes: Routes = [
   { path: 'edit-role/:roleId', component: EditRoleComponent },
   { path: 'list-role', component: ListRoleComponent },
   { path: 'view-role/:roleId', component: ViewRoleComponent },
+  { path: 'report-role', component: ReportRoleComponent },
 
   /** 404 Fallback */
   { path: '**', redirectTo: '', pathMatch: 'full' }

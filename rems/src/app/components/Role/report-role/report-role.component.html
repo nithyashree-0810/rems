@@ -1,0 +1,117 @@
+<div class="container">
+
+  <h2>Role Report</h2>
+
+  <!-- FILTER + SEARCH ROW -->
+  <div class="search-create-row">
+
+    <!-- ROLE DROPDOWN (LEFT) -->
+    <div class="role-filter">
+      <select
+        class="search-input"
+        [(ngModel)]="selectedRoleType"
+        (change)="filterRoles()">
+        <option value="">-- Select Role --</option>
+        <option value="OWNER">Owner</option>
+        <option value="AGENT">Agent</option>
+      </select>
+    </div>
+
+    <!-- EMPTY SPACE (GRID MIDDLE) -->
+    <div></div>
+
+    <!-- SEARCH + BUTTONS (RIGHT) -->
+    <div class="search-container">
+      <input
+        type="text"
+        placeholder="Search by First or Last Name"
+        [(ngModel)]="searchName"
+        (input)="onSearch()"
+        class="search-input"
+      />
+
+      <input
+        type="text"
+        placeholder="Search Mobile Number"
+        [(ngModel)]="searchMobile"
+        (input)="onSearch()"
+        class="search-input"
+      />
+
+      <button class="search-btn" (click)="onSearch()">Search</button>
+
+      <button class="btn btn-success" (click)="generateReport()">
+        Generate PDF
+      </button>
+    </div>
+
+  </div>
+
+  <!-- TABLE -->
+  <div class="table-wrapper">
+    <table class="layout-table">
+      <thead>
+        <tr>
+          <th>S.No</th>
+          <th>First Name</th>
+          <th>Last Name</th>
+          <th>Mobile</th>
+          <th>Address</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <tr *ngFor="let r of filteredData; let i = index">
+          <td>{{ i + 1 }}</td>
+          <td>{{ r.firstName }}</td>
+          <td>{{ r.lastName }}</td>
+          <td>{{ r.mobileNo }}</td>
+          <td>{{ r.address }}</td>
+        </tr>
+
+        <tr *ngIf="filteredData.length === 0">
+          <td colspan="4" class="no-data">No data found</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+ <div class="pagination-container">
+
+  <!-- PAGINATION (CENTER) -->
+  <div class="pagination">
+
+    <!-- PREV -->
+    <button
+      [disabled]="currentPage === 1"
+      (click)="prevPage()">
+      « Prev
+    </button>
+
+    <!-- PAGE NUMBERS -->
+    <button
+      *ngFor="let page of pages"
+      (click)="goToPage(page)"
+      [class.active]="currentPage === page">
+      {{ page }}
+    </button>
+
+    <!-- NEXT -->
+    <button
+      [disabled]="currentPage === totalPages"
+      (click)="nextPage()">
+       Next »
+    </button>
+
+  </div>
+
+  <!-- HOME (RIGHT CORNER) -->
+  <button
+    class="btn btn-danger pagination-home-btn"
+    (click)="goHome()">
+    Home
+  </button>
+
+</div>
+
+</div>

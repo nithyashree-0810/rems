@@ -20,5 +20,8 @@ public interface RoleRepository extends JpaRepository<Role, Long> {
 	        String lastName,
 	        String mobileNo
 	);
+	
+	List<Role> findByRoleIgnoreCase(String role);
+
 
 }

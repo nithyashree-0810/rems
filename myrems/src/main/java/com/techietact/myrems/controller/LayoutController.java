@@ -19,106 +19,99 @@ import com.techietact.myrems.service.LayoutService;
 @CrossOrigin("*")
 public class LayoutController {
 
-    @Autowired
-    private LayoutService layoutService;
+	@Autowired
+	private LayoutService layoutService;
 
-    private static final String PDF_UPLOAD_PATH = "D:/layout-pdfs/";
+	private static final String PDF_UPLOAD_PATH = System.getProperty("user.dir") + "/uploads/layout-pdfs/";
 
-    @PostMapping("/create")
-    public ResponseEntity<Layout> createLayout(@RequestBody LayoutBO layoutBO) {
-        return ResponseEntity.ok(layoutService.createLayout(layoutBO));
-    }
+	@PostMapping("/create")
+	public ResponseEntity<Layout> createLayout(@RequestBody LayoutBO layoutBO) {
+		return ResponseEntity.ok(layoutService.createLayout(layoutBO));
+	}
 
-    @GetMapping
-    public List<Layout> getAllLayouts() {
-        return layoutService.findAllLayoutsAsc();
-    }
+	@GetMapping
+	public List<Layout> getAllLayouts() {
+		return layoutService.findAllLayoutsAsc();
+	}
 
-    @GetMapping("/{layoutName}")
-    public Layout getLayout(@PathVariable String layoutName) {
-        return layoutService.getLayoutEntity(layoutName);
-    }
+	@GetMapping("/{layoutName}")
+	public Layout getLayout(@PathVariable String layoutName) {
+		return layoutService.getLayoutEntity(layoutName);
+	}
 
-    @PutMapping("/{layoutName}")
-    public LayoutBO updateLayout(@PathVariable String layoutName,
-                                 @RequestBody LayoutBO layoutBO) {
-        return layoutService.updateLayout(layoutName, layoutBO);
-    }
+	@PutMapping("/{layoutName}")
+	public LayoutBO updateLayout(@PathVariable String layoutName, @RequestBody LayoutBO layoutBO) {
+		return layoutService.updateLayout(layoutName, layoutBO);
+	}
 
-    @DeleteMapping("/{layoutName}")
-    public void deleteLayout(@PathVariable String layoutName) {
-        layoutService.deleteLayout(layoutName);
-    }
+	@DeleteMapping("/{layoutName}")
+	public void deleteLayout(@PathVariable String layoutName) {
+		layoutService.deleteLayout(layoutName);
+	}
 
-    // ⭐ Upload Layout + PDF
-    @PostMapping("/createWithPdf")
-    public ResponseEntity<Layout> createLayoutWithPdf(
-            @RequestPart("layoutData") LayoutBO layoutBO,
-            @RequestPart("layoutPdf") MultipartFile file) throws Exception {
+	// ⭐ Upload Layout + PDF
+	@PostMapping("/createWithPdf")
+	public ResponseEntity<Layout> createLayoutWithPdf(@RequestPart("layoutData") LayoutBO layoutBO,
+			@RequestPart("layoutPdf") MultipartFile file) throws Exception {
 
-        File dir = new File(PDF_UPLOAD_PATH);
-        if (!dir.exists()) dir.mkdirs();
+		File dir = new File(PDF_UPLOAD_PATH);
+		if (!dir.exists())
+			dir.mkdirs();
 
-        String filePath = PDF_UPLOAD_PATH + file.getOriginalFilename();
-        file.transferTo(new File(filePath));
+		String filePath = PDF_UPLOAD_PATH + file.getOriginalFilename();
+		file.transferTo(new File(filePath));
 
-        Layout savedLayout = layoutService.createLayout(layoutBO);
-        savedLayout.setPdfPath(filePath);
+		Layout savedLayout = layoutService.createLayout(layoutBO);
+		savedLayout.setPdfPath(filePath);
 
-        Layout updated = layoutService.saveLayout(savedLayout);
+		Layout updated = layoutService.saveLayout(savedLayout);
 
-        return ResponseEntity.ok(updated);
-    }
+		return ResponseEntity.ok(updated);
+	}
 
-    // ⭐ VIEW PDF API
-    @GetMapping("/pdf/{layoutName}")
-    public ResponseEntity<?> getLayoutPdf(@PathVariable String layoutName) throws Exception {
+	// ⭐ VIEW PDF API
+	@GetMapping("/pdf/{layoutName}")
+	public ResponseEntity<?> getLayoutPdf(@PathVariable String layoutName) throws Exception {
 
-        Layout layout = layoutService.getLayoutEntity(layoutName);
+		Layout layout = layoutService.getLayoutEntity(layoutName);
 
-        if (layout == null || layout.getPdfPath() == null)
-            return ResponseEntity.notFound().build();
+		if (layout == null || layout.getPdfPath() == null)
+			return ResponseEntity.notFound().build();
 
-        File pdfFile = new File(layout.getPdfPath());
+		File pdfFile = new File(layout.getPdfPath());
 
-        if (!pdfFile.exists())
-            return ResponseEntity.notFound().build();
+		if (!pdfFile.exists())
+			return ResponseEntity.notFound().build();
 
-        return ResponseEntity.ok()
-                .contentType(MediaType.APPLICATION_PDF)
-                .body(new FileSystemResource(pdfFile));
-    }
-    
-    @PutMapping(
-    	    value = "/updateWithPdf/{layoutName}",
-    	    consumes = MediaType.MULTIPART_FORM_DATA_VALUE
-    	)
-    	public ResponseEntity<Layout> updateLayoutWithPdf(
-    	        @PathVariable String layoutName,
-    	        @RequestPart("layoutData") LayoutBO layoutBO,
-    	        @RequestPart(value = "layoutPdf", required = false) MultipartFile file
-    	) throws Exception {
+		return ResponseEntity.ok().contentType(MediaType.APPLICATION_PDF).body(new FileSystemResource(pdfFile));
+	}
 
-    	    Layout existingLayout = layoutService.getLayoutEntity(layoutName);
+	@PutMapping(value = "/updateWithPdf/{layoutName}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+	public ResponseEntity<Layout> updateLayoutWithPdf(@PathVariable String layoutName,
+			@RequestPart("layoutData") LayoutBO layoutBO,
+			@RequestPart(value = "layoutPdf", required = false) MultipartFile file) throws Exception {
 
-    	    // ✅ If new PDF uploaded → save it
-    	    if (file != null && !file.isEmpty()) {
+		Layout existingLayout = layoutService.getLayoutEntity(layoutName);
 
-    	        File dir = new File(PDF_UPLOAD_PATH);
-    	        if (!dir.exists()) dir.mkdirs();
+		// ✅ If new PDF uploaded → save it
+		if (file != null && !file.isEmpty()) {
 
-    	        String filePath = PDF_UPLOAD_PATH + file.getOriginalFilename();
-    	        file.transferTo(new File(filePath));
+			File dir = new File(PDF_UPLOAD_PATH);
+			if (!dir.exists())
+				dir.mkdirs();
 
-    	        existingLayout.setPdfPath(filePath);
-    	    }
-    	    // else → old pdfPath automatically retained
+			String filePath = PDF_UPLOAD_PATH + file.getOriginalFilename();
+			file.transferTo(new File(filePath));
 
-    	    // ✅ update other fields
-    	    layoutService.updateLayoutFromBO(existingLayout, layoutBO);
+			existingLayout.setPdfPath(filePath);
+		}
+		// else → old pdfPath automatically retained
 
-    	    Layout saved = layoutService.saveLayout(existingLayout);
-    	    return ResponseEntity.ok(saved);
-    	}
+		// ✅ update other fields
+		layoutService.updateLayoutFromBO(existingLayout, layoutBO);
+
+		Layout saved = layoutService.saveLayout(existingLayout);
+		return ResponseEntity.ok(saved);
+	}
 
 }

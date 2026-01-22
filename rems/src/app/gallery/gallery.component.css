@@ -1,0 +1,23 @@
+.gallery-item {
+  display: inline-block;
+  margin: 10px;
+  text-align: center;
+}
+
+.gallery-image {
+  width: 150px; /* reduce image size */
+  height: auto;
+  border-radius: 5px; /* optional: rounded corners */
+}
+
+.gallery-text {
+  font-size: 14px; /* increase text size relative to image */
+  margin-top: 5px;
+  word-wrap: break-word; /* wrap long file names */
+}
+
+.debug-info {
+  font-size: 10px;
+  color: #666;
+  margin-top: 2px;
+}

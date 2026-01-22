@@ -1,0 +1,16 @@
+<div>
+  <input type="file" (change)="onFileSelect($event)" />
+  <button (click)="upload()">Upload</button>
+</div>
+
+<div class="gallery-grid">
+  <div class="gallery-item" *ngFor="let item of galleryList">
+    <img [src]="'http://localhost:8080' + item.filePath" 
+         [alt]="item.fileName" 
+         class="gallery-image"
+         (error)="onImageError($event, item)"
+         (load)="onImageLoad($event, item)" />
+    <p class="gallery-text">{{ item.fileName }}</p>
+  </div>
+</div>
+

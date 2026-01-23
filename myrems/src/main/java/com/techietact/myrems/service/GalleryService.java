@@ -12,5 +12,7 @@ public interface GalleryService {
 	    Gallery uploadFile(MultipartFile file) throws IllegalStateException, IOException;
 
 	    List<Gallery> getAll();
+	    
+	    void deleteById(int id);
 
 }

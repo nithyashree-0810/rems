@@ -20,4 +20,11 @@ getAll() {
   return this.http.get<any[]>(this.baseUrl + '/list');
 }
 
+delete(id: number) {
+  console.log('Gallery service: attempting to delete ID', id);
+  const url = this.baseUrl + '/delete/' + id;
+  console.log('Delete URL:', url);
+  return this.http.delete(url, { responseType: 'text' });
+}
+
 }

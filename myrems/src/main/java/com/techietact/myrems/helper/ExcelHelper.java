@@ -75,7 +75,7 @@ public class ExcelHelper {
 
 	            // Layout mapping
 	            String layoutName = getStringCell(row.getCell(colMap.get("layout_name")));
-	            Layout layout = layoutRepo.getByLayoutName(layoutName)
+	            Layout layout = layoutRepo.findByLayoutName(layoutName)
 	                    .orElseThrow(() -> new RuntimeException("Layout not found: " + layoutName));
 	            plot.setLayout(layout);
 

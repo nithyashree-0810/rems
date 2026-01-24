@@ -19,7 +19,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.techietact.myrems.entity.Role;
 import com.techietact.myrems.service.RoleService;
 
-@CrossOrigin("*")
+@CrossOrigin
 @RequestMapping("/api/role")
 @RestController
 public class RoleController {

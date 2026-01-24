@@ -11,14 +11,13 @@ import org.springframework.stereotype.Repository;
 import com.techietact.myrems.entity.Layout;
 
 @Repository
-public interface LayoutRepository extends JpaRepository<Layout,String>{
+public interface LayoutRepository extends JpaRepository<Layout, Long>{
 
-	Optional<Layout> getByLayoutName(String layoutName);
+	Optional<Layout> findByLayoutName(String layoutName);
 
-    List<Layout> findByLayoutName(String layoutName);
+    List<Layout> findAllByLayoutName(String layoutName);
 
 	List<Layout> findByLocation(String location);
-
 
 	    @Query("SELECT l FROM Layout l WHERE " +
 	           "(:layoutName IS NULL OR LOWER(l.layoutName) LIKE LOWER(CONCAT('%', :layoutName, '%'))) AND " +
@@ -26,14 +25,8 @@ public interface LayoutRepository extends JpaRepository<Layout,String>{
 	    List<Layout> searchLayouts(@Param("layoutName") String layoutName,
 	                               @Param("location") String location);
 
-	
-
-	
 	List<Layout> findByLayoutNameAndLocation(String layoutName, String location);
 
 	List<Layout> findAllByOrderByCreatedDateAsc();
-	
-
-	//LayoutBO save(LayoutBO layoutBO);
 
 }

@@ -33,4 +33,8 @@ public interface LayoutService {
     Layout getLayoutEntity(String layoutName);
     
     void updateLayoutFromBO(Layout existingLayout, LayoutBO layoutBO);
+    
+    Layout updateLayoutWithNameChange(String oldLayoutName, LayoutBO layoutBO);
+    
+    boolean isLayoutNameAvailable(String layoutName, Long excludeId);
 }

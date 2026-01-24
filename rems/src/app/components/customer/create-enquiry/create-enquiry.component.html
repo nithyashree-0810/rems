@@ -76,10 +76,10 @@
       <div class="row">
         <div class="col">
           <label class="dark-label">
-            Aadhaar <span class="required">*</span>
+            Aadhaar(Optional)
           </label>
           <input type="text" name="aadharNo" [(ngModel)]="enquiry.aadharNo"
-            required maxlength="12" pattern="[0-9]*"
+             maxlength="12" pattern="[0-9]*"
             #aadharNo="ngModel"
             [class.is-invalid]="aadharNo.invalid && aadharNo.touched">
         </div>

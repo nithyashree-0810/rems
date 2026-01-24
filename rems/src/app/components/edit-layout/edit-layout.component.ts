@@ -15,8 +15,8 @@ export class EditLayoutComponent {
    layout: Layout = new Layout();
    selectedPdf: File | null = null;
    oldPdfUrl: string | null = null;
- currentPdfName: string | null = null; 
-
+   currentPdfName: string | null = null; 
+   originalLayoutName: string = '';
 
   constructor(
     private route: ActivatedRoute,
@@ -28,6 +28,7 @@ export class EditLayoutComponent {
  ngOnInit(): void {
   const layoutName = this.route.snapshot.paramMap.get('layoutName');
   if (layoutName) {
+    this.originalLayoutName = layoutName; // Store original name
     this.layoutService.getLayoutByName(layoutName).subscribe(data => {
       this.layout = data;
 
@@ -52,8 +53,8 @@ export class EditLayoutComponent {
 }
 
   onSubmit() {
-  const layoutName = this.route.snapshot.paramMap.get('layoutName');
-  if (layoutName) {
+  const originalLayoutName = this.route.snapshot.paramMap.get('layoutName');
+  if (originalLayoutName) {
 
     // 1️⃣ Create FormData
     const formData = new FormData();
@@ -67,14 +68,20 @@ export class EditLayoutComponent {
     }
 
     // 4️⃣ Call your service
-    this.layoutService.updateLayout(layoutName, formData).subscribe({
-      next: () => {
+    this.layoutService.updateLayout(originalLayoutName, formData).subscribe({
+      next: (updatedLayout: any) => {
         this.toastr.success('Layout updated successfully!');
         this.router.navigate(['/layouts']);
       },
       error: err => {
-        console.error(err);
-        this.toastr.error('Update failed!');
+        console.error('Update error:', err);
+        if (err.status === 404) {
+          this.toastr.error('Layout not found!');
+        } else if (err.error && err.error.message) {
+          this.toastr.error('Update failed: ' + err.error.message);
+        } else {
+          this.toastr.error('Update failed! Please try again.');
+        }
       }
     });
   }

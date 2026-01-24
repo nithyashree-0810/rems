@@ -39,7 +39,7 @@ import com.techietact.myrems.repository.LayoutRepository;
 import com.techietact.myrems.repository.PlotRepository;
 import com.techietact.myrems.repository.RoleRepository;
 
-@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin
 @RestController
 @RequestMapping("/api/reports")
 public class ReportController {

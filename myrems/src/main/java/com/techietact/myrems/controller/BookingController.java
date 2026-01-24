@@ -19,16 +19,21 @@ import com.techietact.myrems.service.BookingService;
 
 @RestController
 @RequestMapping("/api/booking")
-@CrossOrigin("*")
+@CrossOrigin
 public class BookingController {
 
     @Autowired
     private BookingService bookingService;
 
     @PostMapping("/createbooking")
-    public ResponseEntity<Booking> createBooking(@RequestBody Booking booking) {
-        Booking saved = bookingService.saveBooking(booking);
-        return ResponseEntity.ok(saved);
+    public ResponseEntity<?> createBooking(@RequestBody Booking booking) {
+        try {
+            Booking saved = bookingService.saveBooking(booking);
+            return ResponseEntity.ok(saved);
+        } catch (Exception e) {
+            e.printStackTrace(); // This will help us see the actual error in logs
+            return ResponseEntity.status(500).body("Error creating booking: " + e.getMessage());
+        }
     }
 
     @GetMapping("/get/{id}")

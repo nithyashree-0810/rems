@@ -24,7 +24,7 @@ public class LayoutServiceImpl implements LayoutService {
 
     @Override
     public List<Layout> findAllLayoutsAsc() {
-        return layoutRepository.findAll();
+        return layoutRepository.findAllByOrderByCreatedDateAsc();
     }
 
     @Override
@@ -34,7 +34,7 @@ public class LayoutServiceImpl implements LayoutService {
 
     @Override
     public LayoutBO getLayoutByLayoutName(String layoutName) {
-        return layoutRepository.findById(layoutName)
+        return layoutRepository.findByLayoutName(layoutName)
                 .map(layout -> {
                     LayoutBO layoutBO = new LayoutBO();
                     BeanUtils.copyProperties(layout, layoutBO);
@@ -45,9 +45,9 @@ public class LayoutServiceImpl implements LayoutService {
 
     @Override
     public LayoutBO updateLayout(String layoutName, LayoutBO layoutBO) {
-        return layoutRepository.findById(layoutName)
+        return layoutRepository.findByLayoutName(layoutName)
                 .map(existing -> {
-                    BeanUtils.copyProperties(layoutBO, existing, "layoutName");
+                    BeanUtils.copyProperties(layoutBO, existing, "id", "createdDate");
                     Layout updated = layoutRepository.save(existing);
                     LayoutBO response = new LayoutBO();
                     BeanUtils.copyProperties(updated, response);
@@ -58,12 +58,13 @@ public class LayoutServiceImpl implements LayoutService {
 
     @Override
     public void deleteLayout(String layoutName) {
-        layoutRepository.deleteById(layoutName);
+        layoutRepository.findByLayoutName(layoutName)
+                .ifPresent(layout -> layoutRepository.deleteById(layout.getId()));
     }
 
     @Override
     public List<Layout> searchLayouts(String layoutName, String location) {
-        return layoutRepository.findAll(); // your custom logic already exists
+        return layoutRepository.searchLayouts(layoutName, location);
     }
 
     @Override
@@ -73,31 +74,51 @@ public class LayoutServiceImpl implements LayoutService {
 
     @Override
     public Layout getLayoutEntity(String layoutName) {
-        return layoutRepository.findById(layoutName).orElse(null);
+        return layoutRepository.findByLayoutName(layoutName).orElse(null);
     }
 
 	@Override
 	public List<Layout> findByLayoutNameAndLocation(String layoutName, String location) {
-		// TODO Auto-generated method stub
-		return null;
+		return layoutRepository.findByLayoutNameAndLocation(layoutName, location);
 	}
 
 	@Override
 	public List<Layout> findByLayoutName(String layoutName) {
-		// TODO Auto-generated method stub
-		return null;
+		return layoutRepository.findAllByLayoutName(layoutName);
 	}
 
 	@Override
 	public List<Layout> findByLocation(String location) {
-		// TODO Auto-generated method stub
-		return null;
+		return layoutRepository.findByLocation(location);
 	}
 	
 	 @Override
 	    public void updateLayoutFromBO(Layout existingLayout, LayoutBO layoutBO) {
-	        // Copy all fields from BO to entity except pdfPath
-	        BeanUtils.copyProperties(layoutBO, existingLayout, "pdfPath");
+	        // Copy all fields from BO to entity except id, pdfPath, and createdDate
+	        BeanUtils.copyProperties(layoutBO, existingLayout, "id", "pdfPath", "createdDate");
+	    }
+
+	    @Override
+	    public Layout updateLayoutWithNameChange(String oldLayoutName, LayoutBO layoutBO) {
+	        Layout existingLayout = layoutRepository.findByLayoutName(oldLayoutName).orElse(null);
+	        if (existingLayout == null) {
+	            return null;
+	        }
+	        
+	        // Now we can simply update the layout name in the same record
+	        BeanUtils.copyProperties(layoutBO, existingLayout, "id", "pdfPath", "createdDate");
+	        return layoutRepository.save(existingLayout);
+	    }
+
+	    // Validation method to check if layout name already exists (for updates)
+	    @Override
+	    public boolean isLayoutNameAvailable(String layoutName, Long excludeId) {
+	        Layout existing = layoutRepository.findByLayoutName(layoutName).orElse(null);
+	        if (existing == null) {
+	            return true; // Name is available
+	        }
+	        // If we're updating the same layout, the name is still available
+	        return existing.getId().equals(excludeId);
 	    }
 
 }

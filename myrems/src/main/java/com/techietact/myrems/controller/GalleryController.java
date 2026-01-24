@@ -19,7 +19,7 @@ import com.techietact.myrems.entity.Gallery;
 import com.techietact.myrems.service.GalleryService;
 
 @RestController
-@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin
 @RequestMapping("/api/gallery")
 public class GalleryController {
 	

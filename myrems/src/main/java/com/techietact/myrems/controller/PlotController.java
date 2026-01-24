@@ -25,7 +25,7 @@ import com.techietact.myrems.service.PlotService;
 
 @RestController
 @RequestMapping("/api/plots")
-@CrossOrigin("*")
+@CrossOrigin
 public class PlotController {
 	
 	@Autowired

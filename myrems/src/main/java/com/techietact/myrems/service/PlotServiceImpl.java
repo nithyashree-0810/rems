@@ -28,7 +28,7 @@ public class PlotServiceImpl implements PlotService {
 	@Override
     public boolean createPlat(PlotBO plotBo) {
 		 // Step 1 → Find layout object
-	    Layout layout = layoutRepository.getByLayoutName(plotBo.getLayout().getLayoutName())
+	    Layout layout = layoutRepository.findByLayoutName(plotBo.getLayout().getLayoutName())
 	            .orElseThrow(() -> new RuntimeException("Layout not found"));
 
 	    // Step 2 → Check unique condition: plotNo + layoutName
@@ -103,7 +103,7 @@ public class PlotServiceImpl implements PlotService {
 		 Plot existing = plotRepository.findByPlotNo(plotNo)
 		            .orElseThrow(() -> new RuntimeException("Plot not found"));
 
-		    Layout layout = layoutRepository.getByLayoutName(newPlot.getLayout().getLayoutName())
+		    Layout layout = layoutRepository.findByLayoutName(newPlot.getLayout().getLayoutName())
 		            .orElseThrow(() -> new RuntimeException("Layout not found"));
 
 		    // Duplicate check
@@ -164,7 +164,7 @@ public class PlotServiceImpl implements PlotService {
 	    Plot existing = plotRepository.findByLayout_LayoutNameAndPlotNo(layoutName, plotNo)
 	            .orElseThrow(() -> new RuntimeException("Plot not found"));
 
-	    Layout layout = layoutRepository.getByLayoutName(bo.getLayout().getLayoutName())
+	    Layout layout = layoutRepository.findByLayoutName(bo.getLayout().getLayoutName())
 	            .orElseThrow(() -> new RuntimeException("Layout not found"));
 
 	    BeanUtils.copyProperties(bo, existing);

@@ -114,6 +114,12 @@ public class PlotController {
 	    Plot plot = plotService.getPlotById(plotId);
 	    return ResponseEntity.ok(plot);
 	}
+    
+	 @PutMapping("/mark-booked/{plotId}")
+	    public ResponseEntity<String> markPlotAsBooked(@PathVariable Long plotId) {
 
+	        plotService.markAsBooked(plotId);
+	        return ResponseEntity.ok("Plot marked as booked");
+	    }
 
 }

@@ -11,10 +11,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.lowagie.text.Document;
@@ -32,10 +32,12 @@ import com.techietact.myrems.entity.Booking;
 import com.techietact.myrems.entity.Enquiry;
 import com.techietact.myrems.entity.Layout;
 import com.techietact.myrems.entity.Plot;
+import com.techietact.myrems.entity.Role;
 import com.techietact.myrems.repository.BookingRepository;
 import com.techietact.myrems.repository.EnquiryRepository;
 import com.techietact.myrems.repository.LayoutRepository;
 import com.techietact.myrems.repository.PlotRepository;
+import com.techietact.myrems.repository.RoleRepository;
 
 @CrossOrigin(origins = "http://localhost:4200")
 @RestController
@@ -46,17 +48,20 @@ public class ReportController {
     private final BookingRepository bookingRepository;
     private final PlotRepository plotRepository;
     private final EnquiryRepository enquiryRepository;
+    private final RoleRepository roleRepository;
 
     public ReportController(
             LayoutRepository layoutRepository,
             BookingRepository bookingRepository,
             PlotRepository plotRepository,
-            EnquiryRepository enquiryRepository) {
+            EnquiryRepository enquiryRepository,
+            RoleRepository roleRepository) {
 
         this.layoutRepository = layoutRepository;
         this.bookingRepository = bookingRepository;
         this.plotRepository = plotRepository;
         this.enquiryRepository = enquiryRepository;
+        this.roleRepository =roleRepository;
     }
 
     /* =========================================================
@@ -327,14 +332,13 @@ public class ReportController {
 
             addCompanyHeader(document, "Customer Enquiries Report");
 
-            PdfPTable table = new PdfPTable(6);
+            PdfPTable table = new PdfPTable(5);
             table.setWidthPercentage(100);
             table.setHeaderRows(1);
 
             addHeader(table, "S.No");
             addHeader(table, "Customer Name");
             addHeader(table, "Mobile");
-            addHeader(table, "Location");
             addHeader(table, "Address");
             addHeader(table, "Date");
 
@@ -347,7 +351,6 @@ public class ReportController {
                         e.getFirstName() + " " + e.getLastName(),
                         bg, Element.ALIGN_LEFT);
                 addCell(table, e.getMobileNo(), bg, Element.ALIGN_CENTER);
-                addCell(table, e.getAddress(), bg, Element.ALIGN_LEFT);
                 addCell(table, e.getAddress(), bg, Element.ALIGN_LEFT);
                 addCell(table, e.getCreatedDate(), bg, Element.ALIGN_CENTER);
             }
@@ -362,5 +365,46 @@ public class ReportController {
             return ResponseEntity.internalServerError().build();
         }
     }
+    
+    @PostMapping("/roles")
+    public ResponseEntity<byte[]> roleReport(@RequestBody List<Role> roles) {
+        try {
+
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            Document document = new Document(PageSize.A4.rotate(), 25, 25, 25, 25);
+            PdfWriter.getInstance(document, baos);
+            document.open();
+
+            addCompanyHeader(document, "Role Report");
+
+            PdfPTable table = new PdfPTable(4);
+            table.setWidthPercentage(100);
+
+            addHeader(table, "S.No");
+            addHeader(table, "Name");
+            addHeader(table, "Mobile");
+            addHeader(table, "Address");
+
+            int i = 1;
+            for (Role v : roles) {
+                Color bg = i % 2 == 0 ? new Color(245,245,245) : Color.WHITE;
+
+                addCell(table, i++, bg, Element.ALIGN_CENTER);
+                addCell(table, v.getFirstName() + " " + v.getLastName(), bg, Element.ALIGN_LEFT);
+                addCell(table, v.getMobileNo(), bg, Element.ALIGN_CENTER);
+                addCell(table, v.getAddress(), bg, Element.ALIGN_LEFT);
+            }
+
+            document.add(table);
+            document.close();
+
+            return pdfResponse(baos, "roles-report.pdf");
+
+        } catch (Exception e) {
+            return ResponseEntity.internalServerError().build();
+        }
+    }
+
+
 
 }

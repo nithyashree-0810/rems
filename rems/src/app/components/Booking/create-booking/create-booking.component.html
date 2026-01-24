@@ -204,13 +204,18 @@
         <div class="form-column">
 
           <div class="form-group">
-            <label>Mobile No:<span class="req">*</span></label>
-            <input type="tel" class="form-control"
-                   name="mobileNo"
-                   [(ngModel)]="booking.mobileNo"
-                   (blur)="onMobileChange()"
-                   required>
-          </div>
+  <label>Mobile No:<span class="req">*</span></label>
+  <input type="tel"
+         class="form-control"
+         name="mobileNo"
+         [(ngModel)]="booking.mobileNo"
+         maxlength="10"
+         pattern="[0-9]*"
+         (input)="onMobileInput($event)"
+         (blur)="onMobileChange()"
+         required>
+</div>
+
 
           <div class="form-group">
             <label>Customer Name:</label>
@@ -254,23 +259,16 @@
   </div>
 
   <div class="form-group">
-    <label>Registered Mode:<span class="req">*</span></label>
-    <select class="form-control"
-            name="registeredMode"
-            [(ngModel)]="booking.registeredMode"
-            required>
-      <option value="">-- Select Mode --</option>
-      <option>Cash</option>
-      <option>UPI</option>
-      <option>Bank Transfer</option>
-      <option>Cheque</option>
-    </select>
+    <label>Registered No:<span class="req">*</span></label>
+    <input type="text"
+           class="form-control"
+           name="regNo"
+           [(ngModel)]="booking.regNo"
+           required>
   </div>
-
 </div>
-
+</div>
         </div>
-      </div>
 
       <!-- ACTIONS -->
       <div class="action-buttons">

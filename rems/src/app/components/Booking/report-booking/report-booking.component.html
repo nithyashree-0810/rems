@@ -7,7 +7,7 @@
     <input type="text"
            [(ngModel)]="searchLayoutName"
            (keyup)="onSearch()"
-           placeholder="Search Name"
+           placeholder="Search Layout Name"
            class="search-input">
 
     <input type="text"
@@ -72,10 +72,21 @@
   <!-- PAGINATION + HOME (LIKE CUSTOMER PAGE) -->
   <div class="pagination-container" *ngIf="!loading && bookingList.length > 0">
 
-    <div class="pagination">
-      <button [disabled]="currentPage === 1" (click)="prevPage()">«</button>
-      <button [disabled]="currentPage === totalPages" (click)="nextPage()">»</button>
-    </div>
+  <div class="pagination">
+    <!-- Prev -->
+    <button [disabled]="currentPage === 1" (click)="prevPage()">« Prev</button>
+
+    <!-- Page Numbers -->
+    <button *ngFor="let page of pages"
+            [class.active]="page === currentPage"
+            (click)="goToPage(page)">
+      {{ page }}
+    </button>
+
+    <!-- Next -->
+    <button [disabled]="currentPage === totalPages" (click)="nextPage()">Next »</button>
+  </div>
+
 
     <!-- ✅ HOME BUTTON BOTTOM-RIGHT -->
     <button class="btn btn-danger pagination-home-btn" (click)="goHome()">

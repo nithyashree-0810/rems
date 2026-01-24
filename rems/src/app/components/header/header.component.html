@@ -54,6 +54,14 @@
       </ul>
     </li>
 
+    <!-- Gallery -->
+<li>
+  <a routerLink="/gallery" (click)="closeDropdown()">
+    <i class="fa-solid fa-image small-icon"></i>
+    Gallery
+  </a>
+</li>
+
     <!-- Report -->
     <li class="dropdown">
       <a href="javascript:void(0)" (click)="toggleDropdown('report')">
@@ -64,8 +72,9 @@
       <ul class="dropdown-menu" *ngIf="activeDropdown === 'report'">
         <li><a routerLink="/report-layout" (click)="closeDropdown()">Layouts Report</a></li>
         <li><a routerLink="/report-plot" (click)="closeDropdown()">Plots Report</a></li>
-        <li><a routerLink="/report-enquiry" (click)="closeDropdown()">Enquiries Report</a></li>
+        <li><a routerLink="/report-enquiry" (click)="closeDropdown()">Customer Report</a></li>
         <li><a routerLink="/report-booking" (click)="closeDropdown()">Bookings Report</a></li>
+        <li><a routerLink="/report-role" (click)="closeDropdown()">Role Report</a></li>
       </ul>
     </li>
 

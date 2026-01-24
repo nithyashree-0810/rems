@@ -58,4 +58,13 @@ getPlotById(plotId: number | string): Observable<Plot> {
     return this.http.get<Plot>(`${this.baseUrl}/id/${plotId}`);
   }
 
+  // ✅ MARK PLOT AS BOOKED
+markAsBooked(plotId: number | string): Observable<any> {
+  return this.http.put(
+    `${this.baseUrl}/mark-booked/${plotId}`,
+    {},
+    { responseType: 'text' }
+  );
+}
+
 }

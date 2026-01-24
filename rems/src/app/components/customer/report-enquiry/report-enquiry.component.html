@@ -7,7 +7,7 @@
     <input type="text"
            [(ngModel)]="searchName"
            (keyup)="onSearch()"
-           placeholder="Search Name"
+           placeholder="Search by First or Last Name"
            class="search-input">
 
     <input type="text"
@@ -63,12 +63,22 @@
     </table>
   </div>
 
-  <!-- PAGINATION -->
-  <div class="pagination-container">
-    <div class="pagination">
-      <button [disabled]="currentPage === 1" (click)="prevPage()">«</button>
-      <button [disabled]="currentPage === totalPages" (click)="nextPage()">»</button>
-    </div>
+ <!-- PAGINATION -->
+<div class="pagination-container">
+  <div class="pagination">
+    <!-- Prev Button -->
+    <button [disabled]="currentPage === 1" (click)="prevPage()">« Prev</button>
+
+    <!-- Page Numbers -->
+    <button *ngFor="let page of pages"
+            [class.active]="page === currentPage"
+            (click)="goToPage(page)">
+      {{ page }}
+    </button>
+
+    <!-- Next Button -->
+    <button [disabled]="currentPage === totalPages" (click)="nextPage()">Next »</button>
+  </div>
 
     <button class="btn btn-danger pagination-home-btn" (click)="goHome()">
       Home

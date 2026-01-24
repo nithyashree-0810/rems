@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Booking } from '../models/bookings';
 import { Layout } from '../models/layout';
+import { Role } from '../models/role';
 
 @Injectable({
   providedIn: 'root'
@@ -50,4 +51,16 @@ export class ReportService {
     { responseType: 'blob' }
   );
 }
+
+downloadRoleReport(data: any[]) {
+  return this.http.post(
+    'http://localhost:8080/api/reports/roles',
+    data,
+    { responseType: 'blob' }
+  );
+}
+
+
+
+
 }

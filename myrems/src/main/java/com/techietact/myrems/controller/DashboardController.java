@@ -14,7 +14,7 @@ import com.techietact.myrems.service.DashboardService;
 
 @RestController
 @RequestMapping("/api/layouts")
-@CrossOrigin("*")
+@CrossOrigin
 public class DashboardController {
 	
     @Autowired

@@ -28,7 +28,7 @@ public class Booking {
     private Plot plot;
 
     @ManyToOne
-    @JoinColumn(name = "layout_name", referencedColumnName = "layoutName")
+    @JoinColumn(name = "layout_id", referencedColumnName = "id")
     private Layout layout;
 
     @ManyToOne
@@ -78,10 +78,10 @@ public class Booking {
     @PreUpdate
     public void calculateBalance() {
         int totalPaid =
-                advance1 +
-                advance2 +
-                advance3 +
-                advance4;
+                (advance1 != 0 ? advance1 : 0) +
+                (advance2 != 0 ? advance2 : 0) +
+                (advance3 != 0 ? advance3 : 0) +
+                (advance4 != 0 ? advance4 : 0);
 
         this.balance = this.price - totalPaid;
     }

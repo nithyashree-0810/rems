@@ -59,8 +59,7 @@ private double breadthOne;
 	private boolean booked;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "layout_name", referencedColumnName = "layoutName")
-
+    @JoinColumn(name = "id", referencedColumnName = "id")
     private Layout layout;
 	
 

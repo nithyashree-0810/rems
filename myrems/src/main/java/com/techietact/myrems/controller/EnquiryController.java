@@ -19,7 +19,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.techietact.myrems.entity.Enquiry;
 import com.techietact.myrems.repository.EnquiryRepository;
 import com.techietact.myrems.service.EnquiryService;
-@CrossOrigin("*")
+@CrossOrigin
 @RequestMapping("/api/customer")
 @RestController
 public class EnquiryController {
@@ -42,8 +42,13 @@ public class EnquiryController {
     }
 
     @GetMapping("/{mobileNo}")
-    public Enquiry getById(@PathVariable Long mobileNo) {
-        return enquiryService.getByMobileNo(mobileNo);
+    public ResponseEntity<Enquiry> getById(@PathVariable Long mobileNo) {
+        Enquiry enquiry = enquiryService.getByMobileNo(mobileNo);
+        if (enquiry != null) {
+            return ResponseEntity.ok(enquiry);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
     }
 
     @PutMapping("/{mobileNo}")

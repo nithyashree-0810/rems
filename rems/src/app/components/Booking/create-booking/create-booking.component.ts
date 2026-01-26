@@ -134,15 +134,39 @@ export class CreateBookingComponent implements OnInit {
   onMobileChange() {
     if (!this.booking.mobileNo) return;
 
-    this.customerService.getCustomerByMobile(this.booking.mobileNo).subscribe({
+    const mobileNumber = Number(this.booking.mobileNo);
+    if (isNaN(mobileNumber)) {
+      this.toastr.error('Invalid mobile number');
+      return;
+    }
+
+    this.customerService.getCustomerByMobile(mobileNumber).subscribe({
       next: c => {
-        this.booking.firstName = c.firstName;
-        this.booking.address = c.address;
-        this.booking.pincode = c.pincode;
-        this.booking.aadharNo = c.aadharNo;
-        this.booking.panNo = c.panNo;
+        if (c) {
+          this.booking.firstName = c.firstName || '';
+          this.booking.address = c.address || '';
+          this.booking.pincode = c.pincode || null;
+          this.booking.aadharNo = c.aadharNo || null;
+          this.booking.panNo = c.panNo || '';
+        } else {
+          // Clear fields if customer not found
+          this.booking.firstName = '';
+          this.booking.address = '';
+          this.booking.pincode = null;
+          this.booking.aadharNo = null;
+          this.booking.panNo = '';
+          this.toastr.error('Customer not found');
+        }
       },
-      error: () => this.toastr.error('Customer not found')
+      error: () => {
+        // Clear fields on error
+        this.booking.firstName = '';
+        this.booking.address = '';
+        this.booking.pincode = null;
+        this.booking.aadharNo = null;
+        this.booking.panNo = '';
+        this.toastr.error('Customer not found');
+      }
     });
   }
 
@@ -163,42 +187,45 @@ export class CreateBookingComponent implements OnInit {
       plot: { plotId: this.booking.plotId },
       plotNo: this.booking.plotNo,
       layout: { layoutName: this.booking.layoutName },
-      customer: { mobileNo: this.booking.mobileNo },
+      customer: { mobileNo: Number(this.booking.mobileNo) },
 
-      sqft: this.booking.sqft,
-      price: this.booking.price,
-      direction: this.booking.direction,
+      sqft: this.booking.sqft || 0,
+      price: this.booking.price || 0,
+      direction: this.booking.direction || '',
 
-      advance1: this.booking.advance1,
-      advance1Date: this.booking.advance1Date,
-      advance1Mode: this.booking.advance1Mode,
+      advance1: this.booking.advance1 || 0,
+      advance1Date: this.booking.advance1Date || null,
+      advance1Mode: this.booking.advance1Mode || '',
 
-      advance2: this.booking.advance2,
-      advance2Date: this.booking.advance2Date,
-      advance2Mode: this.booking.advance2Mode,
+      advance2: this.booking.advance2 || 0,
+      advance2Date: this.booking.advance2Date || null,
+      advance2Mode: this.booking.advance2Mode || '',
 
-      advance3: this.booking.advance3,
-      advance3Date: this.booking.advance3Date,
-      advance3Mode: this.booking.advance3Mode,
+      advance3: this.booking.advance3 || 0,
+      advance3Date: this.booking.advance3Date || null,
+      advance3Mode: this.booking.advance3Mode || '',
 
-      advance4: this.booking.advance4,
-      advance4Date: this.booking.advance4Date,
-      advance4Mode: this.booking.advance4Mode,
+      advance4: this.booking.advance4 || 0,
+      advance4Date: this.booking.advance4Date || null,
+      advance4Mode: this.booking.advance4Mode || '',
 
-      balance: this.booking.balance,
+      balance: this.booking.balance || 0,
 
-      address: this.booking.address,
-      pincode: this.booking.pincode,
-      aadharNo: this.booking.aadharNo,
-      panNo: this.booking.panNo,
+      address: this.booking.address || '',
+      pincode: this.booking.pincode || 0,
+      aadharNo: this.booking.aadharNo || null,
+      panNo: this.booking.panNo || '',
 
-      status: this.booking.status,
+      status: this.booking.status || '',
       regDate: this.booking.status === 'Registered' ? this.booking.regDate : null,
       regNo: this.booking.status === 'Registered' ? this.booking.regNo : null,
 
-      refundAmount: this.booking.refundAmount,
-      mode: this.booking.mode
+      refundAmount: this.booking.refundAmount || 0,
+      mode: this.booking.mode || null
     };
+
+    console.log('=== FRONTEND BOOKING REQUEST ===');
+    console.log('Request Body:', JSON.stringify(requestBody, null, 2));
 
     this.bookingService.createBooking(requestBody).subscribe({
   next: () => {

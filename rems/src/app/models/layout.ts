@@ -1,4 +1,5 @@
 export class Layout {
+  id?: number;
   layoutName!: string;
   area?: number;
   noOfPlots?: number;

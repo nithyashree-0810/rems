@@ -16,7 +16,7 @@ import com.techietact.myrems.service.LayoutService;
 
 @RestController
 @RequestMapping("/api/layouts")
-@CrossOrigin("*")
+@CrossOrigin
 public class LayoutController {
 
 	@Autowired
@@ -91,27 +91,52 @@ public class LayoutController {
 			@RequestPart("layoutData") LayoutBO layoutBO,
 			@RequestPart(value = "layoutPdf", required = false) MultipartFile file) throws Exception {
 
-		Layout existingLayout = layoutService.getLayoutEntity(layoutName);
+		try {
+			Layout existingLayout = layoutService.getLayoutEntity(layoutName);
+			if (existingLayout == null) {
+				return ResponseEntity.notFound().build();
+			}
 
-		// ✅ If new PDF uploaded → save it
-		if (file != null && !file.isEmpty()) {
+			// Check if the new layout name is available (if it's being changed)
+			if (!layoutName.equals(layoutBO.getLayoutName())) {
+				boolean isAvailable = layoutService.isLayoutNameAvailable(layoutBO.getLayoutName(), existingLayout.getId());
+				if (!isAvailable) {
+					return ResponseEntity.badRequest().build(); // Layout name already exists
+				}
+			}
 
-			File dir = new File(PDF_UPLOAD_PATH);
-			if (!dir.exists())
-				dir.mkdirs();
+			// ✅ If new PDF uploaded → save it
+			if (file != null && !file.isEmpty()) {
+				File dir = new File(PDF_UPLOAD_PATH);
+				if (!dir.exists())
+					dir.mkdirs();
 
-			String filePath = PDF_UPLOAD_PATH + file.getOriginalFilename();
-			file.transferTo(new File(filePath));
+				String filePath = PDF_UPLOAD_PATH + file.getOriginalFilename();
+				file.transferTo(new File(filePath));
 
-			existingLayout.setPdfPath(filePath);
+				existingLayout.setPdfPath(filePath);
+			}
+
+			// ✅ Update all fields including layout name in the same record
+			layoutService.updateLayoutFromBO(existingLayout, layoutBO);
+			Layout updatedLayout = layoutService.saveLayout(existingLayout);
+
+			return ResponseEntity.ok(updatedLayout);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return ResponseEntity.internalServerError().build();
 		}
-		// else → old pdfPath automatically retained
+	}
 
-		// ✅ update other fields
-		layoutService.updateLayoutFromBO(existingLayout, layoutBO);
-
-		Layout saved = layoutService.saveLayout(existingLayout);
-		return ResponseEntity.ok(saved);
+	// Test endpoint to verify backend is working
+	@GetMapping("/health")
+	public ResponseEntity<String> healthCheck() {
+		try {
+			long layoutCount = layoutService.getAllLayouts().size();
+			return ResponseEntity.ok("Backend is working! Total layouts: " + layoutCount);
+		} catch (Exception e) {
+			return ResponseEntity.internalServerError().body("Backend error: " + e.getMessage());
+		}
 	}
 
 }

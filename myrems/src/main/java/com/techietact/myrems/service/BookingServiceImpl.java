@@ -29,65 +29,98 @@ private LayoutRepository layoutRepository;
 private EnquiryRepository enquiryRepository;
 	@Override
 	public Booking saveBooking(Booking booking) {
-
-	    // ------- FETCH REAL PLOT -------
-	    if (booking.getPlot() == null || booking.getPlot().getPlotId() == null) {
-	        throw new RuntimeException("Plot ID is required");
-	    }
-	    Plot plot = plotRepository.findById(booking.getPlot().getPlotId())
-	            .orElseThrow(() -> new RuntimeException("Plot not found"));
-
-	    if (plot.isBooked()) {
-	        throw new RuntimeException("Plot already booked");
-	    }
-
-	    // ------- FETCH REAL LAYOUT -------
-	    if (booking.getLayout() == null || booking.getLayout().getLayoutName() == null) {
-	        throw new RuntimeException("Layout Name is required");
-	    }
-	    Layout layout = layoutRepository.findById(booking.getLayout().getLayoutName())
-	            .orElseThrow(() -> new RuntimeException("Layout not found"));
-
-	    // ------- FETCH REAL CUSTOMER -------
-	    if (booking.getCustomer() == null || booking.getCustomer().getMobileNo() == null) {
-	        throw new RuntimeException("Customer Mobile No is required");
-	    }
-	    Enquiry enquiry = enquiryRepository.findByMobileNo(booking.getCustomer().getMobileNo());
-	    if (enquiry == null) {
-	        throw new RuntimeException("Customer not found");
-	    }
-
-	    // ------- SET REAL ENTITIES -------
-	    booking.setPlot(plot);
-	    booking.setLayout(layout);
-	    booking.setCustomer(enquiry);
-	    
-	    // ------- COPY CUSTOMER DETAILS INTO BOOKING SNAPSHOT -------
-	    if (booking.getAddress() == null) {
-	        booking.setAddress(enquiry.getAddress());
-	    }
-	    if (booking.getPincode() == 0) {
-	        booking.setPincode(enquiry.getPincode());
-	    }
-	    if (booking.getAadharNo() == null) {
-	        booking.setAadharNo(enquiry.getAadharNo());
-	    }
-	    if (booking.getPanNo() == null || booking.getPanNo().isBlank()) {
-	        booking.setPanNo(enquiry.getPanNo());
-	    } else {
-	        // keep enquiry in sync if provided in booking request
-	        if (enquiry.getPanNo() == null || !booking.getPanNo().equals(enquiry.getPanNo())) {
-	            enquiry.setPanNo(booking.getPanNo());
-	            enquiryRepository.save(enquiry);
+	    try {
+	        System.out.println("=== BOOKING CREATION DEBUG ===");
+	        System.out.println("Booking object: " + booking);
+	        
+	        // ------- FETCH REAL PLOT -------
+	        System.out.println("Checking plot...");
+	        if (booking.getPlot() == null || booking.getPlot().getPlotId() == null) {
+	            throw new RuntimeException("Plot ID is required");
 	        }
+	        Plot plot = plotRepository.findById(booking.getPlot().getPlotId())
+	                .orElseThrow(() -> new RuntimeException("Plot not found"));
+
+	        if (plot.isBooked()) {
+	            throw new RuntimeException("Plot already booked");
+	        }
+	        System.out.println("Plot found: " + plot.getPlotNo());
+
+	        // ------- FETCH REAL LAYOUT -------
+	        System.out.println("Checking layout...");
+	        Layout layout = null;
+	        if (booking.getLayout() != null) {
+	            if (booking.getLayout().getId() != null) {
+	                // If ID is provided, use it
+	                layout = layoutRepository.findById(booking.getLayout().getId())
+	                        .orElseThrow(() -> new RuntimeException("Layout not found"));
+	            } else if (booking.getLayout().getLayoutName() != null) {
+	                // If layoutName is provided, use it
+	                layout = layoutRepository.findByLayoutName(booking.getLayout().getLayoutName())
+	                        .orElseThrow(() -> new RuntimeException("Layout not found"));
+	            } else {
+	                throw new RuntimeException("Layout ID or Layout Name is required");
+	            }
+	        } else {
+	            throw new RuntimeException("Layout is required");
+	        }
+	        System.out.println("Layout found: " + layout.getLayoutName());
+
+	        // ------- FETCH REAL CUSTOMER -------
+	        System.out.println("Checking customer...");
+	        if (booking.getCustomer() == null || booking.getCustomer().getMobileNo() == null) {
+	            throw new RuntimeException("Customer Mobile No is required");
+	        }
+	        Enquiry enquiry = enquiryRepository.findByMobileNo(booking.getCustomer().getMobileNo());
+	        if (enquiry == null) {
+	            throw new RuntimeException("Customer not found");
+	        }
+	        System.out.println("Customer found: " + enquiry.getFirstName());
+
+	        // ------- SET REAL ENTITIES -------
+	        System.out.println("Setting entities...");
+	        booking.setPlot(plot);
+	        booking.setLayout(layout);
+	        booking.setCustomer(enquiry);
+	        
+	        // ------- COPY CUSTOMER DETAILS INTO BOOKING SNAPSHOT -------
+	        System.out.println("Copying customer details...");
+	        if (booking.getAddress() == null) {
+	            booking.setAddress(enquiry.getAddress());
+	        }
+	        if (booking.getPincode() == 0) {
+	            booking.setPincode(enquiry.getPincode());
+	        }
+	        if (booking.getAadharNo() == null) {
+	            booking.setAadharNo(enquiry.getAadharNo());
+	        }
+	        if (booking.getPanNo() == null || booking.getPanNo().isBlank()) {
+	            booking.setPanNo(enquiry.getPanNo());
+	        } else {
+	            // keep enquiry in sync if provided in booking request
+	            if (enquiry.getPanNo() == null || !booking.getPanNo().equals(enquiry.getPanNo())) {
+	                enquiry.setPanNo(booking.getPanNo());
+	                enquiryRepository.save(enquiry);
+	            }
+	        }
+
+	        // ------- MARK PLOT AS BOOKED -------
+	        System.out.println("Marking plot as booked...");
+	        plot.setBooked(true);
+	        plotRepository.save(plot);
+
+	        // ------- SAVE BOOKING -------
+	        System.out.println("Saving booking...");
+	        Booking savedBooking = bookingRepository.save(booking);
+	        System.out.println("Booking saved successfully with ID: " + savedBooking.getBookingId());
+	        
+	        return savedBooking;
+	        
+	    } catch (Exception e) {
+	        System.err.println("Error in saveBooking: " + e.getMessage());
+	        e.printStackTrace();
+	        throw e;
 	    }
-
-	    // ------- MARK PLOT AS BOOKED -------
-	    plot.setBooked(true);
-	    plotRepository.save(plot);
-
-	    // ------- SAVE BOOKING -------
-	    return bookingRepository.save(booking);
 	}
 
 	@Override

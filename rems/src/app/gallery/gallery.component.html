@@ -1,0 +1,44 @@
+<div class="upload-section">
+  <input type="file" (change)="onFileSelect($event)" accept="image/*" />
+  <button (click)="upload()" class="upload-btn">Upload</button>
+  <button (click)="refreshGallery()" class="refresh-btn">🔄 Refresh</button>
+</div>
+
+<div class="gallery-grid">
+  <div class="gallery-item" *ngFor="let item of galleryList">
+    <div class="image-container">
+      <img [src]="'http://localhost:8080' + item.filePath" 
+           [alt]="item.fileName" 
+           class="gallery-image"
+           (click)="viewImage(item)"
+           (error)="onImageError($event, item)"
+           (load)="onImageLoad($event, item)" />
+    </div>
+    <p class="gallery-text">{{ item.fileName }}</p>
+    <div class="action-buttons">
+      <button class="action-btn view" (click)="viewImage(item)">👁️ View</button>
+      <button class="action-btn delete" (click)="deleteImage(item)">🗑️ Delete</button>
+    </div>
+  </div>
+</div>
+
+<!-- Image Modal -->
+<div class="modal" [ngClass]="{'show': showModal}" (click)="closeModal()">
+  <div class="modal-content" (click)="$event.stopPropagation()">
+    <span class="close" (click)="closeModal()">&times;</span>
+    <img *ngIf="selectedImage" [src]="selectedImage.fullPath" [alt]="selectedImage.fileName" class="modal-image" />
+    <div class="modal-info" *ngIf="selectedImage">
+      <h3>{{ selectedImage.fileName }}</h3>
+      <p>Type: {{ selectedImage.fileType }}</p>
+      <p>Path: {{ selectedImage.filePath }}</p>
+      <p>Full URL: {{ selectedImage.fullPath }}</p>
+      <button class="delete-btn-modal" (click)="deleteImage(selectedImage)">Delete Image</button>
+    </div>
+  </div>
+</div>
+
+<!-- Debug Info -->
+<div class="debug-section" *ngIf="galleryList.length === 0">
+  <p>No images found. Try uploading some images or check the console for errors.</p>
+</div>
+

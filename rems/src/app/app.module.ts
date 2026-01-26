@@ -41,6 +41,9 @@ import { ReportBookingComponent } from './components/Booking/report-booking/repo
 import { ReportLayoutComponent } from './components/report-layout/report-layout.component';
 import { ReportRoleComponent } from './components/Role/report-role/report-role.component';
 import { GalleryComponent } from './gallery/gallery.component';
+import { RegisterComponent } from './components/register/register.component';
+import { ForgotPasswordComponent } from './components/forgot-password/forgot-password.component';
+
 
 
 
@@ -54,7 +57,7 @@ import { GalleryComponent } from './gallery/gallery.component';
     FooterComponent,
     DashboardComponent,
     ViewLayoutsComponent,
-    
+
     //customer
     CreateEnquiryComponent,
     EditEnquiryComponent,
@@ -68,7 +71,7 @@ import { GalleryComponent } from './gallery/gallery.component';
     ReportBookingComponent,
     ViewLayoutsComponent,
     CreatePlotComponent,
-    ListPlotComponent, 
+    ListPlotComponent,
     EditPlotComponent,
     ViewPlotComponent,
     ReportPlotComponent,
@@ -82,20 +85,22 @@ import { GalleryComponent } from './gallery/gallery.component';
     ReportLayoutComponent,
     ReportRoleComponent,
     GalleryComponent,
+    RegisterComponent,
+    ForgotPasswordComponent,
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     FormsModule,
-   HttpClientModule,
+    HttpClientModule,
     ReactiveFormsModule,
     NgxSpinnerModule,
-      ToastrModule.forRoot({
+    ToastrModule.forRoot({
       timeOut: 2000,
       positionClass: 'toast-top-right',
       preventDuplicates: true,
     }),
-BrowserAnimationsModule
+    BrowserAnimationsModule
   ],
   providers: [
     provideAnimations()

@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { Login } from '../../models/login';
 import { ToastrService } from 'ngx-toastr';
 import { NgxSpinnerService } from 'ngx-spinner';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-login',
@@ -15,14 +16,12 @@ export class LoginComponent implements OnInit, OnDestroy {
 
   login: Login = new Login();
 
-  private readonly validEmail = 'admin@gmail.com';
-  private readonly validPassword = 'admin123';
-
   constructor(
     private router: Router,
     private toastr: ToastrService,
-    private spinner: NgxSpinnerService
-  ) {}
+    private spinner: NgxSpinnerService,
+    private authService: AuthService
+  ) { }
 
   ngOnInit(): void {
     document.body.classList.add('login-page');
@@ -41,20 +40,21 @@ export class LoginComponent implements OnInit, OnDestroy {
 
     this.spinner.show();
 
-    setTimeout(() => {
-
-      if (
-        this.login.email === this.validEmail &&
-        this.login.password === this.validPassword
-      ) {
+    this.authService.login({
+      email: this.login.email,
+      password: this.login.password
+    }).subscribe({
+      next: (res) => {
         this.spinner.hide();
         this.toastr.success('Login Successful');
+        localStorage.setItem('userEmail', res.email);
+        localStorage.setItem('fullName', res.fullName);
         this.router.navigate(['/dashboard']);
-      } else {
+      },
+      error: (err) => {
         this.spinner.hide();
-        this.toastr.error('Invalid Email or Password');
+        this.toastr.error(err.error.error || 'Invalid Email or Password');
       }
-
-    }, 1500);
+    });
   }
 }

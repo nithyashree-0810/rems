@@ -1,7 +1,7 @@
 <div class="form-container" *ngIf="plot">
 
   <div class="top-bar">
-    <button class="view-btn" routerLink="/view-plots">View Plots</button>
+    <button class="view-btn" (click)="goBackToList()">View Plots</button>
   </div>
 
   <h2 class="form-title">Update Plot</h2>

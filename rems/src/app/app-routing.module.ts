@@ -24,6 +24,7 @@ import { CreateBookingComponent } from './components/Booking/create-booking/crea
 import { ListBookingComponent } from './components/Booking/list-booking/list-booking.component';
 import { ViewBookingComponent } from './components/Booking/view-booking/view-booking.component';
 import { EditBookingComponent } from './components/Booking/edit-booking/edit-booking.component';
+import { BookingHistoryComponent } from './components/Booking/booking-history/booking-history.component';
 
 // Plots
 import { CreatePlotComponent } from './components/Plots/create-plot/create-plot.component';
@@ -65,6 +66,10 @@ const routes: Routes = [
   { path: 'view-booking/:id', component: ViewBookingComponent },
   { path: 'edit-booking/:id', component: EditBookingComponent },
   { path: 'report-booking', component: ReportBookingComponent },
+  
+  // History routes
+  { path: 'booking-history/plot/:plotId', component: BookingHistoryComponent },
+  { path: 'booking-history/layout/:layoutId', component: BookingHistoryComponent },
 
   /** Customer / Enquiry Routes */
   { path: 'create-enquiry', component: CreateEnquiryComponent },

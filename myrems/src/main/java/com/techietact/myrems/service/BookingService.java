@@ -16,5 +16,20 @@ public interface BookingService {
 
 	void deleteBooking(Long id);
 
+	// History-related methods
+	List<Booking> getLatestActiveBookingsPerPlot();
+	
+	List<Booking> getAllActiveBookings();
+	
+	List<Booking> getBookingHistoryByPlotId(Long plotId);
+	
+	List<Booking> getBookingHistoryByLayoutId(Long layoutId);
+	
+	Booking getLatestActiveBookingByPlotId(Long plotId);
+	
+	boolean hasActiveBookingForPlot(Long plotId);
+
+	// Soft delete method
+	void softDeleteBooking(Long id);
 	
 }

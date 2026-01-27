@@ -16,6 +16,6 @@ export class Layout {
   surveyNo?: string;
   dtcpApproved?: boolean;
   reraApproved?: boolean;
-
+  createdDate?: string | Date;  // Add this field
   pdfPath?: string;   // ⭐ ADD THIS
 }

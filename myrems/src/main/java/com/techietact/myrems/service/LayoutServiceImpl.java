@@ -77,6 +77,11 @@ public class LayoutServiceImpl implements LayoutService {
         return layoutRepository.findByLayoutName(layoutName).orElse(null);
     }
 
+    @Override
+    public Layout getLayoutById(Long layoutId) {
+        return layoutRepository.findById(layoutId).orElse(null);
+    }
+
 	@Override
 	public List<Layout> findByLayoutNameAndLocation(String layoutName, String location) {
 		return layoutRepository.findByLayoutNameAndLocation(layoutName, location);

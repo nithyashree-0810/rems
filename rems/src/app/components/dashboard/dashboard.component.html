@@ -14,25 +14,25 @@
     </div>
 
     <div class="stats-row">
-      <div class="glass-card stat-item">
+      <div class="glass-card stat-item" (click)="goTo('totalLayouts')">
         <div class="icon-box"><i class="fa-solid fa-map"></i></div>
         <span class="stat-number">{{ totalLayouts }}</span>
         <span class="stat-text">Total Layouts</span>
       </div>
 
-      <div class="glass-card stat-item">
+      <div class="glass-card stat-item" (click)="goTo('totalPlots')">
         <div class="icon-box"><i class="fa-solid fa-border-all"></i></div>
         <span class="stat-number">{{ totalPlots }}</span>
         <span class="stat-text">Total Plots</span>
       </div>
 
-      <div class="glass-card stat-item">
+      <div class="glass-card stat-item" (click)="goTo('totalEnquiries')">
         <div class="icon-box"><i class="fa-solid fa-users"></i></div>
         <span class="stat-number">{{ totalEnquiries }}</span>
         <span class="stat-text">Customer Enquiries</span>
       </div>
 
-      <div class="glass-card stat-item">
+      <div class="glass-card stat-item"  (click)="goTo('totalBookings')">
         <div class="icon-box"><i class="fa-solid fa-check-double"></i></div>
         <span class="stat-number">{{ totalBookings }}</span>
         <span class="stat-text">Bookings Completed</span>

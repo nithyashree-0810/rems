@@ -104,7 +104,11 @@ export class DashboardComponent implements OnInit, OnDestroy {
       layouts: '/view-layouts',
       plots: '/view-plots',
       enquiries: '/view-enquiries',
-      bookings: '/booking-history'
+      bookings: '/booking-history',
+      totalBookings:'/booking-history',
+      totalEnquiries:'/view-enquiries',
+      totalPlots:'/plots',
+      totalLayouts:'/layouts'
     };
 
     this.router.navigate([routes[type]]);
@@ -136,6 +140,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
       });
   }
 
+ 
   ngOnDestroy(): void {
     this.destroy$.next();
     this.destroy$.complete();

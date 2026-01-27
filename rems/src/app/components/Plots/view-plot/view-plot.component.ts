@@ -51,4 +51,11 @@ export class ViewPlotComponent implements OnInit {
   goHome() {
     this.router.navigate(['/dashboard']);
   }
+
+  viewLayoutPdf() {
+    if (this.plot.layout && this.plot.layout.layoutName) {
+      const url = `http://localhost:8080/api/layouts/pdf/${this.plot.layout.layoutName}`;
+      window.open(url, "_blank");
+    }
+  }
 }

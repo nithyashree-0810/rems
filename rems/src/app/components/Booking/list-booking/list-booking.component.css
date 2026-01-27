@@ -181,6 +181,17 @@ h2 {
   color: #388e3c;
 }
 
+.history {
+  background: #fff3e0;
+  color: #f57c00;
+}
+
+.history.disabled {
+  background: #f5f5f5;
+  color: #ccc;
+  cursor: not-allowed;
+}
+
 .delete {
   background: #ffebee;
   color: #d32f2f;

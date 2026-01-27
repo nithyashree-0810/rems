@@ -58,4 +58,46 @@ public class BookingController {
         bookingService.deleteBooking(id);
         return ResponseEntity.ok("Booking deleted successfully");
     }
+
+    // ================= HISTORY ENDPOINTS =================
+
+    @GetMapping("/latest-per-plot")
+    public ResponseEntity<List<Booking>> getLatestActiveBookingsPerPlot() {
+        return ResponseEntity.ok(bookingService.getLatestActiveBookingsPerPlot());
+    }
+
+    @GetMapping("/active")
+    public ResponseEntity<List<Booking>> getAllActiveBookings() {
+        return ResponseEntity.ok(bookingService.getAllActiveBookings());
+    }
+
+    @GetMapping("/history/plot/{plotId}")
+    public ResponseEntity<List<Booking>> getBookingHistoryByPlot(@PathVariable Long plotId) {
+        return ResponseEntity.ok(bookingService.getBookingHistoryByPlotId(plotId));
+    }
+
+    @GetMapping("/history/layout/{layoutId}")
+    public ResponseEntity<List<Booking>> getBookingHistoryByLayout(@PathVariable Long layoutId) {
+        return ResponseEntity.ok(bookingService.getBookingHistoryByLayoutId(layoutId));
+    }
+
+    @GetMapping("/latest/plot/{plotId}")
+    public ResponseEntity<Booking> getLatestActiveBookingByPlot(@PathVariable Long plotId) {
+        Booking booking = bookingService.getLatestActiveBookingByPlotId(plotId);
+        if (booking != null) {
+            return ResponseEntity.ok(booking);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    @PutMapping("/soft-delete/{id}")
+    public ResponseEntity<String> softDeleteBooking(@PathVariable Long id) {
+        try {
+            bookingService.softDeleteBooking(id);
+            return ResponseEntity.ok("Booking cancelled successfully");
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body("Error cancelling booking: " + e.getMessage());
+        }
+    }
 }

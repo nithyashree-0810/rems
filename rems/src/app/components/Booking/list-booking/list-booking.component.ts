@@ -48,9 +48,9 @@ getBalance(b: any): number {
     this.loadBookings();
   }
 
-  // Load all bookings
+  // Load latest active bookings per plot (for main list view)
   loadBookings() {
-    this.bookingService.getAllBookings().subscribe({
+    this.bookingService.getLatestActiveBookingsPerPlot().subscribe({
       next: data => {
         this.bookingList = data;
         this.filteredData = [...this.bookingList];
@@ -132,21 +132,35 @@ getBalance(b: any): number {
     this.router.navigate(['/edit-booking', id]);
   }
 
-  // Delete Booking
+  // Delete Booking (Soft Delete)
   deleteBooking(id: number) {
-    if (confirm('Are you sure you want to delete this booking?')) {
-      this.bookingService.deleteBooking(id).subscribe({
+    if (confirm('Are you sure you want to cancel this booking? This will mark it as inactive but preserve the history.')) {
+      this.bookingService.softDeleteBooking(id).subscribe({
         next: () => {
-          this.toastr.success('Booking deleted successfully!');
-          // Remove the deleted booking from the list without reloading
+          this.toastr.success('Booking cancelled successfully!');
+          // Remove the cancelled booking from the list without reloading
           this.bookingList = this.bookingList.filter(b => b.bookingId !== id);
           this.filteredData = [...this.bookingList];
           this.applyPagination();
         },
         error: () => {
-          this.toastr.error('Failed to delete booking!');
+          this.toastr.error('Failed to cancel booking!');
         }
       });
     }
+  }
+
+  // View Booking History
+  viewHistory(plotId?: number): void {
+    if (plotId) {
+      this.router.navigate(['/booking-history/plot', plotId]);
+    } else {
+      this.toastr.warning('Plot ID not available for this booking');
+    }
+  }
+
+  // View Layout History
+  viewLayoutHistory(layoutId: number) {
+    this.router.navigate(['/booking-history/layout', layoutId]);
   }
 }

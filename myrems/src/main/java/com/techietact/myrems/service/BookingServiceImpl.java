@@ -41,9 +41,7 @@ private EnquiryRepository enquiryRepository;
 	        Plot plot = plotRepository.findById(booking.getPlot().getPlotId())
 	                .orElseThrow(() -> new RuntimeException("Plot not found"));
 
-	        if (plot.isBooked()) {
-	            throw new RuntimeException("Plot already booked");
-	        }
+	        // ✅ REMOVED: Plot booking restriction - Allow multiple bookings per plot
 	        System.out.println("Plot found: " + plot.getPlotNo());
 
 	        // ------- FETCH REAL LAYOUT -------
@@ -83,6 +81,11 @@ private EnquiryRepository enquiryRepository;
 	        booking.setLayout(layout);
 	        booking.setCustomer(enquiry);
 	        
+	        // Set default status if not provided
+	        if (booking.getBookingStatus() == null) {
+	            booking.setBookingStatus(Booking.BookingStatus.ACTIVE);
+	        }
+	        
 	        // ------- COPY CUSTOMER DETAILS INTO BOOKING SNAPSHOT -------
 	        System.out.println("Copying customer details...");
 	        if (booking.getAddress() == null) {
@@ -104,10 +107,12 @@ private EnquiryRepository enquiryRepository;
 	            }
 	        }
 
-	        // ------- MARK PLOT AS BOOKED -------
-	        System.out.println("Marking plot as booked...");
-	        plot.setBooked(true);
-	        plotRepository.save(plot);
+	        // ✅ UPDATED: Only mark plot as booked if this is an ACTIVE booking
+	        if (booking.getBookingStatus() == Booking.BookingStatus.ACTIVE) {
+	            System.out.println("Marking plot as booked...");
+	            plot.setBooked(true);
+	            plotRepository.save(plot);
+	        }
 
 	        // ------- SAVE BOOKING -------
 	        System.out.println("Saving booking...");
@@ -211,6 +216,56 @@ private EnquiryRepository enquiryRepository;
 	public void deleteBooking(Long id) {
 		// TODO Auto-generated method stub
 		bookingRepository.deleteById(id);
+	}
+
+	// ================= HISTORY METHODS =================
+
+	@Override
+	public List<Booking> getLatestActiveBookingsPerPlot() {
+		return bookingRepository.findLatestActiveBookingsPerPlot();
+	}
+
+	@Override
+	public List<Booking> getAllActiveBookings() {
+		return bookingRepository.findAllActiveBookingsWithDetails();
+	}
+
+	@Override
+	public List<Booking> getBookingHistoryByPlotId(Long plotId) {
+		return bookingRepository.findAllBookingsByPlotId(plotId);
+	}
+
+	@Override
+	public List<Booking> getBookingHistoryByLayoutId(Long layoutId) {
+		return bookingRepository.findAllBookingsByLayoutId(layoutId);
+	}
+
+	@Override
+	public Booking getLatestActiveBookingByPlotId(Long plotId) {
+		return bookingRepository.findLatestActiveBookingByPlotId(plotId).orElse(null);
+	}
+
+	@Override
+	public boolean hasActiveBookingForPlot(Long plotId) {
+		return bookingRepository.hasActiveBookingForPlot(plotId);
+	}
+
+	@Override
+	public void softDeleteBooking(Long id) {
+		Booking booking = bookingRepository.findById(id)
+				.orElseThrow(() -> new RuntimeException("Booking not found with id " + id));
+		
+		booking.setActive(false);
+		booking.setBookingStatus(Booking.BookingStatus.CANCELLED);
+		
+		// If this was the latest active booking, mark plot as available
+		if (!hasActiveBookingForPlot(booking.getPlot().getPlotId())) {
+			Plot plot = booking.getPlot();
+			plot.setBooked(false);
+			plotRepository.save(plot);
+		}
+		
+		bookingRepository.save(booking);
 	}
 
 }

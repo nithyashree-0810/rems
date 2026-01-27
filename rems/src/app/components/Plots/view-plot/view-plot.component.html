@@ -132,6 +132,21 @@
       </div>
     </div>
 
+    <!-- Layout PDF Section -->
+    <div class="pdf-section" *ngIf="plot.layout && plot.layout.pdfPath">
+      <h3 class="pdf-title">
+        <i class="fa-solid fa-file-pdf"></i> Layout PDF Document
+      </h3>
+      <div class="pdf-buttons-container">
+        <button 
+          class="pdf-action-btn layout-pdf-btn" 
+          (click)="viewLayoutPdf()">
+          <i class="fa-solid fa-file-pdf"></i>
+          View Layout PDF
+        </button>
+      </div>
+    </div>
+
     <div class="btn-row">
       <button class="home-btn" (click)="goBack()">Back To List</button>
       <button class="home-btn" routerLink="/dashboard">Home</button>

@@ -1,6 +1,7 @@
 import { Layout } from "./layout";
 
 export class Plot {
+  plotId?: number;  // Add this field
   plotNo!: string;
   sqft!: number;
   direction!: string;

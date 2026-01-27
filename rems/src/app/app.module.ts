@@ -11,6 +11,7 @@ import { FooterComponent } from './components/footer/footer.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ViewLayoutsComponent } from './components/view-layouts/view-layouts.component';
+import { ViewLayoutComponent } from './components/view-layout/view-layout.component';
 import { BrowserAnimationsModule, provideAnimations } from '@angular/platform-browser/animations';
 
 import { ToastrModule } from 'ngx-toastr';
@@ -43,6 +44,7 @@ import { ReportRoleComponent } from './components/Role/report-role/report-role.c
 import { GalleryComponent } from './gallery/gallery.component';
 import { RegisterComponent } from './components/register/register.component';
 import { ForgotPasswordComponent } from './components/forgot-password/forgot-password.component';
+import { BookingHistoryComponent } from './components/Booking/booking-history/booking-history.component';
 
 
 
@@ -57,6 +59,7 @@ import { ForgotPasswordComponent } from './components/forgot-password/forgot-pas
     FooterComponent,
     DashboardComponent,
     ViewLayoutsComponent,
+    ViewLayoutComponent,
 
     //customer
     CreateEnquiryComponent,
@@ -87,6 +90,7 @@ import { ForgotPasswordComponent } from './components/forgot-password/forgot-pas
     GalleryComponent,
     RegisterComponent,
     ForgotPasswordComponent,
+    BookingHistoryComponent,
   ],
   imports: [
     BrowserModule,

@@ -1,0 +1,728 @@
+/* =========================
+   Container & Layout
+========================= */
+.history-container {
+  max-width: 1200px;
+  margin: 20px auto;
+  padding: 20px;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 6px 25px rgba(0,0,0,0.1);
+}
+
+/* =========================
+   Header Section
+========================= */
+.header-section {
+  margin-bottom: 30px;
+}
+
+.page-title {
+  color: #ff7e00;
+  font-size: 28px;
+  font-weight: 900;
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.page-title i {
+  font-size: 24px;
+}
+
+/* =========================
+   Info Card
+========================= */
+.info-card {
+  background: #fafafa;
+  border: 1px solid #f1f1f1;
+  border-radius: 8px;
+  padding: 20px;
+  margin-bottom: 20px;
+}
+
+.info-header h3 {
+  color: #304ffe;
+  font-size: 18px;
+  font-weight: 700;
+  margin-bottom: 15px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.info-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 12px;
+}
+
+.info-item {
+  display: flex;
+  justify-content: space-between;
+  padding: 8px 12px;
+  background: #fff;
+  border-radius: 6px;
+  border: 1px solid #e0e0e0;
+}
+
+.info-item .label {
+  font-weight: 600;
+  color: #304ffe;
+}
+
+.info-item .value {
+  color: #333;
+  font-weight: 500;
+}
+
+/* =========================
+   Loading State
+========================= */
+.loading-container {
+  text-align: center;
+  padding: 60px 20px;
+  color: #666;
+}
+
+.spinner {
+  width: 40px;
+  height: 40px;
+  border: 4px solid #f3f3f3;
+  border-top: 4px solid #ff7e00;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin: 0 auto 20px;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* =========================
+   Timeline
+========================= */
+.history-timeline {
+  margin-bottom: 30px;
+}
+
+.timeline-title {
+  color: #304ffe;
+  font-size: 20px;
+  font-weight: 700;
+  margin-bottom: 25px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.timeline {
+  position: relative;
+}
+
+.timeline-item {
+  display: flex;
+  margin-bottom: 30px;
+  position: relative;
+}
+
+.timeline-item.latest .booking-card {
+  border: 2px solid #ff7e00;
+  box-shadow: 0 4px 20px rgba(255, 126, 0, 0.2);
+}
+
+/* =========================
+   Timeline Connector
+========================= */
+.timeline-connector {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-right: 20px;
+  min-width: 40px;
+}
+
+.timeline-dot {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-weight: bold;
+  font-size: 14px;
+  z-index: 2;
+}
+
+.timeline-line {
+  width: 3px;
+  height: 100%;
+  background: #e0e0e0;
+  margin-top: 10px;
+  min-height: 50px;
+}
+
+/* Status Colors */
+.status-active {
+  background: #4caf50;
+}
+
+.status-cancelled {
+  background: #f44336;
+}
+
+.status-completed {
+  background: #2196f3;
+}
+
+.status-refunded {
+  background: #ff9800;
+}
+
+.status-transferred {
+  background: #9c27b0;
+}
+
+.status-unknown {
+  background: #757575;
+}
+
+/* =========================
+   Booking Card
+========================= */
+.booking-card {
+  flex: 1;
+  background: #fff;
+  border: 1px solid #e0e0e0;
+  border-radius: 12px;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.booking-card:hover {
+  box-shadow: 0 6px 20px rgba(0,0,0,0.1);
+  transform: translateY(-2px);
+}
+
+.card-header {
+  background: #f8f9fa;
+  padding: 20px;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.booking-info {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  margin-bottom: 10px;
+}
+
+.booking-info h4 {
+  color: #333;
+  font-size: 18px;
+  font-weight: 700;
+  margin: 0;
+}
+
+.booking-status {
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  color: white;
+}
+
+.latest-badge {
+  background: #ff7e00;
+  color: white;
+  padding: 4px 8px;
+  border-radius: 12px;
+  font-size: 10px;
+  font-weight: 700;
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0% { opacity: 1; }
+  50% { opacity: 0.7; }
+  100% { opacity: 1; }
+}
+
+.booking-dates {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.date-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #666;
+  font-size: 13px;
+}
+
+.date-item i {
+  color: #ff7e00;
+  width: 16px;
+}
+
+/* =========================
+   Card Content
+========================= */
+.card-content {
+  padding: 20px;
+}
+
+.section {
+  margin-bottom: 20px;
+}
+
+.section h5 {
+  color: #304ffe;
+  font-size: 16px;
+  font-weight: 700;
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.details-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 10px;
+}
+
+.detail-item {
+  display: flex;
+  justify-content: space-between;
+  padding: 6px 10px;
+  background: #f8f9fa;
+  border-radius: 6px;
+  font-size: 13px;
+}
+
+.detail-item .label {
+  font-weight: 600;
+  color: #666;
+}
+
+.detail-item .value {
+  color: #333;
+  font-weight: 500;
+}
+
+/* =========================
+   Financial Section
+========================= */
+.financial-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 15px;
+  margin-bottom: 15px;
+}
+
+.financial-item {
+  text-align: center;
+  padding: 15px;
+  border-radius: 8px;
+  border: 2px solid;
+}
+
+.financial-item.total {
+  background: #e3f2fd;
+  border-color: #2196f3;
+  color: #1976d2;
+}
+
+.financial-item.paid {
+  background: #e8f5e8;
+  border-color: #4caf50;
+  color: #388e3c;
+}
+
+.financial-item.balance {
+  background: #fff3e0;
+  border-color: #ff9800;
+  color: #f57c00;
+}
+
+.financial-item .label {
+  display: block;
+  font-size: 12px;
+  font-weight: 600;
+  margin-bottom: 5px;
+  text-transform: uppercase;
+}
+
+.financial-item .value {
+  font-size: 18px;
+  font-weight: 700;
+}
+
+/* =========================
+   Payment Details
+========================= */
+.payment-details h6 {
+  color: #304ffe;
+  font-size: 14px;
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+
+.payment-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.payment-item {
+  display: grid;
+  grid-template-columns: 80px 100px 100px 1fr;
+  gap: 10px;
+  padding: 8px 12px;
+  background: #f0f7ff;
+  border-radius: 6px;
+  font-size: 12px;
+  align-items: center;
+}
+
+.payment-label {
+  font-weight: 600;
+  color: #304ffe;
+}
+
+.payment-amount {
+  font-weight: 700;
+  color: #4caf50;
+}
+
+.payment-date {
+  color: #666;
+}
+
+.payment-mode {
+  color: #333;
+  font-style: italic;
+}
+
+/* =========================
+   No History State
+========================= */
+.no-history {
+  text-align: center;
+  padding: 80px 20px;
+  color: #666;
+}
+
+.no-history-icon {
+  font-size: 64px;
+  color: #ddd;
+  margin-bottom: 20px;
+}
+
+.no-history h3 {
+  color: #333;
+  margin-bottom: 10px;
+}
+
+/* =========================
+   Card Actions
+========================= */
+.card-actions {
+  padding: 15px 20px;
+  background: #f8f9fa;
+  border-top: 1px solid #e0e0e0;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.btn-rebook {
+  background: #ff7e00;
+  color: white;
+  transition: all 0.3s ease;
+}
+
+.btn-rebook:hover:not(:disabled) {
+  background: #e56b00;
+  transform: translateY(-1px);
+}
+
+.btn-rebook:disabled {
+  background: #6c757d !important;
+  color: #adb5bd !important;
+  cursor: not-allowed !important;
+  opacity: 0.6;
+  transform: none !important;
+}
+
+.btn-rebook:disabled:hover {
+  background: #6c757d !important;
+  color: #adb5bd !important;
+  transform: none !important;
+}
+
+.btn-rebook:disabled i {
+  opacity: 0.7;
+}
+
+/* =========================
+   Action Buttons
+========================= */
+.action-buttons {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 30px;
+  padding-top: 20px;
+  border-top: 1px solid #e0e0e0;
+}
+
+.btn {
+  padding: 12px 24px;
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.btn-secondary {
+  background: #6c757d;
+  color: white;
+}
+
+.btn-secondary:hover {
+  background: #5a6268;
+  transform: translateY(-1px);
+}
+
+.btn-primary {
+  background: #ff7e00;
+  color: white;
+}
+
+.btn-primary:hover {
+  background: #e56b00;
+  transform: translateY(-1px);
+}
+
+/* =========================
+   Owners Section
+========================= */
+.owners-section, .dimensions-section, .plot-owner-section, .approvals-section {
+  margin-top: 20px;
+  padding-top: 15px;
+  border-top: 1px solid #e0e0e0;
+}
+
+.owners-section h4, .dimensions-section h4, .plot-owner-section h4, .approvals-section h4 {
+  color: #304ffe;
+  font-size: 16px;
+  font-weight: 700;
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.owners-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 10px;
+}
+
+.owner-item {
+  display: flex;
+  justify-content: space-between;
+  padding: 8px 12px;
+  background: #f0f7ff;
+  border-radius: 6px;
+  border-left: 3px solid #304ffe;
+}
+
+.owner-label {
+  font-weight: 600;
+  color: #304ffe;
+}
+
+.owner-name {
+  color: #333;
+  font-weight: 500;
+}
+
+/* =========================
+   Dimensions Section
+========================= */
+.dimensions-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+}
+
+.dimension-item {
+  text-align: center;
+  padding: 12px;
+  background: #fff3e0;
+  border-radius: 8px;
+  border: 1px solid #ff9800;
+}
+
+.dimension-label {
+  display: block;
+  font-size: 12px;
+  font-weight: 600;
+  color: #f57c00;
+  margin-bottom: 4px;
+}
+
+.dimension-value {
+  font-size: 16px;
+  font-weight: 700;
+  color: #333;
+}
+
+/* =========================
+   Plot Owner Section
+========================= */
+.owner-details {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 12px;
+}
+
+.owner-detail-item {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 15px;
+  background: #e8f5e8;
+  border-radius: 6px;
+  border-left: 3px solid #4caf50;
+}
+
+.owner-detail-item .label {
+  font-weight: 600;
+  color: #388e3c;
+}
+
+.owner-detail-item .value {
+  color: #333;
+  font-weight: 500;
+}
+
+/* =========================
+   Approvals Section
+========================= */
+.approval-badges {
+  display: flex;
+  gap: 15px;
+  flex-wrap: wrap;
+}
+
+.approval-badge {
+  padding: 10px 15px;
+  border-radius: 20px;
+  font-size: 14px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.3s ease;
+}
+
+.approval-badge.approved {
+  background: #e8f5e8;
+  color: #4caf50;
+  border: 2px solid #4caf50;
+}
+
+.approval-badge.not-approved {
+  background: #ffebee;
+  color: #f44336;
+  border: 2px solid #f44336;
+}
+
+.btn-primary {
+  background: #ff7e00;
+  color: white;
+}
+
+.btn-primary:hover {
+  background: #e56b00;
+  transform: translateY(-1px);
+}
+
+/* =========================
+   Responsive Design
+========================= */
+@media (max-width: 768px) {
+  .history-container {
+    margin: 10px;
+    padding: 15px;
+  }
+  
+  .page-title {
+    font-size: 24px;
+  }
+  
+  .info-grid, .owners-grid, .owner-details {
+    grid-template-columns: 1fr;
+  }
+  
+  .dimensions-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  .timeline-item {
+    flex-direction: column;
+  }
+  
+  .timeline-connector {
+    flex-direction: row;
+    margin-right: 0;
+    margin-bottom: 15px;
+  }
+  
+  .timeline-line {
+    width: 100%;
+    height: 3px;
+    margin-top: 0;
+    margin-left: 10px;
+    min-height: auto;
+  }
+  
+  .financial-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .payment-item {
+    grid-template-columns: 1fr;
+    gap: 5px;
+  }
+  
+  .action-buttons {
+    flex-direction: column;
+  }
+  
+  .approval-badges {
+    flex-direction: column;
+  }
+  
+  .card-actions {
+    padding: 12px 15px;
+  }
+  
+  .btn-rebook {
+    width: 100%;
+    justify-content: center;
+  }
+}

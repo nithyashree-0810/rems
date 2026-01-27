@@ -74,13 +74,21 @@
           <td>
             <div class="action-icons">
               <i class="fa fa-eye circle-icon view"
-                 [routerLink]="['/view-booking', b.bookingId]"></i>
+                 [routerLink]="['/view-booking', b.bookingId]"
+                 title="View Details"></i>
 
               <i class="fa fa-pencil circle-icon edit"
-                 [routerLink]="['/edit-booking', b.bookingId]"></i>
+                 [routerLink]="['/edit-booking', b.bookingId]"
+                 title="Edit Booking"></i>
+
+              <i class="fa fa-clock-rotate-left circle-icon history"
+                 (click)="viewHistory(b.plot?.plotId)"
+                 [class.disabled]="!b.plot?.plotId"
+                 title="View History"></i>
 
               <i class="fa fa-trash circle-icon delete"
-                 (click)="deleteBooking(b.bookingId)"></i>
+                 (click)="deleteBooking(b.bookingId)"
+                 title="Cancel Booking"></i>
             </div>
           </td>
         </tr>

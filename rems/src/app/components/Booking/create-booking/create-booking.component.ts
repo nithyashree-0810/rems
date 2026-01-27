@@ -8,7 +8,6 @@ import { CustomerService } from '../../../services/customer.service';
 import { ToastrService } from 'ngx-toastr';
 import { ActivatedRoute } from '@angular/router';
 
-
 @Component({
   selector: 'app-create-booking',
   standalone: false,
@@ -74,51 +73,90 @@ export class CreateBookingComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-  this.loadLayouts();
+    this.loadLayouts();
 
-  this.route.queryParams.subscribe(params => {
-    const layoutName = params['layoutName'];
-    const plotNo = params['plotNo'];
+    this.route.queryParams.subscribe(params => {
+      const layoutName = params['layoutName'];
+      const plotNo = params['plotNo'];
+      const plotId = params['plotId'];
+      const layoutId = params['layoutId'];
+      const isRebooking = params['rebooking'] === 'true';
+      const originalBookingId = params['originalBookingId'];
 
-    if (layoutName && plotNo) {
-      this.booking.layoutName = layoutName;
-
-      this.plotService.getPlotsByLayout(layoutName).subscribe(plots => {
-
-        // ❌ already booked plot-a remove pannrom
-        this.plotList = plots.filter(p => !p.booked);
-
-        const selected = this.plotList.find(p => p.plotNo === plotNo);
-
-        if (!selected) {
-          this.toastr.error('This plot is already booked ❌');
-          this.router.navigate(['/list-plots']);
-          return;
-        }
-
-        this.selectedPlot = selected;
-        this.onPlotChange();
-      });
-    }
-  });
-}
-
-
-  loadLayouts() {
-    this.layoutService.getLayouts().subscribe(data => {
-      this.layoutList = data;
-    });
-  }
-
-  onLayoutChange() {
-    this.plotService.getPlotsByLayout(this.booking.layoutName).subscribe({
-      next: plots => {
-        this.plotList = plots.filter(p => !p.booked);
+      if (isRebooking && plotId) {
+        // Handle rebooking scenario
+        this.handleRebooking(plotId, layoutId, originalBookingId);
+      } else if (layoutName && plotNo) {
+        // Handle normal booking from plot list
+        this.handleNormalBooking(layoutName, plotNo);
       }
     });
   }
 
-  onPlotChange() {
+  handleRebooking(plotId: number, layoutId?: number, originalBookingId?: number): void {
+    // Load plot details for rebooking
+    this.plotService.getPlotById(plotId).subscribe({
+      next: (plot) => {
+        this.selectedPlot = plot;
+        this.booking.layoutName = plot.layout?.layoutName || '';
+        this.booking.plotId = plot.plotId;
+        this.booking.plotNo = plot.plotNo;
+        this.booking.sqft = plot.sqft;
+        this.booking.price = plot.price;
+        this.booking.direction = plot.direction;
+        
+        // Load plots for the layout
+        if (plot.layout?.layoutName) {
+          this.plotService.getPlotsByLayout(plot.layout.layoutName).subscribe(plots => {
+            this.plotList = plots; // Show all plots for rebooking
+          });
+        }
+        
+        this.toastr.info('Rebooking mode: Plot details pre-filled. Please enter customer details.');
+      },
+      error: (err) => {
+        console.error('Error loading plot for rebooking:', err);
+        this.toastr.error('Failed to load plot details for rebooking');
+        this.router.navigate(['/booking-history']);
+      }
+    });
+  }
+
+  handleNormalBooking(layoutName: string, plotNo: string): void {
+    this.booking.layoutName = layoutName;
+
+    this.plotService.getPlotsByLayout(layoutName).subscribe(plots => {
+      // Filter out already booked plots for normal booking
+      this.plotList = plots.filter((p: any) => !p.booked);
+
+      const selected = this.plotList.find((p: any) => p.plotNo === plotNo);
+
+      if (!selected) {
+        this.toastr.error('This plot is already booked ❌');
+        this.router.navigate(['/list-plots']);
+        return;
+      }
+
+      this.selectedPlot = selected;
+      this.onPlotChange();
+    });
+  }
+
+  loadLayouts(): void {
+    this.layoutService.getLayouts().subscribe((data: any) => {
+      this.layoutList = data;
+    });
+  }
+
+  onLayoutChange(): void {
+    this.plotService.getPlotsByLayout(this.booking.layoutName).subscribe({
+      next: (plots: any) => {
+        this.plotList = plots.filter((p: any) => !p.booked);
+      }
+    });
+  }
+
+  onPlotChange(): void {
     if (!this.selectedPlot) return;
 
     const p = this.selectedPlot;
@@ -131,7 +169,7 @@ export class CreateBookingComponent implements OnInit {
     this.calculateBalance();
   }
 
-  onMobileChange() {
+  onMobileChange(): void {
     if (!this.booking.mobileNo) return;
 
     const mobileNumber = Number(this.booking.mobileNo);
@@ -141,7 +179,7 @@ export class CreateBookingComponent implements OnInit {
     }
 
     this.customerService.getCustomerByMobile(mobileNumber).subscribe({
-      next: c => {
+      next: (c: any) => {
         if (c) {
           this.booking.firstName = c.firstName || '';
           this.booking.address = c.address || '';
@@ -170,7 +208,7 @@ export class CreateBookingComponent implements OnInit {
     });
   }
 
-  calculateBalance() {
+  calculateBalance(): void {
     const totalAdvance =
       (+this.booking.advance1 || 0) +
       (+this.booking.advance2 || 0) +
@@ -180,7 +218,7 @@ export class CreateBookingComponent implements OnInit {
     this.booking.balance = this.booking.price - totalAdvance;
   }
 
-  onSubmit(form: NgForm) {
+  onSubmit(form: NgForm): void {
     if (form.invalid) return;
 
     const requestBody = {
@@ -228,41 +266,39 @@ export class CreateBookingComponent implements OnInit {
     console.log('Request Body:', JSON.stringify(requestBody, null, 2));
 
     this.bookingService.createBooking(requestBody).subscribe({
-  next: () => {
-    // ✅ Mark plot as booked
-    this.plotService.markAsBooked(this.booking.plotId).subscribe({
       next: () => {
-        this.toastr.success('Booking Saved Successfully ✅');
-        this.router.navigate(['/booking-history']);
+        // ✅ Mark plot as booked
+        this.plotService.markAsBooked(this.booking.plotId).subscribe({
+          next: () => {
+            this.toastr.success('Booking Saved Successfully ✅');
+            this.router.navigate(['/booking-history']);
+          },
+          error: () => this.toastr.error('Failed to mark plot as booked')
+        });
       },
-      error: () => this.toastr.error('Failed to mark plot as booked')
+      error: () => this.toastr.error('Booking Failed ❌')
     });
-  },
-  error: () => this.toastr.error('Booking Failed ❌')
-});
-
   }
 
-  onMobileInput(event: any) {
-  let value = event.target.value;
+  onMobileInput(event: any): void {
+    let value = event.target.value;
 
-  // 🔹 Numbers only
-  value = value.replace(/\D/g, '');
+    // 🔹 Numbers only
+    value = value.replace(/\D/g, '');
 
-  // 🔹 Max 10 digits only
-  if (value.length > 10) {
-    value = value.slice(0, 10);
+    // 🔹 Max 10 digits only
+    if (value.length > 10) {
+      value = value.slice(0, 10);
+    }
+
+    this.booking.mobileNo = value;
   }
 
-  this.booking.mobileNo = value;
-}
-
-
-  goHome() {
+  goHome(): void {
     this.router.navigate(['/dashboard']);
   }
 
-  viewBookings() {
+  viewBookings(): void {
     this.router.navigate(['/booking-history']);
   }
 }

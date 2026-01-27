@@ -42,6 +42,11 @@ export class LayoutserviceService {
     return this.http.get<Layout>(`${this.apiUrl}/${layoutName}`);
   }
 
+  // ===================== GET BY ID =====================
+  getLayoutById(layoutId: number): Observable<Layout> {
+    return this.http.get<Layout>(`${this.apiUrl}/id/${layoutId}`);
+  }
+
   // ===================== UPDATE =====================
   updateLayout(layoutName: string, formData: FormData) {
   return this.http.put(

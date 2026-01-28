@@ -59,9 +59,11 @@ public class BookingController {
     public ResponseEntity<?> deleteBooking(@PathVariable Long bookingId) {
         try {
             bookingService.deleteBooking(bookingId);
-            return ResponseEntity.ok("Booking deleted successfully");
+            return ResponseEntity.ok(java.util.Collections.singletonMap("message", "Booking deleted successfully"));
         } catch (Exception e) {
-            return ResponseEntity.status(500).body("Could not delete booking: " + e.getMessage());
+            e.printStackTrace();
+            return ResponseEntity.status(500)
+                    .body(java.util.Collections.singletonMap("message", "Could not delete booking: " + e.getMessage()));
         }
     }
 

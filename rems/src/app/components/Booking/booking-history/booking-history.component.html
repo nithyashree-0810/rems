@@ -1,4 +1,6 @@
 <div class="history-container">
+  
+
 
   <!-- Loading -->
   <div class="loading-section" *ngIf="loading">
@@ -8,60 +10,64 @@
 
   <!-- Main Content -->
   <div class="main-content" *ngIf="!loading">
-
-    <!-- ================= Layout Information ================= -->
+    
+    <!-- Layout Information Section -->
     <div class="section-card" *ngIf="plot || layout">
       <div class="section-header">
         <h2><i class="fas fa-building"></i> Layout Information</h2>
       </div>
-
       <div class="section-content">
         <div class="info-grid">
-
-          <!-- Basic Details -->
+          <!-- Basic Layout Info -->
           <div class="info-column">
             <h3>Basic Details</h3>
             <div class="info-item">
-              <label>Layout Name</label>
-              <span>{{ plot?.layout?.layoutName || layout?.layoutName }}</span>
+              <label>Layout Name:</label>
+              <span>{{ (plot?.layout?.layoutName) || (layout?.layoutName) }}</span>
             </div>
           </div>
 
-          <!-- Location Details -->
+          <!-- Location Info -->
           <div class="info-column">
             <h3>Location Details</h3>
             <div class="info-item">
-              <label>Location</label>
-              <span>{{ plot?.layout?.location || layout?.location }}</span>
+              <label>Location:</label>
+              <span>{{ (plot?.layout?.location) || (layout?.location) }}</span>
             </div>
             <div class="info-item">
-              <label>Phone</label>
-              <span>{{ plot?.layout?.phone || layout?.phone }}</span>
+              <label>Phone:</label>
+              <span>{{ (plot?.layout?.phone) || (layout?.phone) }}</span>
             </div>
           </div>
 
-          <!-- Owners -->
+          <!-- Layout Owners -->
           <div class="info-column">
             <h3>Layout Owners</h3>
             <div class="owners-list">
-
-              <ng-container
-                *ngFor="let o of [
-                  plot?.layout?.ownerName1 || layout?.ownerName1,
-                  plot?.layout?.ownerName2 || layout?.ownerName2,
-                  plot?.layout?.ownerName3 || layout?.ownerName3,
-                  plot?.layout?.ownerName4 || layout?.ownerName4,
-                  plot?.layout?.ownerName5 || layout?.ownerName5,
-                  plot?.layout?.ownerName6 || layout?.ownerName6
-                ]; let i = index">
-
-                <div class="owner-item" *ngIf="o">
-                  <span class="owner-label">Owner {{ i + 1 }}</span>
-                  <span>{{ o }}</span>
-                </div>
-
-              </ng-container>
-
+              <div class="owner-item" *ngIf="(plot?.layout?.ownerName1) || (layout?.ownerName1)">
+                <span class="owner-label">Owner 1:</span>
+                <span>{{ (plot?.layout?.ownerName1) || (layout?.ownerName1) }}</span>
+              </div>
+              <div class="owner-item" *ngIf="(plot?.layout?.ownerName2) || (layout?.ownerName2)">
+                <span class="owner-label">Owner 2:</span>
+                <span>{{ (plot?.layout?.ownerName2) || (layout?.ownerName2) }}</span>
+              </div>
+              <div class="owner-item" *ngIf="(plot?.layout?.ownerName3) || (layout?.ownerName3)">
+                <span class="owner-label">Owner 3:</span>
+                <span>{{ (plot?.layout?.ownerName3) || (layout?.ownerName3) }}</span>
+              </div>
+              <div class="owner-item" *ngIf="(plot?.layout?.ownerName4) || (layout?.ownerName4)">
+                <span class="owner-label">Owner 4:</span>
+                <span>{{ (plot?.layout?.ownerName4) || (layout?.ownerName4) }}</span>
+              </div>
+              <div class="owner-item" *ngIf="(plot?.layout?.ownerName5) || (layout?.ownerName5)">
+                <span class="owner-label">Owner 5:</span>
+                <span>{{ (plot?.layout?.ownerName5) || (layout?.ownerName5) }}</span>
+              </div>
+              <div class="owner-item" *ngIf="(plot?.layout?.ownerName6) || (layout?.ownerName6)">
+                <span class="owner-label">Owner 6:</span>
+                <span>{{ (plot?.layout?.ownerName6) || (layout?.ownerName6) }}</span>
+              </div>
             </div>
           </div>
 
@@ -69,135 +75,233 @@
       </div>
     </div>
 
-    <!-- ================= Plot Information ================= -->
+    <!-- Plot Information Section (only for plot history) -->
     <div class="section-card" *ngIf="historyType === 'plot' && plot">
       <div class="section-header">
         <h2><i class="fas fa-map-marker-alt"></i> Plot Information</h2>
       </div>
-
       <div class="section-content">
         <div class="info-grid">
-
+          <!-- Plot Basic Info -->
           <div class="info-column">
             <h3>Plot Details</h3>
             <div class="info-item">
-              <label>Plot No</label>
+              <label>Plot No:</label>
               <span>{{ plot.plotNo }}</span>
             </div>
             <div class="info-item">
-              <label>Price</label>
+              <label>Price:</label>
               <span class="price">₹{{ plot.price | number }}</span>
             </div>
           </div>
 
+          <!-- Plot Owner -->
           <div class="info-column">
             <h3>Plot Owner</h3>
             <div class="info-item">
-              <label>Name</label>
+              <label>Owner Name:</label>
               <span>{{ plot.ownerName }}</span>
             </div>
             <div class="info-item">
-              <label>Email</label>
+              <label>Email:</label>
               <span>{{ plot.email }}</span>
             </div>
             <div class="info-item">
-              <label>Mobile</label>
+              <label>Mobile:</label>
               <span>{{ plot.mobile }}</span>
             </div>
           </div>
 
+          <!-- Plot Approvals -->
+          
         </div>
       </div>
     </div>
 
-    <!-- ================= Booking History ================= -->
-    <div class="section-card" *ngIf="bookingHistory.length">
+    <!-- Booking History Section -->
+    <div class="section-card" *ngIf="bookingHistory.length > 0">
       <div class="section-header">
-        <h2><i class="fas fa-list-alt"></i> Booking History</h2>
+        <h2><i class="fas fa-list-alt"></i> Booking History ({{ bookingHistory.length }} Records)</h2>
       </div>
-
       <div class="section-content">
         <div class="booking-timeline">
-
-          <div
-            class="booking-card"
-            *ngFor="let booking of bookingHistory; let i = index"
-            [class.current-booking]="i === 0 && booking.isActive">
-
+          <div class="booking-card" *ngFor="let booking of bookingHistory; let i = index" 
+               [class.current-booking]="i === 0 && booking.isActive">
+            
+            <!-- Booking Header -->
             <div class="booking-header">
               <div class="booking-title">
                 <h3>
+                  <i class="fas fa-file-contract"></i>
                   Booking #{{ booking.bookingId }}
-                  <span class="current-badge" *ngIf="i === 0 && booking.isActive">
-                    CURRENT
-                  </span>
+                  <span class="current-badge" *ngIf="i === 0 && booking.isActive">CURRENT</span>
                 </h3>
-                <span
-                  class="status-badge"
-                  [ngClass]="getStatusClass(booking.bookingStatus)">
-                  {{ booking.bookingStatus }}
-                </span>
+                <div class="booking-status">
+                  <span class="status-badge" [ngClass]="getStatusClass(booking.bookingStatus)">
+                    {{ booking.bookingStatus }}
+                  </span>
+                </div>
+              </div>
+              <div class="booking-dates">
+                <div class="date-info">
+                  <i class="fas fa-calendar-plus"></i>
+                  <span>Created: {{ formatDateTime(booking.createdDate) }}</span>
+                </div>
+                <div class="date-info" *ngIf="booking.updatedDate !== booking.createdDate">
+                  <i class="fas fa-calendar-check"></i>
+                  <span>Updated: {{ formatDateTime(booking.updatedDate) }}</span>
+                </div>
               </div>
             </div>
 
+            <!-- Booking Content -->
             <div class="booking-content">
               <div class="booking-info-grid">
-
+                
+                <!-- Customer Information -->
                 <div class="info-section">
-                  <h4>Customer Details</h4>
-                  <div class="info-item">
-                    <label>Name</label>
-                    <span>{{ booking.customer?.firstName }}</span>
-                  </div>
-                  <div class="info-item">
-                    <label>Mobile</label>
-                    <span>{{ booking.customer?.mobileNo }}</span>
+                  <h4><i class="fas fa-user"></i> Customer Details</h4>
+                  <div class="info-list">
+                    <div class="info-item">
+                      <label>Name:</label>
+                      <span>{{ booking.customer?.firstName }}</span>
+                    </div>
+                    <div class="info-item">
+                      <label>Mobile:</label>
+                      <span>{{ booking.customer?.mobileNo }}</span>
+                    </div>
                   </div>
                 </div>
 
+                <!-- Plot Information (for layout history) -->
+                <div class="info-section" *ngIf="historyType === 'layout'">
+                  <h4><i class="fas fa-map-marker-alt"></i> Plot Details</h4>
+                  <div class="info-list">
+                    <div class="info-item">
+                      <label>Plot No:</label>
+                      <span>{{ booking.plot?.plotNo }}</span>
+                    </div>
+                    <div class="info-item">
+                      <label>Area:</label>
+                      <span>{{ booking.sqft }} sqft</span>
+                    </div>
+                    <div class="info-item">
+                      <label>Direction:</label>
+                      <span>{{ booking.direction }}</span>
+                    </div>
+                    <div class="info-item">
+                      <label>Price:</label>
+                      <span class="price">₹{{ booking.price | number }}</span>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Financial Information -->
                 <div class="info-section">
-                  <h4>Financial Details</h4>
+                  <h4><i class="fas fa-rupee-sign"></i> Financial Details</h4>
                   <div class="financial-summary">
                     <div class="financial-item total">
-                      ₹{{ booking.price | number }}<span>Total</span>
+                      <label>Total Price:</label>
+                      <span>₹{{ booking.price | number }}</span>
                     </div>
                     <div class="financial-item paid">
-                      ₹{{ getTotalPaid(booking) | number }}<span>Paid</span>
+                      <label>Total Paid:</label>
+                      <span>₹{{ getTotalPaid(booking) | number }}</span>
                     </div>
                     <div class="financial-item balance">
-                      ₹{{ getBalance(booking) | number }}<span>Balance</span>
+                      <label>Balance:</label>
+                      <span>₹{{ getBalance(booking) | number }}</span>
+                    </div>
+                  </div>
+
+                  <!-- Payment History -->
+                  <div class="payment-history" *ngIf="getTotalPaid(booking) > 0">
+                    <h5>Payment History:</h5>
+                    <div class="payment-list">
+                      <div class="payment-item" *ngIf="booking.advance1 > 0">
+                        <div class="payment-info">
+                          <span class="payment-label">Advance 1:</span>
+                          <span class="payment-amount">₹{{ booking.advance1 | number }}</span>
+                        </div>
+                        <div class="payment-details">
+                          <span class="payment-date">{{ formatDate(booking.advance1Date) }}</span>
+                          <span class="payment-mode">{{ booking.advance1Mode }}</span>
+                        </div>
+                      </div>
+                      <div class="payment-item" *ngIf="booking.advance2 > 0">
+                        <div class="payment-info">
+                          <span class="payment-label">Advance 2:</span>
+                          <span class="payment-amount">₹{{ booking.advance2 | number }}</span>
+                        </div>
+                        <div class="payment-details">
+                          <span class="payment-date">{{ formatDate(booking.advance2Date) }}</span>
+                          <span class="payment-mode">{{ booking.advance2Mode }}</span>
+                        </div>
+                      </div>
+                      <div class="payment-item" *ngIf="booking.advance3 > 0">
+                        <div class="payment-info">
+                          <span class="payment-label">Advance 3:</span>
+                          <span class="payment-amount">₹{{ booking.advance3 | number }}</span>
+                        </div>
+                        <div class="payment-details">
+                          <span class="payment-date">{{ formatDate(booking.advance3Date) }}</span>
+                          <span class="payment-mode">{{ booking.advance3Mode }}</span>
+                        </div>
+                      </div>
+                      <div class="payment-item" *ngIf="booking.advance4 > 0">
+                        <div class="payment-info">
+                          <span class="payment-label">Advance 4:</span>
+                          <span class="payment-amount">₹{{ booking.advance4 | number }}</span>
+                        </div>
+                        <div class="payment-details">
+                          <span class="payment-date">{{ formatDate(booking.advance4Date) }}</span>
+                          <span class="payment-mode">{{ booking.advance4Mode }}</span>
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </div>
-
               </div>
             </div>
 
+            <!-- Booking Actions -->
             <div class="booking-actions">
-              <button
-                class="btn btn-primary"
-                (click)="rebookPlot(booking)"
-                [disabled]="!canRebook(booking)">
-                Rebook Plot
-              </button>
-            </div>
+            <button class="btn btn-primary"
+        (click)="rebookPlot(booking)"
+        [disabled]="!canRebook(booking)"
+        title="Rebook this plot">
+  <i class="fas fa-redo"></i>
+  Rebook Plot
+</button>
 
+
+            </div>
           </div>
         </div>
       </div>
     </div>
 
     <!-- No Records -->
-    <div class="no-records" *ngIf="!bookingHistory.length">
-      <i class="fas fa-inbox"></i>
-      <h3>No Booking History Found</h3>
+    <div class="no-records" *ngIf="bookingHistory.length === 0">
+      <div class="no-records-content">
+        <i class="fas fa-inbox"></i>
+        <h3>No Booking History Found</h3>
+        <p>{{ historyType === 'plot' ? 'This plot has no booking records yet.' : 'This layout has no booking records yet.' }}</p>
+      </div>
     </div>
 
   </div>
 
+  <!-- Footer Actions -->
   <div class="footer-actions">
-    <button class="btn btn-secondary" (click)="goBack()">Back</button>
-    <button class="btn btn-primary" (click)="goHome()">Dashboard</button>
+    <button class="btn btn-secondary" (click)="goBack()">
+      <i class="fas fa-arrow-left"></i>
+      Back to Bookings
+    </button>
+    <button class="btn btn-primary" (click)="goHome()">
+      <i class="fas fa-home"></i>
+      Dashboard
+    </button>
   </div>
 
 </div>

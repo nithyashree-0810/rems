@@ -58,9 +58,15 @@ export class ListBookingComponent implements OnInit {
 
   loadBookings() {
     this.loading = true;
-    this.bookingService.getAllBookings().subscribe({
+    // Use latest active bookings per plot instead of all bookings
+    this.bookingService.getLatestActiveBookingsPerPlot().subscribe({
       next: (data) => {
-        this.bookingList = data.sort((a, b) => a.bookingId - b.bookingId);
+        this.bookingList = data.sort((a, b) => {
+          // Sort by creation date descending (newest first)
+          const dateA = new Date(a.createdDate || 0).getTime();
+          const dateB = new Date(b.createdDate || 0).getTime();
+          return dateB - dateA;
+        });
         this.filteredData = [...this.bookingList];
         this.currentPage = 1;
         this.applyPagination();
@@ -140,6 +146,40 @@ export class ListBookingComponent implements OnInit {
 
   getBalance(b: Booking): number {
     return (b.price || 0) - this.getTotalPaid(b);
+  }
+
+  // ================= NAVIGATION =================
+
+  viewHistory(booking: Booking): void {
+    if (booking.plot?.plotId) {
+      this.router.navigate(['/booking-history/plot', booking.plot.plotId]);
+    } else {
+      this.toastr.error('Plot information not available for history view');
+    }
+  }
+
+  deleteBooking(booking: Booking): void {
+    const confirmDelete = confirm(
+      `Are you sure you want to delete booking #${booking.bookingId}?\n\n` +
+      `Customer: ${booking.customer?.firstName}\n` +
+      `Plot: ${booking.plotNo}\n\n` +
+      `This action cannot be undone.`
+    );
+
+    if (!confirmDelete) {
+      return;
+    }
+
+    this.bookingService.deleteBooking(booking.bookingId).subscribe({
+      next: () => {
+        this.toastr.success('Booking deleted successfully');
+        this.loadBookings(); // Reload the list
+      },
+      error: (err) => {
+        console.error('Error deleting booking:', err);
+        this.toastr.error('Failed to delete booking');
+      }
+    });
   }
 
   // ================= EDIT (PAYMENT UPDATE) =================

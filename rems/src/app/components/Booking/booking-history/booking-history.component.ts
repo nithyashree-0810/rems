@@ -241,6 +241,7 @@ export class BookingHistoryComponent implements OnInit {
   // ================= MODAL METHODS =================
 
   viewDetails(booking: Booking): void {
+    console.log('Opening modal for booking:', booking);
     this.selectedBooking = booking;
   }
 
@@ -249,6 +250,7 @@ export class BookingHistoryComponent implements OnInit {
   }
 
   rebookFromModal(): void {
+    console.log('Rebook from modal clicked');
     if (this.selectedBooking) {
       this.rebookPlot(this.selectedBooking);
       this.closeModal();
@@ -258,9 +260,9 @@ export class BookingHistoryComponent implements OnInit {
   // ================= REBOOKING FUNCTIONALITY =================
 
   canRebook(booking: Booking): boolean {
-    // Always allow rebooking - users can rebook any plot from history
-    return !!booking.plot;
-  }
+  return !!booking.plotNo || !!booking.plot?.plotId;
+}
+
 
   getRebootTooltip(booking: Booking): string {
     if (!booking.plot) {
@@ -269,38 +271,32 @@ export class BookingHistoryComponent implements OnInit {
     return 'Click to rebook this plot with new customer details';
   }
 
-  rebookPlot(booking: Booking): void {
-    if (!this.canRebook(booking)) {
-      return;
-    }
+ rebookPlot(booking: Booking): void {
 
-    if (!booking.plot) {
-      this.toastr.error('Plot information not available for rebooking');
-      return;
-    }
+  const plotId = booking.plot?.plotId || booking.plotNo;
 
-    // Show confirmation dialog
-    const confirmRebook = confirm(
-      `Are you sure you want to rebook Plot ${booking.plot.plotNo}?\n\n` +
-      `This will create a new booking for the same plot.`
-    );
-
-    if (!confirmRebook) {
-      return;
-    }
-
-    // Navigate to create booking page with pre-filled plot information
-    this.router.navigate(['/new-booking'], {
-      queryParams: {
-        plotId: booking.plot.plotId,
-        layoutId: booking.layout?.id,
-        rebooking: true,
-        originalBookingId: booking.bookingId
-      }
-    });
-
-    this.toastr.info('Redirecting to booking form with pre-filled plot details...');
+  if (!plotId) {
+    this.toastr.error('Plot ID not found for rebooking');
+    return;
   }
+
+  const confirmRebook = confirm(
+    `Are you sure you want to rebook this plot?\n\nThis will create a new booking.`
+  );
+
+  if (!confirmRebook) return;
+
+  this.router.navigate(['/new-booking'], {
+    queryParams: {
+      plotId: plotId,
+      layoutId: booking.layout?.id || this.layoutId,
+      rebooking: true,
+      originalBookingId: booking.bookingId
+    }
+  });
+
+  this.toastr.info('Redirecting to rebooking form...');
+}
 
   // ================= NAVIGATION =================
 

@@ -21,10 +21,18 @@ export class BookingHistoryComponent implements OnInit {
   historyType: 'plot' | 'layout' = 'plot';
   
   bookingHistory: Booking[] = [];
+  filteredBookingHistory: Booking[] = [];
   plot?: Plot;
   layout?: Layout;
+  selectedBooking?: Booking;
   
   loading: boolean = true;
+  
+  // Search and Filter properties
+  searchTerm: string = '';
+  statusFilter: string = 'ALL';
+  sortBy: string = 'date';
+  sortOrder: 'asc' | 'desc' = 'desc';
   
   constructor(
     private route: ActivatedRoute,
@@ -69,6 +77,8 @@ export class BookingHistoryComponent implements OnInit {
     this.bookingService.getBookingHistoryByPlot(this.plotId).subscribe({
       next: (history: Booking[]) => {
         this.bookingHistory = history;
+        this.filteredBookingHistory = [...history];
+        this.applyFilters();
         this.loading = false;
       },
       error: (err: any) => {
@@ -99,6 +109,8 @@ export class BookingHistoryComponent implements OnInit {
     this.bookingService.getBookingHistoryByLayout(this.layoutId).subscribe({
       next: (history: Booking[]) => {
         this.bookingHistory = history;
+        this.filteredBookingHistory = [...history];
+        this.applyFilters();
         this.loading = false;
       },
       error: (err: any) => {
@@ -108,6 +120,89 @@ export class BookingHistoryComponent implements OnInit {
       }
     });
   }
+
+  // ================= SEARCH AND FILTER METHODS =================
+
+  onSearchChange(): void {
+    this.applyFilters();
+  }
+
+  onStatusFilterChange(): void {
+    this.applyFilters();
+  }
+
+  onSortChange(): void {
+    this.applyFilters();
+  }
+
+  applyFilters(): void {
+    let filtered = [...this.bookingHistory];
+
+    // Apply search filter
+    if (this.searchTerm.trim()) {
+      const searchLower = this.searchTerm.toLowerCase();
+      filtered = filtered.filter(booking => 
+        booking.customer?.firstName?.toLowerCase().includes(searchLower) ||
+        booking.customer?.mobileNo?.toString().includes(searchLower) ||
+        booking.bookingId?.toString().includes(searchLower) ||
+        booking.aadharNo?.toString().includes(searchLower)
+      );
+    }
+
+    // Apply status filter
+    if (this.statusFilter !== 'ALL') {
+      filtered = filtered.filter(booking => 
+        booking.bookingStatus === this.statusFilter
+      );
+    }
+
+    // Apply sorting
+    filtered.sort((a, b) => {
+      let comparison = 0;
+      
+      switch (this.sortBy) {
+        case 'date':
+          const dateA = new Date(a.createdDate || 0).getTime();
+          const dateB = new Date(b.createdDate || 0).getTime();
+          comparison = dateA - dateB;
+          break;
+        case 'customer':
+          const nameA = (a.customer?.firstName || '').toLowerCase();
+          const nameB = (b.customer?.firstName || '').toLowerCase();
+          comparison = nameA.localeCompare(nameB);
+          break;
+        case 'amount':
+          comparison = (a.price || 0) - (b.price || 0);
+          break;
+        case 'status':
+          const statusA = (a.bookingStatus || '').toLowerCase();
+          const statusB = (b.bookingStatus || '').toLowerCase();
+          comparison = statusA.localeCompare(statusB);
+          break;
+      }
+      
+      return this.sortOrder === 'desc' ? -comparison : comparison;
+    });
+
+    this.filteredBookingHistory = filtered;
+  }
+
+  clearFilters(): void {
+    this.searchTerm = '';
+    this.statusFilter = 'ALL';
+    this.sortBy = 'date';
+    this.sortOrder = 'desc';
+    this.applyFilters();
+  }
+
+  getUniqueStatuses(): string[] {
+    const statuses = this.bookingHistory
+      .map(b => b.bookingStatus)
+      .filter(s => s !== undefined && s !== null) as string[];
+    return [...new Set(statuses)];
+  }
+
+  // ================= CALCULATION METHODS =================
 
   getTotalPaid(booking: Booking): number {
     return (booking.advance1 || 0) +
@@ -143,17 +238,24 @@ export class BookingHistoryComponent implements OnInit {
     return new Date(dateString).toLocaleString('en-IN');
   }
 
-  goBack(): void {
-    if (this.historyType === 'plot') {
-      this.router.navigate(['/plots']);
-    } else {
-      this.router.navigate(['/layouts']);
+  // ================= MODAL METHODS =================
+
+  viewDetails(booking: Booking): void {
+    this.selectedBooking = booking;
+  }
+
+  closeModal(): void {
+    this.selectedBooking = undefined;
+  }
+
+  rebookFromModal(): void {
+    if (this.selectedBooking) {
+      this.rebookPlot(this.selectedBooking);
+      this.closeModal();
     }
   }
 
-  goHome(): void {
-    this.router.navigate(['/dashboard']);
-  }
+  // ================= REBOOKING FUNCTIONALITY =================
 
   canRebook(booking: Booking): boolean {
     // Always allow rebooking - users can rebook any plot from history
@@ -177,6 +279,16 @@ export class BookingHistoryComponent implements OnInit {
       return;
     }
 
+    // Show confirmation dialog
+    const confirmRebook = confirm(
+      `Are you sure you want to rebook Plot ${booking.plot.plotNo}?\n\n` +
+      `This will create a new booking for the same plot.`
+    );
+
+    if (!confirmRebook) {
+      return;
+    }
+
     // Navigate to create booking page with pre-filled plot information
     this.router.navigate(['/new-booking'], {
       queryParams: {
@@ -186,5 +298,97 @@ export class BookingHistoryComponent implements OnInit {
         originalBookingId: booking.bookingId
       }
     });
+
+    this.toastr.info('Redirecting to booking form with pre-filled plot details...');
+  }
+
+  // ================= NAVIGATION =================
+
+  goBack(): void {
+    this.router.navigate(['/booking-history']);
+  }
+
+  goHome(): void {
+    this.router.navigate(['/dashboard']);
+  }
+
+  goToBookingList(): void {
+    this.router.navigate(['/booking-history']);
+  }
+
+  // ================= EXPORT FUNCTIONALITY =================
+
+  exportToCSV(): void {
+    if (this.filteredBookingHistory.length === 0) {
+      this.toastr.warning('No data to export');
+      return;
+    }
+
+    const headers = [
+      'Booking ID',
+      'Customer Name',
+      'Mobile',
+      'Status',
+      'Total Price',
+      'Total Paid',
+      'Balance',
+      'Address',
+      'Aadhar No',
+      'PAN No',
+      'Booking Date',
+      'Updated Date'
+    ];
+
+    if (this.historyType === 'layout') {
+      headers.splice(2, 0, 'Plot No');
+    }
+
+    const csvData = this.filteredBookingHistory.map(booking => {
+      const row = [
+        booking.bookingId,
+        booking.customer?.firstName || '',
+        booking.customer?.mobileNo || '',
+        booking.bookingStatus || '',
+        booking.price || 0,
+        this.getTotalPaid(booking),
+        this.getBalance(booking),
+        booking.address || '',
+        booking.aadharNo || '',
+        booking.panNo || '',
+        this.formatDateTime(booking.createdDate),
+        this.formatDateTime(booking.updatedDate)
+      ];
+
+      if (this.historyType === 'layout') {
+        row.splice(2, 0, booking.plot?.plotNo || '');
+      }
+
+      return row;
+    });
+
+    const csvContent = [headers, ...csvData]
+      .map(row => row.map(field => `"${field}"`).join(','))
+      .join('\n');
+
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const link = document.createElement('a');
+    const url = URL.createObjectURL(blob);
+    link.setAttribute('href', url);
+    
+    const fileName = this.historyType === 'plot' 
+      ? `plot-${this.plot?.plotNo}-booking-history.csv`
+      : `layout-${this.layout?.layoutName}-booking-history.csv`;
+    
+    link.setAttribute('download', fileName);
+    link.style.visibility = 'hidden';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+
+    this.toastr.success('Booking history exported successfully');
+  }
+
+  printHistory(): void {
+    window.print();
   }
 }

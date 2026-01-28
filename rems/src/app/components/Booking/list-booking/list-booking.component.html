@@ -76,10 +76,18 @@
                 <i class="fa fa-pencil"></i> Edit
               </button>
 
-              <!-- REBOOK (OWNERSHIP CHANGE) -->
-              <button class="btn btn-rebook"
-                      (click)="openRebookForm(b)">
-                <i class="fa fa-refresh"></i> Rebook
+              <!-- HISTORY -->
+              <button class="btn btn-history"
+                      (click)="viewHistory(b)"
+                      title="View complete booking history for this plot">
+                <i class="fa fa-clock-rotate-left"></i> History
+              </button>
+
+              <!-- DELETE -->
+              <button class="btn btn-delete"
+                      (click)="deleteBooking(b)"
+                      title="Delete this booking">
+                <i class="fa fa-trash"></i> Delete
               </button>
             </div>
           </td>

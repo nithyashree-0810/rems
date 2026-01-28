@@ -1,9 +1,11 @@
-<div class="container" *ngIf="!showRebookModal && !showEditForm">
-  <!-- TITLE ONLY -->
+<div class="container">
+
+  <!-- TITLE ONLY (NO HOME HERE) -->
   <h2>Booking History</h2>
 
   <!-- SEARCH + CREATE ROW -->
   <div class="search-create-row">
+
     <!-- SEARCH (CENTER) -->
     <div class="search-container">
       <input type="text"
@@ -27,6 +29,7 @@
         <i class="fa fa-plus"></i> New Booking
       </button>
     </div>
+
   </div>
 
   <!-- LOADING -->
@@ -35,6 +38,7 @@
   <!-- TABLE -->
   <div class="table-wrapper" *ngIf="!loading && bookingList.length > 0">
     <table class="layout-table">
+
       <thead>
         <tr>
           <th>ID</th>
@@ -42,9 +46,11 @@
           <th>Plot No</th>
           <th>Customer</th>
           <th>Mobile</th>
-          <th>Total Price</th>
-          <th>Paid Amount</th>
-          <th>Balance Amount</th>
+          <th>Sqft</th>
+          <th>Price</th>
+          <th>Paid</th>
+          <th>Balance</th>
+          <th>Direction</th>
           <th>Status</th>
           <th>Actions</th>
         </tr>
@@ -54,276 +60,78 @@
         <tr *ngFor="let b of paginatedBookings">
           <td>{{ b.bookingId }}</td>
           <td class="left-align">{{ b.layout?.layoutName }}</td>
-          <td>{{ b.plot?.plotNo || b.plotNo }}</td>
+          <td>{{ b.plot?.plotNo }}</td>
           <td class="left-align">{{ b.customer?.firstName }}</td>
           <td>{{ b.customer?.mobileNo }}</td>
+          <td>{{ b.sqft }}</td>
           <td>{{ b.price | currency:'INR' }}</td>
           <td>{{ getTotalPaid(b) | currency:'INR' }}</td>
           <td>{{ getBalance(b) | currency:'INR' }}</td>
+          <td>{{ b.direction }}</td>
           <td>{{ b.status }}</td>
 
           <!-- ACTION ICONS -->
           <td>
             <div class="action-icons">
-              <!-- VIEW -->
+              <!-- View -->
               <i class="fa fa-eye circle-icon view"
                  [routerLink]="['/view-booking', b.bookingId]"
-                 title="View"></i>
+                 title="View Details"></i>
 
-              <!-- EDIT (PAYMENT UPDATE) -->
-              <button class="btn btn-edit-subtle"
-                      (click)="openEditForm(b)">
-                <i class="fa fa-pencil"></i> Edit
-              </button>
+              <!-- Edit -->
+              <i class="fa fa-pencil circle-icon edit"
+                 [routerLink]="['/edit-booking', b.bookingId]"
+                 title="Edit Booking"></i>
 
-              <!-- HISTORY -->
+              <!-- History -->
               <button class="btn btn-history"
                       (click)="viewHistory(b)"
                       title="View complete booking history for this plot">
                 <i class="fa fa-clock-rotate-left"></i> History
               </button>
 
-              <!-- DELETE -->
+              <!-- Delete -->
               <button class="btn btn-delete"
                       (click)="deleteBooking(b)"
-                      title="Delete this booking">
-                <i class="fa fa-trash"></i> Delete
+                      title="Cancel Booking">
+                <i class="fa fa-trash"></i>
               </button>
             </div>
           </td>
         </tr>
       </tbody>
+
     </table>
   </div>
 
   <!-- PAGINATION + HOME -->
   <div class="pagination-container" *ngIf="!loading && bookingList.length > 0">
+
     <div class="pagination">
+      <!-- Prev -->
       <button [disabled]="currentPage === 1" (click)="prevPage()">« Prev</button>
 
+      <!-- Page Numbers -->
       <button *ngFor="let page of pages"
               [class.active]="page === currentPage"
               (click)="goToPage(page)">
         {{ page }}
       </button>
 
-      <button [disabled]="currentPage === totalPages"
-              (click)="nextPage()">Next »</button>
+      <!-- Next -->
+      <button [disabled]="currentPage === totalPages" (click)="nextPage()">Next »</button>
     </div>
 
-    <button class="btn btn-danger pagination-home-btn"
-            (click)="goHome()">
+    <!-- Home Button -->
+    <button class="btn btn-danger pagination-home-btn" (click)="goHome()">
       Home
     </button>
+
   </div>
 
   <!-- NO DATA -->
   <div *ngIf="!loading && bookingList.length === 0" class="no-records">
     No bookings found.
   </div>
-</div>
 
-<!-- ================= EDIT FORM (PAYMENT UPDATE) ================= -->
-<div class="page-bg" *ngIf="showEditForm">
-  <div class="center-page">
-    <div class="enquiry-card">
-      <h3>Edit Payment Details</h3>
-
-      <form #editForm="ngForm" (ngSubmit)="confirmUpdatePayment()">
-
-        <div class="section-title">Owner Information (Readonly)</div>
-        <div class="row">
-          <div class="col">
-            <label class="dark-label">Owner Name</label>
-            <input type="text"
-                   [value]="selectedBooking?.customer?.firstName"
-                   readonly
-                   class="readonly-input">
-          </div>
-          <div class="col">
-            <label class="dark-label">Mobile Number</label>
-            <input type="text"
-                   [value]="selectedBooking?.customer?.mobileNo"
-                   readonly
-                   class="readonly-input">
-          </div>
-        </div>
-
-        <div class="section-title">Booking Details (Readonly)</div>
-        <div class="row">
-          <div class="col">
-            <label class="dark-label">Layout Name</label>
-            <input type="text"
-                   [value]="selectedBooking?.layout?.layoutName"
-                   readonly
-                   class="readonly-input">
-          </div>
-          <div class="col">
-            <label class="dark-label">Plot Number</label>
-            <input type="text"
-                   [value]="selectedBooking?.plot?.plotNo"
-                   readonly
-                   class="readonly-input">
-          </div>
-        </div>
-
-        <div class="section-title">Finance & Payment</div>
-        <div class="row">
-          <div class="col">
-            <label class="dark-label">Total Plot Price</label>
-            <input type="number"
-                   [value]="selectedBooking?.price"
-                   readonly
-                   class="readonly-input">
-          </div>
-        </div>
-
-        <div class="row">
-          <div class="col">
-            <label class="dark-label">
-              Total Paid Amount <span class="required">*</span>
-            </label>
-            <input type="number"
-                   name="editPaidAmount"
-                   [(ngModel)]="editPaidAmount"
-                   (input)="calculateEditBalance()"
-                   required>
-          </div>
-          <div class="col">
-            <label class="dark-label">Balance Amount</label>
-            <input type="number"
-                   [value]="editBalance"
-                   readonly
-                   class="readonly-input">
-          </div>
-        </div>
-
-        <div class="buttons-row">
-          <button type="submit"
-                  class="btn btn-success"
-                  [disabled]="!editForm.valid">
-            Update Payment
-          </button>
-          <button type="button"
-                  class="btn btn-danger"
-                  (click)="closeEditForm()">
-            Cancel
-          </button>
-        </div>
-
-      </form>
-    </div>
-  </div>
-</div>
-
-<!-- ================= REBOOK FORM (OWNERSHIP CHANGE) ================= -->
-<div class="page-bg" *ngIf="showRebookModal">
-  <div class="center-page">
-    <div class="enquiry-card">
-      <h3>Rebooking Form (Ownership Change)</h3>
-
-      <form #rebookForm="ngForm" (ngSubmit)="confirmRebook()">
-
-        <div class="row">
-          <div class="col">
-            <label class="dark-label">Layout Name</label>
-            <input type="text"
-                   [value]="selectedBooking?.layout?.layoutName"
-                   readonly
-                   class="readonly-input">
-          </div>
-          <div class="col">
-            <label class="dark-label">Plot Number</label>
-            <input type="text"
-                   [value]="selectedBooking?.plot?.plotNo"
-                   readonly
-                   class="readonly-input">
-          </div>
-        </div>
-
-        <div class="section-title">New Owner Details</div>
-
-        <div class="row">
-          <div class="col">
-            <label class="dark-label">
-              Owner ID <span class="required">*</span>
-            </label>
-            <input type="text"
-                   name="newOwnerID"
-                   [(ngModel)]="newOwnerID"
-                   required>
-          </div>
-          <div class="col">
-            <label class="dark-label">
-              Owner Name <span class="required">*</span>
-            </label>
-            <input type="text"
-                   name="newOwnerName"
-                   [(ngModel)]="newOwnerName"
-                   required>
-          </div>
-        </div>
-
-        <div class="row">
-          <div class="col">
-            <label class="dark-label">
-              Mobile Number <span class="required">*</span>
-            </label>
-            <input type="text"
-                   name="newOwnerMobile"
-                   [(ngModel)]="newOwnerMobile"
-                   required>
-          </div>
-        </div>
-
-        <div class="row">
-          <div class="col">
-            <label class="dark-label">
-              Address <span class="required">*</span>
-            </label>
-            <textarea name="newOwnerAddress"
-                      [(ngModel)]="newOwnerAddress"
-                      required
-                      class="full-width-textarea"></textarea>
-          </div>
-        </div>
-
-        <div class="section-title">Pricing Section</div>
-
-        <div class="row">
-          <div class="col">
-            <label class="dark-label">
-              New Plot Price <span class="required">*</span>
-            </label>
-            <input type="number"
-                   name="rebookPrice"
-                   [(ngModel)]="rebookPrice"
-                   (input)="calculateRebookBalance()"
-                   required>
-          </div>
-          <div class="col">
-            <label class="dark-label">Balance Amount</label>
-            <input type="number"
-                   [value]="rebookBalance"
-                   readonly
-                   class="readonly-input">
-          </div>
-        </div>
-
-        <div class="buttons-row" style="margin-top: 30px;">
-          <button type="submit"
-                  class="btn btn-success"
-                  [disabled]="!rebookForm.valid">
-            Confirm Transfer
-          </button>
-          <button type="button"
-                  class="btn btn-danger"
-                  (click)="closeRebookForm()">
-            Cancel
-          </button>
-        </div>
-
-      </form>
-    </div>
-  </div>
 </div>

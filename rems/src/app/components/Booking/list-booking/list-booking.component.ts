@@ -177,7 +177,9 @@ export class ListBookingComponent implements OnInit {
       },
       error: (err) => {
         console.error('Delete Error:', err);
-        const errorMsg = err.error?.message || err.error || 'Failed to delete booking. Please check for dependencies.';
+        const errorMsg = (err.error && typeof err.error.message === 'string')
+          ? err.error.message
+          : (typeof err.error === 'string' ? err.error : 'Failed to delete booking. Please check for dependencies.');
         this.toastr.error(errorMsg, 'Delete Failed');
       }
     });

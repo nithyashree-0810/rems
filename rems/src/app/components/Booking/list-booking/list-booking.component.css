@@ -1,39 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
 
-/* 🌌 DARK PREMIUM BACKGROUND */
-.page-bg {
-  min-height: 100vh;
-  background: linear-gradient(
-      rgba(0, 0, 0, 0.85),
-      rgba(0, 0, 0, 0.85)
-    ),
-    url("https://images.pexels.com/photos/1396122/pexels-photo-1396122.jpeg");
-  background-size: cover;
-  background-position: center;
-  background-attachment: fixed;
-  display: flex;
-  justify-content: center;
-  align-items: flex-start;
-}
-
-/* MAIN HOLDER */
-.dashboard-shell {
-  max-width: 1250px;
-  width: 100%;
-  padding: 40px 20px;
-  font-family: "Plus Jakarta Sans", sans-serif;
-}
-
-/* GLASS EFFECT CARD */
-.glass-card {
-  background: rgba(255, 255, 255, 0.92);
-  backdrop-filter: blur(12px);
-  border-radius: 18px;
-  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.35);
-}
-
 /* ------------------------------------------------
-   PAGE CONTENT
+   EXISTING LIST STYLES (KEEPING UNCHANGED)
 ------------------------------------------------ */
 
 .container {
@@ -42,9 +10,9 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  font-family: "Plus Jakarta Sans", sans-serif;
 }
 
-/* TITLE */
 h2 {
   color: #ff7e00;
   margin-bottom: 16px;
@@ -52,7 +20,6 @@ h2 {
   font-weight: 800;
 }
 
-/* SEARCH + CREATE SAME ROW */
 .search-create-row {
   width: 100%;
   max-width: 1188px;
@@ -62,7 +29,6 @@ h2 {
   margin-bottom: 14px;
 }
 
-/* SEARCH */
 .search-container {
   display: flex;
   justify-content: center;
@@ -88,7 +54,6 @@ h2 {
   cursor: pointer;
 }
 
-/* CREATE BUTTON */
 .top-buttons {
   display: flex;
   justify-content: flex-end;
@@ -103,24 +68,23 @@ h2 {
 }
 
 .btn-success {
-  background: #28a745;
+  background: #16a34a;
   color: white;
 }
 
 .btn-danger {
-  background: #dc3545;
+  background: #dc2626;
   color: white;
 }
 
-/* LOADING */
 .loading {
   margin-top: 20px;
   font-size: 14px;
   color: #444;
 }
 
-/* TABLE */
 .table-wrapper {
+  width: 100%;
   display: flex;
   justify-content: center;
 }
@@ -131,7 +95,7 @@ h2 {
   background: white;
   border-radius: 11px;
   overflow: hidden;
-  box-shadow: 0 0 7px rgba(0,0,0,0.1);
+  box-shadow: 0 0 7px rgba(0, 0, 0, 0.1);
 }
 
 .layout-table thead {
@@ -156,7 +120,6 @@ h2 {
   text-align: left;
 }
 
-/* ACTION ICONS */
 .action-icons {
   display: flex;
   justify-content: center;
@@ -176,34 +139,58 @@ h2 {
   color: #1976d2;
 }
 
-.edit {
+/* ---------------- EDIT BUTTON ---------------- */
+
+.btn-edit-subtle {
   background: #e8f5e9;
-  color: #388e3c;
+  color: #2e7d32;
+  border: 1px solid #c8e6c9;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 11px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 4px;
 }
 
-.history {
-  background: #fff3e0;
+.btn-edit-subtle:hover {
+  background: #2e7d32;
+  color: white;
+}
+
+/* ---------------- REBOOK BUTTON ---------------- */
+
+.btn-rebook {
+  background: #fff8e1;
   color: #f57c00;
+  border: 1px solid #ffe0b2;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 11px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 4px;
 }
 
-.history.disabled {
-  background: #f5f5f5;
-  color: #ccc;
-  cursor: not-allowed;
+.btn-rebook:hover {
+  background: #f57c00;
+  color: white;
 }
 
-.delete {
-  background: #ffebee;
-  color: #d32f2f;
-}
+/* ---------------- PAGINATION ---------------- */
 
-/* PAGINATION */
 .pagination-container {
   width: 1188px;
   margin-top: 24px;
   display: flex;
-  align-items: center;        /* ✅ same straight line */
-  justify-content: center;    /* ✅ pagination center */
+  align-items: center;
+  justify-content: center;
   position: relative;
 }
 
@@ -217,19 +204,15 @@ h2 {
   padding: 6px 12px;
   font-size: 12px;
   border-radius: 5px;
-  box-shadow: none;        /* Remove shadow */
-  border: 1px solid #ccc;  /* Optional: for visible border */
-  background: #f0f0f0;     /* Optional: normal button color */
+  border: 1px solid #ccc;
+  background: #f0f0f0;
 }
 
 .pagination .active {
   background: #3498db;
   color: white;
-  box-shadow: none;       /* Remove shadow */
 }
 
-
-/* HOME BUTTON */
 .pagination-home-btn {
   position: absolute;
   right: 0;
@@ -238,14 +221,118 @@ h2 {
   border-radius: 7px;
 }
 
-/* NO DATA */
-.no-records {
-  margin-top: 20px;
-  font-size: 14px;
-  color: #666;
+/* ------------------------------------------------
+   REBOOK FORM STYLES (ENQUIRY FORM STYLE)
+------------------------------------------------ */
+
+.page-bg {
+  min-height: 100vh;
+  background: linear-gradient(rgba(0, 0, 0, 0.88), rgba(0, 0, 0, 0.88)),
+    url("https://images.pexels.com/photos/1396122/pexels-photo-1396122.jpeg");
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  font-family: "Plus Jakarta Sans", sans-serif;
 }
 
-/* RESPONSIVE */
+.required {
+  color: #e11d48;
+  font-weight: 700;
+  margin-left: 4px;
+}
+
+.center-page {
+  display: flex;
+  justify-content: center;
+  padding: 30px 0 40px;
+  width: 100%;
+}
+
+.enquiry-card {
+  width: 100%;
+  max-width: 550px;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12);
+  padding: 18px 22px;
+}
+
+.enquiry-card h3 {
+  text-align: center;
+  margin-bottom: 20px;
+  color: #ff6600;
+  font-weight: 700;
+  font-size: 22px;
+}
+
+.section-title {
+  font-weight: 700;
+  font-size: 14px;
+  color: #ff6600;
+  margin: 15px 0 10px 0;
+  border-bottom: 1px solid #eee;
+  padding-bottom: 5px;
+}
+
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+  margin-bottom: 12px;
+}
+
+.col {
+  flex: 1;
+  min-width: 200px;
+  display: flex;
+  flex-direction: column;
+}
+
+.dark-label {
+  font-weight: 600;
+  font-size: 12px;
+  margin-bottom: 4px;
+  color: #333;
+}
+
+input[type="text"],
+input[type="number"],
+textarea {
+  padding: 8px 12px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  font-size: 13px;
+  height: 36px;
+  box-sizing: border-box;
+}
+
+textarea.full-width-textarea {
+  height: 80px;
+}
+
+input:focus,
+textarea:focus {
+  outline: none;
+  border-color: #ff6600;
+  box-shadow: 0 0 4px rgba(255, 102, 0, 0.4);
+}
+
+.readonly-input {
+  background-color: #f5f5f5;
+  color: #666;
+  cursor: not-allowed;
+}
+
+.buttons-row {
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
+  margin-top: 20px;
+}
+
 @media (max-width: 992px) {
   .layout-table,
   .pagination-container,
@@ -260,5 +347,9 @@ h2 {
 
   .top-buttons {
     justify-content: center;
+  }
+
+  .enquiry-card {
+    max-width: 90%;
   }
 }

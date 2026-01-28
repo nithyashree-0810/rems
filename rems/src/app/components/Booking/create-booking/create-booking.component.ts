@@ -17,6 +17,7 @@ import { ActivatedRoute } from '@angular/router';
 export class CreateBookingComponent implements OnInit {
 
   selectedPlot: any = null;
+  isRebooking: boolean = false;
 
   booking: any = {
     layoutName: '',
@@ -72,6 +73,11 @@ export class CreateBookingComponent implements OnInit {
     private toastr: ToastrService
   ) {}
 
+  isRebookingMode(): boolean {
+    // Check if we're in rebooking mode
+    return this.isRebooking || this.route.snapshot.queryParams['rebooking'] === 'true';
+  }
+
   ngOnInit(): void {
     this.loadLayouts();
 
@@ -82,6 +88,8 @@ export class CreateBookingComponent implements OnInit {
       const layoutId = params['layoutId'];
       const isRebooking = params['rebooking'] === 'true';
       const originalBookingId = params['originalBookingId'];
+
+      this.isRebooking = isRebooking;
 
       if (isRebooking && plotId) {
         // Handle rebooking scenario
@@ -112,7 +120,12 @@ export class CreateBookingComponent implements OnInit {
           });
         }
         
-        this.toastr.info('Rebooking mode: Plot details pre-filled. Please enter customer details.');
+        // Show success message with plot details
+        this.toastr.success(
+          `Rebooking Plot ${plot.plotNo} in ${plot.layout?.layoutName}. Plot details pre-filled.`,
+          'Rebooking Mode',
+          { timeOut: 5000 }
+        );
       },
       error: (err) => {
         console.error('Error loading plot for rebooking:', err);
@@ -270,8 +283,14 @@ export class CreateBookingComponent implements OnInit {
         // ✅ Mark plot as booked
         this.plotService.markAsBooked(this.booking.plotId).subscribe({
           next: () => {
-            this.toastr.success('Booking Saved Successfully ✅');
-            this.router.navigate(['/booking-history']);
+            if (this.isRebookingMode()) {
+              this.toastr.success('Plot Rebooked Successfully! ✅', 'Rebooking Complete');
+              // Redirect to the plot's booking history
+              this.router.navigate(['/booking-history/plot', this.booking.plotId]);
+            } else {
+              this.toastr.success('Booking Saved Successfully ✅');
+              this.router.navigate(['/booking-history']);
+            }
           },
           error: () => this.toastr.error('Failed to mark plot as booked')
         });

@@ -66,14 +66,20 @@
           <td>{{ plot.reraApproved ? 'Yes' : 'No' }}</td>
 
           <td>
-            <i class="fa fa-eye circle-icon view" (click)="viewPlot(plot.layout.layoutName, plot.plotNo)"></i>
-            <i class="fa fa-pencil circle-icon edit" (click)="editPlot(plot.layout.layoutName, plot.plotNo)"></i>
-            <i class="fa fa-trash circle-icon delete" (click)="deletePlot(plot.layout.layoutName, plot.plotNo)"></i>
-            <i
-  class="fa fa-book circle-icon book"
-  [class.disabled]="plot.booked"
-  (click)="onBookClick(plot)">
-</i>
+            <i class="fa fa-eye circle-icon view" 
+               (click)="viewPlot(plot.layout.layoutName, plot.plotNo)"
+               title="View Plot"></i>
+            <i class="fa fa-pencil circle-icon edit" 
+               (click)="editPlot(plot.layout.layoutName, plot.plotNo)"
+               title="Edit Plot"></i>
+            <i class="fa fa-trash circle-icon delete" 
+               (click)="deletePlot(plot.layout.layoutName, plot.plotNo)"
+               title="Delete Plot"></i>
+            <i class="fa fa-book circle-icon book"
+               [class.disabled]="plot.booked"
+               (click)="onBookClick(plot)"
+               title="Book Plot">
+            </i>
           </td>
         </tr>
       </tbody>

@@ -353,3 +353,49 @@ textarea:focus {
     max-width: 90%;
   }
 }
+/* ---------------- HISTORY BUTTON ---------------- */
+
+.btn-history {
+  padding: 6px 12px;
+  background: #e3f2fd;
+  color: #1976d2;
+  border: 1px solid #bbdefb;
+  border-radius: 6px;
+  font-size: 11px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.btn-history:hover {
+  transform: translateY(-1px);
+  background: #1976d2;
+  color: white;
+  box-shadow: 0 4px 8px rgba(25, 118, 210, 0.3);
+}
+/* ---------------- DELETE BUTTON ---------------- */
+
+.btn-delete {
+  padding: 6px 12px;
+  background: #ffebee;
+  color: #d32f2f;
+  border: 1px solid #ffcdd2;
+  border-radius: 6px;
+  font-size: 11px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.btn-delete:hover {
+  transform: translateY(-1px);
+  background: #d32f2f;
+  color: white;
+  box-shadow: 0 4px 8px rgba(211, 47, 47, 0.3);
+}

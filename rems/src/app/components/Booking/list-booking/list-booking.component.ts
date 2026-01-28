@@ -48,7 +48,7 @@ export class ListBookingComponent implements OnInit {
     private plotService: PlotserviceService,
     private router: Router,
     private toastr: ToastrService
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.loadBookings();
@@ -89,7 +89,7 @@ export class ListBookingComponent implements OnInit {
       const layoutName = (b.layout?.layoutName || '').toLowerCase();
       const plotNo = (b.plot?.plotNo || b.plotNo || '').toString().toLowerCase();
       return (!layoutKey || layoutName.includes(layoutKey)) &&
-             (!plotKey || plotNo.includes(plotKey));
+        (!plotKey || plotNo.includes(plotKey));
     });
 
     this.currentPage = 1;
@@ -139,9 +139,9 @@ export class ListBookingComponent implements OnInit {
 
   getTotalPaid(b: Booking): number {
     return (b.advance1 || 0) +
-           (b.advance2 || 0) +
-           (b.advance3 || 0) +
-           (b.advance4 || 0);
+      (b.advance2 || 0) +
+      (b.advance3 || 0) +
+      (b.advance4 || 0);
   }
 
   getBalance(b: Booking): number {
@@ -172,12 +172,13 @@ export class ListBookingComponent implements OnInit {
 
     this.bookingService.deleteBooking(booking.bookingId).subscribe({
       next: () => {
-        this.toastr.success('Booking deleted successfully');
-        this.loadBookings(); // Reload the list
+        this.toastr.success(`Booking #${booking.bookingId} deleted successfully`);
+        this.loadBookings();
       },
       error: (err) => {
-        console.error('Error deleting booking:', err);
-        this.toastr.error('Failed to delete booking');
+        console.error('Delete Error:', err);
+        const errorMsg = err.error?.message || err.error || 'Failed to delete booking. Please check for dependencies.';
+        this.toastr.error(errorMsg, 'Delete Failed');
       }
     });
   }

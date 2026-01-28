@@ -129,14 +129,41 @@ h2 {
 
 .circle-icon {
   font-size: 14px;
-  padding: 7px;
+  width: 32px;
+  height: 32px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   border-radius: 50%;
   cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
+}
+
+.circle-icon:hover {
+  transform: translateY(-2px);
 }
 
 .view {
   background: #e3f2fd;
   color: #1976d2;
+}
+
+.view:hover {
+  background: #1976d2;
+  color: #ffffff;
+  box-shadow: 0 6px 15px rgba(25, 118, 210, 0.3);
+}
+
+.edit {
+  background: #e8f5e9;
+  color: #2e7d32;
+}
+
+.edit:hover {
+  background: #2e7d32;
+  color: #ffffff;
+  box-shadow: 0 6px 15px rgba(46, 125, 50, 0.3);
 }
 
 /* ---------------- EDIT BUTTON ---------------- */
@@ -334,6 +361,7 @@ textarea:focus {
 }
 
 @media (max-width: 992px) {
+
   .layout-table,
   .pagination-container,
   .search-create-row {
@@ -353,6 +381,7 @@ textarea:focus {
     max-width: 90%;
   }
 }
+
 /* ---------------- HISTORY BUTTON ---------------- */
 
 .btn-history {
@@ -376,6 +405,7 @@ textarea:focus {
   color: white;
   box-shadow: 0 4px 8px rgba(25, 118, 210, 0.3);
 }
+
 /* ---------------- DELETE BUTTON ---------------- */
 
 .btn-delete {

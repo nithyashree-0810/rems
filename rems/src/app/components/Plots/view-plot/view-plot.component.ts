@@ -6,7 +6,7 @@ import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-view-plot',
-  standalone:false,
+  standalone: false,
   templateUrl: './view-plot.component.html',
   styleUrls: ['./view-plot.component.css']
 })
@@ -14,14 +14,14 @@ export class ViewPlotComponent implements OnInit {
 
   layoutName: string = '';
   plotNo: any;
-  plot!: Plot;
+  plot?: Plot | null;
 
   constructor(
     private route: ActivatedRoute,
     private plotService: PlotserviceService,
     private router: Router,
     private toastr: ToastrService
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.layoutName = this.route.snapshot.paramMap.get('layoutName') ?? '';
@@ -53,7 +53,7 @@ export class ViewPlotComponent implements OnInit {
   }
 
   viewLayoutPdf() {
-    if (this.plot.layout && this.plot.layout.layoutName) {
+    if (this.plot?.layout?.layoutName) {
       const url = `http://localhost:8080/api/layouts/pdf/${this.plot.layout.layoutName}`;
       window.open(url, "_blank");
     }

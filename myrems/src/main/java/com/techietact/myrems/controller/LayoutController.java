@@ -39,6 +39,11 @@ public class LayoutController {
 		return layoutService.getLayoutEntity(layoutName);
 	}
 
+	@GetMapping("/id/{layoutId}")
+	public Layout getLayoutById(@PathVariable Long layoutId) {
+		return layoutService.getLayoutById(layoutId);
+	}
+
 	@PutMapping("/{layoutName}")
 	public LayoutBO updateLayout(@PathVariable String layoutName, @RequestBody LayoutBO layoutBO) {
 		return layoutService.updateLayout(layoutName, layoutBO);

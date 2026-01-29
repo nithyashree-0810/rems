@@ -32,6 +32,8 @@ public interface LayoutService {
     // ⭐ IMPORTANT
     Layout getLayoutEntity(String layoutName);
     
+    Layout getLayoutById(Long layoutId);
+    
     void updateLayoutFromBO(Layout existingLayout, LayoutBO layoutBO);
     
     Layout updateLayoutWithNameChange(String oldLayoutName, LayoutBO layoutBO);

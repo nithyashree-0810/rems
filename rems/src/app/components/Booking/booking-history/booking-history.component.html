@@ -1,0 +1,226 @@
+<div class="history-container">
+
+  <!-- Loading -->
+  <div class="loading-section" *ngIf="loading">
+    <div class="spinner"></div>
+    <p>Loading booking history...</p>
+  </div>
+
+  <!-- Main Content -->
+  <div class="main-content" *ngIf="!loading">
+
+    <!-- ROW 1: Layout Information -->
+    <div class="section-card" *ngIf="plot || layout">
+      <div class="section-header">
+        <h2><i class="fas fa-building"></i> Layout Information</h2>
+      </div>
+      <div class="section-content">
+        <div class="grid-row-3">
+          <!-- Column 1: Basic Details -->
+          <div class="info-column">
+            <h3>Basic Details</h3>
+            <div class="info-list">
+              <div class="info-item">
+                <label>Layout Name:</label>
+                <span>{{ (plot?.layout?.layoutName) || (layout?.layoutName) || 'N/A' }}</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Column 2: Location Details -->
+          <div class="info-column">
+            <h3>Location Details</h3>
+            <div class="info-list">
+              <div class="info-item">
+                <label>Location:</label>
+                <span>{{ (plot?.layout?.location) || (layout?.location) || 'N/A' }}</span>
+              </div>
+              <div class="info-item">
+                <label>Phone:</label>
+                <span>{{ (plot?.layout?.phone) || (layout?.phone) || 'N/A' }}</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Column 3: Layout Owners -->
+          <div class="info-column">
+            <h3>Layout Owners</h3>
+            <div class="owners-list">
+              <div class="owner-item" *ngIf="plot?.layout?.ownerName1 || layout?.ownerName1">
+                <span class="owner-label">Owner 1:</span>
+                <span>{{ plot?.layout?.ownerName1 || layout?.ownerName1 }}</span>
+              </div>
+              <div class="owner-item" *ngIf="plot?.layout?.ownerName2 || layout?.ownerName2">
+                <span class="owner-label">Owner 2:</span>
+                <span>{{ plot?.layout?.ownerName2 || layout?.ownerName2 }}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ROW 2: Plot Information -->
+    <div class="section-card" *ngIf="historyType === 'plot' && plot">
+      <div class="section-header">
+        <h2><i class="fas fa-map-marker-alt"></i> Plot Information</h2>
+      </div>
+      <div class="section-content">
+        <div class="grid-row-2">
+          <!-- Column 1: Plot Details -->
+          <div class="info-column">
+            <h3>Plot Details</h3>
+            <div class="info-list">
+              <div class="info-item">
+                <label>Plot No:</label>
+                <span>{{ plot?.plotNo }}</span>
+              </div>
+              <div class="info-item">
+                <label>Price:</label>
+                <span class="price">₹{{ plot?.price | number }}</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Column 2: Plot Owner -->
+          <div class="info-column">
+            <h3>Plot Owner</h3>
+            <div class="info-list">
+              <div class="info-item">
+                <label>Name:</label>
+                <span>{{ plot?.ownerName }}</span>
+              </div>
+              <div class="info-item">
+                <label>Mobile:</label>
+                <span>{{ plot?.mobile }}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Booking History Sections -->
+    <div *ngIf="bookingHistory.length > 0">
+      <h2 style="font-size: 1.2rem; margin-bottom: 20px; color: #1a202c; font-weight: 700;">
+        <i class="fas fa-history" style="color: #ff7e00; margin-right: 10px;"></i>
+        Booking Records
+      </h2>
+
+      <div class="booking-timeline">
+        <div class="booking-card" *ngFor="let booking of bookingHistory; let i = index"
+          [class.current-booking]="i === 0 && booking.isActive">
+
+          <div class="booking-card-header">
+            <div class="booking-id-tag">
+              <h3>Booking #{{ booking.bookingId }}</h3>
+              <span class="current-badge" *ngIf="i === 0 && booking.isActive">CURRENT</span>
+            </div>
+            <span class="status-badge" [ngClass]="getStatusClass(booking.bookingStatus)">
+              {{ booking.bookingStatus }}
+            </span>
+          </div>
+
+          <div class="booking-card-content">
+            <div class="booking-date-row">
+              <span><i class="fas fa-calendar-plus"></i> Created: {{ formatDateTime(booking.createdDate) }}</span>
+              <span *ngIf="booking.updatedDate !== booking.createdDate">
+                <i class="fas fa-calendar-check"></i> Updated: {{ formatDateTime(booking.updatedDate) }}
+              </span>
+            </div>
+
+            <!-- ROW 3: Booking Info & Financials -->
+            <div class="booking-main-grid">
+              <!-- Customer Column -->
+              <div class="info-section">
+                <h4><i class="fas fa-user-circle"></i> Customer Details</h4>
+                <div class="info-list">
+                  <div class="info-item">
+                    <label>Name:</label>
+                    <span>{{ booking.customer?.firstName }}</span>
+                  </div>
+                  <div class="info-item">
+                    <label>Mobile:</label>
+                    <span>{{ booking.customer?.mobileNo }}</span>
+                  </div>
+                  <div class="info-item" *ngIf="historyType === 'layout'">
+                    <label>Plot No:</label>
+                    <span>{{ booking.plot?.plotNo }}</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Financial Column -->
+              <div class="info-section">
+                <h4><i class="fas fa-wallet"></i> Financial Summary</h4>
+                <div class="financial-summary">
+                  <div class="financial-box total">
+                    <label>Price</label>
+                    <span>₹{{ booking.price | number }}</span>
+                  </div>
+                  <div class="financial-box paid">
+                    <label>Paid</label>
+                    <span>₹{{ getTotalPaid(booking) | number }}</span>
+                  </div>
+                  <div class="financial-box balance">
+                    <label>Balance</label>
+                    <span>₹{{ getBalance(booking) | number }}</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- ROW 4: Payment History (Full Width) -->
+            <div class="payment-history-full" *ngIf="getTotalPaid(booking) > 0">
+              <h5><i class="fas fa-file-invoice-dollar" style="color: #ff7e00; margin-right: 8px;"></i> FULL PAYMENT
+                HISTORY</h5>
+              <div class="payment-grid">
+                <div class="payment-card" *ngIf="booking.advance1 > 0">
+                  <span class="pay-label">Advance 1</span>
+                  <span class="pay-amt">₹{{ booking.advance1 | number }}</span>
+                  <span class="pay-meta">{{ formatDate(booking.advance1Date) }} • {{ booking.advance1Mode }}</span>
+                </div>
+                <div class="payment-card" *ngIf="booking.advance2 > 0">
+                  <span class="pay-label">Advance 2</span>
+                  <span class="pay-amt">₹{{ booking.advance2 | number }}</span>
+                  <span class="pay-meta">{{ formatDate(booking.advance2Date) }} • {{ booking.advance2Mode }}</span>
+                </div>
+                <div class="payment-card" *ngIf="booking.advance3 > 0">
+                  <span class="pay-label">Advance 3</span>
+                  <span class="pay-amt">₹{{ booking.advance3 | number }}</span>
+                  <span class="pay-meta">{{ formatDate(booking.advance3Date) }} • {{ booking.advance3Mode }}</span>
+                </div>
+                <div class="payment-card" *ngIf="booking.advance4 > 0">
+                  <span class="pay-label">Advance 4</span>
+                  <span class="pay-amt">₹{{ booking.advance4 | number }}</span>
+                  <span class="pay-meta">{{ formatDate(booking.advance4Date) }} • {{ booking.advance4Mode }}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- No Records -->
+    <div class="no-records" *ngIf="bookingHistory.length === 0">
+      <i class="fas fa-folder-open"></i>
+      <p>No booking history found for this {{ historyType }}.</p>
+    </div>
+
+    <!-- Actions Fixed Footer -->
+    <div class="footer-actions">
+      <button class="btn btn-primary" *ngIf="bookingHistory.length > 0" (click)="rebookPlot(bookingHistory[0])"
+        [disabled]="!canRebook(bookingHistory[0])">
+        <i class="fas fa-redo"></i> Rebook Plot
+      </button>
+      <button class="btn btn-secondary" (click)="goBack()">
+        <i class="fas fa-arrow-left"></i> Back to Bookings
+      </button>
+      <button class="btn btn-primary" (click)="goHome()">
+        <i class="fas fa-home"></i> Dashboard
+      </button>
+    </div>
+
+  </div> <!-- main-content -->
+</div> <!-- history-container -->

@@ -4,10 +4,8 @@
 .page-bg {
   min-height: 100vh;
 
-  background: linear-gradient(
-      rgba(0, 0, 0, 0.85),
-      rgba(0, 0, 0, 0.85)
-    ),
+  background: linear-gradient(rgba(0, 0, 0, 0.85),
+      rgba(0, 0, 0, 0.85)),
     url("https://images.pexels.com/photos/1396122/pexels-photo-1396122.jpeg");
 
   background-size: cover;
@@ -100,8 +98,15 @@ h2 {
   cursor: pointer;
 }
 
-.btn-success { background: #28a745; color: white; }
-.btn-danger  { background: #dc3545; color: white; }
+.btn-success {
+  background: #28a745;
+  color: white;
+}
+
+.btn-danger {
+  background: #dc3545;
+  color: white;
+}
 
 /* TABLE */
 .table-wrapper {
@@ -114,10 +119,12 @@ h2 {
   border-collapse: collapse;
   background: white;
   border-radius: 11px;
-  box-shadow: 0 0 7px rgba(0,0,0,0.1);
+  box-shadow: 0 0 7px rgba(0, 0, 0, 0.1);
 }
 
-.layout-table thead { background: #ff9800; }
+.layout-table thead {
+  background: #ff9800;
+}
 
 .layout-table th {
   padding: 9px;
@@ -130,6 +137,22 @@ h2 {
   padding: 7px;
   font-size: 13px;
   text-align: center;
+}
+
+.left-align {
+  text-align: left !important;
+}
+
+.advances-cell {
+  font-size: 11px !important;
+  min-width: 180px;
+  line-height: 1.4;
+  color: #444;
+}
+
+.advances-cell div {
+  white-space: nowrap;
+  margin-bottom: 2px;
 }
 
 /* AVATAR */
@@ -149,9 +172,20 @@ h2 {
   cursor: pointer;
 }
 
-.view   { background: #e3f2fd; color: #1976d2; }
-.edit   { background: #e8f5e9; color: #388e3c; }
-.delete { background: #ffebee; color: #d32f2f; }
+.view {
+  background: #e3f2fd;
+  color: #1976d2;
+}
+
+.edit {
+  background: #e8f5e9;
+  color: #388e3c;
+}
+
+.delete {
+  background: #ffebee;
+  color: #d32f2f;
+}
 
 .action-icons {
   display: flex;
@@ -165,8 +199,10 @@ h2 {
   width: 1188px;
   margin-top: 24px;
   display: flex;
-  align-items: center;        /* ✅ same straight line */
-  justify-content: center;    /* ✅ pagination center */
+  align-items: center;
+  /* ✅ same straight line */
+  justify-content: center;
+  /* ✅ pagination center */
   position: relative;
 }
 
@@ -180,15 +216,19 @@ h2 {
   padding: 6px 12px;
   font-size: 12px;
   border-radius: 5px;
-  box-shadow: none;        /* Remove shadow */
-  border: 1px solid #ccc;  /* Optional: for visible border */
-  background: #f0f0f0;     /* Optional: normal button color */
+  box-shadow: none;
+  /* Remove shadow */
+  border: 1px solid #ccc;
+  /* Optional: for visible border */
+  background: #f0f0f0;
+  /* Optional: normal button color */
 }
 
 .pagination .active {
   background: #3498db;
   color: white;
-  box-shadow: none;       /* Remove shadow */
+  box-shadow: none;
+  /* Remove shadow */
 }
 
 

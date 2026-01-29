@@ -8,17 +8,11 @@
 
     <!-- SEARCH (CENTER) -->
     <div class="search-container">
-      <input type="text"
-             [(ngModel)]="searchLayoutName"
-             (keyup)="onSearch()"
-             placeholder="Search Layout Name"
-             class="search-input">
+      <input type="text" [(ngModel)]="searchLayoutName" (keyup)="onSearch()" placeholder="Search Layout Name"
+        class="search-input">
 
-      <input type="text"
-             [(ngModel)]="searchPlotNo"
-             (keyup)="onSearch()"
-             placeholder="Search Plot No"
-             class="search-input">
+      <input type="text" [(ngModel)]="searchPlotNo" (keyup)="onSearch()" placeholder="Search Plot No"
+        class="search-input">
 
       <button class="search-btn" (click)="onSearch()">Search</button>
     </div>
@@ -48,6 +42,7 @@
           <th>Mobile</th>
           <th>Sqft</th>
           <th>Price</th>
+          <th>Advances</th>
           <th>Paid</th>
           <th>Balance</th>
           <th>Direction</th>
@@ -65,6 +60,12 @@
           <td>{{ b.customer?.mobileNo }}</td>
           <td>{{ b.sqft }}</td>
           <td>{{ b.price | currency:'INR' }}</td>
+          <td class="left-align advances-cell">
+            <div *ngFor="let adv of getFormattedAdvances(b)">
+              {{ adv }}
+            </div>
+            <span *ngIf="getFormattedAdvances(b).length === 0">-</span>
+          </td>
           <td>{{ getTotalPaid(b) | currency:'INR' }}</td>
           <td>{{ getBalance(b) | currency:'INR' }}</td>
           <td>{{ b.direction }}</td>
@@ -74,26 +75,21 @@
           <td>
             <div class="action-icons">
               <!-- View -->
-              <i class="fa fa-eye circle-icon view"
-                 [routerLink]="['/view-booking', b.bookingId]"
-                 title="View Details"></i>
+              <i class="fa fa-eye circle-icon view" [routerLink]="['/view-booking', b.bookingId]"
+                title="View Details"></i>
 
               <!-- Edit -->
-              <i class="fa fa-pencil circle-icon edit"
-                 [routerLink]="['/edit-booking', b.bookingId]"
-                 title="Edit Booking"></i>
+              <i class="fa fa-pencil circle-icon edit" [routerLink]="['/edit-booking', b.bookingId]"
+                title="Edit Booking"></i>
 
               <!-- History -->
-              <button class="btn btn-history"
-                      (click)="viewHistory(b)"
-                      title="View complete booking history for this plot">
+              <button class="btn btn-history" (click)="viewHistory(b)"
+                title="View complete booking history for this plot">
                 <i class="fa fa-clock-rotate-left"></i> History
               </button>
 
               <!-- Delete -->
-              <button class="btn btn-delete"
-                      (click)="deleteBooking(b)"
-                      title="Cancel Booking">
+              <button class="btn btn-delete" (click)="deleteBooking(b)" title="Cancel Booking">
                 <i class="fa fa-trash"></i>
               </button>
             </div>
@@ -112,9 +108,7 @@
       <button [disabled]="currentPage === 1" (click)="prevPage()">« Prev</button>
 
       <!-- Page Numbers -->
-      <button *ngFor="let page of pages"
-              [class.active]="page === currentPage"
-              (click)="goToPage(page)">
+      <button *ngFor="let page of pages" [class.active]="page === currentPage" (click)="goToPage(page)">
         {{ page }}
       </button>
 

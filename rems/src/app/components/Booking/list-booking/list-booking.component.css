@@ -120,6 +120,18 @@ h2 {
   text-align: left;
 }
 
+.advances-cell {
+  font-size: 11px !important;
+  min-width: 180px;
+  line-height: 1.4;
+  color: #444;
+}
+
+.advances-cell div {
+  white-space: nowrap;
+  margin-bottom: 2px;
+}
+
 .action-icons {
   display: flex;
   justify-content: center;

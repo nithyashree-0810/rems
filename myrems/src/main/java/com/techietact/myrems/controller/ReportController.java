@@ -300,6 +300,17 @@ public class ReportController {
                 plots = plotRepository.findAll();
             }
 
+            // 🔥 Sort Plots by Plot No (Numeric if possible, else String)
+            plots.sort((p1, p2) -> {
+                try {
+                    Integer n1 = Integer.parseInt(p1.getPlotNo().replaceAll("[^0-9]", ""));
+                    Integer n2 = Integer.parseInt(p2.getPlotNo().replaceAll("[^0-9]", ""));
+                    return n1.compareTo(n2);
+                } catch (Exception e) {
+                    return p1.getPlotNo().compareToIgnoreCase(p2.getPlotNo());
+                }
+            });
+
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
             Document document = new Document(PageSize.A4.rotate(), 25, 25, 25, 25);
             PdfWriter.getInstance(document, baos);
@@ -307,7 +318,8 @@ public class ReportController {
 
             addCompanyHeader(document, "Plots Report");
 
-            PdfPTable table = new PdfPTable(7);
+            float[] columnWidths = { 5f, 18f, 10f, 18f, 10f, 14f, 12f };
+            PdfPTable table = new PdfPTable(columnWidths);
             table.setWidthPercentage(100);
             table.setHeaderRows(1);
 
@@ -327,8 +339,8 @@ public class ReportController {
                 addCell(table, p.getLayout().getLayoutName(), bg, Element.ALIGN_LEFT);
                 addCell(table, p.getPlotNo(), bg, Element.ALIGN_CENTER);
                 addCell(table, p.getOwnerName(), bg, Element.ALIGN_LEFT);
-                addCell(table, p.getSqft(), bg, Element.ALIGN_RIGHT);
-                addCell(table, p.getPrice(), bg, Element.ALIGN_RIGHT);
+                addCell(table, String.format("%,d", (int) p.getSqft()), bg, Element.ALIGN_RIGHT);
+                addCell(table, String.format("₹%,.0f", p.getPrice()), bg, Element.ALIGN_RIGHT);
                 addCell(table, p.isBooked() ? "BOOKED" : "AVAILABLE",
                         bg, Element.ALIGN_CENTER);
             }

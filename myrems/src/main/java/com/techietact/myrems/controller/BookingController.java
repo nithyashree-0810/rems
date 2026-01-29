@@ -18,7 +18,7 @@ import com.techietact.myrems.entity.Booking;
 import com.techietact.myrems.service.BookingService;
 
 @RestController
-@RequestMapping("/api/booking")
+@RequestMapping("/api/bookings")
 @CrossOrigin
 public class BookingController {
 
@@ -31,14 +31,16 @@ public class BookingController {
             Booking saved = bookingService.saveBooking(booking);
             return ResponseEntity.ok(saved);
         } catch (Exception e) {
-            e.printStackTrace(); // This will help us see the actual error in logs
+            e.printStackTrace();
             return ResponseEntity.status(500).body("Error creating booking: " + e.getMessage());
         }
     }
 
-    @GetMapping("/get/{id}")
-    public ResponseEntity<Booking> getBooking(@PathVariable Long id) {
-        Booking booking = bookingService.getBookingById(id);
+    @GetMapping("/{bookingId}")
+    public ResponseEntity<Booking> getBooking(@PathVariable Long bookingId) {
+        Booking booking = bookingService.getBookingById(bookingId);
+        if (booking == null)
+            return ResponseEntity.notFound().build();
         return ResponseEntity.ok(booking);
     }
 
@@ -46,17 +48,23 @@ public class BookingController {
     public ResponseEntity<List<Booking>> getAllBookings() {
         return ResponseEntity.ok(bookingService.getAllBookings());
     }
-    
+
     @PutMapping("/update/{id}")
     public ResponseEntity<Booking> updateBooking(@PathVariable Long id, @RequestBody Booking bookingDetails) {
         Booking updatedBooking = bookingService.updateBooking(id, bookingDetails);
         return ResponseEntity.ok(updatedBooking);
     }
 
-    @DeleteMapping("/delete/{id}")
-    public ResponseEntity<String> deleteBooking(@PathVariable Long id) {
-        bookingService.deleteBooking(id);
-        return ResponseEntity.ok("Booking deleted successfully");
+    @DeleteMapping("/{bookingId}")
+    public ResponseEntity<?> deleteBooking(@PathVariable Long bookingId) {
+        try {
+            bookingService.deleteBooking(bookingId);
+            return ResponseEntity.ok(java.util.Collections.singletonMap("message", "Booking deleted successfully"));
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(500)
+                    .body(java.util.Collections.singletonMap("message", "Could not delete booking: " + e.getMessage()));
+        }
     }
 
     // ================= HISTORY ENDPOINTS =================

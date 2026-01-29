@@ -24,5 +24,5 @@ export class Plot {
   booked!: boolean;
 
   // Use Layout object instead of inline object
-  layout!: Layout;
+  layout?: Layout;
 }

@@ -61,12 +61,14 @@ public class ReportController {
         this.bookingRepository = bookingRepository;
         this.plotRepository = plotRepository;
         this.enquiryRepository = enquiryRepository;
-        this.roleRepository =roleRepository;
+        this.roleRepository = roleRepository;
     }
 
-    /* =========================================================
-       🔷 COMMON PDF HELPERS
-    ========================================================= */
+    /*
+     * =========================================================
+     * 🔷 COMMON PDF HELPERS
+     * =========================================================
+     */
 
     private void addCompanyHeader(Document document, String reportName) throws Exception {
         Font companyFont = FontFactory.getFont(FontFactory.HELVETICA_BOLD, 20);
@@ -80,8 +82,8 @@ public class ReportController {
 
         Paragraph subtitle = new Paragraph(
                 reportName + "\nGenerated on: " +
-                LocalDateTime.now()
-                        .format(DateTimeFormatter.ofPattern("dd MMM yyyy, hh:mm a")),
+                        LocalDateTime.now()
+                                .format(DateTimeFormatter.ofPattern("dd MMM yyyy, hh:mm a")),
                 subtitleFont);
         subtitle.setAlignment(Element.ALIGN_CENTER);
         subtitle.setSpacingAfter(20f);
@@ -104,8 +106,10 @@ public class ReportController {
         Font font = FontFactory.getFont(FontFactory.HELVETICA, 8);
         PdfPCell cell = new PdfPCell(new Phrase(value == null ? "" : value.toString(), font));
         cell.setBackgroundColor(bg);
-        cell.setPadding(9f);
-        cell.setMinimumHeight(28f);
+        cell.setPaddingTop(8f);
+        cell.setPaddingBottom(8f);
+        cell.setPaddingLeft(5f);
+        cell.setPaddingRight(5f);
         cell.setHorizontalAlignment(align);
         cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
         table.addCell(cell);
@@ -128,9 +132,11 @@ public class ReportController {
         return new ResponseEntity<>(baos.toByteArray(), headers, HttpStatus.OK);
     }
 
-    /* =========================================================
-       📄 LAYOUTS REPORT
-    ========================================================= */
+    /*
+     * =========================================================
+     * 📄 LAYOUTS REPORT
+     * =========================================================
+     */
 
     @PostMapping("/layouts/report")
     public ResponseEntity<byte[]> layoutsReport(@RequestBody(required = false) List<Layout> layouts) {
@@ -164,7 +170,7 @@ public class ReportController {
 
             int i = 1;
             for (Layout l : layouts) {
-                Color bg = i % 2 == 0 ? new Color(245,245,245) : Color.WHITE;
+                Color bg = i % 2 == 0 ? new Color(245, 245, 245) : Color.WHITE;
                 addCell(table, i++, bg, Element.ALIGN_CENTER);
                 addCell(table, l.getLayoutName(), bg, Element.ALIGN_LEFT);
                 addCell(table, l.getArea(), bg, Element.ALIGN_CENTER);
@@ -188,10 +194,11 @@ public class ReportController {
         }
     }
 
-
-    /* =========================================================
-       📄 BOOKINGS REPORT
-    ========================================================= */
+    /*
+     * =========================================================
+     * 📄 BOOKINGS REPORT
+     * =========================================================
+     */
 
     @PostMapping("/bookings")
     public ResponseEntity<byte[]> bookingsReport(@RequestBody List<Booking> bookings) {
@@ -204,7 +211,8 @@ public class ReportController {
 
             addCompanyHeader(document, "Bookings Report");
 
-            PdfPTable table = new PdfPTable(8);
+            float[] columnWidths = { 3f, 13f, 6f, 13f, 10f, 22f, 11f, 11f, 11f };
+            PdfPTable table = new PdfPTable(columnWidths);
             table.setWidthPercentage(100);
             table.setHeaderRows(1);
 
@@ -213,20 +221,44 @@ public class ReportController {
             addHeader(table, "Plot");
             addHeader(table, "Customer");
             addHeader(table, "Price");
+            addHeader(table, "Advances");
             addHeader(table, "Paid");
             addHeader(table, "Balance");
             addHeader(table, "Status");
 
             int i = 1;
+            DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+
             for (Booking b : bookings) {
 
-                Color bg = i % 2 == 0 ? new Color(245,245,245) : Color.WHITE;
+                Color bg = i % 2 == 0 ? new Color(245, 245, 245) : Color.WHITE;
 
-                double paid =
-                    b.getAdvance1() +
-                    b.getAdvance2() +
-                    b.getAdvance3() +
-                    b.getAdvance4();
+                StringBuilder advancesStr = new StringBuilder();
+                if (b.getAdvance1() > 0) {
+                    advancesStr.append("Advance 1: ₹").append(String.format("%,d", b.getAdvance1()))
+                            .append(" (").append(b.getAdvance1Date() != null ? b.getAdvance1Date().format(dtf) : "N/A")
+                            .append(")\n");
+                }
+                if (b.getAdvance2() > 0) {
+                    advancesStr.append("Advance 2: ₹").append(String.format("%,d", b.getAdvance2()))
+                            .append(" (").append(b.getAdvance2Date() != null ? b.getAdvance2Date().format(dtf) : "N/A")
+                            .append(")\n");
+                }
+                if (b.getAdvance3() > 0) {
+                    advancesStr.append("Advance 3: ₹").append(String.format("%,d", b.getAdvance3()))
+                            .append(" (").append(b.getAdvance3Date() != null ? b.getAdvance3Date().format(dtf) : "N/A")
+                            .append(")\n");
+                }
+                if (b.getAdvance4() > 0) {
+                    advancesStr.append("Advance 4: ₹").append(String.format("%,d", b.getAdvance4()))
+                            .append(" (").append(b.getAdvance4Date() != null ? b.getAdvance4Date().format(dtf) : "N/A")
+                            .append(")\n");
+                }
+
+                double paid = b.getAdvance1() +
+                        b.getAdvance2() +
+                        b.getAdvance3() +
+                        b.getAdvance4();
 
                 double balance = b.getPrice() - paid;
 
@@ -234,9 +266,10 @@ public class ReportController {
                 addCell(table, b.getLayout().getLayoutName(), bg, Element.ALIGN_LEFT);
                 addCell(table, b.getPlot().getPlotNo(), bg, Element.ALIGN_CENTER);
                 addCell(table, b.getCustomer().getFirstName(), bg, Element.ALIGN_LEFT);
-                addCell(table, b.getPrice(), bg, Element.ALIGN_RIGHT);
-                addCell(table, paid, bg, Element.ALIGN_RIGHT);
-                addCell(table, balance, bg, Element.ALIGN_RIGHT);
+                addCell(table, String.format("₹%,.0f", b.getPrice()), bg, Element.ALIGN_RIGHT);
+                addCell(table, advancesStr.toString().trim(), bg, Element.ALIGN_LEFT);
+                addCell(table, String.format("₹%,.0f", paid), bg, Element.ALIGN_RIGHT);
+                addCell(table, String.format("₹%,.0f", balance), bg, Element.ALIGN_RIGHT);
                 addCell(table, b.getStatus(), bg, Element.ALIGN_CENTER);
             }
 
@@ -251,10 +284,11 @@ public class ReportController {
         }
     }
 
-
-    /* =========================================================
-       📄 PLOTS REPORT
-    ========================================================= */
+    /*
+     * =========================================================
+     * 📄 PLOTS REPORT
+     * =========================================================
+     */
 
     @PostMapping("/plots")
     public ResponseEntity<byte[]> plotsReport(
@@ -287,7 +321,7 @@ public class ReportController {
 
             int i = 1;
             for (Plot p : plots) {
-                Color bg = i % 2 == 0 ? new Color(245,245,245) : Color.WHITE;
+                Color bg = i % 2 == 0 ? new Color(245, 245, 245) : Color.WHITE;
 
                 addCell(table, i++, bg, Element.ALIGN_CENTER);
                 addCell(table, p.getLayout().getLayoutName(), bg, Element.ALIGN_LEFT);
@@ -310,10 +344,11 @@ public class ReportController {
         }
     }
 
-
-    /* =========================================================
-       📄 ENQUIRIES REPORT  ✅ NEW
-    ========================================================= */
+    /*
+     * =========================================================
+     * 📄 ENQUIRIES REPORT ✅ NEW
+     * =========================================================
+     */
 
     @PostMapping("/enquiries")
     public ResponseEntity<byte[]> enquiriesReport(
@@ -344,7 +379,7 @@ public class ReportController {
 
             int i = 1;
             for (Enquiry e : enquiries) {
-                Color bg = i % 2 == 0 ? new Color(245,245,245) : Color.WHITE;
+                Color bg = i % 2 == 0 ? new Color(245, 245, 245) : Color.WHITE;
 
                 addCell(table, i++, bg, Element.ALIGN_CENTER);
                 addCell(table,
@@ -365,7 +400,7 @@ public class ReportController {
             return ResponseEntity.internalServerError().build();
         }
     }
-    
+
     @PostMapping("/roles")
     public ResponseEntity<byte[]> roleReport(@RequestBody List<Role> roles) {
         try {
@@ -387,7 +422,7 @@ public class ReportController {
 
             int i = 1;
             for (Role v : roles) {
-                Color bg = i % 2 == 0 ? new Color(245,245,245) : Color.WHITE;
+                Color bg = i % 2 == 0 ? new Color(245, 245, 245) : Color.WHITE;
 
                 addCell(table, i++, bg, Element.ALIGN_CENTER);
                 addCell(table, v.getFirstName() + " " + v.getLastName(), bg, Element.ALIGN_LEFT);
@@ -404,7 +439,5 @@ public class ReportController {
             return ResponseEntity.internalServerError().build();
         }
     }
-
-
 
 }

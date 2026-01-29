@@ -15,19 +15,38 @@ export class ReportBookingComponent {
 
   searchLayoutName: string = '';
   searchPlotNo: string = '';
-  
-getTotalPaid(b: any): number {
-  return (b.advance1 || 0)
-       + (b.advance2 || 0)
-       + (b.advance3 || 0)
-       + (b.advance4 || 0);
-}
 
-getBalance(b: any): number {
-  const price = b.price || 0;
-  const paid = this.getTotalPaid(b);
-  return price - paid;
-}
+  getTotalPaid(b: any): number {
+    return (b.advance1 || 0)
+      + (b.advance2 || 0)
+      + (b.advance3 || 0)
+      + (b.advance4 || 0);
+  }
+
+  getBalance(b: any): number {
+    const price = b.price || 0;
+    const paid = this.getTotalPaid(b);
+    return price - paid;
+  }
+
+  formatDate(date: any): string {
+    if (!date) return 'N/A';
+    const d = new Date(date);
+    if (isNaN(d.getTime())) return 'N/A';
+    const day = String(d.getDate()).padStart(2, '0');
+    const month = String(d.getMonth() + 1).padStart(2, '0');
+    const year = d.getFullYear();
+    return `${day}-${month}-${year}`;
+  }
+
+  getFormattedAdvances(b: Booking): string[] {
+    const advances: string[] = [];
+    if (b.advance1 && b.advance1 > 0) advances.push(`Advance 1: ₹${b.advance1.toLocaleString('en-IN')} (${this.formatDate(b.advance1Date)})`);
+    if (b.advance2 && b.advance2 > 0) advances.push(`Advance 2: ₹${b.advance2.toLocaleString('en-IN')} (${this.formatDate(b.advance2Date)})`);
+    if (b.advance3 && b.advance3 > 0) advances.push(`Advance 3: ₹${b.advance3.toLocaleString('en-IN')} (${this.formatDate(b.advance3Date)})`);
+    if (b.advance4 && b.advance4 > 0) advances.push(`Advance 4: ₹${b.advance4.toLocaleString('en-IN')} (${this.formatDate(b.advance4Date)})`);
+    return advances;
+  }
 
   bookingList: Booking[] = [];
   filteredData: Booking[] = [];
@@ -44,7 +63,7 @@ getBalance(b: any): number {
     private router: Router,
     private toastr: ToastrService,
     private reportService: ReportService
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.loadBookings();
@@ -66,7 +85,7 @@ getBalance(b: any): number {
       }
     });
   }
-  
+
   onSearch() {
     const layoutKey = this.searchLayoutName.trim().toLowerCase();
     const plotKey = this.searchPlotNo.trim().toLowerCase();
@@ -82,20 +101,20 @@ getBalance(b: any): number {
     this.currentPage = 1;
     this.applyPagination();
   }
-  
+
   applyPagination() {
-  this.totalPages = Math.ceil(this.filteredData.length / this.pageSize);
+    this.totalPages = Math.ceil(this.filteredData.length / this.pageSize);
 
-  // 🔥 HTML uses `pages`, so fill it here
-  this.pages = Array.from(
-    { length: this.totalPages },
-    (_, i) => i + 1
-  );
+    // 🔥 HTML uses `pages`, so fill it here
+    this.pages = Array.from(
+      { length: this.totalPages },
+      (_, i) => i + 1
+    );
 
-  const start = (this.currentPage - 1) * this.pageSize;
-  const end = start + this.pageSize;
-  this.paginatedBookings = this.filteredData.slice(start, end);
-}
+    const start = (this.currentPage - 1) * this.pageSize;
+    const end = start + this.pageSize;
+    this.paginatedBookings = this.filteredData.slice(start, end);
+  }
 
   prevPage() {
     if (this.currentPage > 1) {
@@ -103,14 +122,14 @@ getBalance(b: any): number {
       this.applyPagination();
     }
   }
-  
+
   nextPage() {
     if (this.currentPage < this.totalPages) {
       this.currentPage++;
       this.applyPagination();
     }
   }
-  
+
   goToPage(page: number) {
     this.currentPage = page;
     this.applyPagination();
@@ -159,27 +178,27 @@ getBalance(b: any): number {
   }
 
   downloadBookingsReport(): void {
-  // send filteredData or paginatedBookings depending on your needs
-  const dataToSend = this.filteredData; 
+    // send filteredData or paginatedBookings depending on your needs
+    const dataToSend = this.filteredData;
 
-  this.reportService.downloadBookingsReport(dataToSend).subscribe({
-    next: (blob: Blob) => {
-      const url = window.URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = 'bookings-report.pdf';
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
-      window.URL.revokeObjectURL(url);
-      this.toastr.success('Bookings report downloaded successfully!');
-    },
-    error: (err: any) => {
-      console.error('Failed to download bookings report', err);
-      this.toastr.error('Failed to download bookings report');
-    }
-  });
-}
+    this.reportService.downloadBookingsReport(dataToSend).subscribe({
+      next: (blob: Blob) => {
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'bookings-report.pdf';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        window.URL.revokeObjectURL(url);
+        this.toastr.success('Bookings report downloaded successfully!');
+      },
+      error: (err: any) => {
+        console.error('Failed to download bookings report', err);
+        this.toastr.error('Failed to download bookings report');
+      }
+    });
+  }
 
 
 }

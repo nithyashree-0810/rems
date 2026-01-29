@@ -4,17 +4,11 @@
   <h2>Booking History</h2>
 
   <div class="search-container">
-    <input type="text"
-           [(ngModel)]="searchLayoutName"
-           (keyup)="onSearch()"
-           placeholder="Search Layout Name"
-           class="search-input">
+    <input type="text" [(ngModel)]="searchLayoutName" (keyup)="onSearch()" placeholder="Search Layout Name"
+      class="search-input">
 
-    <input type="text"
-           [(ngModel)]="searchPlotNo"
-           (keyup)="onSearch()"
-           placeholder="Search Plot No"
-           class="search-input">
+    <input type="text" [(ngModel)]="searchPlotNo" (keyup)="onSearch()" placeholder="Search Plot No"
+      class="search-input">
 
     <button class="search-btn" (click)="onSearch()">Search</button>
   </div>
@@ -43,6 +37,7 @@
           <th>Mobile</th>
           <th>Sqft</th>
           <th>Price</th>
+          <th>Advances</th>
           <th>Paid</th>
           <th>Balance</th>
           <th>Direction</th>
@@ -59,6 +54,12 @@
           <td>{{ b.customer?.mobileNo }}</td>
           <td>{{ b.sqft }}</td>
           <td>{{ b.price | currency:'INR' }}</td>
+          <td class="left-align advances-cell">
+            <div *ngFor="let adv of getFormattedAdvances(b)">
+              {{ adv }}
+            </div>
+            <span *ngIf="getFormattedAdvances(b).length === 0">-</span>
+          </td>
           <td>{{ getTotalPaid(b) | currency:'INR' }}</td>
           <td>{{ getBalance(b) | currency:'INR' }}</td>
           <td>{{ b.direction }}</td>
@@ -72,20 +73,18 @@
   <!-- PAGINATION + HOME (LIKE CUSTOMER PAGE) -->
   <div class="pagination-container" *ngIf="!loading && bookingList.length > 0">
 
-  <div class="pagination">
-    <!-- Prev -->
-    <button [disabled]="currentPage === 1" (click)="prevPage()">« Prev</button>
+    <div class="pagination">
+      <!-- Prev -->
+      <button [disabled]="currentPage === 1" (click)="prevPage()">« Prev</button>
 
-    <!-- Page Numbers -->
-    <button *ngFor="let page of pages"
-            [class.active]="page === currentPage"
-            (click)="goToPage(page)">
-      {{ page }}
-    </button>
+      <!-- Page Numbers -->
+      <button *ngFor="let page of pages" [class.active]="page === currentPage" (click)="goToPage(page)">
+        {{ page }}
+      </button>
 
-    <!-- Next -->
-    <button [disabled]="currentPage === totalPages" (click)="nextPage()">Next »</button>
-  </div>
+      <!-- Next -->
+      <button [disabled]="currentPage === totalPages" (click)="nextPage()">Next »</button>
+    </div>
 
 
     <!-- ✅ HOME BUTTON BOTTOM-RIGHT -->

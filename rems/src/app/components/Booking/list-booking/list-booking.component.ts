@@ -148,6 +148,25 @@ export class ListBookingComponent implements OnInit {
     return (b.price || 0) - this.getTotalPaid(b);
   }
 
+  formatDate(date: any): string {
+    if (!date) return 'N/A';
+    const d = new Date(date);
+    if (isNaN(d.getTime())) return 'N/A';
+    const day = String(d.getDate()).padStart(2, '0');
+    const month = String(d.getMonth() + 1).padStart(2, '0');
+    const year = d.getFullYear();
+    return `${day}-${month}-${year}`;
+  }
+
+  getFormattedAdvances(b: Booking): string[] {
+    const advances: string[] = [];
+    if (b.advance1 > 0) advances.push(`Advance 1: ₹${b.advance1.toLocaleString('en-IN')} (${this.formatDate(b.advance1Date)})`);
+    if (b.advance2 > 0) advances.push(`Advance 2: ₹${b.advance2.toLocaleString('en-IN')} (${this.formatDate(b.advance2Date)})`);
+    if (b.advance3 > 0) advances.push(`Advance 3: ₹${b.advance3.toLocaleString('en-IN')} (${this.formatDate(b.advance3Date)})`);
+    if (b.advance4 > 0) advances.push(`Advance 4: ₹${b.advance4.toLocaleString('en-IN')} (${this.formatDate(b.advance4Date)})`);
+    return advances;
+  }
+
   // ================= NAVIGATION =================
 
   viewHistory(booking: Booking): void {

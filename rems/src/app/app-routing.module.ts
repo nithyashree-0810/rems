@@ -4,6 +4,8 @@ import { RouterModule, Routes } from '@angular/router';
 // Login & Dashboard
 import { LoginComponent } from './components/login/login.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
+import { RegisterComponent } from './components/register/register.component';
+import { ForgotPasswordComponent } from './components/forgot-password/forgot-password.component';
 
 // Layout
 import { LayoutComponent } from './components/layout/layout.component';
@@ -22,6 +24,7 @@ import { CreateBookingComponent } from './components/Booking/create-booking/crea
 import { ListBookingComponent } from './components/Booking/list-booking/list-booking.component';
 import { ViewBookingComponent } from './components/Booking/view-booking/view-booking.component';
 import { EditBookingComponent } from './components/Booking/edit-booking/edit-booking.component';
+import { BookingHistoryComponent } from './components/Booking/booking-history/booking-history.component';
 
 // Plots
 import { CreatePlotComponent } from './components/Plots/create-plot/create-plot.component';
@@ -46,6 +49,8 @@ const routes: Routes = [
 
   /** Authentication */
   { path: '', component: LoginComponent },
+  { path: 'register', component: RegisterComponent },
+  { path: 'forgot-password', component: ForgotPasswordComponent },
   { path: 'dashboard', component: DashboardComponent },
 
   /** Layout Routes */
@@ -61,20 +66,24 @@ const routes: Routes = [
   { path: 'view-booking/:id', component: ViewBookingComponent },
   { path: 'edit-booking/:id', component: EditBookingComponent },
   { path: 'report-booking', component: ReportBookingComponent },
+  
+  // History routes
+  { path: 'booking-history/plot/:plotId', component: BookingHistoryComponent },
+  { path: 'booking-history/layout/:layoutId', component: BookingHistoryComponent },
 
   /** Customer / Enquiry Routes */
   { path: 'create-enquiry', component: CreateEnquiryComponent },
   { path: 'view-enquiries', component: ListEnquiryComponent },
   { path: 'edit-enquiry/:mobileNo', component: EditEnquiryComponent },
   { path: 'view-customer/:mobileNo', component: ViewEnquiryComponent },
-  { path: 'report-enquiry', component:ReportEnquiryComponent },
+  { path: 'report-enquiry', component: ReportEnquiryComponent },
 
   /** Plot Routes */
   { path: 'create-plot', component: CreatePlotComponent },
   { path: 'plots', component: ListPlotComponent },
   { path: 'edit-plot/:layoutName/:plotNo', component: EditPlotComponent },
   { path: 'view-plot/:layoutName/:plotNo', component: ViewPlotComponent },
-   { path: 'report-plot', component: ReportPlotComponent },
+  { path: 'report-plot', component: ReportPlotComponent },
 
    { path: 'gallery', component: GalleryComponent },
 
@@ -93,4 +102,4 @@ const routes: Routes = [
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule]
 })
-export class AppRoutingModule {}
+export class AppRoutingModule { }

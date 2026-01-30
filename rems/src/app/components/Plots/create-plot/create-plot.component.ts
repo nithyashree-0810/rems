@@ -34,7 +34,7 @@ export class CreatePlotComponent implements OnInit {
     price: 0,
     address: '',
     mobile: 0,
-    surveyNo:'',
+    surveyNo: '',
     ownerName: '',
     email: '',
     layoutAddress: '',
@@ -50,7 +50,7 @@ export class CreatePlotComponent implements OnInit {
     private router: Router,
     private roleService: RoleserviceServiceService,
     private toastr: ToastrService
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.loadLayouts();
@@ -71,17 +71,17 @@ export class CreatePlotComponent implements OnInit {
   }
 
   // ✅ When dropdown changes
- onLayoutChange(): void {
-  const selectedLayout = this.newPlot.layout;
+  onLayoutChange(): void {
+    const selectedLayout = this.newPlot.layout;
 
-  if (selectedLayout) {
-    // ✅ Layout address auto fill
-    this.newPlot.layoutAddress = selectedLayout.address || '';
+    if (selectedLayout) {
+      // ✅ Layout address auto fill
+      this.newPlot.layoutAddress = selectedLayout.address || '';
 
-    // ✅ Survey No auto fill (IMPORTANT)
-    this.newPlot.surveyNo = selectedLayout.surveyNo || '';
+      // ✅ Survey No auto fill (IMPORTANT)
+      this.newPlot.surveyNo = selectedLayout.surveyNo || '';
+    }
   }
-}
 
 
   loadOwners(): void {
@@ -162,14 +162,14 @@ export class CreatePlotComponent implements OnInit {
 
   // ✅ Save plot
   savePlot(plotForm: NgForm) {
-    if (!this.newPlot.layout.layoutName) {
+    if (!this.newPlot.layout?.layoutName) {
       this.toastr.warning("Please select Layout");
       return;
     }
-  if (plotForm.invalid) {
-    plotForm.form.markAllAsTouched();   // <-- validation shows immediately
-    return;
-  }
+    if (plotForm.invalid) {
+      plotForm.form.markAllAsTouched();   // <-- validation shows immediately
+      return;
+    }
 
     console.log("FINAL DATA 👉", this.newPlot);
 
@@ -220,7 +220,7 @@ export class CreatePlotComponent implements OnInit {
       price: 0,
       address: '',
       mobile: 0,
-      surveyNo:'',
+      surveyNo: '',
       ownerName: '',
       email: '',
       dtcpApproved: false,

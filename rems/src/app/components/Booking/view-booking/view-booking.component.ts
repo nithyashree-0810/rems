@@ -14,7 +14,7 @@ import { ToastrService } from 'ngx-toastr';
 })
 export class ViewBookingComponent implements OnInit {
   bookingId!: number;
-  booking!: Booking;
+  booking?: Booking | null;
   loading: boolean = true;
 
   constructor(
@@ -22,7 +22,7 @@ export class ViewBookingComponent implements OnInit {
     private router: Router,
     private bookingService: BookingService,
     private toastr: ToastrService
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.bookingId = Number(this.route.snapshot.paramMap.get('id'));

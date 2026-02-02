@@ -1,9 +1,13 @@
 package com.techietact.myrems.entity;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Date;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -23,12 +27,31 @@ public class Booking {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long bookingId;
 
+    // History tracking fields
+    @Column(name = "created_date", nullable = false)
+    private LocalDateTime createdDate;
+
+    @Column(name = "updated_date")
+    private LocalDateTime updatedDate;
+
+    @Column(name = "is_active", nullable = false)
+    private boolean isActive = true;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "booking_status", nullable = false)
+    private BookingStatus bookingStatus = BookingStatus.ACTIVE;
+
+    // Enum for booking status
+    public enum BookingStatus {
+        ACTIVE, CANCELLED, COMPLETED, REFUNDED, TRANSFERRED
+    }
+
     @ManyToOne
     @JoinColumn(name = "plot_id", referencedColumnName = "plotId")
     private Plot plot;
 
     @ManyToOne
-    @JoinColumn(name = "layout_name", referencedColumnName = "layoutName")
+    @JoinColumn(name = "layout_id", referencedColumnName = "id")
     private Layout layout;
 
     @ManyToOne
@@ -73,15 +96,26 @@ public class Booking {
     private LocalDate refundDate;
     private String refundMode;
 
-    // 🔥 AUTO BALANCE CALCULATION
+    // 🔥 AUTO BALANCE CALCULATION AND TIMESTAMP MANAGEMENT
     @PrePersist
+    public void prePersist() {
+        this.createdDate = LocalDateTime.now();
+        this.updatedDate = LocalDateTime.now();
+        calculateBalance();
+    }
+
     @PreUpdate
-    public void calculateBalance() {
+    public void preUpdate() {
+        this.updatedDate = LocalDateTime.now();
+        calculateBalance();
+    }
+
+    private void calculateBalance() {
         int totalPaid =
-                advance1 +
-                advance2 +
-                advance3 +
-                advance4;
+                (advance1 != 0 ? advance1 : 0) +
+                (advance2 != 0 ? advance2 : 0) +
+                (advance3 != 0 ? advance3 : 0) +
+                (advance4 != 0 ? advance4 : 0);
 
         this.balance = this.price - totalPaid;
     }

@@ -111,3 +111,79 @@
 .home-btn:hover {
   opacity: 0.9;
 }
+/* =========================
+   PDF Section - Matching App Theme
+========================= */
+.pdf-section {
+  margin-top: 20px;
+  padding: 16px;
+  background: #fafafa;
+  border-radius: 8px;
+  border: 1px solid #f1f1f1;
+}
+
+.pdf-title {
+  color: #2e4bff;
+  font-size: 16px;
+  font-weight: 700;
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.pdf-title i {
+  color: #ff7e00;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: #fff1df;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 12px;
+}
+
+.pdf-buttons-container {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.pdf-action-btn {
+  width: 150px;
+  height: 32px;
+  padding: 0;
+  background: #ff7e00;
+  border: none;
+  color: #fff;
+  border-radius: 7px;
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 700;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 6px;
+  transition: all 0.3s ease;
+}
+
+.pdf-action-btn:hover {
+  opacity: 0.9;
+  transform: translateY(-1px);
+}
+
+.pdf-action-btn i {
+  font-size: 12px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .pdf-buttons-container {
+    flex-direction: column;
+  }
+  
+  .pdf-action-btn {
+    width: 100%;
+  }
+}

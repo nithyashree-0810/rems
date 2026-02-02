@@ -3,23 +3,23 @@
 <div class="form-container">
   <form #editForm="ngForm" (ngSubmit)="onSubmit()">
 
-    <!-- Layout Name (readonly) -->
+    <!-- Layout Name (editable) -->
     <div class="form-group">
-      <label>Layout Name:</label>
+      <label>Layout Name: <span class="editable-note"></span></label>
       <input 
         type="text" 
         [(ngModel)]="layout.layoutName" 
         name="layoutName" 
         required 
-        disabled 
         minlength="3"
         pattern="^[A-Za-z ]+$"
         #layoutName="ngModel"
+        placeholder="Enter layout name"
       />
       <div *ngIf="layoutName.invalid && layoutName.touched" class="error">
         <small *ngIf="layoutName.errors?.['required']">Layout Name is required</small>
         <small *ngIf="layoutName.errors?.['minlength']">Minimum 3 characters required</small>
-        <small *ngIf="layoutName.errors?.['pattern']">Only alphabets are allowed</small>
+        <small *ngIf="layoutName.errors?.['pattern']">Only alphabets and spaces are allowed</small>
       </div>
     </div>
 

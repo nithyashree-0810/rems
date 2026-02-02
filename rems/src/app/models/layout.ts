@@ -1,4 +1,5 @@
 export class Layout {
+  id?: number;
   layoutName!: string;
   area?: number;
   noOfPlots?: number;
@@ -15,6 +16,6 @@ export class Layout {
   surveyNo?: string;
   dtcpApproved?: boolean;
   reraApproved?: boolean;
-
+  createdDate?: string | Date;  // Add this field
   pdfPath?: string;   // ⭐ ADD THIS
 }

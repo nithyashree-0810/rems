@@ -32,4 +32,9 @@ export class ViewLayoutComponent {
     this.router.navigate(['/layouts']);
   }
 
+  viewLayoutPdf() {
+    const url = `http://localhost:8080/api/layouts/pdf/${this.layout.layoutName}`;
+    window.open(url, "_blank");
+  }
+
 }

@@ -162,4 +162,20 @@ input[type="tel"] {
   color: #777;
 }
 
+.editable-note {
+  font-size: 12px;
+  color: #28a745;
+  font-weight: normal;
+  font-style: italic;
+}
+
+.info-note {
+  margin-top: 4px;
+}
+
+.info-note small {
+  color: #6c757d;
+  font-size: 11px;
+}
+
 

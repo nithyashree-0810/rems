@@ -1,6 +1,7 @@
 import { Layout } from "./layout";
 
 export class Plot {
+  plotId?: number;  // Add this field
   plotNo!: string;
   sqft!: number;
   direction!: string;
@@ -23,5 +24,5 @@ export class Plot {
   booked!: boolean;
 
   // Use Layout object instead of inline object
-  layout!: Layout;
+  layout?: Layout;
 }

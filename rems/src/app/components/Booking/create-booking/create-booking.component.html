@@ -8,6 +8,13 @@
       <button class="btn-view" (click)="viewBookings()">View Bookings</button>
     </div>
 
+    <!-- Rebooking Indicator -->
+    <div class="rebooking-alert" *ngIf="isRebookingMode()">
+      <i class="fa-solid fa-redo"></i>
+      <strong>Rebooking Mode:</strong> You are creating a new booking for Plot {{ booking.plotNo }} in {{ booking.layoutName }}. 
+      Plot details are pre-filled. Please enter new customer information below.
+    </div>
+
     <form #bookingForm="ngForm" (ngSubmit)="onSubmit(bookingForm)">
 
       <div class="form-row">
@@ -55,7 +62,8 @@
 
           <div class="form-group">
             <label>Price:</label>
-            <input type="number" class="form-control" readonly
+            <input type="number" class="form-control" 
+                   [readonly]="!isRebooking"
                    name="price" [(ngModel)]="booking.price">
           </div>
 

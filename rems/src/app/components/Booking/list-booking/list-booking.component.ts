@@ -3,84 +3,101 @@ import { BookingService } from '../../../services/booking.service';
 import { Router } from '@angular/router';
 import { Booking } from '../../../models/bookings';
 import { ToastrService } from 'ngx-toastr';
-import { ReportService } from '../../../services/report.service';
+import { PlotserviceService } from '../../../services/plotservice.service';
 
 @Component({
   selector: 'app-list-booking',
-    standalone: false,
+  standalone: false,
   templateUrl: './list-booking.component.html',
   styleUrls: ['./list-booking.component.css']
 })
 export class ListBookingComponent implements OnInit {
+
   searchLayoutName: string = '';
   searchPlotNo: string = '';
-  
-getTotalPaid(b: any): number {
-  return (b.advance1 || 0)
-       + (b.advance2 || 0)
-       + (b.advance3 || 0)
-       + (b.advance4 || 0);
-}
-
-getBalance(b: any): number {
-  const price = b.price || 0;
-  const paid = this.getTotalPaid(b);
-  return price - paid;
-}
 
   bookingList: Booking[] = [];
   filteredData: Booking[] = [];
   paginatedBookings: Booking[] = [];
+
   pageSize: number = 10;
   currentPage: number = 1;
   totalPages: number = 0;
   pages: number[] = [];
   loading: boolean = true;
 
+  // ---------- Rebook State (Ownership Change) ----------
+  showRebookModal: boolean = false;
+  selectedBooking: Booking | null = null;
+  rebookPrice: number = 0;
+  rebookPaid: number = 0;
+  rebookBalance: number = 0;
+
+  newOwnerID: string = '';
+  newOwnerName: string = '';
+  newOwnerMobile: string = '';
+  newOwnerAddress: string = '';
+
+  // ---------- Edit State (Payment Update) ----------
+  showEditForm: boolean = false;
+  editPaidAmount: number = 0;
+  editBalance: number = 0;
+
   constructor(
     private bookingService: BookingService,
+    private plotService: PlotserviceService,
     private router: Router,
-    private toastr: ToastrService,
-    private reportService: ReportService
-  ) {}
+    private toastr: ToastrService
+  ) { }
 
   ngOnInit(): void {
     this.loadBookings();
   }
 
-  // Load all bookings
+  // ---------------- LOAD BOOKINGS ----------------
+
   loadBookings() {
-    this.bookingService.getAllBookings().subscribe({
-      next: data => {
-        this.bookingList = data;
+    this.loading = true;
+    // Use latest active bookings per plot instead of all bookings
+    this.bookingService.getLatestActiveBookingsPerPlot().subscribe({
+      next: (data) => {
+        this.bookingList = data.sort((a, b) => {
+          // Sort by creation date descending (newest first)
+          const dateA = new Date(a.createdDate || 0).getTime();
+          const dateB = new Date(b.createdDate || 0).getTime();
+          return dateB - dateA;
+        });
         this.filteredData = [...this.bookingList];
         this.currentPage = 1;
         this.applyPagination();
         this.loading = false;
       },
       error: () => {
-        this.toastr.error("Failed to load bookings!");
+        this.toastr.error('Failed to load bookings');
         this.loading = false;
       }
     });
   }
-  
+
+  // ---------------- SEARCH ----------------
+
   onSearch() {
     const layoutKey = this.searchLayoutName.trim().toLowerCase();
     const plotKey = this.searchPlotNo.trim().toLowerCase();
 
     this.filteredData = this.bookingList.filter(b => {
       const layoutName = (b.layout?.layoutName || '').toLowerCase();
-      const plotNo = ((b.plot?.plotNo as any) || (b.plotNo as any) || '').toString().toLowerCase();
-      const matchesLayout = !layoutKey || layoutName.includes(layoutKey);
-      const matchesPlot = !plotKey || plotNo.includes(plotKey);
-      return matchesLayout && matchesPlot;
+      const plotNo = (b.plot?.plotNo || b.plotNo || '').toString().toLowerCase();
+      return (!layoutKey || layoutName.includes(layoutKey)) &&
+        (!plotKey || plotNo.includes(plotKey));
     });
 
     this.currentPage = 1;
     this.applyPagination();
   }
-  
+
+  // ---------------- PAGINATION ----------------
+
   applyPagination() {
     this.totalPages = Math.ceil(this.filteredData.length / this.pageSize);
     this.pages = Array.from({ length: this.totalPages }, (_, i) => i + 1);
@@ -88,65 +105,257 @@ getBalance(b: any): number {
     const end = start + this.pageSize;
     this.paginatedBookings = this.filteredData.slice(start, end);
   }
-  
+
   prevPage() {
     if (this.currentPage > 1) {
       this.currentPage--;
       this.applyPagination();
     }
   }
-  
+
   nextPage() {
     if (this.currentPage < this.totalPages) {
       this.currentPage++;
       this.applyPagination();
     }
   }
-  
+
   goToPage(page: number) {
     this.currentPage = page;
     this.applyPagination();
   }
 
-  // Navigate to create booking page
+  // ---------------- NAVIGATION ----------------
+
   goToCreate() {
     this.router.navigate(['/new-booking']);
   }
 
-  // Navigate to dashboard
   goHome() {
     this.router.navigate(['/dashboard']);
   }
 
-  // ---------------------- Action Methods ----------------------
+  // ---------------- PAYMENT HELPERS ----------------
 
-  // View Booking Details
-  viewBooking(id: number) {
-    // Navigate to the view booking page
-    this.router.navigate(['/view-booking', id]);
+  getTotalPaid(b: Booking): number {
+    return (b.advance1 || 0) +
+      (b.advance2 || 0) +
+      (b.advance3 || 0) +
+      (b.advance4 || 0);
   }
 
-  // Edit Booking
-  editBooking(id: number) {
-    // Navigate to the edit booking page
-    this.router.navigate(['/edit-booking', id]);
+  getBalance(b: Booking): number {
+    return (b.price || 0) - this.getTotalPaid(b);
   }
 
-  // Delete Booking
-  deleteBooking(id: number) {
-    if (confirm('Are you sure you want to delete this booking?')) {
-      this.bookingService.deleteBooking(id).subscribe({
-        next: () => {
-          this.toastr.success('Booking deleted successfully!');
-          // Remove the deleted booking from the list without reloading
-          this.bookingList = this.bookingList.filter(b => b.bookingId !== id);
-          this.filteredData = [...this.bookingList];
-          this.applyPagination();
+  formatDate(date: any): string {
+    if (!date) return 'N/A';
+    const d = new Date(date);
+    if (isNaN(d.getTime())) return 'N/A';
+    const day = String(d.getDate()).padStart(2, '0');
+    const month = String(d.getMonth() + 1).padStart(2, '0');
+    const year = d.getFullYear();
+    return `${day}-${month}-${year}`;
+  }
+
+  getFormattedAdvances(b: Booking): string[] {
+    const advances: string[] = [];
+    if (b.advance1 > 0) advances.push(`Advance 1: ₹${b.advance1.toLocaleString('en-IN')} (${this.formatDate(b.advance1Date)})`);
+    if (b.advance2 > 0) advances.push(`Advance 2: ₹${b.advance2.toLocaleString('en-IN')} (${this.formatDate(b.advance2Date)})`);
+    if (b.advance3 > 0) advances.push(`Advance 3: ₹${b.advance3.toLocaleString('en-IN')} (${this.formatDate(b.advance3Date)})`);
+    if (b.advance4 > 0) advances.push(`Advance 4: ₹${b.advance4.toLocaleString('en-IN')} (${this.formatDate(b.advance4Date)})`);
+    return advances;
+  }
+
+  // ================= NAVIGATION =================
+
+  viewHistory(booking: Booking): void {
+    if (booking.plot?.plotId) {
+      this.router.navigate(['/booking-history/plot', booking.plot.plotId]);
+    } else {
+      this.toastr.error('Plot information not available for history view');
+    }
+  }
+
+  deleteBooking(booking: Booking): void {
+    const confirmDelete = confirm(
+      `Are you sure you want to delete booking #${booking.bookingId}?\n\n` +
+      `Customer: ${booking.customer?.firstName}\n` +
+      `Plot: ${booking.plotNo}\n\n` +
+      `This action cannot be undone.`
+    );
+
+    if (!confirmDelete) {
+      return;
+    }
+
+    this.bookingService.deleteBooking(booking.bookingId).subscribe({
+      next: () => {
+        this.toastr.success(`Booking #${booking.bookingId} deleted successfully`);
+        this.loadBookings();
+      },
+      error: (err) => {
+        console.error('Delete Error:', err);
+        const errorMsg = (err.error && typeof err.error.message === 'string')
+          ? err.error.message
+          : (typeof err.error === 'string' ? err.error : 'Failed to delete booking. Please check for dependencies.');
+        this.toastr.error(errorMsg, 'Delete Failed');
+      }
+    });
+  }
+
+  // ================= EDIT (PAYMENT UPDATE) =================
+
+  openEditForm(b: Booking) {
+    this.selectedBooking = { ...b };
+
+    if (!this.selectedBooking.price || this.selectedBooking.price === 0) {
+      this.selectedBooking.price = b.plot?.price || 0;
+    }
+
+    this.editPaidAmount = this.getTotalPaid(b);
+    this.calculateEditBalance();
+
+    this.showEditForm = true;
+    this.showRebookModal = false;
+  }
+
+  calculateEditBalance() {
+    if (!this.selectedBooking) return;
+
+    const price = this.selectedBooking.price || 0;
+    const paid = this.editPaidAmount || 0;
+
+    const balance = price - paid;
+    this.editBalance = balance < 0 ? 0 : balance;
+  }
+
+  closeEditForm() {
+    this.showEditForm = false;
+    this.selectedBooking = null;
+    this.editPaidAmount = 0;
+    this.editBalance = 0;
+  }
+
+  confirmUpdatePayment() {
+    if (!this.selectedBooking) return;
+
+    const price = this.selectedBooking.price || 0;
+
+    if (price <= 0) {
+      this.toastr.error('Invalid total price');
+      return;
+    }
+
+    if (this.editPaidAmount > price) {
+      this.toastr.warning('Paid amount cannot exceed total price');
+      this.editPaidAmount = price;
+      this.calculateEditBalance();
+      return;
+    }
+
+    const updateData = {
+      advance1: this.editPaidAmount,
+      balance: this.editBalance,
+      price: price
+    };
+
+    this.bookingService.updateBooking(this.selectedBooking.bookingId, updateData).subscribe({
+      next: () => {
+        this.toastr.success('Payment updated successfully');
+        this.closeEditForm();
+        this.loadBookings();
+      },
+      error: () => this.toastr.error('Failed to update payment')
+    });
+  }
+
+  // ================= REBOOK (OWNERSHIP TRANSFER) =================
+
+  openRebookForm(b: Booking) {
+    this.selectedBooking = b;
+
+    this.newOwnerID = '';
+    this.newOwnerName = '';
+    this.newOwnerMobile = '';
+    this.newOwnerAddress = '';
+
+    this.rebookPrice = b.price || b.plot?.price || 0;
+    this.rebookPaid = 0;
+    this.rebookBalance = this.rebookPrice;
+
+    const plotId = b.plot?.plotId || 0;
+
+    if (plotId > 0) {
+      this.plotService.getPlotById(plotId).subscribe({
+        next: plot => {
+          this.rebookPrice = plot.price || this.rebookPrice;
+          this.rebookBalance = this.rebookPrice;
+          this.showRebookModal = true;
+          this.showEditForm = false;
         },
         error: () => {
-          this.toastr.error('Failed to delete booking!');
+          this.showRebookModal = true;
+          this.showEditForm = false;
         }
       });
+    } else {
+      this.showRebookModal = true;
+      this.showEditForm = false;
     }
+  }
+
+  calculateRebookBalance() {
+    if (this.rebookPrice < 0) {
+      this.rebookPrice = 0;
+    }
+    this.rebookPaid = 0;
+    this.rebookBalance = this.rebookPrice;
+  }
+
+  closeRebookForm() {
+    this.showRebookModal = false;
+    this.selectedBooking = null;
+  }
+
+  confirmRebook() {
+    if (!this.selectedBooking) return;
+
+    if (this.rebookPrice <= 0) {
+      this.toastr.error('Enter valid resale price');
+      return;
+    }
+
+    if (!this.newOwnerID || !this.newOwnerName || !this.newOwnerMobile || !this.newOwnerAddress) {
+      this.toastr.error('Fill all mandatory owner details');
+      return;
+    }
+
+    const request: any = {
+      plot: { plotId: this.selectedBooking.plot?.plotId || 0 },
+      plotNo: this.selectedBooking.plot?.plotNo || this.selectedBooking.plotNo,
+      layout: { layoutName: this.selectedBooking.layout?.layoutName || '' },
+      customer: {
+        firstName: this.newOwnerName,
+        mobileNo: Number(this.newOwnerMobile),
+        address: this.newOwnerAddress,
+        aadharNo: this.newOwnerID
+      },
+      sqft: this.selectedBooking.sqft || 0,
+      price: this.rebookPrice,
+      direction: this.selectedBooking.direction || '',
+      advance1: 0,
+      balance: this.rebookPrice,
+      status: 'Booked'
+    };
+
+    this.bookingService.createBooking(request).subscribe({
+      next: () => {
+        this.toastr.success('Ownership transferred successfully');
+        this.closeRebookForm();
+        this.loadBookings();
+      },
+      error: () => this.toastr.error('Rebooking failed')
+    });
   }
 }

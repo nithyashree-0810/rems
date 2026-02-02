@@ -8,7 +8,6 @@ import { CustomerService } from '../../../services/customer.service';
 import { ToastrService } from 'ngx-toastr';
 import { ActivatedRoute } from '@angular/router';
 
-
 @Component({
   selector: 'app-create-booking',
   standalone: false,
@@ -18,6 +17,7 @@ import { ActivatedRoute } from '@angular/router';
 export class CreateBookingComponent implements OnInit {
 
   selectedPlot: any = null;
+  isRebooking: boolean = false;
 
   booking: any = {
     layoutName: '',
@@ -73,52 +73,103 @@ export class CreateBookingComponent implements OnInit {
     private toastr: ToastrService
   ) {}
 
-  ngOnInit(): void {
-  this.loadLayouts();
-
-  this.route.queryParams.subscribe(params => {
-    const layoutName = params['layoutName'];
-    const plotNo = params['plotNo'];
-
-    if (layoutName && plotNo) {
-      this.booking.layoutName = layoutName;
-
-      this.plotService.getPlotsByLayout(layoutName).subscribe(plots => {
-
-        // ❌ already booked plot-a remove pannrom
-        this.plotList = plots.filter(p => !p.booked);
-
-        const selected = this.plotList.find(p => p.plotNo === plotNo);
-
-        if (!selected) {
-          this.toastr.error('This plot is already booked ❌');
-          this.router.navigate(['/list-plots']);
-          return;
-        }
-
-        this.selectedPlot = selected;
-        this.onPlotChange();
-      });
-    }
-  });
-}
-
-
-  loadLayouts() {
-    this.layoutService.getLayouts().subscribe(data => {
-      this.layoutList = data;
-    });
+  isRebookingMode(): boolean {
+    // Check if we're in rebooking mode
+    return this.isRebooking || this.route.snapshot.queryParams['rebooking'] === 'true';
   }
 
-  onLayoutChange() {
-    this.plotService.getPlotsByLayout(this.booking.layoutName).subscribe({
-      next: plots => {
-        this.plotList = plots.filter(p => !p.booked);
+  ngOnInit(): void {
+    this.loadLayouts();
+
+    this.route.queryParams.subscribe(params => {
+      const layoutName = params['layoutName'];
+      const plotNo = params['plotNo'];
+      const plotId = params['plotId'];
+      const layoutId = params['layoutId'];
+      const isRebooking = params['rebooking'] === 'true';
+      const originalBookingId = params['originalBookingId'];
+
+      this.isRebooking = isRebooking;
+
+      if (isRebooking && plotId) {
+        // Handle rebooking scenario
+        this.handleRebooking(plotId, layoutId, originalBookingId);
+      } else if (layoutName && plotNo) {
+        // Handle normal booking from plot list
+        this.handleNormalBooking(layoutName, plotNo);
       }
     });
   }
 
-  onPlotChange() {
+  handleRebooking(plotId: number, layoutId?: number, originalBookingId?: number): void {
+    // Load plot details for rebooking
+    this.plotService.getPlotById(plotId).subscribe({
+      next: (plot) => {
+        this.selectedPlot = plot;
+        this.booking.layoutName = plot.layout?.layoutName || '';
+        this.booking.plotId = plot.plotId;
+        this.booking.plotNo = plot.plotNo;
+        this.booking.sqft = plot.sqft;
+        this.booking.price = plot.price;
+        this.booking.direction = plot.direction;
+        
+        // Load plots for the layout
+        if (plot.layout?.layoutName) {
+          this.plotService.getPlotsByLayout(plot.layout.layoutName).subscribe(plots => {
+            this.plotList = plots; // Show all plots for rebooking
+          });
+        }
+        
+        // Show success message with plot details
+        this.toastr.success(
+          `Rebooking Plot ${plot.plotNo} in ${plot.layout?.layoutName}. Plot details pre-filled.`,
+          'Rebooking Mode',
+          { timeOut: 5000 }
+        );
+      },
+      error: (err) => {
+        console.error('Error loading plot for rebooking:', err);
+        this.toastr.error('Failed to load plot details for rebooking');
+        this.router.navigate(['/booking-history']);
+      }
+    });
+  }
+
+  handleNormalBooking(layoutName: string, plotNo: string): void {
+    this.booking.layoutName = layoutName;
+
+    this.plotService.getPlotsByLayout(layoutName).subscribe(plots => {
+      // Filter out already booked plots for normal booking
+      this.plotList = plots.filter((p: any) => !p.booked);
+
+      const selected = this.plotList.find((p: any) => p.plotNo === plotNo);
+
+      if (!selected) {
+        this.toastr.error('This plot is already booked ❌');
+        this.router.navigate(['/list-plots']);
+        return;
+      }
+
+      this.selectedPlot = selected;
+      this.onPlotChange();
+    });
+  }
+
+  loadLayouts(): void {
+    this.layoutService.getLayouts().subscribe((data: any) => {
+      this.layoutList = data;
+    });
+  }
+
+  onLayoutChange(): void {
+    this.plotService.getPlotsByLayout(this.booking.layoutName).subscribe({
+      next: (plots: any) => {
+        this.plotList = plots.filter((p: any) => !p.booked);
+      }
+    });
+  }
+
+  onPlotChange(): void {
     if (!this.selectedPlot) return;
 
     const p = this.selectedPlot;
@@ -131,22 +182,46 @@ export class CreateBookingComponent implements OnInit {
     this.calculateBalance();
   }
 
-  onMobileChange() {
+  onMobileChange(): void {
     if (!this.booking.mobileNo) return;
 
-    this.customerService.getCustomerByMobile(this.booking.mobileNo).subscribe({
-      next: c => {
-        this.booking.firstName = c.firstName;
-        this.booking.address = c.address;
-        this.booking.pincode = c.pincode;
-        this.booking.aadharNo = c.aadharNo;
-        this.booking.panNo = c.panNo;
+    const mobileNumber = Number(this.booking.mobileNo);
+    if (isNaN(mobileNumber)) {
+      this.toastr.error('Invalid mobile number');
+      return;
+    }
+
+    this.customerService.getCustomerByMobile(mobileNumber).subscribe({
+      next: (c: any) => {
+        if (c) {
+          this.booking.firstName = c.firstName || '';
+          this.booking.address = c.address || '';
+          this.booking.pincode = c.pincode || null;
+          this.booking.aadharNo = c.aadharNo || null;
+          this.booking.panNo = c.panNo || '';
+        } else {
+          // Clear fields if customer not found
+          this.booking.firstName = '';
+          this.booking.address = '';
+          this.booking.pincode = null;
+          this.booking.aadharNo = null;
+          this.booking.panNo = '';
+          this.toastr.error('Customer not found');
+        }
       },
-      error: () => this.toastr.error('Customer not found')
+      error: () => {
+        // Clear fields on error
+        this.booking.firstName = '';
+        this.booking.address = '';
+        this.booking.pincode = null;
+        this.booking.aadharNo = null;
+        this.booking.panNo = '';
+        this.toastr.error('Customer not found');
+      }
     });
   }
 
-  calculateBalance() {
+  calculateBalance(): void {
     const totalAdvance =
       (+this.booking.advance1 || 0) +
       (+this.booking.advance2 || 0) +
@@ -156,86 +231,93 @@ export class CreateBookingComponent implements OnInit {
     this.booking.balance = this.booking.price - totalAdvance;
   }
 
-  onSubmit(form: NgForm) {
+  onSubmit(form: NgForm): void {
     if (form.invalid) return;
 
     const requestBody = {
       plot: { plotId: this.booking.plotId },
       plotNo: this.booking.plotNo,
       layout: { layoutName: this.booking.layoutName },
-      customer: { mobileNo: this.booking.mobileNo },
+      customer: { mobileNo: Number(this.booking.mobileNo) },
 
-      sqft: this.booking.sqft,
-      price: this.booking.price,
-      direction: this.booking.direction,
+      sqft: this.booking.sqft || 0,
+      price: this.booking.price || 0,
+      direction: this.booking.direction || '',
 
-      advance1: this.booking.advance1,
-      advance1Date: this.booking.advance1Date,
-      advance1Mode: this.booking.advance1Mode,
+      advance1: this.booking.advance1 || 0,
+      advance1Date: this.booking.advance1Date || null,
+      advance1Mode: this.booking.advance1Mode || '',
 
-      advance2: this.booking.advance2,
-      advance2Date: this.booking.advance2Date,
-      advance2Mode: this.booking.advance2Mode,
+      advance2: this.booking.advance2 || 0,
+      advance2Date: this.booking.advance2Date || null,
+      advance2Mode: this.booking.advance2Mode || '',
 
-      advance3: this.booking.advance3,
-      advance3Date: this.booking.advance3Date,
-      advance3Mode: this.booking.advance3Mode,
+      advance3: this.booking.advance3 || 0,
+      advance3Date: this.booking.advance3Date || null,
+      advance3Mode: this.booking.advance3Mode || '',
 
-      advance4: this.booking.advance4,
-      advance4Date: this.booking.advance4Date,
-      advance4Mode: this.booking.advance4Mode,
+      advance4: this.booking.advance4 || 0,
+      advance4Date: this.booking.advance4Date || null,
+      advance4Mode: this.booking.advance4Mode || '',
 
-      balance: this.booking.balance,
+      balance: this.booking.balance || 0,
 
-      address: this.booking.address,
-      pincode: this.booking.pincode,
-      aadharNo: this.booking.aadharNo,
-      panNo: this.booking.panNo,
+      address: this.booking.address || '',
+      pincode: this.booking.pincode || 0,
+      aadharNo: this.booking.aadharNo || null,
+      panNo: this.booking.panNo || '',
 
-      status: this.booking.status,
+      status: this.booking.status || '',
       regDate: this.booking.status === 'Registered' ? this.booking.regDate : null,
       regNo: this.booking.status === 'Registered' ? this.booking.regNo : null,
 
-      refundAmount: this.booking.refundAmount,
-      mode: this.booking.mode
+      refundAmount: this.booking.refundAmount || 0,
+      mode: this.booking.mode || null
     };
 
+    console.log('=== FRONTEND BOOKING REQUEST ===');
+    console.log('Request Body:', JSON.stringify(requestBody, null, 2));
+
     this.bookingService.createBooking(requestBody).subscribe({
-  next: () => {
-    // ✅ Mark plot as booked
-    this.plotService.markAsBooked(this.booking.plotId).subscribe({
       next: () => {
-        this.toastr.success('Booking Saved Successfully ✅');
-        this.router.navigate(['/booking-history']);
+        // ✅ Mark plot as booked
+        this.plotService.markAsBooked(this.booking.plotId).subscribe({
+          next: () => {
+            if (this.isRebookingMode()) {
+              this.toastr.success('Plot Rebooked Successfully! ✅', 'Rebooking Complete');
+              // Redirect to the plot's booking history
+              this.router.navigate(['/booking-history/plot', this.booking.plotId]);
+            } else {
+              this.toastr.success('Booking Saved Successfully ✅');
+              this.router.navigate(['/booking-history']);
+            }
+          },
+          error: () => this.toastr.error('Failed to mark plot as booked')
+        });
       },
-      error: () => this.toastr.error('Failed to mark plot as booked')
+      error: () => this.toastr.error('Booking Failed ❌')
     });
-  },
-  error: () => this.toastr.error('Booking Failed ❌')
-});
-
   }
 
-  onMobileInput(event: any) {
-  let value = event.target.value;
+  onMobileInput(event: any): void {
+    let value = event.target.value;
 
-  // 🔹 Numbers only
-  value = value.replace(/\D/g, '');
+    // 🔹 Numbers only
+    value = value.replace(/\D/g, '');
 
-  // 🔹 Max 10 digits only
-  if (value.length > 10) {
-    value = value.slice(0, 10);
+    // 🔹 Max 10 digits only
+    if (value.length > 10) {
+      value = value.slice(0, 10);
+    }
+
+    this.booking.mobileNo = value;
   }
 
-  this.booking.mobileNo = value;
-}
-
-
-  goHome() {
+  goHome(): void {
     this.router.navigate(['/dashboard']);
   }
 
-  viewBookings() {
+  viewBookings(): void {
     this.router.navigate(['/booking-history']);
   }
 }

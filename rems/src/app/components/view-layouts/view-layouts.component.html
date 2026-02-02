@@ -86,16 +86,20 @@
           <td>
             <div class="action-icons">
               <i class="fa fa-eye circle-icon view"
-                 (click)="viewLayout(layout.layoutName)"></i>
+                 (click)="viewLayout(layout.layoutName)"
+                 title="View Layout"></i>
 
               <i class="fa fa-pencil circle-icon edit"
-                 (click)="editLayout(layout.layoutName)"></i>
+                 (click)="editLayout(layout.layoutName)"
+                 title="Edit Layout"></i>
 
               <i class="fa fa-trash circle-icon delete"
-                 (click)="deleteLayout(layout.layoutName)"></i>
+                 (click)="deleteLayout(layout.layoutName)"
+                 title="Delete Layout"></i>
 
               <i class="fa fa-plus circle-icon book"
-                 [routerLink]="['/create-plot']"></i>
+                 [routerLink]="['/create-plot']"
+                 title="Add Plot"></i>
             </div>
           </td>
         </tr>

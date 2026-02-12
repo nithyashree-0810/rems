@@ -3,33 +3,27 @@
   <h2>List of Layouts</h2>
 
   <!-- SEARCH + CREATE ROW -->
-<div class="search-create-row">
+  <div class="search-create-row">
 
-  <!-- SEARCH -->
-  <div class="search-container">
-    <input type="text"
-           [(ngModel)]="searchName"
-           (keyup)="filterLayouts()"
-           placeholder="Search Layout Name"
-           class="search-input">
+    <!-- SEARCH -->
+    <div class="search-container">
+      <input type="text" [(ngModel)]="searchName" (keyup)="filterLayouts()" placeholder="Search Layout Name"
+        class="search-input">
 
-    <input type="text"
-           [(ngModel)]="searchLocation"
-           (keyup)="filterLayouts()"
-           placeholder="Search Location"
-           class="search-input">
+      <input type="text" [(ngModel)]="searchLocation" (keyup)="filterLayouts()" placeholder="Search Location"
+        class="search-input">
 
-    <button class="search-btn" (click)="filterLayouts()">Search</button>
+      <button class="search-btn" (click)="filterLayouts()">Search</button>
+    </div>
+
+    <!-- CREATE BUTTON -->
+    <div class="top-buttons">
+      <button class="btn btn-success" (click)="navigateToCreate()">
+        <i class="fa fa-plus"></i> Create Layout
+      </button>
+    </div>
+
   </div>
-
-  <!-- CREATE BUTTON -->
-  <div class="top-buttons">
-    <button class="btn btn-success" (click)="navigateToCreate()">
-      <i class="fa fa-plus"></i> Create Layout
-    </button>
-  </div>
-
-</div>
 
 
   <!-- TABLE -->
@@ -53,8 +47,9 @@
         </tr>
       </thead>
 
-      <tbody>
-        <tr *ngFor="let layout of layouts; let i = index">
+      <tbody *ngIf="filteredLayouts.length > 0">
+        <tr
+          *ngFor="let layout of filteredLayouts | slice:(currentPage-1)*pageSize:(currentPage)*pageSize; let i = index">
 
           <td>{{ (currentPage - 1) * pageSize + i + 1 }}</td>
           <td class="left-align">{{ layout.layoutName }}</td>
@@ -68,87 +63,49 @@
           <td>{{ layout.dtcpApproved ? 'Yes' : 'No' }}</td>
           <td>{{ layout.reraApproved ? 'Yes' : 'No' }}</td>
 
-      <td>
-  <ng-container *ngIf="layout.pdfPath; else noPdf">
-    <button
-      class="pdf-view-btn"
-      [title]="getPdfName(layout.pdfPath)"
-      (click)="viewPdf(layout.layoutName)">
-      📄 {{ getPdfName(layout.pdfPath) }}
-    </button>
-  </ng-container>
+          <td>
+            <ng-container *ngIf="layout.pdfPath; else noPdf">
+              <button class="pdf-view-btn" [title]="getPdfName(layout.pdfPath)" (click)="viewPdf(layout.layoutName)">
+                📄 {{ getPdfName(layout.pdfPath) }}
+              </button>
+            </ng-container>
 
-  <ng-template #noPdf>
-    <span class="no-pdf">-</span>
-  </ng-template>
-</td>
+            <ng-template #noPdf>
+              <span class="no-pdf">-</span>
+            </ng-template>
+          </td>
 
           <td>
             <div class="action-icons">
-              <i class="fa fa-eye circle-icon view"
-                 (click)="viewLayout(layout.layoutName)"
-                 title="View Layout"></i>
+              <i class="fa fa-eye circle-icon view" (click)="viewLayout(layout.layoutName)" title="View Layout"></i>
 
-              <i class="fa fa-pencil circle-icon edit"
-                 (click)="editLayout(layout.layoutName)"
-                 title="Edit Layout"></i>
+              <i class="fa fa-pencil circle-icon edit" (click)="editLayout(layout.layoutName)" title="Edit Layout"></i>
 
-              <i class="fa fa-trash circle-icon delete"
-                 (click)="deleteLayout(layout.layoutName)"
-                 title="Delete Layout"></i>
+              <i class="fa fa-trash circle-icon delete" (click)="deleteLayout(layout.layoutName)"
+                title="Delete Layout"></i>
 
-              <i class="fa fa-plus circle-icon book"
-                 [routerLink]="['/create-plot']"
-                 title="Add Plot"></i>
+              <i class="fa fa-plus circle-icon book" [routerLink]="['/create-plot']" title="Add Plot"></i>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+
+      <tbody *ngIf="filteredLayouts.length === 0">
+        <tr>
+          <td colspan="13" class="no-records-cell">
+            <div class="no-records-msg">
+              <i class="fa fa-info-circle"></i> No Records Found
             </div>
           </td>
         </tr>
       </tbody>
     </table>
+    <app-pagination *ngIf="filteredLayouts.length > 0" [totalItems]="filteredLayouts.length" [pageSize]="pageSize"
+      [currentPage]="currentPage" (pageChange)="currentPage = $event"
+      (pageSizeChange)="pageSize = $event; currentPage = 1">
+    </app-pagination>
   </div>
 
-  <!-- NO RECORDS -->
-  <div *ngIf="noRecords" class="no-records">
-    No Records Found
-  </div>
-
-  <!-- PAGINATION CONTAINER -->
-<div class="pagination-container">
-
-  <!-- PAGINATION (CENTER) -->
-  <div class="pagination">
-
-    <!-- PREV -->
-    <button
-      [disabled]="currentPage === 1"
-      (click)="prevPage()">
-      « Prev
-    </button>
-
-    <!-- PAGE NUMBERS -->
-    <button
-      *ngFor="let page of pages"
-      (click)="goToPage(page)"
-      [class.active]="currentPage === page">
-      {{ page }}
-    </button>
-
-    <!-- NEXT -->
-    <button
-      [disabled]="currentPage === totalPages"
-      (click)="nextPage()">
-      Next »
-    </button>
-
-  </div>
-
-  <!-- HOME (RIGHT CORNER, SAME LINE) -->
-  <button
-    class="btn btn-danger pagination-home-btn"
-    (click)="goHome()">
+  <button class="btn btn-danger pagination-home-btn" (click)="goHome()">
     Home
   </button>
-
-</div>
-
-

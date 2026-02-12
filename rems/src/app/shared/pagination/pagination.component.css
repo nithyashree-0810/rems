@@ -1,0 +1,96 @@
+:host {
+    display: block;
+    width: 100%;
+}
+
+.pagination-wrapper {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    padding: 1.25rem 2rem;
+    font-size: 0.8rem;
+    color: #666;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+    border-top: 1px solid #eee;
+    box-sizing: border-box;
+}
+
+.entries-info {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    justify-content: flex-start;
+}
+
+.entries-select {
+    padding: 4px 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    outline: none;
+    cursor: pointer;
+}
+
+.pagination-controls {
+    display: flex;
+    gap: 5px;
+    justify-content: center;
+}
+
+.pagination-summary {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    text-align: right;
+    line-height: 1.4;
+    min-width: 180px;
+    margin-right: 0.5rem;
+}
+
+.page-btn {
+    padding: 6px 12px;
+    border: 1px solid #ddd;
+    background: #fff;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: all 0.2s;
+    min-width: 35px;
+}
+
+.page-btn:hover:not(:disabled) {
+    background-color: #fffaf0;
+    border-color: #ff9800;
+    color: #ff9800;
+}
+
+.page-btn.active {
+    background-color: #ff9800;
+    color: white;
+    border-color: #ff9800;
+}
+
+.page-btn:disabled {
+    cursor: not-allowed;
+    color: #ccc;
+    background: #fdfdfd;
+}
+
+@media (max-width: 768px) {
+    .pagination-wrapper {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .entries-info,
+    .pagination-controls,
+    .pagination-summary {
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        flex: none;
+        width: 100%;
+    }
+}

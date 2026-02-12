@@ -27,12 +27,25 @@ export class CreateEnquiryComponent {
     pincode: undefined as any,
     aadharNo: '',
     panNo: '',
-
-
-
+    referralNumber: '',
+    comment: ''
   }
   mobileExists: boolean = false;
   selectedImage: File | null = null;
+  commentWordCount: number = 0;
+  maxWords: number = 500;
+
+  getWordCount(text: string): number {
+    if (!text) return 0;
+    return text.trim().split(/\s+/).filter(word => word.length > 0).length;
+  }
+
+  onCommentChange() {
+    this.commentWordCount = this.getWordCount(this.enquiry.comment || '');
+    if (this.commentWordCount > this.maxWords) {
+      // Optional: Handle over-limit state if desired, but HTML maxlength/validation will also help
+    }
+  }
 
   onFileChange(event: any) {
     const file = event.target.files?.[0];

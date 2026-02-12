@@ -35,6 +35,9 @@ public class Enquiry {
 	
 	private String referralName;
 	private String referralNumber;
+	
+	@Column(length = 2000) // Allowing more space for a 500-word comment
+	private String comment;
 
 	@Column(name = "created_date", columnDefinition = "DATETIME")
 	private LocalDateTime createdDate;

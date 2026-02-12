@@ -30,10 +30,12 @@ export class AppComponent {
     // Normalize URL (remove query params)
     const cleanUrl = url.split('?')[0];
 
-    // Hide header + footer ONLY on login page
+    // Hide header + footer ONLY on login, register, and forgot-password pages
     this.showHeaderFooter =
       !(cleanUrl === '/' ||
         cleanUrl === '/login' ||
+        cleanUrl === '/register' ||
+        cleanUrl === '/forgot-password' ||
         cleanUrl.startsWith('/auth/login'));
   }
 }

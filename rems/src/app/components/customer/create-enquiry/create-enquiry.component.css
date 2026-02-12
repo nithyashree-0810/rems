@@ -3,7 +3,7 @@
 /* 🌌 DARK PREMIUM BACKGROUND */
 .page-bg {
   min-height: 100vh;
-  background: linear-gradient(rgba(0,0,0,0.88), rgba(0,0,0,0.88)),
+  background: linear-gradient(rgba(0, 0, 0, 0.88), rgba(0, 0, 0, 0.88)),
     url("https://images.pexels.com/photos/1396122/pexels-photo-1396122.jpeg");
   background-size: cover;
   background-position: center;
@@ -34,7 +34,7 @@
   max-width: 550px;
   background: #fff;
   border-radius: 12px;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.12);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12);
   padding: 18px 22px;
 }
 
@@ -80,7 +80,7 @@ input[type="email"] {
 input:focus {
   outline: none;
   border-color: #ff6600;
-  box-shadow: 0 0 4px rgba(255,102,0,0.4);
+  box-shadow: 0 0 4px rgba(255, 102, 0, 0.4);
 }
 
 .is-invalid {

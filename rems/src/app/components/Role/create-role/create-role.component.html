@@ -10,17 +10,9 @@
           <label>
             First Name <span class="required">*</span>
           </label>
-          <input
-            type="text"
-            name="firstName"
-            [(ngModel)]="role.firstName"
-            required
-            minlength="2"
-            pattern="^[a-zA-Z ]+$"
-            placeholder="Enter First Name"
-            #firstName="ngModel"
-            [class.is-invalid]="firstName.invalid && firstName.touched"
-          >
+          <input type="text" name="firstName" [(ngModel)]="role.firstName" required minlength="2" pattern="^[a-zA-Z ]+$"
+            placeholder="Enter First Name" #firstName="ngModel"
+            [class.is-invalid]="firstName.invalid && firstName.touched">
           <small class="error" *ngIf="firstName.touched && firstName.invalid">
             First name is required (letters only)
           </small>
@@ -30,17 +22,8 @@
           <label>
             Last Name <span class="required">*</span>
           </label>
-          <input
-            type="text"
-            name="lastName"
-            [(ngModel)]="role.lastName"
-            required
-            minlength="1"
-            pattern="^[a-zA-Z ]+$"
-            placeholder="Enter Last Name"
-            #lastName="ngModel"
-            [class.is-invalid]="lastName.invalid && lastName.touched"
-          >
+          <input type="text" name="lastName" [(ngModel)]="role.lastName" required minlength="1" pattern="^[a-zA-Z ]+$"
+            placeholder="Enter Last Name" #lastName="ngModel" [class.is-invalid]="lastName.invalid && lastName.touched">
           <small class="error" *ngIf="lastName.touched && lastName.invalid">
             Last name is required
           </small>
@@ -53,17 +36,9 @@
           <label>
             Mobile <span class="required">*</span>
           </label>
-          <input
-            type="text"
-            name="mobileNo"
-            [(ngModel)]="role.mobileNo"
-            required
-            maxlength="10"
-            pattern="^[0-9]{10}$"
-            placeholder="Enter 10-digit Mobile Number"
-            #mobileNo="ngModel"
-            [class.is-invalid]="mobileNo.invalid && mobileNo.touched"
-          >
+          <input type="text" name="mobileNo" [(ngModel)]="role.mobileNo" required maxlength="10" pattern="^[0-9]{10}$"
+            placeholder="Enter 10-digit Mobile Number" #mobileNo="ngModel"
+            [class.is-invalid]="mobileNo.invalid && mobileNo.touched">
           <small class="error" *ngIf="mobileNo.touched && mobileNo.invalid">
             Enter valid 10-digit mobile number
           </small>
@@ -71,15 +46,9 @@
 
         <div class="col">
           <label>Email (optional):</label>
-          <input
-            type="email"
-            name="email"
-            [(ngModel)]="role.email"
-            placeholder="Enter Email (optional)"
-            pattern="^$|^[a-zA-Z._%+-]+@gmail\.com$"
-            #email="ngModel"
-            [class.is-invalid]="email.invalid && email.touched"
-          >
+          <input type="email" name="email" [(ngModel)]="role.email" placeholder="Enter Email (optional)"
+            pattern="^$|^[a-zA-Z._%+-]+@gmail\.com$" #email="ngModel"
+            [class.is-invalid]="email.invalid && email.touched">
           <small class="error" *ngIf="email.touched && email.invalid">
             Enter valid Gmail address
           </small>
@@ -92,16 +61,8 @@
           <label>
             Address <span class="required">*</span>
           </label>
-          <input
-            type="text"
-            name="address"
-            [(ngModel)]="role.address"
-            required
-            minlength="5"
-            placeholder="Enter Address"
-            #address="ngModel"
-            [class.is-invalid]="address.invalid && address.touched"
-          >
+          <input type="text" name="address" [(ngModel)]="role.address" required minlength="5"
+            placeholder="Enter Address" #address="ngModel" [class.is-invalid]="address.invalid && address.touched">
           <small class="error" *ngIf="address.touched && address.invalid">
             Address is required (min 5 characters)
           </small>
@@ -111,17 +72,9 @@
           <label>
             Aadhaar <span class="required">*</span>
           </label>
-          <input
-            type="text"
-            name="aadharNo"
-            [(ngModel)]="role.aadharNo"
-            required
-            maxlength="12"
-            pattern="^[0-9]{12}$"
-            placeholder="Enter 12-digit Aadhaar"
-            #aadharNo="ngModel"
-            [class.is-invalid]="aadharNo.invalid && aadharNo.touched"
-          >
+          <input type="text" name="aadharNo" [(ngModel)]="role.aadharNo" required maxlength="12" pattern="^[0-9]{12}$"
+            placeholder="Enter 12-digit Aadhaar" #aadharNo="ngModel"
+            [class.is-invalid]="aadharNo.invalid && aadharNo.touched">
           <small class="error" *ngIf="aadharNo.touched && aadharNo.invalid">
             Enter valid 12-digit Aadhaar
           </small>
@@ -132,15 +85,9 @@
       <div class="row">
         <div class="col">
           <label>PAN No (optional):</label>
-          <input
-            type="text"
-            name="panNo"
-            [(ngModel)]="role.panNo"
-            placeholder="Enter PAN Number (optional)"
-            pattern="^$|^[A-Z]{5}[0-9]{4}[A-Z]{1}$"
-            #panNo="ngModel"
-            [class.is-invalid]="panNo.invalid && panNo.touched"
-          >
+          <input type="text" name="panNo" [(ngModel)]="role.panNo" placeholder="Enter PAN Number (optional)"
+            pattern="^$|^[A-Z]{5}[0-9]{4}[A-Z]{1}$" #panNo="ngModel"
+            [class.is-invalid]="panNo.invalid && panNo.touched">
           <small class="error" *ngIf="panNo.touched && panNo.invalid">
             Enter valid PAN number
           </small>
@@ -150,14 +97,8 @@
           <label>
             Role <span class="required">*</span>
           </label>
-          <select
-            name="role"
-            [(ngModel)]="role.role"
-            required
-            #roleType="ngModel"
-            class="form-select"
-            [class.is-invalid]="roleType.invalid && roleType.touched"
-          >
+          <select name="role" [(ngModel)]="role.role" required #roleType="ngModel" class="form-select"
+            [class.is-invalid]="roleType.invalid && roleType.touched">
             <option value="" disabled selected>Select Role</option>
             <option value="AGENT">Agent</option>
             <option value="OWNER">Owner</option>
@@ -178,17 +119,11 @@
 
       <!-- Buttons -->
       <div class="buttons-row">
-        <button
-          type="submit"
-          class="btn btn-create"
-          [disabled]="!roleForm.valid">
+        <button type="submit" class="btn btn-create" [disabled]="!roleForm.valid">
           Create Role
         </button>
 
-        <button
-          type="button"
-          class="btn btn-home"
-          (click)="goHome()">
+        <button type="button" class="btn btn-home" (click)="goHome()">
           Home
         </button>
       </div>

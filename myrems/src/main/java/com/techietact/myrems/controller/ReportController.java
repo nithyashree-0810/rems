@@ -71,23 +71,29 @@ public class ReportController {
      */
 
     private void addCompanyHeader(Document document, String reportName) throws Exception {
-        Font companyFont = FontFactory.getFont(FontFactory.HELVETICA_BOLD, 20);
-        Font subtitleFont = FontFactory.getFont(FontFactory.HELVETICA, 9);
+        Font companyFont = FontFactory.getFont(FontFactory.HELVETICA_BOLD, 22);
+        Font reportTitleFont = FontFactory.getFont(FontFactory.HELVETICA_BOLD, 14);
+        Font infoFont = FontFactory.getFont(FontFactory.HELVETICA, 10);
 
-        Paragraph company = new Paragraph(
-                "REMS – Real Estate Management System",
-                companyFont);
+        // Company Logo/Name
+        Paragraph company = new Paragraph("REMS", companyFont);
         company.setAlignment(Element.ALIGN_CENTER);
+        company.setSpacingBefore(10f);
         document.add(company);
 
-        Paragraph subtitle = new Paragraph(
-                reportName + "\nGenerated on: " +
-                        LocalDateTime.now()
-                                .format(DateTimeFormatter.ofPattern("dd MMM yyyy, hh:mm a")),
-                subtitleFont);
-        subtitle.setAlignment(Element.ALIGN_CENTER);
-        subtitle.setSpacingAfter(20f);
-        document.add(subtitle);
+        // Report Name
+        Paragraph title = new Paragraph(reportName, reportTitleFont);
+        title.setAlignment(Element.ALIGN_CENTER);
+        title.setSpacingBefore(5f);
+        document.add(title);
+
+        // Meta Info
+        Paragraph info = new Paragraph(
+                "Generated on: " + LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd MMM yyyy, hh:mm a")),
+                infoFont);
+        info.setAlignment(Element.ALIGN_CENTER);
+        info.setSpacingAfter(20f);
+        document.add(info);
     }
 
     private void addHeader(PdfPTable table, String text) {
@@ -95,33 +101,32 @@ public class ReportController {
         PdfPCell cell = new PdfPCell(new Phrase(text, headerFont));
         cell.setHorizontalAlignment(Element.ALIGN_CENTER);
         cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
-        cell.setPadding(10f);
-        cell.setBackgroundColor(new Color(45, 45, 45));
-        cell.setBorder(Rectangle.NO_BORDER);
+        cell.setPadding(8f);
+        cell.setBackgroundColor(new Color(255, 102, 0)); // Orange
+        cell.setBorder(Rectangle.BOX); // Thin borders for professional look
+        cell.setBorderColor(Color.LIGHT_GRAY);
         cell.setNoWrap(true);
         table.addCell(cell);
     }
 
     private void addCell(PdfPTable table, Object value, Color bg, int align) {
-        Font font = FontFactory.getFont(FontFactory.HELVETICA, 8);
+        Font font = FontFactory.getFont(FontFactory.HELVETICA, 9);
         PdfPCell cell = new PdfPCell(new Phrase(value == null ? "" : value.toString(), font));
         cell.setBackgroundColor(bg);
-        cell.setPaddingTop(8f);
-        cell.setPaddingBottom(8f);
-        cell.setPaddingLeft(5f);
-        cell.setPaddingRight(5f);
+        cell.setPadding(6f);
         cell.setHorizontalAlignment(align);
         cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+        cell.setBorderColor(Color.LIGHT_GRAY);
         table.addCell(cell);
     }
 
     private void addFooter(Document document) throws Exception {
-        Font footerFont = FontFactory.getFont(FontFactory.HELVETICA, 9);
+        Font footerFont = FontFactory.getFont(FontFactory.HELVETICA, 10);
         Paragraph footer = new Paragraph(
-                "© " + LocalDateTime.now().getYear() + " REMS | Confidential",
+                "© " + LocalDateTime.now().getYear() + " REMS | Confidential Report",
                 footerFont);
         footer.setAlignment(Element.ALIGN_CENTER);
-        footer.setSpacingBefore(15f);
+        footer.setSpacingBefore(20f);
         document.add(footer);
     }
 
@@ -379,7 +384,8 @@ public class ReportController {
 
             addCompanyHeader(document, "Customer Enquiries Report");
 
-            PdfPTable table = new PdfPTable(5);
+            float[] columnWidths = { 4f, 16f, 10f, 22f, 16f, 16f, 16f };
+            PdfPTable table = new PdfPTable(columnWidths);
             table.setWidthPercentage(100);
             table.setHeaderRows(1);
 
@@ -387,6 +393,8 @@ public class ReportController {
             addHeader(table, "Customer Name");
             addHeader(table, "Mobile");
             addHeader(table, "Address");
+            addHeader(table, "Referral Name");
+            addHeader(table, "Referral Ph Number");
             addHeader(table, "Date");
 
             int i = 1;
@@ -399,6 +407,8 @@ public class ReportController {
                         bg, Element.ALIGN_LEFT);
                 addCell(table, e.getMobileNo(), bg, Element.ALIGN_CENTER);
                 addCell(table, e.getAddress(), bg, Element.ALIGN_LEFT);
+                addCell(table, e.getReferralName() != null ? e.getReferralName() : "-", bg, Element.ALIGN_LEFT);
+                addCell(table, e.getReferralNumber() != null ? e.getReferralNumber() : "-", bg, Element.ALIGN_CENTER);
                 addCell(table, e.getCreatedDate(), bg, Element.ALIGN_CENTER);
             }
 

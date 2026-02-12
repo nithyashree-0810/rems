@@ -10,67 +10,52 @@
           <label class="dark-label">
             First Name <span class="required">*</span>
           </label>
-          <input type="text" name="firstName" [(ngModel)]="enquiry.firstName"
-            required minlength="2" maxlength="15" pattern="^[a-zA-Z]+$"
-            #firstName="ngModel"
-            [class.is-invalid]="firstName.invalid && firstName.touched">
+          <input type="text" name="firstName" [(ngModel)]="enquiry.firstName" required minlength="2" maxlength="15"
+            pattern="^[a-zA-Z]+$" #firstName="ngModel" [class.is-invalid]="firstName.invalid && firstName.touched">
         </div>
 
         <div class="col">
           <label class="dark-label">
             Last Name <span class="required">*</span>
           </label>
-          <input type="text" name="lastName" [(ngModel)]="enquiry.lastName"
-            required pattern="^[a-zA-Z]+$"
-            #lastName="ngModel"
-            [class.is-invalid]="lastName.invalid && lastName.touched">
+          <input type="text" name="lastName" [(ngModel)]="enquiry.lastName" required pattern="^[a-zA-Z]+$"
+            #lastName="ngModel" [class.is-invalid]="lastName.invalid && lastName.touched">
         </div>
       </div>
 
-    <div class="row">
-  <div class="col">
-    <label class="dark-label">
-      Mobile <span class="required">*</span>
-    </label>
-    <input type="text" name="mobileNo" [(ngModel)]="enquiry.mobileNo"
-      required maxlength="10" pattern="[0-9]*"
-      #mobileNo="ngModel"
-      [class.is-invalid]="mobileNo.invalid && mobileNo.touched">
-  </div>
+      <div class="row">
+        <div class="col">
+          <label class="dark-label">
+            Mobile <span class="required">*</span>
+          </label>
+          <input type="text" name="mobileNo" [(ngModel)]="enquiry.mobileNo" required maxlength="10" pattern="[0-9]*"
+            #mobileNo="ngModel" [class.is-invalid]="mobileNo.invalid && mobileNo.touched">
+        </div>
 
-  <div class="col">
-    <label class="dark-label">Email (optional)</label>
-    <input type="email" name="email" [(ngModel)]="enquiry.email">
-  </div>
-</div>
+        <div class="col">
+          <label class="dark-label">Email (optional)</label>
+          <input type="email" name="email" [(ngModel)]="enquiry.email">
+        </div>
+      </div>
 
-       <div class="row">
-  <div class="col">
-    <label class="dark-label">
-      Address <span class="required">*</span>
-    </label>
-    <input type="text" name="address" [(ngModel)]="enquiry.address"
-      required minlength="5"
-      #address="ngModel"
-      [class.is-invalid]="address.invalid && address.touched">
-  </div>
+      <div class="row">
+        <div class="col">
+          <label class="dark-label">
+            Address <span class="required">*</span>
+          </label>
+          <input type="text" name="address" [(ngModel)]="enquiry.address" required minlength="5" #address="ngModel"
+            [class.is-invalid]="address.invalid && address.touched">
+        </div>
 
-  <div class="col">
-    <label class="dark-label">
-      Pincode <span class="required">*</span>
-    </label>
-    <input type="text"
-           name="pincode"
-           [(ngModel)]="enquiry.pincode"
-           required
-           maxlength="6"
-           pattern="^[0-9]{6}$"
-           inputmode="numeric"
-           onkeypress="return event.charCode >= 48 && event.charCode <= 57"
-           #pincode="ngModel"
-           [class.is-invalid]="pincode.invalid && pincode.touched">
-  </div>
-</div>
+        <div class="col">
+          <label class="dark-label">
+            Pincode <span class="required">*</span>
+          </label>
+          <input type="text" name="pincode" [(ngModel)]="enquiry.pincode" required maxlength="6" pattern="^[0-9]{6}$"
+            inputmode="numeric" onkeypress="return event.charCode >= 48 && event.charCode <= 57" #pincode="ngModel"
+            [class.is-invalid]="pincode.invalid && pincode.touched">
+        </div>
+      </div>
 
 
       <div class="row">
@@ -78,10 +63,26 @@
           <label class="dark-label">
             Aadhaar(Optional)
           </label>
-          <input type="text" name="aadharNo" [(ngModel)]="enquiry.aadharNo"
-             maxlength="12" pattern="[0-9]*"
-            #aadharNo="ngModel"
-            [class.is-invalid]="aadharNo.invalid && aadharNo.touched">
+          <input type="text" name="aadharNo" [(ngModel)]="enquiry.aadharNo" maxlength="12" pattern="[0-9]*"
+            #aadharNo="ngModel" [class.is-invalid]="aadharNo.invalid && aadharNo.touched">
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col">
+          <label class="dark-label">
+            Referral Name
+          </label>
+          <input type="text" name="referralName" [(ngModel)]="enquiry.referralName" #referralName="ngModel"
+            [class.is-invalid]="referralName.invalid && referralName.touched">
+        </div>
+
+        <div class="col">
+          <label class="dark-label">
+            Referral Ph Number
+          </label>
+          <input type="text" name="referralNumber" [(ngModel)]="enquiry.referralNumber" maxlength="10" pattern="[0-9]*"
+            #referralNumber="ngModel" [class.is-invalid]="referralNumber.invalid && referralNumber.touched">
         </div>
       </div>
 
@@ -93,8 +94,7 @@
       </div>
 
       <div class="buttons-row">
-        <button type="submit" class="btn btn-success"
-          [disabled]="!enquiryForm.valid">
+        <button type="submit" class="btn btn-success" [disabled]="!enquiryForm.valid">
           Create Customer
         </button>
         <button type="button" class="btn btn-danger" (click)="goHome()">

@@ -2,32 +2,26 @@
 
   <h2>List of Customers</h2>
 
- <!-- SEARCH + CREATE SAME ROW -->
-<div class="search-create-row">
+  <!-- SEARCH + CREATE SAME ROW -->
+  <div class="search-create-row">
 
-  <div class="search-container">
-    <input type="text"
-           [(ngModel)]="searchName"
-           (keyup)="onSearch()"
-           placeholder="Search By first or last Name"
-           class="search-input">
+    <div class="search-container">
+      <input type="text" [(ngModel)]="searchName" (keyup)="onSearch()" placeholder="Search By first or last Name"
+        class="search-input">
 
-    <input type="text"
-           [(ngModel)]="searchMobile"
-           (keyup)="onSearch()"
-           placeholder="Search Mobile Number"
-           class="search-input">
+      <input type="text" [(ngModel)]="searchMobile" (keyup)="onSearch()" placeholder="Search Mobile Number"
+        class="search-input">
 
-    <button class="search-btn" (click)="onSearch()">Search</button>
+      <button class="search-btn" (click)="onSearch()">Search</button>
+    </div>
+
+    <div class="top-buttons">
+      <button class="btn btn-success" (click)="createEnquiry()">
+        <i class="fa fa-plus"></i> Create Customer
+      </button>
+    </div>
+
   </div>
-
-  <div class="top-buttons">
-    <button class="btn btn-success" (click)="createEnquiry()">
-      <i class="fa fa-plus"></i> Create Customer
-    </button>
-  </div>
-
-</div>
 
 
   <!-- TABLE -->
@@ -35,8 +29,8 @@
     <table class="layout-table">
       <thead>
         <tr>
-          <th>Image</th>
           <th>S.No</th>
+          <th>Image</th>
           <th>First Name</th>
           <th>Last Name</th>
           <th>Address</th>
@@ -48,16 +42,14 @@
       <tbody>
         <tr *ngFor="let c of paginatedCustomers; let i = index">
 
+          <td>{{ (currentPage - 1) * pageSize + i + 1 }}</td>
+
           <!-- Profile Image -->
           <td>
             <div class="img-wrapper">
-              <img *ngIf="c.profileImagePath"
-                   [src]="imageUrl(c.profileImagePath)"
-                   alt="Photo">
+              <img *ngIf="c.profileImagePath" [src]="imageUrl(c.profileImagePath)" alt="Photo">
             </div>
           </td>
-
-          <td>{{ (currentPage - 1) * pageSize + i + 1 }}</td>
           <td class="left-align">{{ c.firstName }}</td>
           <td class="left-align">{{ c.lastName }}</td>
           <td>{{ c.address }}</td>
@@ -66,14 +58,11 @@
           <td>
             <div class="action-icons">
 
-              <i class="fa fa-eye circle-icon view"
-                 (click)="viewcustomer(c.mobileNo)"></i>
+              <i class="fa fa-eye circle-icon view" (click)="viewcustomer(c.mobileNo)"></i>
 
-              <i class="fa fa-pencil circle-icon edit"
-                 (click)="editCustomer(c)"></i>
+              <i class="fa fa-pencil circle-icon edit" (click)="editCustomer(c)"></i>
 
-              <i class="fa fa-trash circle-icon delete"
-                 (click)="deleteCustomer(c.mobileNo)"></i>
+              <i class="fa fa-trash circle-icon delete" (click)="deleteCustomer(c.mobileNo)"></i>
 
             </div>
           </td>
@@ -82,28 +71,26 @@
     </table>
   </div>
 
- <!-- PAGINATION -->
-<div class="pagination-container">
-  <div class="pagination">
-    <!-- Prev Button -->
-    <button [disabled]="currentPage === 1" (click)="prevPage()">« Prev</button>
+  <!-- PAGINATION -->
+  <div class="pagination-container">
+    <div class="pagination">
+      <!-- Prev Button -->
+      <button [disabled]="currentPage === 1" (click)="prevPage()">« Prev</button>
 
-    <!-- Page Numbers -->
-    <button *ngFor="let page of pages"
-            [class.active]="page === currentPage"
-            (click)="goToPage(page)">
-      {{ page }}
+      <!-- Page Numbers -->
+      <button *ngFor="let page of pages" [class.active]="page === currentPage" (click)="goToPage(page)">
+        {{ page }}
+      </button>
+
+      <!-- Next Button -->
+      <button [disabled]="currentPage === totalPages" (click)="nextPage()">Next »</button>
+    </div>
+
+    <!-- Home Button -->
+    <button class="btn btn-danger pagination-home-btn" (click)="goHome()">
+      Home
     </button>
-
-    <!-- Next Button -->
-    <button [disabled]="currentPage === totalPages" (click)="nextPage()">Next »</button>
   </div>
-
-  <!-- Home Button -->
-  <button class="btn btn-danger pagination-home-btn" (click)="goHome()">
-    Home
-  </button>
-</div>
 
 
 </div>

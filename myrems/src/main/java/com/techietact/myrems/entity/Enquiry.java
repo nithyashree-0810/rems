@@ -32,6 +32,9 @@ public class Enquiry {
 	private String panNo;
 	
 	private String profileImagePath;
+	
+	private String referralName;
+	private String referralNumber;
 
 	@Column(name = "created_date", columnDefinition = "DATETIME")
 	private LocalDateTime createdDate;

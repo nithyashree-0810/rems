@@ -2,34 +2,28 @@
 
   <h2>List of Plots</h2>
 
-<!-- SEARCH + CREATE SAME LINE -->
-<div class="search-create-row">
+  <!-- SEARCH + CREATE SAME LINE -->
+  <div class="search-create-row">
 
-  <!-- SEARCH (CENTER) -->
-  <div class="search-container">
-    <input type="text"
-           [(ngModel)]="searchLayoutName"
-           (keyup)="filterPlots()"
-           placeholder="Search Layout Name"
-           class="search-input">
+    <!-- SEARCH (CENTER) -->
+    <div class="search-container">
+      <input type="text" [(ngModel)]="searchLayoutName" (keyup)="filterPlots()" placeholder="Search Layout Name"
+        class="search-input">
 
-    <input type="text"
-           [(ngModel)]="searchPlotNo"
-           (keyup)="filterPlots()"
-           placeholder="Search Plot No"
-           class="search-input">
+      <input type="text" [(ngModel)]="searchPlotNo" (keyup)="filterPlots()" placeholder="Search Plot No"
+        class="search-input">
 
-    <button class="search-btn" (click)="filterPlots()">Search</button>
+      <button class="search-btn" (click)="filterPlots()">Search</button>
+    </div>
+
+    <!-- CREATE (RIGHT) -->
+    <div class="top-buttons">
+      <button class="btn btn-success" routerLink="/create-plot">
+        <i class="fa fa-plus"></i> Create Plot
+      </button>
+    </div>
+
   </div>
-
-  <!-- CREATE (RIGHT) -->
-  <div class="top-buttons">
-    <button class="btn btn-success" routerLink="/create-plot">
-      <i class="fa fa-plus"></i> Create Plot
-    </button>
-  </div>
-
-</div>
 
   <!-- Table -->
   <div class="table-wrapper">
@@ -40,7 +34,7 @@
           <th class="text-left">Layout Name</th>
           <th>Plot</th>
           <th class="text-left">Survey No</th>
-         <th class="text-left">Owner</th>
+          <th class="text-left">Owner</th>
           <th>Sqft</th>
           <th>Dir</th>
           <th>Price</th>
@@ -66,19 +60,14 @@
           <td>{{ plot.reraApproved ? 'Yes' : 'No' }}</td>
 
           <td>
-            <i class="fa fa-eye circle-icon view" 
-               (click)="viewPlot(plot.layout.layoutName, plot.plotNo)"
-               title="View Plot"></i>
-            <i class="fa fa-pencil circle-icon edit" 
-               (click)="editPlot(plot.layout.layoutName, plot.plotNo)"
-               title="Edit Plot"></i>
-            <i class="fa fa-trash circle-icon delete" 
-               (click)="deletePlot(plot.layout.layoutName, plot.plotNo)"
-               title="Delete Plot"></i>
-            <i class="fa fa-book circle-icon book"
-               [class.disabled]="plot.booked"
-               (click)="onBookClick(plot)"
-               title="Book Plot">
+            <i class="fa fa-eye circle-icon view" (click)="viewPlot(plot.layout.layoutName, plot.plotNo)"
+              title="View Plot"></i>
+            <i class="fa fa-pencil circle-icon edit" (click)="editPlot(plot.layout.layoutName, plot.plotNo)"
+              title="Edit Plot"></i>
+            <i class="fa fa-trash circle-icon delete" (click)="deletePlot(plot.layout.layoutName, plot.plotNo)"
+              title="Delete Plot"></i>
+            <i class="fa fa-book circle-icon book" [class.disabled]="plot.booked" (click)="onBookClick(plot)"
+              title="Book Plot">
             </i>
           </td>
         </tr>
@@ -88,37 +77,30 @@
 
   <div class="pagination-container">
 
-  <div class="pagination">
+    <div class="pagination">
 
-    <!-- PREV -->
-    <button
-  [disabled]="currentPage === 1"
-  (click)="prevPage()">
-  « Prev
-</button>
-   
-<!-- PAGE NUMBERS -->
-    <button
-      *ngFor="let page of pages"
-      (click)="goToPage(page)"
-      [class.active]="currentPage === page">
-      {{ page }}
+      <!-- PREV -->
+      <button [disabled]="currentPage === 1" (click)="prevPage()">
+        « Prev
+      </button>
+
+      <!-- PAGE NUMBERS -->
+      <button *ngFor="let page of pages" (click)="goToPage(page)" [class.active]="currentPage === page">
+        {{ page }}
+      </button>
+
+      <!-- NEXT -->
+      <button [disabled]="currentPage === totalPages" (click)="nextPage()">
+        Next »
+      </button>
+
+    </div>
+
+    <button class="btn btn-danger pagination-home-btn" (click)="goHome()">
+      Home
     </button>
 
-    <!-- NEXT -->
-    <button
-  [disabled]="currentPage === totalPages"
-  (click)="nextPage()">
-  Next »
-</button>
-
   </div>
-
-  <button class="btn btn-danger pagination-home-btn" (click)="goHome()">
-    Home
-  </button>
-
-</div>
 
 
 </div>

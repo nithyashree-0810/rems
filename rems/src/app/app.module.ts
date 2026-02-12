@@ -68,26 +68,28 @@ import { SharedModule } from './shared/shared.module';
     ListEnquiryComponent,
     ViewEnquiryComponent,
     ReportEnquiryComponent,
+
     //Booking
     CreateBookingComponent,
     ListBookingComponent,
     EditBookingComponent,
     ReportBookingComponent,
-    ViewLayoutsComponent,
+
+    //Plot
     CreatePlotComponent,
     ListPlotComponent,
     EditPlotComponent,
     ViewPlotComponent,
     ReportPlotComponent,
+
+    //Role
     CreateRoleComponent,
     EditRoleComponent,
     ListRoleComponent,
     ViewRoleComponent,
-    ReportEnquiryComponent,
-    ReportPlotComponent,
-    ReportBookingComponent,
-    ReportLayoutComponent,
     ReportRoleComponent,
+
+    ReportLayoutComponent,
     GalleryComponent,
     RegisterComponent,
     ForgotPasswordComponent,
@@ -106,7 +108,8 @@ import { SharedModule } from './shared/shared.module';
       preventDuplicates: true,
     }),
     BrowserAnimationsModule,
-    SharedModule
+    SharedModule,
+    ViewBookingComponent
   ],
   providers: [
     provideAnimations()

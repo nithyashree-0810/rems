@@ -4,18 +4,18 @@
 
   <!-- SEARCH -->
   <div class="search-container">
-    <input type="text" [(ngModel)]="searchCustomerName" (keyup)="onFilter()" placeholder="Search Customer Name"
+    <input type="text" [(ngModel)]="searchLayoutName" (keyup)="onSearch()" placeholder="Search Layout Name"
       class="search-input">
 
-    <input type="text" [(ngModel)]="searchPlotNo" (keyup)="onFilter()" placeholder="Search Plot No"
+    <input type="text" [(ngModel)]="searchPlotNo" (keyup)="onSearch()" placeholder="Search Plot No"
       class="search-input">
 
-    <button class="search-btn" (click)="onFilter()">Search</button>
+    <button class="search-btn" (click)="onSearch()">Search</button>
   </div>
 
   <!-- REPORT BUTTON -->
   <div class="top-buttons">
-    <button class="btn btn-primary" style="margin-left: auto;" (click)="downloadBookingReport()">
+    <button class="btn btn-primary" style="margin-left: auto;" (click)="downloadBookingsReport()">
       <i class="fa fa-file-pdf"></i> Download Booking PDF
     </button>
   </div>
@@ -40,12 +40,12 @@
         <tr *ngFor="let b of filteredData | slice:(currentPage-1)*pageSize:(currentPage)*pageSize; let i = index">
           <td>{{ (currentPage - 1) * pageSize + i + 1 }}</td>
           <td>{{ b.layout?.layoutName }}</td>
-          <td>{{ b.plot?.plotNo }}</td>
-          <td>{{ b.customer?.firstName }} {{ b.customer?.lastName }}</td>
+          <td>{{ b.plot?.plotNo || b.plotNo }}</td>
+          <td>{{ b.customer?.firstName }}</td>
           <td>{{ b.customer?.mobileNo }}</td>
-          <td>₹ {{ b.totalAmount }}</td>
-          <td>{{ b.bookingDate | date:'mediumDate' }}</td>
-          <td>{{ b.bookingStatus }}</td>
+          <td>₹ {{ b.price }}</td>
+          <td>{{ b.regDate | date:'mediumDate' }}</td>
+          <td>{{ b.status }}</td>
         </tr>
       </tbody>
 

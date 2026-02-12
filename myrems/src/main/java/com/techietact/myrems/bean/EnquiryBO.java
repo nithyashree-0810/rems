@@ -16,6 +16,8 @@ public class EnquiryBO {
 
 	private String panNo;
 	private Long aadharNo;
-	
+	private String comments;
+	private String referralName;
+	private String referralNumber;
 
 }

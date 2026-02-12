@@ -27,6 +27,5 @@ public interface EnquiryService {
 
 	List<Enquiry> search(String keyword);
 
-
-	
+	String getExistingMobileName(Long mobileNo);
 }

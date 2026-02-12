@@ -1,6 +1,8 @@
 package com.techietact.myrems.service;
 
 import java.util.List;
+import java.util.Optional;
+
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,8 +19,10 @@ public class RoleServiceImpl implements RoleService {
 	public Role create(Role role) {
 		// TODO Auto-generated method stub
 		if (role.getMobileNo() != null && !role.getMobileNo().trim().isEmpty()) {
-			if (repository.existsByMobileNo(role.getMobileNo())) {
-				throw new RuntimeException("Mobile number already exists!");
+			Optional<Role> existingRole = repository.findByMobileNo(role.getMobileNo());
+			if (existingRole.isPresent()) {
+				Role r = existingRole.get();
+				throw new RuntimeException("Mobile number already exists under the name: " + r.getFirstName() + " " + r.getLastName());
 			}
 		}
 	    if (role.getEmail() != null && !role.getEmail().trim().isEmpty()) {
@@ -96,5 +100,10 @@ public class RoleServiceImpl implements RoleService {
 	        );
 	}
 
-
+	@Override
+	public String getExistingMobileName(String mobileNo) {
+		return repository.findByMobileNo(mobileNo)
+				.map(role -> role.getFirstName() + " " + role.getLastName())
+				.orElse("");
+	}
 }

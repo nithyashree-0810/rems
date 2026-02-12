@@ -84,7 +84,7 @@ input:focus {
 }
 
 .is-invalid {
-  border-color: red !important;
+  border-color: #dc3545 !important;
 }
 
 /* Buttons row */
@@ -134,8 +134,8 @@ textarea.form-control:focus {
   color: #dc3545 !important;
 }
 
-.error-text {
-  font-size: 12px;
+.error-msg {
+  font-size: 11px;
   color: #dc3545;
   margin-top: 2px;
 }

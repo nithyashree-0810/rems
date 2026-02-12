@@ -36,6 +36,10 @@ export class CustomerService {
     return this.http.get<boolean>(`${this.baseUrl}/check-mobile/${mobileNo}`);
   }
 
+  checkMobileName(mobileNo: number): Observable<string> {
+    return this.http.get(`${this.baseUrl}/check-mobile-name/${mobileNo}`, { responseType: 'text' });
+  }
+
   checkEmailExists(email: string): Observable<boolean> {
     return this.http.get<boolean>(`${this.baseUrl}/check-email/${email}`);
   }

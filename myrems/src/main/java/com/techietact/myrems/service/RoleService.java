@@ -22,4 +22,6 @@ public interface RoleService {
 	void delete(Long roleId);
 	
 	List<Role> search(String keyword);
+
+	String getExistingMobileName(String mobileNo);
 }

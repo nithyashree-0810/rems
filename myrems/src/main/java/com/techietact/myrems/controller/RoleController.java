@@ -45,6 +45,11 @@ public class RoleController {
         return roleService.mobileExists(mobileNo);
     }
 
+    @GetMapping("/check-mobile-name/{mobileNo}")
+    public String checkMobileName(@PathVariable String mobileNo) {
+        return roleService.getExistingMobileName(mobileNo);
+    }
+
     @GetMapping("/check-email/{email}")
     public boolean checkEmail(@PathVariable String email) {
         if (email == null || email.trim().isEmpty()) {

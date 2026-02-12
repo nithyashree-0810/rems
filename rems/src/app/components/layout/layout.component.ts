@@ -15,12 +15,22 @@ export class LayoutComponent {
 
   layout: Layout = new Layout();
   selectedPdf: File | null = null;
+  duplicatePhoneName: string = '';
 
   constructor(
     private layoutService: LayoutserviceService,
     private router: Router,
     private toastr: ToastrService
-  ) {}
+  ) { }
+
+  onPhoneChange() {
+    this.duplicatePhoneName = '';
+    if (this.layout.phone && this.layout.phone.toString().length === 10) {
+      this.layoutService.checkPhoneName(this.layout.phone).subscribe(name => {
+        this.duplicatePhoneName = name;
+      });
+    }
+  }
 
   onPdfSelected(event: any) {
     this.selectedPdf = event.target.files[0];
@@ -44,17 +54,33 @@ export class LayoutComponent {
 
       formData.append("layoutPdf", this.selectedPdf);
 
-      this.layoutService.createLayout(formData).subscribe({
-        next: () => {
-          this.toastr.success('Layout created successfully!');
-          this.router.navigate(['/layouts']);
-        },
-        error: err => {
-          console.error('Error creating layout', err);
-          this.toastr.error('Failed to create layout');
-        }
-      });
+      const phoneNum = Number(this.layout.phone);
+      if (phoneNum) {
+        this.layoutService.checkPhoneName(phoneNum).subscribe(existingName => {
+          if (existingName && existingName.trim() !== '') {
+            this.duplicatePhoneName = existingName;
+            this.toastr.warning(`This phone number already exists under the name: ${existingName}`);
+            return;
+          }
+          this.executeLayoutCreation(formData);
+        });
+      } else {
+        this.executeLayoutCreation(formData);
+      }
     }
+  }
+
+  private executeLayoutCreation(formData: FormData) {
+    this.layoutService.createLayout(formData).subscribe({
+      next: () => {
+        this.toastr.success('Layout created successfully!');
+        this.router.navigate(['/layouts']);
+      },
+      error: err => {
+        console.error('Error creating layout', err);
+        this.toastr.error('Failed to create layout');
+      }
+    });
   }
 
   gotoView() {

@@ -39,4 +39,6 @@ public interface LayoutService {
     Layout updateLayoutWithNameChange(String oldLayoutName, LayoutBO layoutBO);
     
     boolean isLayoutNameAvailable(String layoutName, Long excludeId);
+
+    String getExistingMobileName(long phone);
 }

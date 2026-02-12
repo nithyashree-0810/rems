@@ -41,8 +41,8 @@
         </tr>
       </thead>
 
-      <tbody>
-        <tr *ngFor="let c of paginatedCustomers; let i = index">
+      <tbody *ngIf="filteredData.length > 0">
+        <tr *ngFor="let c of filteredData | slice:(currentPage-1)*pageSize:currentPage*pageSize; let i = index">
           <td>{{ (currentPage - 1) * pageSize + i + 1 }}</td>
           <td>
             <img *ngIf="c.profileImagePath" [src]="imageUrl(c.profileImagePath)" class="avatar" alt="Photo">
@@ -66,37 +66,31 @@
           </td>
         </tr>
       </tbody>
+
+      <tbody *ngIf="filteredData.length === 0">
+        <tr>
+          <td colspan="9" class="no-records-cell">
+            <div class="no-records-msg">
+              <i class="fa fa-info-circle"></i> No Records Found
+            </div>
+          </td>
+        </tr>
+      </tbody>
     </table>
+
+    <app-pagination *ngIf="filteredData.length > 0" [totalItems]="filteredData.length" [pageSize]="pageSize"
+      [currentPage]="currentPage" (pageChange)="currentPage = $event"
+      (pageSizeChange)="pageSize = $event; currentPage = 1">
+    </app-pagination>
   </div>
 
   <!-- PAGINATION CONTAINER -->
+
+
   <div class="pagination-container">
-
-    <!-- PAGINATION (CENTER) -->
-    <div class="pagination">
-
-      <!-- PREV -->
-      <button [disabled]="currentPage === 1" (click)="prevPage()">
-        « Prev
-      </button>
-
-      <!-- PAGE NUMBERS -->
-      <button *ngFor="let page of pages" (click)="goToPage(page)" [class.active]="currentPage === page">
-        {{ page }}
-      </button>
-
-      <!-- NEXT -->
-      <button [disabled]="currentPage === totalPages" (click)="nextPage()">
-        Next »
-      </button>
-
-    </div>
-
-    <!-- HOME (RIGHT CORNER) -->
     <button class="btn btn-danger pagination-home-btn" (click)="goHome()">
       Home
     </button>
-
   </div>
 
 

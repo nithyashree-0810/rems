@@ -39,8 +39,8 @@
         </tr>
       </thead>
 
-      <tbody>
-        <tr *ngFor="let c of paginatedCustomers; let i = index">
+      <tbody *ngIf="filteredData.length > 0">
+        <tr *ngFor="let c of filteredData | slice:(currentPage-1)*pageSize:currentPage*pageSize; let i = index">
 
           <td>{{ (currentPage - 1) * pageSize + i + 1 }}</td>
 
@@ -68,25 +68,27 @@
           </td>
         </tr>
       </tbody>
+
+      <tbody *ngIf="filteredData.length === 0">
+        <tr>
+          <td colspan="7" class="no-records-cell">
+            <div class="no-records-msg">
+              <i class="fa fa-info-circle"></i> No Records Found
+            </div>
+          </td>
+        </tr>
+      </tbody>
     </table>
+
+    <app-pagination *ngIf="filteredData.length > 0" [totalItems]="filteredData.length" [pageSize]="pageSize"
+      [currentPage]="currentPage" (pageChange)="currentPage = $event"
+      (pageSizeChange)="pageSize = $event; currentPage = 1">
+    </app-pagination>
   </div>
 
-  <!-- PAGINATION -->
+
+
   <div class="pagination-container">
-    <div class="pagination">
-      <!-- Prev Button -->
-      <button [disabled]="currentPage === 1" (click)="prevPage()">« Prev</button>
-
-      <!-- Page Numbers -->
-      <button *ngFor="let page of pages" [class.active]="page === currentPage" (click)="goToPage(page)">
-        {{ page }}
-      </button>
-
-      <!-- Next Button -->
-      <button [disabled]="currentPage === totalPages" (click)="nextPage()">Next »</button>
-    </div>
-
-    <!-- Home Button -->
     <button class="btn btn-danger pagination-home-btn" (click)="goHome()">
       Home
     </button>

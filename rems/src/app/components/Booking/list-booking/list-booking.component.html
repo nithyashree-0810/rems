@@ -30,7 +30,7 @@
   <div *ngIf="loading" class="loading">Loading bookings...</div>
 
   <!-- TABLE -->
-  <div class="table-wrapper" *ngIf="!loading && bookingList.length > 0">
+  <div class="table-wrapper" *ngIf="!loading">
     <table class="layout-table">
 
       <thead>
@@ -51,8 +51,8 @@
         </tr>
       </thead>
 
-      <tbody>
-        <tr *ngFor="let b of paginatedBookings">
+      <tbody *ngIf="filteredData.length > 0">
+        <tr *ngFor="let b of filteredData | slice:(currentPage-1)*pageSize:currentPage*pageSize">
           <td>{{ b.bookingId }}</td>
           <td class="left-align">{{ b.layout?.layoutName }}</td>
           <td>{{ b.plot?.plotNo }}</td>
@@ -97,35 +97,30 @@
         </tr>
       </tbody>
 
+      <tbody *ngIf="filteredData.length === 0">
+        <tr>
+          <td colspan="13" class="no-records-cell">
+            <div class="no-records-msg">
+              <i class="fa fa-info-circle"></i> No Records Found
+            </div>
+          </td>
+        </tr>
+      </tbody>
+
     </table>
+
+    <app-pagination *ngIf="filteredData.length > 0" [totalItems]="filteredData.length" [pageSize]="pageSize"
+      [currentPage]="currentPage" (pageChange)="currentPage = $event"
+      (pageSizeChange)="pageSize = $event; currentPage = 1">
+    </app-pagination>
   </div>
 
-  <!-- PAGINATION + HOME -->
-  <div class="pagination-container" *ngIf="!loading && bookingList.length > 0">
-
-    <div class="pagination">
-      <!-- Prev -->
-      <button [disabled]="currentPage === 1" (click)="prevPage()">« Prev</button>
-
-      <!-- Page Numbers -->
-      <button *ngFor="let page of pages" [class.active]="page === currentPage" (click)="goToPage(page)">
-        {{ page }}
-      </button>
-
-      <!-- Next -->
-      <button [disabled]="currentPage === totalPages" (click)="nextPage()">Next »</button>
-    </div>
-
-    <!-- Home Button -->
+  <div class="pagination-container">
     <button class="btn btn-danger pagination-home-btn" (click)="goHome()">
       Home
     </button>
-
   </div>
 
-  <!-- NO DATA -->
-  <div *ngIf="!loading && bookingList.length === 0" class="no-records">
-    No bookings found.
-  </div>
+
 
 </div>

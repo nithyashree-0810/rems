@@ -45,7 +45,7 @@
         </tr>
       </thead>
 
-      <tbody>
+      <tbody *ngIf="plots.length > 0">
         <tr *ngFor="let plot of plots | slice:(currentPage-1)*pageSize:(currentPage)*pageSize; let i = index">
           <td>{{ (currentPage - 1) * pageSize + i + 1 }}</td>
           <td class="text-left">{{ plot.layout?.layoutName }}</td>
@@ -72,34 +72,30 @@
           </td>
         </tr>
       </tbody>
+
+      <tbody *ngIf="plots.length === 0">
+        <tr>
+          <td colspan="12" class="no-records-cell">
+            <div class="no-records-msg">
+              <i class="fa fa-info-circle"></i> No Records Found
+            </div>
+          </td>
+        </tr>
+      </tbody>
     </table>
+
+    <app-pagination *ngIf="plots.length > 0" [totalItems]="plots.length" [pageSize]="pageSize"
+      [currentPage]="currentPage" (pageChange)="currentPage = $event"
+      (pageSizeChange)="pageSize = $event; currentPage = 1">
+    </app-pagination>
   </div>
 
+
+
   <div class="pagination-container">
-
-    <div class="pagination">
-
-      <!-- PREV -->
-      <button [disabled]="currentPage === 1" (click)="prevPage()">
-        « Prev
-      </button>
-
-      <!-- PAGE NUMBERS -->
-      <button *ngFor="let page of pages" (click)="goToPage(page)" [class.active]="currentPage === page">
-        {{ page }}
-      </button>
-
-      <!-- NEXT -->
-      <button [disabled]="currentPage === totalPages" (click)="nextPage()">
-        Next »
-      </button>
-
-    </div>
-
     <button class="btn btn-danger pagination-home-btn" (click)="goHome()">
       Home
     </button>
-
   </div>
 
 

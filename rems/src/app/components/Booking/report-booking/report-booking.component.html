@@ -1,8 +1,8 @@
 <div class="container">
 
-  <!-- TITLE ONLY (NO HOME HERE) -->
-  <h2>Booking History</h2>
+  <h2>List of Bookings</h2>
 
+  <!-- SEARCH -->
   <div class="search-container">
     <input type="text" [(ngModel)]="searchLayoutName" (keyup)="onSearch()" placeholder="Search Layout Name"
       class="search-input">
@@ -13,89 +13,66 @@
     <button class="search-btn" (click)="onSearch()">Search</button>
   </div>
 
-  <!-- CREATE + REPORT BUTTONS -->
+  <!-- REPORT BUTTON -->
   <div class="top-buttons">
-
     <button class="btn btn-primary" style="margin-left: auto;" (click)="downloadBookingsReport()">
-      <i class="fa fa-file-pdf"></i> Download Bookings PDF
+      <i class="fa fa-file-pdf"></i> Download Booking PDF
     </button>
   </div>
 
-  <!-- LOADING -->
-  <div *ngIf="loading" class="loading">Loading bookings...</div>
-
-  <!-- TABLE -->
-  <div class="table-wrapper" *ngIf="!loading && bookingList.length > 0">
+  <!-- TABLE CARD container -->
+  <div class="table-wrapper">
     <table class="layout-table">
-
       <thead>
         <tr>
-          <th>ID</th>
+          <th>S.No</th>
           <th>Layout</th>
-          <th>Plot No</th>
+          <th>Plot</th>
           <th>Customer</th>
           <th>Mobile</th>
-          <th>Sqft</th>
-          <th>Price</th>
-          <th>Advances</th>
-          <th>Paid</th>
-          <th>Balance</th>
-          <th>Direction</th>
+          <th>Amount</th>
+          <th>Date</th>
           <th>Status</th>
         </tr>
       </thead>
 
-      <tbody>
-        <tr *ngFor="let b of paginatedBookings">
-          <td>{{ b.bookingId }}</td>
+      <tbody *ngIf="filteredData.length > 0">
+        <tr *ngFor="let b of filteredData | slice:(currentPage-1)*pageSize:(currentPage)*pageSize; let i = index">
+          <td>{{ (currentPage - 1) * pageSize + i + 1 }}</td>
           <td>{{ b.layout?.layoutName }}</td>
-          <td>{{ b.plot?.plotNo }}</td>
+          <td>{{ b.plot?.plotNo || b.plotNo }}</td>
           <td>{{ b.customer?.firstName }}</td>
           <td>{{ b.customer?.mobileNo }}</td>
-          <td>{{ b.sqft }}</td>
-          <td>{{ b.price | currency:'INR' }}</td>
-          <td class="left-align advances-cell">
-            <div *ngFor="let adv of getFormattedAdvances(b)">
-              {{ adv }}
-            </div>
-            <span *ngIf="getFormattedAdvances(b).length === 0">-</span>
-          </td>
-          <td>{{ getTotalPaid(b) | currency:'INR' }}</td>
-          <td>{{ getBalance(b) | currency:'INR' }}</td>
-          <td>{{ b.direction }}</td>
+          <td>₹ {{ b.price }}</td>
+          <td>{{ b.regDate | date:'mediumDate' }}</td>
           <td>{{ b.status }}</td>
         </tr>
       </tbody>
 
+      <!-- Empty state inside table -->
+      <tbody *ngIf="filteredData.length === 0">
+        <tr>
+          <td colspan="8" class="no-records-cell">
+            <div class="no-records-msg">
+              <i class="fa fa-info-circle"></i> No Records Found
+            </div>
+          </td>
+        </tr>
+      </tbody>
     </table>
+
+    <!-- Pagination inside the same card -->
+    <app-pagination *ngIf="filteredData.length > 0" [totalItems]="filteredData.length" [pageSize]="pageSize"
+      [currentPage]="currentPage" (pageChange)="currentPage = $event"
+      (pageSizeChange)="pageSize = $event; currentPage = 1">
+    </app-pagination>
   </div>
 
-  <!-- PAGINATION + HOME (LIKE CUSTOMER PAGE) -->
-  <div class="pagination-container" *ngIf="!loading && bookingList.length > 0">
-
-    <div class="pagination">
-      <!-- Prev -->
-      <button [disabled]="currentPage === 1" (click)="prevPage()">« Prev</button>
-
-      <!-- Page Numbers -->
-      <button *ngFor="let page of pages" [class.active]="page === currentPage" (click)="goToPage(page)">
-        {{ page }}
-      </button>
-
-      <!-- Next -->
-      <button [disabled]="currentPage === totalPages" (click)="nextPage()">Next »</button>
-    </div>
-
-
-    <!-- ✅ HOME BUTTON BOTTOM-RIGHT -->
+  <!-- Footer buttons outside the card -->
+  <div class="pagination-container">
     <button class="btn btn-danger pagination-home-btn" (click)="goHome()">
       Home
     </button>
-  </div>
-
-  <!-- NO DATA -->
-  <div *ngIf="!loading && bookingList.length === 0" class="no-records">
-    No bookings found.
   </div>
 
 </div>

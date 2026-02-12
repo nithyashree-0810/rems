@@ -101,14 +101,15 @@
     </div>
 
     <!-- Booking History Sections -->
-    <div *ngIf="bookingHistory.length > 0">
+    <div *ngIf="filteredBookingHistory.length > 0">
       <h2 style="font-size: 1.2rem; margin-bottom: 20px; color: #1a202c; font-weight: 700;">
         <i class="fas fa-history" style="color: #ff7e00; margin-right: 10px;"></i>
         Booking Records
       </h2>
 
       <div class="booking-timeline">
-        <div class="booking-card" *ngFor="let booking of bookingHistory; let i = index"
+        <div class="booking-card"
+          *ngFor="let booking of filteredBookingHistory | slice:(currentPage-1)*pageSize:(currentPage)*pageSize; let i = index"
           [class.current-booking]="i === 0 && booking.isActive">
 
           <div class="booking-card-header">
@@ -129,9 +130,7 @@
               </span>
             </div>
 
-            <!-- ROW 3: Booking Info & Financials -->
             <div class="booking-main-grid">
-              <!-- Customer Column -->
               <div class="info-section">
                 <h4><i class="fas fa-user-circle"></i> Customer Details</h4>
                 <div class="info-list">
@@ -150,7 +149,6 @@
                 </div>
               </div>
 
-              <!-- Financial Column -->
               <div class="info-section">
                 <h4><i class="fas fa-wallet"></i> Financial Summary</h4>
                 <div class="financial-summary">
@@ -170,7 +168,6 @@
               </div>
             </div>
 
-            <!-- ROW 4: Payment History (Full Width) -->
             <div class="payment-history-full" *ngIf="getTotalPaid(booking) > 0">
               <h5><i class="fas fa-file-invoice-dollar" style="color: #ff7e00; margin-right: 8px;"></i> FULL PAYMENT
                 HISTORY</h5>
@@ -200,12 +197,18 @@
           </div>
         </div>
       </div>
+
+      <div class="pagination-section" *ngIf="filteredBookingHistory.length > 0">
+        <app-pagination [totalItems]="filteredBookingHistory.length" [pageSize]="pageSize" [currentPage]="currentPage"
+          (pageChange)="currentPage = $event" (pageSizeChange)="pageSize = $event; currentPage = 1">
+        </app-pagination>
+      </div>
     </div>
 
     <!-- No Records -->
-    <div class="no-records" *ngIf="bookingHistory.length === 0">
+    <div class="no-records" *ngIf="filteredBookingHistory.length === 0">
       <i class="fas fa-folder-open"></i>
-      <p>No booking history found for this {{ historyType }}.</p>
+      <p>No booking history found for this {{ historyType }} matching your search.</p>
     </div>
 
     <!-- Actions Fixed Footer -->

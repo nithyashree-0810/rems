@@ -427,6 +427,14 @@
   opacity: 0.5;
 }
 
+.pagination-section {
+  margin-top: 30px;
+  background: #fff;
+  border-radius: 12px;
+  border: 1px solid #edf2f7;
+  overflow: hidden;
+}
+
 /* RESPONSIVE */
 @media (max-width: 900px) {
 

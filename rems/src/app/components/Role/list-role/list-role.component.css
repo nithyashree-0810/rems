@@ -3,10 +3,8 @@
 /* 🌌 DARK PREMIUM BACKGROUND */
 .page-bg {
   min-height: 100vh;
-  background: linear-gradient(
-      rgba(0, 0, 0, 0.88),
-      rgba(0, 0, 0, 0.88)
-    ),
+  background: linear-gradient(rgba(0, 0, 0, 0.88),
+      rgba(0, 0, 0, 0.88)),
     url("https://images.pexels.com/photos/1396122/pexels-photo-1396122.jpeg");
   background-size: cover;
   background-position: center;
@@ -99,22 +97,31 @@ h2 {
   border: none;
 }
 
-.btn-success { background: #28a745; color: white; }
-.btn-danger  { background: #dc3545; color: white; }
+.btn-success {
+  background: #28a745;
+  color: white;
+}
+
+.btn-danger {
+  background: #dc3545;
+  color: white;
+}
 
 /* TABLE */
 .table-wrapper {
+  width: 1188px;
   display: flex;
-  justify-content: center;
-  width: 100%;
+  flex-direction: column;
+  background: white;
+  border-radius: 11px;
+  overflow: hidden;
+  box-shadow: 0 0 7px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px;
 }
 
 .layout-table {
-  width: 1188px;
+  width: 100%;
   border-collapse: collapse;
-  background: white;
-  border-radius: 11px;
-  box-shadow: 0 0 7px rgba(0,0,0,0.1);
 }
 
 .layout-table thead {
@@ -136,6 +143,26 @@ h2 {
 
 .layout-table td.left-align {
   text-align: left;
+}
+
+.no-records-cell {
+  padding: 40px !important;
+  text-align: center;
+}
+
+.no-records-msg {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  color: #888;
+  font-size: 1.1rem;
+  font-weight: 500;
+}
+
+.no-records-msg i {
+  font-size: 2rem;
+  color: #ff9800;
 }
 
 /* AVATAR */
@@ -167,46 +194,33 @@ h2 {
   transform: scale(1.1);
 }
 
-.view   { background: #e3f2fd; color: #1976d2; }
-.edit   { background: #e8f5e9; color: #388e3c; }
-.delete { background: #ffebee; color: #d32f2f; }
+.view {
+  background: #e3f2fd;
+  color: #1976d2;
+}
+
+.edit {
+  background: #e8f5e9;
+  color: #388e3c;
+}
+
+.delete {
+  background: #ffebee;
+  color: #d32f2f;
+}
 
 /* PAGINATION */
 .pagination-container {
   width: 1188px;
-  margin-top: 24px;
+  margin-top: 10px;
   display: flex;
-  align-items: center;        /* ✅ same straight line */
-  justify-content: center;    /* ✅ pagination center */
-  position: relative;
-}
-
-.pagination {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-}
-
-.pagination button {
-  padding: 6px 12px;
-  font-size: 12px;
-  border-radius: 5px;
-  box-shadow: none;        /* Remove shadow */
-  border: 1px solid #ccc;  /* Optional: for visible border */
-  background: #f0f0f0;     /* Optional: normal button color */
-}
-
-.pagination .active {
-  background: #3498db;
-  color: white;
-  box-shadow: none;       /* Remove shadow */
+  justify-content: flex-end;
 }
 
 
 /* HOME BUTTON */
 .pagination-home-btn {
-  position: absolute;
-  right: 0;
+  align-self: flex-end;
   padding: 7px 14px;
   font-size: 12px;
   border-radius: 7px;

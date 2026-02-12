@@ -34,17 +34,13 @@ public class PlotController {
 	@PostMapping("/create")
     public ResponseEntity<?> createPlot(@RequestBody PlotBO plotBo) {
         try {
-            boolean isSaved = plotService.createPlat(plotBo);
-            if (isSaved) {
-                return ResponseEntity.status(HttpStatus.CREATED)
-                        .body(" Plot created successfully!");
-            } else {
-                return ResponseEntity.status(HttpStatus.CONFLICT)
-                        .body(" Plot already exists!");
-            }
+            plotService.createPlat(plotBo);
+            return ResponseEntity.status(HttpStatus.CREATED).body("Plot created successfully!");
+        } catch (RuntimeException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(" Error while saving: " + e.getMessage());
+                    .body("Error while saving: " + e.getMessage());
         }
     }
 	
@@ -122,4 +118,8 @@ public class PlotController {
 	        return ResponseEntity.ok("Plot marked as booked");
 	    }
 
+	@GetMapping("/check-mobile-name/{mobile}")
+	public String checkMobileName(@PathVariable Long mobile) {
+		return plotService.getExistingMobileName(mobile);
+	}
 }

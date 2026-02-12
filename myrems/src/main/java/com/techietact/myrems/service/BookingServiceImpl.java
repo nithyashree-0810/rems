@@ -71,7 +71,7 @@ public class BookingServiceImpl implements BookingService {
 			if (booking.getCustomer() == null || booking.getCustomer().getMobileNo() == null) {
 				throw new RuntimeException("Customer Mobile No is required");
 			}
-			Enquiry enquiry = enquiryRepository.findByMobileNo(booking.getCustomer().getMobileNo());
+			Enquiry enquiry = enquiryRepository.findByMobileNo(booking.getCustomer().getMobileNo()).orElse(null);
 			if (enquiry == null) {
 				throw new RuntimeException("Customer not found");
 			}

@@ -11,6 +11,8 @@ public interface RoleRepository extends JpaRepository<Role, Long> {
 
 	boolean existsByMobileNo(String mobileNo);
 
+	Optional<Role> findByMobileNo(String mobileNo);
+
 	boolean existsByEmail(String email);
 	
 	Optional<Role> findByRoleId(Long roleId);

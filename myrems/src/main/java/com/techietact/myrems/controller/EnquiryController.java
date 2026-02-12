@@ -72,6 +72,11 @@ public class EnquiryController {
         return enquiryService.mobileExists(mobileNo);
     }
 
+    @GetMapping("/check-mobile-name/{mobileNo}")
+    public String checkMobileName(@PathVariable Long mobileNo) {
+        return enquiryService.getExistingMobileName(mobileNo);
+    }
+
     @GetMapping("/check-email/{email}")
     public boolean checkEmail(@PathVariable String email) {
         if (email == null || email.trim().isEmpty()) {
@@ -88,6 +93,9 @@ public class EnquiryController {
     @PostMapping("/{mobileNo}/image")
     public ResponseEntity<Enquiry> uploadImage(@PathVariable Long mobileNo, @RequestParam("file") MultipartFile file) {
         Enquiry enquiry = enquiryService.getByMobileNo(mobileNo);
+        if (enquiry == null) {
+            return ResponseEntity.notFound().build();
+        }
         try {
             String baseDir = System.getProperty("user.dir") + "/uploads/customers/";
             java.nio.file.Files.createDirectories(java.nio.file.Path.of(baseDir));

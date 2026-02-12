@@ -15,6 +15,10 @@ export class ListEnquiryComponent implements OnInit {
 
   searchName: string = '';
   searchMobile: string = '';
+  searchLocation: string = '';
+  searchReferral: string = '';
+  searchLayoutName: string = '';
+  searchAddress: string = '';
 
   allData: Enquiry[] = [];
   filteredData: Enquiry[] = [];
@@ -59,20 +63,17 @@ export class ListEnquiryComponent implements OnInit {
 
   /* SEARCH */
   onSearch() {
-    const nameKeyword = this.searchName.trim().toLowerCase();
-    const mobileKeyword = this.searchMobile.trim();
-
-    this.filteredData = this.allData.filter(c => {
-      const fullName = `${c.firstName} ${c.lastName}`.toLowerCase();
-      const matchesName = nameKeyword ? fullName.includes(nameKeyword) : true;
-      const matchesMobile = mobileKeyword
-        ? c.mobileNo?.toString().includes(mobileKeyword)
-        : true;
-
-      return matchesName && matchesMobile;
+    this.customerService.advancedSearch(
+      this.searchLocation,
+      this.searchReferral,
+      this.searchLayoutName,
+      this.searchName,
+      this.searchMobile,
+      this.searchAddress
+    ).subscribe(data => {
+      this.filteredData = data;
+      this.currentPage = 1;
     });
-
-    this.currentPage = 1;
   }
 
   /* ACTIONS */
@@ -98,6 +99,17 @@ export class ListEnquiryComponent implements OnInit {
         error: err => console.error('Delete failed', err)
       });
     }
+  }
+
+  onClear() {
+    this.searchName = '';
+    this.searchMobile = '';
+    this.searchLocation = '';
+    this.searchReferral = '';
+    this.searchLayoutName = '';
+    this.searchAddress = '';
+    this.currentPage = 1;
+    this.loadData();
   }
 
   goHome() {

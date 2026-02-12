@@ -5,116 +5,184 @@
 
     <form #enquiryForm="ngForm" (ngSubmit)="onSubmit(enquiryForm)">
 
-      <div class="row">
-        <div class="col">
+      <div class="form-grid">
+        <!-- Row 1 -->
+        <div class="form-group">
           <label class="dark-label">
-            First Name
+            First Name <span class="text-danger">*</span>
           </label>
-          <input type="text" name="firstName" [(ngModel)]="enquiry.firstName" minlength="2" maxlength="15"
-            pattern="^[a-zA-Z]+$" #firstName="ngModel">
+          <input type="text" name="firstName" [(ngModel)]="enquiry.firstName" required maxlength="30"
+            pattern="^[a-zA-Z ]+$" #firstName="ngModel" [class.is-invalid]="firstName.invalid && firstName.touched">
+          <div *ngIf="firstName.invalid && firstName.touched" class="error-msg">
+            <small *ngIf="firstName.errors?.['required']">First Name is required.</small>
+            <small *ngIf="firstName.errors?.['maxlength']">Max 30 characters allowed.</small>
+            <small *ngIf="firstName.errors?.['pattern']">Only alphabets and spaces allowed.</small>
+          </div>
         </div>
 
-        <div class="col">
+        <div class="form-group">
           <label class="dark-label">
             Last Name
           </label>
-          <input type="text" name="lastName" [(ngModel)]="enquiry.lastName" pattern="^[a-zA-Z]+$" #lastName="ngModel">
+          <input type="text" name="lastName" [(ngModel)]="enquiry.lastName" pattern="^[a-zA-Z]+$" #lastName="ngModel"
+            [class.is-invalid]="lastName.invalid && lastName.touched">
+          <div *ngIf="lastName.invalid && lastName.touched" class="error-msg">
+            <small *ngIf="lastName.errors?.['pattern']">Only alphabets allowed.</small>
+          </div>
         </div>
-      </div>
 
-      <div class="row">
-        <div class="col">
+        <!-- Row 2 -->
+        <div class="form-group">
           <label class="dark-label">
-            Mobile
+            Mobile Number <span class="text-danger">*</span>
           </label>
-          <input type="text" name="mobileNo" [(ngModel)]="enquiry.mobileNo" maxlength="10" pattern="[0-9]*"
-            #mobileNo="ngModel" (ngModelChange)="onMobileChange()" [class.is-invalid]="duplicateMobileName">
+          <input type="text" name="mobileNo" [(ngModel)]="enquiry.mobileNo" required maxlength="10" pattern="[0-9]{10}"
+            #mobileNo="ngModel" (ngModelChange)="onMobileChange()"
+            [class.is-invalid]="(mobileNo.invalid && mobileNo.touched) || duplicateMobileName">
+          <div *ngIf="mobileNo.invalid && mobileNo.touched" class="error-msg">
+            <small *ngIf="mobileNo.errors?.['required']">Mobile is required.</small>
+            <small *ngIf="mobileNo.errors?.['pattern']">Enter 10-digit number.</small>
+          </div>
           <small class="error-msg" *ngIf="duplicateMobileName">
-            This mobile number already exists under the name: {{duplicateMobileName}}
+            Used by: {{duplicateMobileName}}
           </small>
         </div>
 
-        <div class="col">
+        <div class="form-group">
           <label class="dark-label">Email (optional)</label>
-          <input type="email" name="email" [(ngModel)]="enquiry.email">
+          <input type="email" name="email" [(ngModel)]="enquiry.email" #email="ngModel"
+            [class.is-invalid]="email.invalid && email.touched" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$">
+          <div *ngIf="email.invalid && email.touched" class="error-msg">
+            <small>Invalid email format.</small>
+          </div>
         </div>
-      </div>
 
-      <div class="row">
-        <div class="col">
+        <!-- Row 3 -->
+        <div class="form-group">
           <label class="dark-label">
-            Address
+            Layout Name <span class="text-danger">*</span>
           </label>
-          <input type="text" name="address" [(ngModel)]="enquiry.address" minlength="5" #address="ngModel">
+          <select name="layoutSelection" [(ngModel)]="selectedLayoutName" (change)="onLayoutNameChange()"
+            class="form-control" required #layoutSelection="ngModel"
+            [class.is-invalid]="layoutSelection.invalid && layoutSelection.touched">
+            <option value="">-- Select Layout --</option>
+            <option *ngFor="let layout of layoutList" [value]="layout.layoutName">
+              {{ layout.layoutName }}
+            </option>
+            <option value="Others">Others</option>
+          </select>
+          <div *ngIf="layoutSelection.invalid && layoutSelection.touched" class="error-msg">
+            <small>Please select a layout.</small>
+          </div>
         </div>
 
-        <div class="col">
+        <div class="form-group">
+          <label class="dark-label">
+            Layout Location <span class="text-danger">*</span>
+          </label>
+          <input type="text" name="layoutLocation" [(ngModel)]="enquiry.layoutLocation" required
+            #layoutLocation="ngModel" [readonly]="!showOtherLayout"
+            [class.is-invalid]="layoutLocation.invalid && layoutLocation.touched">
+          <div *ngIf="layoutLocation.invalid && layoutLocation.touched" class="error-msg">
+            <small>Layout Location is required.</small>
+          </div>
+        </div>
+
+        <!-- Conditional Row for Other Layout -->
+        <div class="form-group full-width" *ngIf="showOtherLayout">
+          <label class="dark-label">
+            Enter Other Layout Name <span class="text-danger">*</span>
+          </label>
+          <input type="text" name="otherLayoutName" [(ngModel)]="enquiry.layoutName" required #otherLayoutName="ngModel"
+            [class.is-invalid]="otherLayoutName.invalid && otherLayoutName.touched" placeholder="Specify other layout">
+          <div *ngIf="otherLayoutName.invalid && otherLayoutName.touched" class="error-msg">
+            <small>Please specify the layout name.</small>
+          </div>
+        </div>
+
+        <!-- Row 4 -->
+        <div class="form-group">
+          <label class="dark-label">
+            Aadhaar (Optional)
+          </label>
+          <input type="text" name="aadharNo" [(ngModel)]="enquiry.aadharNo" maxlength="12" pattern="[0-9]{12}"
+            #aadharNo="ngModel" [class.is-invalid]="aadharNo.invalid && aadharNo.touched">
+          <div *ngIf="aadharNo.invalid && aadharNo.touched" class="error-msg">
+            <small>Enter 12-digit Aadhaar.</small>
+          </div>
+        </div>
+
+        <div class="form-group">
           <label class="dark-label">
             Pincode
           </label>
           <input type="text" name="pincode" [(ngModel)]="enquiry.pincode" maxlength="6" pattern="^[0-9]{6}$"
-            inputmode="numeric" onkeypress="return event.charCode >= 48 && event.charCode <= 57" #pincode="ngModel">
+            #pincode="ngModel" [class.is-invalid]="pincode.invalid && pincode.touched">
+          <div *ngIf="pincode.invalid && pincode.touched" class="error-msg">
+            <small>Enter 6-digit pincode.</small>
+          </div>
         </div>
-      </div>
 
-
-      <div class="row">
-        <div class="col">
-          <label class="dark-label">
-            Aadhaar(Optional)
-          </label>
-          <input type="text" name="aadharNo" [(ngModel)]="enquiry.aadharNo" maxlength="12" pattern="[0-9]*"
-            #aadharNo="ngModel">
-        </div>
-      </div>
-
-      <div class="row">
-        <div class="col">
+        <!-- Row 5 -->
+        <div class="form-group">
           <label class="dark-label">
             Referral Name
           </label>
           <input type="text" name="referralName" [(ngModel)]="enquiry.referralName" #referralName="ngModel">
         </div>
 
-        <div class="col">
+        <div class="form-group">
           <label class="dark-label">
             Referral Ph Number
           </label>
-          <input type="text" name="referralNumber" [(ngModel)]="enquiry.referralNumber" maxlength="10" pattern="[0-9]*"
-            #referralNumber="ngModel">
+          <input type="text" name="referralNumber" [(ngModel)]="enquiry.referralNumber" maxlength="10"
+            pattern="[0-9]{10}" #referralNumber="ngModel"
+            [class.is-invalid]="referralNumber.invalid && referralNumber.touched">
+          <div *ngIf="referralNumber.invalid && referralNumber.touched" class="error-msg">
+            <small>Enter 10-digit number.</small>
+          </div>
         </div>
-      </div>
 
-      <div class="row">
-        <div class="col">
+        <!-- Row 6 -->
+        <div class="form-group full-width">
+          <label class="dark-label">Address</label>
+          <input type="text" name="address" [(ngModel)]="enquiry.address" #address="ngModel"
+            [class.is-invalid]="address.invalid && address.touched" minlength="5">
+          <div *ngIf="address.invalid && address.touched" class="error-msg">
+            <small>Address is too short.</small>
+          </div>
+        </div>
+
+        <!-- Row 7 -->
+        <div class="form-group full-width">
           <label class="dark-label">Profile Image (optional)</label>
-          <input type="file" (change)="onFileChange($event)" accept="image/*">
+          <input type="file" (change)="onFileChange($event)" accept="image/*" class="form-control">
         </div>
-      </div>
 
-      <div class="row">
-        <div class="col">
+        <!-- Row 8 -->
+        <div class="form-group full-width">
           <label class="dark-label">Comment (Max 500 words)</label>
           <textarea name="comment" [(ngModel)]="enquiry.comment" (ngModelChange)="onCommentChange()"
             placeholder="Enter your comment here..." class="form-control" rows="4"></textarea>
           <div class="word-counter" [class.text-danger]="commentWordCount > maxWords">
             {{commentWordCount}}/{{maxWords}} words
           </div>
-          <div *ngIf="commentWordCount > maxWords" class="error-text">
+          <div *ngIf="commentWordCount > maxWords" class="error-msg">
             Comment exceeds the maximum limit of 500 words.
           </div>
         </div>
-      </div>
 
-      <div class="buttons-row">
-        <button type="submit" class="btn btn-success" [disabled]="enquiryForm.invalid || commentWordCount > maxWords">
-          Create Customer
-        </button>
-        <button type="button" class="btn btn-danger" (click)="goHome()">
-          Home
-        </button>
-      </div>
+        <!-- Buttons -->
+        <div class="buttons-row">
+          <button type="submit" class="btn btn-success" [disabled]="enquiryForm.invalid || commentWordCount > maxWords">
+            Create Customer
+          </button>
+          <button type="button" class="btn btn-danger" (click)="goHome()">
+            Home
+          </button>
+        </div>
 
+      </div>
     </form>
   </div>
 </div>

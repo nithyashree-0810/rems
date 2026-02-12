@@ -33,10 +33,19 @@ public class Enquiry {
 	
 	private String profileImagePath;
 	
+	@Column(name = "referral_name")
 	private String referralName;
+	
+	@Column(name = "referral_number")
 	private String referralNumber;
 	
-	@Column(length = 2000) // Allowing more space for a 500-word comment
+	@Column(name = "layout_name")
+	private String layoutName;
+	
+	@Column(name = "layout_location")
+	private String layoutLocation;
+	
+	@Column(length = 2000)
 	private String comment;
 
 	@Column(name = "created_date", columnDefinition = "DATETIME")

@@ -54,4 +54,15 @@ export class CustomerService {
     form.append('file', file);
     return this.http.post<Enquiry>(`${this.baseUrl}/${mobileNo}/image`, form);
   }
+
+  advancedSearch(layoutLocation?: string, referralName?: string, layoutName?: string, firstName?: string, mobileNo?: string, address?: string): Observable<Enquiry[]> {
+    let params: any = {};
+    if (layoutLocation) params.layoutLocation = layoutLocation;
+    if (referralName) params.referralName = referralName;
+    if (layoutName) params.layoutName = layoutName;
+    if (firstName) params.firstName = firstName;
+    if (mobileNo) params.mobileNo = mobileNo;
+    if (address) params.address = address;
+    return this.http.get<Enquiry[]>(`${this.baseUrl}/advanced-search`, { params });
+  }
 }

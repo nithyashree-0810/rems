@@ -7,12 +7,13 @@
 
     <div class="search-container">
       <input type="text" placeholder="Search By first or last Name" [(ngModel)]="searchName" (input)="onSearch()"
-        class="search-input" />
+        (keyup.enter)="onSearch()" class="search-input" />
 
       <input type="text" placeholder="Search Mobile Number" [(ngModel)]="searchMobile" (input)="onSearch()"
-        class="search-input" />
+        (keyup.enter)="onSearch()" class="search-input" />
 
       <button class="search-btn" (click)="onSearch()">Search</button>
+      <button class="clear-btn" (click)="onClear()">Clear</button>
     </div>
 
     <div class="top-buttons">
@@ -36,6 +37,7 @@
           <th>Mobile</th>
           <th>Address</th>
           <th>Aadhar No</th>
+          <th>Referral Name</th>
           <th>Role</th>
           <th>Actions</th>
         </tr>
@@ -52,6 +54,7 @@
           <td>{{ c.mobileNo }}</td>
           <td>{{ c.address }}</td>
           <td>{{ c.aadharNo }}</td>
+          <td>{{ c.referralName }}</td>
           <td>{{ c.role }}</td>
 
           <!-- ✅ ACTION ICONS IN SAME ROW -->
@@ -69,7 +72,7 @@
 
       <tbody *ngIf="filteredData.length === 0">
         <tr>
-          <td colspan="9" class="no-records-cell">
+          <td colspan="10" class="no-records-cell">
             <div class="no-records-msg">
               <i class="fa fa-info-circle"></i> No Records Found
             </div>

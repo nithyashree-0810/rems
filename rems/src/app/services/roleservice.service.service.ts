@@ -57,4 +57,14 @@ export class RoleserviceServiceService {
     form.append('file', file);
     return this.http.post<Role>(`${this.baseUrl}/${roleId}/image`, form);
   }
+
+  advancedSearch(firstName?: string, lastName?: string, mobileNo?: string, address?: string, referralName?: string): Observable<Role[]> {
+    let params: any = {};
+    if (firstName) params.firstName = firstName;
+    if (lastName) params.lastName = lastName;
+    if (mobileNo) params.mobileNo = mobileNo;
+    if (address) params.address = address;
+    if (referralName) params.referralName = referralName;
+    return this.http.get<Role[]>(`${this.baseUrl}/advanced-search`, { params });
+  }
 }

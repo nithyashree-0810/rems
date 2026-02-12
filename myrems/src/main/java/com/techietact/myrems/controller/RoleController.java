@@ -102,4 +102,14 @@ public class RoleController {
             return ResponseEntity.badRequest().build();
         }
     }
+ 
+    @GetMapping("/advanced-search")
+    public List<Role> advancedSearch(
+            @RequestParam(required = false) String firstName,
+            @RequestParam(required = false) String lastName,
+            @RequestParam(required = false) String mobileNo,
+            @RequestParam(required = false) String address,
+            @RequestParam(required = false) String referralName) {
+        return roleService.advancedSearch(firstName, lastName, mobileNo, address, referralName);
+    }
 }

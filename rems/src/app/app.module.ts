@@ -45,6 +45,7 @@ import { GalleryComponent } from './gallery/gallery.component';
 import { RegisterComponent } from './components/register/register.component';
 import { ForgotPasswordComponent } from './components/forgot-password/forgot-password.component';
 import { BookingHistoryComponent } from './components/Booking/booking-history/booking-history.component';
+import { SharedModule } from './shared/shared.module';
 
 
 
@@ -104,7 +105,8 @@ import { BookingHistoryComponent } from './components/Booking/booking-history/bo
       positionClass: 'toast-top-right',
       preventDuplicates: true,
     }),
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
+    SharedModule
   ],
   providers: [
     provideAnimations()

@@ -18,12 +18,9 @@ export class ViewLayoutsComponent {
 
   allLayouts: Layout[] = [];
   filteredLayouts: Layout[] = [];
-  layouts: Layout[] = [];
 
   currentPage = 1;
   pageSize = 10;
-  totalPages = 1;
-  pages: number[] = [];
 
   noRecords: boolean = false;
 
@@ -32,7 +29,7 @@ export class ViewLayoutsComponent {
     private router: Router,
     private toastr: ToastrService,
     private reportService: ReportService
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.loadLayouts();
@@ -55,9 +52,6 @@ export class ViewLayoutsComponent {
       this.filteredLayouts = [...data];
       this.noRecords = data.length === 0;
       this.currentPage = 1;
-      this.totalPages = Math.ceil(this.filteredLayouts.length / this.pageSize);
-      this.applyPagination();
-      this.calculatePages();
     });
   }
 
@@ -76,34 +70,6 @@ export class ViewLayoutsComponent {
 
     this.noRecords = this.filteredLayouts.length === 0;
     this.currentPage = 1;
-    this.totalPages = Math.ceil(this.filteredLayouts.length / this.pageSize);
-    this.applyPagination();
-    this.calculatePages();
-  }
-
-  goToPage(page: number) {
-    this.currentPage = page;
-    this.applyPagination();
-  }
-
-  applyPagination() {
-    const startIndex = (this.currentPage - 1) * this.pageSize;
-    const endIndex = startIndex + this.pageSize;
-    this.layouts = this.filteredLayouts.slice(startIndex, endIndex);
-  }
-
-  prevPage() {
-    if (this.currentPage > 1) {
-      this.currentPage--;
-      this.applyPagination();
-    }
-  }
-
-  nextPage() {
-    if (this.currentPage < this.totalPages) {
-      this.currentPage++;
-      this.applyPagination();
-    }
   }
 
   navigateToCreate() {
@@ -133,13 +99,6 @@ export class ViewLayoutsComponent {
   viewPdf(layoutName: string) {
     const url = `http://localhost:8080/api/layouts/pdf/${layoutName}`;
     window.open(url, "_blank");
-  }
-
-  calculatePages(): void {
-    this.pages = Array.from(
-      { length: this.totalPages },
-      (_, i) => i + 1
-    );
   }
 
   goHome() {

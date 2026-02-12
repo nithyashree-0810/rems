@@ -7,7 +7,7 @@ import { ReportService } from '../../../services/report.service';
 
 @Component({
   selector: 'app-list-enquiry',
-   standalone: false, 
+  standalone: false,
   templateUrl: './list-enquiry.component.html',
   styleUrl: './list-enquiry.component.css'
 })
@@ -18,19 +18,15 @@ export class ListEnquiryComponent implements OnInit {
 
   allData: Enquiry[] = [];
   filteredData: Enquiry[] = [];
-  paginatedCustomers: Enquiry[] = [];
-
   pageSize: number = 10;
   currentPage: number = 1;
-  totalPages: number = 0;
-  pages: number[] = [];   // ✅ HTML uses this
 
   constructor(
     private customerService: CustomerService,
     private router: Router,
     private toastr: ToastrService,
     private reportService: ReportService
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.loadData();
@@ -53,44 +49,12 @@ export class ListEnquiryComponent implements OnInit {
 
       this.filteredData = [...this.allData];
       this.currentPage = 1;
-      this.applyPagination();
     });
   }
 
   /* PAGINATION */
-  applyPagination() {
-    this.totalPages = Math.ceil(this.filteredData.length / this.pageSize);
-
-    this.pages = Array.from(
-      { length: this.totalPages },
-      (_, i) => i + 1
-    );
-
-    const start = (this.currentPage - 1) * this.pageSize;
-    const end = start + this.pageSize;
-
-    this.paginatedCustomers = this.filteredData.slice(start, end);
-  }
-
-  /* PAGE ACTIONS */
   goToPage(page: number) {
-    if (page < 1 || page > this.totalPages) return;
     this.currentPage = page;
-    this.applyPagination();
-  }
-
-  nextPage() {
-    if (this.currentPage < this.totalPages) {
-      this.currentPage++;
-      this.applyPagination();
-    }
-  }
-
-  prevPage() {
-    if (this.currentPage > 1) {
-      this.currentPage--;
-      this.applyPagination();
-    }
   }
 
   /* SEARCH */
@@ -109,7 +73,6 @@ export class ListEnquiryComponent implements OnInit {
     });
 
     this.currentPage = 1;
-    this.applyPagination();
   }
 
   /* ACTIONS */

@@ -4,7 +4,7 @@
 
   <!-- ROLE FILTER + SEARCH -->
   <div class="search-container">
-    <select [(ngModel)]="searchRole" (change)="onSearch()" class="search-input">
+    <select [(ngModel)]="selectedRoleType" (change)="onSearch()" class="search-input">
       <option value="">All Roles</option>
       <option *ngFor="let role of rolesList" [value]="role">{{ role }}</option>
     </select>
@@ -17,7 +17,7 @@
 
   <!-- REPORT BUTTON -->
   <div class="top-buttons">
-    <button class="btn btn-primary" style="margin-left: auto;" (click)="downloadRolesReport()">
+    <button class="btn btn-primary" style="margin-left: auto;" (click)="generateReport()">
       <i class="fa fa-file-pdf"></i> Download Roles PDF
     </button>
   </div>
@@ -31,7 +31,6 @@
           <th>Employee Name</th>
           <th>Mobile</th>
           <th>Role</th>
-          <th>Access Status</th>
         </tr>
       </thead>
 
@@ -41,7 +40,6 @@
           <td>{{ emp.firstName }} {{ emp.lastName }}</td>
           <td>{{ emp.mobileNo }}</td>
           <td>{{ emp.role }}</td>
-          <td>{{ emp.status }}</td>
         </tr>
       </tbody>
 

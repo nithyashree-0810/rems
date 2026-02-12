@@ -4,9 +4,9 @@
 
   <!-- SEARCH -->
   <div class="search-container">
-    <input type="text" [(ngModel)]="searchName" (keyup)="onSearch()" placeholder="Search Layout Name"
+    <input type="text" [(ngModel)]="searchName" (keyup)="filterLayouts()" placeholder="Search Layout Name"
       class="search-input">
-    <button class="search-btn" (click)="onSearch()">Search</button>
+    <button class="search-btn" (click)="filterLayouts()">Search</button>
   </div>
 
   <!-- REPORT BUTTON -->
@@ -26,18 +26,16 @@
           <th>Layout Name</th>
           <th>Location</th>
           <th>Created Date</th>
-          <th>Status</th>
         </tr>
       </thead>
 
       <tbody *ngIf="filteredData.length > 0">
         <tr *ngFor="let layout of filteredData | slice:(currentPage-1)*pageSize:(currentPage)*pageSize; let i = index">
           <td>{{ (currentPage - 1) * pageSize + i + 1 }}</td>
-          <td>{{ layout.layoutID }}</td>
+          <td>{{ layout.id }}</td>
           <td>{{ layout.layoutName }}</td>
           <td>{{ layout.location }}</td>
           <td>{{ layout.createdDate | date:'mediumDate' }}</td>
-          <td>{{ layout.status }}</td>
         </tr>
       </tbody>
 

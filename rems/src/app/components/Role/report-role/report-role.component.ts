@@ -21,6 +21,7 @@ export class ReportRoleComponent implements OnInit {
   currentPage: number = 1;
   pageSize: number = 10;
   showRoleColumn: boolean = true;
+  rolesList: string[] = ['Owner', 'Agent'];
 
 
   constructor(

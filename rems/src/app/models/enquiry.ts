@@ -1,16 +1,19 @@
-export class Enquiry{
+export class Enquiry {
 
     mobileNo!: number;
     firstName!: string;
     lastName!: string;
-    fatherName!:string;
+    fatherName!: string;
     address!: string;
     pincode!: number;
     email!: string;
     panNo!: string;
-    aadharNo!: string ;
+    aadharNo!: string;
     profileImagePath?: string;
-   
+    comments?: string;
+    referralName?: string;
+    referralNumber?: string;
+
 
 }
 

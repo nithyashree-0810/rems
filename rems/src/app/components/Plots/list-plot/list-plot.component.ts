@@ -17,7 +17,6 @@ export class ListPlotComponent implements OnInit {
   searchLayoutName: string = '';
   searchPlotNo: string = '';
   searchMessage: string = '';
-  pages: number[] = [];
   currentPage = 1;
   pageSize = 10;
 
@@ -26,7 +25,7 @@ export class ListPlotComponent implements OnInit {
     private router: Router,
     private toastr: ToastrService,
     private reportService: ReportService
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.loadPlots();
@@ -39,7 +38,6 @@ export class ListPlotComponent implements OnInit {
         this.plots = [...this.allPlots];
         this.searchMessage = '';
         this.currentPage = 1;
-        this.calculatePages();
       },
       error: (err: any) => {
         console.error('Error loading plots:', err);
@@ -60,28 +58,15 @@ export class ListPlotComponent implements OnInit {
         const layoutName = (plot.layout?.layoutName || '').toLowerCase();
         const plotNo = (plot.plotNo || '').toLowerCase();
         return (!nameKey || layoutName.includes(nameKey)) &&
-               (!plotKey || plotNo.includes(plotKey));
+          (!plotKey || plotNo.includes(plotKey));
       });
       this.searchMessage = this.plots.length === 0 ? 'No plots found' : '';
     }
 
     this.currentPage = 1;
-    this.currentPage = 1;
-this.calculatePages(); // ✅ ADD THIS
 
   }
 
-  get totalPages(): number {
-    return Math.ceil(this.plots.length / this.pageSize);
-  }
-
-  prevPage(): void {
-    if (this.currentPage > 1) this.currentPage--;
-  }
-
-  nextPage(): void {
-    if (this.currentPage < this.totalPages) this.currentPage++;
-  }
 
   goToPage(page: number): void {
     this.currentPage = page;
@@ -108,18 +93,17 @@ this.calculatePages(); // ✅ ADD THIS
         next: () => {
           this.toastr.success('Deleted successfully ✅');
 
-          this.calculatePages();
-
-if (this.currentPage > this.totalPages) {
-  this.currentPage = this.totalPages || 1;
-}
-
           this.allPlots = this.allPlots.filter(
             p => !(p.plotNo === plotNo && p.layout?.layoutName === layoutName)
           );
           this.plots = this.plots.filter(
             p => !(p.plotNo === plotNo && p.layout?.layoutName === layoutName)
           );
+
+          const maxPage = Math.ceil(this.plots.length / this.pageSize) || 1;
+          if (this.currentPage > maxPage) {
+            this.currentPage = maxPage;
+          }
         },
         error: (err: any) => {
           console.error('Delete failed ❌', err);
@@ -129,30 +113,26 @@ if (this.currentPage > this.totalPages) {
     }
   }
 
-  calculatePages(): void {
-  const total = Math.ceil(this.plots.length / this.pageSize);
-  this.pages = Array.from({ length: total }, (_, i) => i + 1);
-}
 
 
   // ✅ ONLY ADDED METHOD (FIX)
   bookPlot(layoutName: string, plotNo: string): void {
-  this.router.navigate(
-    ['/new-booking'],
-    { queryParams: { layoutName, plotNo } }
-  );
-}
-
-onBookClick(plot: any) {
-
-  // 🔴 Already booked
-  if (plot.booked) {
-    alert('Already Booked');
-    return; // ⛔ stop navigation
+    this.router.navigate(
+      ['/new-booking'],
+      { queryParams: { layoutName, plotNo } }
+    );
   }
 
-  // 🟢 Not booked → old behaviour
-  this.bookPlot(plot.layout.layoutName, plot.plotNo);
-}
+  onBookClick(plot: any) {
+
+    // 🔴 Already booked
+    if (plot.booked) {
+      alert('Already Booked');
+      return; // ⛔ stop navigation
+    }
+
+    // 🟢 Not booked → old behaviour
+    this.bookPlot(plot.layout.layoutName, plot.plotNo);
+  }
 
 }

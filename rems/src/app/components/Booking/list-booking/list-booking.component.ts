@@ -18,12 +18,8 @@ export class ListBookingComponent implements OnInit {
 
   bookingList: Booking[] = [];
   filteredData: Booking[] = [];
-  paginatedBookings: Booking[] = [];
-
   pageSize: number = 10;
   currentPage: number = 1;
-  totalPages: number = 0;
-  pages: number[] = [];
   loading: boolean = true;
 
   // ---------- Rebook State (Ownership Change) ----------
@@ -69,7 +65,6 @@ export class ListBookingComponent implements OnInit {
         });
         this.filteredData = [...this.bookingList];
         this.currentPage = 1;
-        this.applyPagination();
         this.loading = false;
       },
       error: () => {
@@ -93,36 +88,12 @@ export class ListBookingComponent implements OnInit {
     });
 
     this.currentPage = 1;
-    this.applyPagination();
   }
 
   // ---------------- PAGINATION ----------------
 
-  applyPagination() {
-    this.totalPages = Math.ceil(this.filteredData.length / this.pageSize);
-    this.pages = Array.from({ length: this.totalPages }, (_, i) => i + 1);
-    const start = (this.currentPage - 1) * this.pageSize;
-    const end = start + this.pageSize;
-    this.paginatedBookings = this.filteredData.slice(start, end);
-  }
-
-  prevPage() {
-    if (this.currentPage > 1) {
-      this.currentPage--;
-      this.applyPagination();
-    }
-  }
-
-  nextPage() {
-    if (this.currentPage < this.totalPages) {
-      this.currentPage++;
-      this.applyPagination();
-    }
-  }
-
   goToPage(page: number) {
     this.currentPage = page;
-    this.applyPagination();
   }
 
   // ---------------- NAVIGATION ----------------

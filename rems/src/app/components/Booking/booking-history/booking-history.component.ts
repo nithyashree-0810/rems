@@ -15,25 +15,27 @@ import { ToastrService } from 'ngx-toastr';
   styleUrls: ['./booking-history.component.css']
 })
 export class BookingHistoryComponent implements OnInit {
-  
+
   plotId?: number;
   layoutId?: number;
   historyType: 'plot' | 'layout' = 'plot';
-  
+
   bookingHistory: Booking[] = [];
   filteredBookingHistory: Booking[] = [];
   plot?: Plot;
   layout?: Layout;
   selectedBooking?: Booking;
-  
+
   loading: boolean = true;
-  
+  currentPage = 1;
+  pageSize = 10;
+
   // Search and Filter properties
   searchTerm: string = '';
   statusFilter: string = 'ALL';
   sortBy: string = 'date';
   sortOrder: 'asc' | 'desc' = 'desc';
-  
+
   constructor(
     private route: ActivatedRoute,
     private router: Router,
@@ -41,7 +43,7 @@ export class BookingHistoryComponent implements OnInit {
     private plotService: PlotserviceService,
     private layoutService: LayoutserviceService,
     private toastr: ToastrService
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.route.params.subscribe((params: any) => {
@@ -59,9 +61,9 @@ export class BookingHistoryComponent implements OnInit {
 
   loadPlotHistory(): void {
     if (!this.plotId) return;
-    
+
     this.loading = true;
-    
+
     // Load plot details
     this.plotService.getPlotById(this.plotId).subscribe({
       next: (plot: Plot) => {
@@ -91,9 +93,9 @@ export class BookingHistoryComponent implements OnInit {
 
   loadLayoutHistory(): void {
     if (!this.layoutId) return;
-    
+
     this.loading = true;
-    
+
     // Load layout details
     this.layoutService.getLayoutById(this.layoutId).subscribe({
       next: (layout: Layout) => {
@@ -141,7 +143,7 @@ export class BookingHistoryComponent implements OnInit {
     // Apply search filter
     if (this.searchTerm.trim()) {
       const searchLower = this.searchTerm.toLowerCase();
-      filtered = filtered.filter(booking => 
+      filtered = filtered.filter(booking =>
         booking.customer?.firstName?.toLowerCase().includes(searchLower) ||
         booking.customer?.mobileNo?.toString().includes(searchLower) ||
         booking.bookingId?.toString().includes(searchLower) ||
@@ -151,7 +153,7 @@ export class BookingHistoryComponent implements OnInit {
 
     // Apply status filter
     if (this.statusFilter !== 'ALL') {
-      filtered = filtered.filter(booking => 
+      filtered = filtered.filter(booking =>
         booking.bookingStatus === this.statusFilter
       );
     }
@@ -159,7 +161,7 @@ export class BookingHistoryComponent implements OnInit {
     // Apply sorting
     filtered.sort((a, b) => {
       let comparison = 0;
-      
+
       switch (this.sortBy) {
         case 'date':
           const dateA = new Date(a.createdDate || 0).getTime();
@@ -180,11 +182,12 @@ export class BookingHistoryComponent implements OnInit {
           comparison = statusA.localeCompare(statusB);
           break;
       }
-      
+
       return this.sortOrder === 'desc' ? -comparison : comparison;
     });
 
     this.filteredBookingHistory = filtered;
+    this.currentPage = 1;
   }
 
   clearFilters(): void {
@@ -206,9 +209,9 @@ export class BookingHistoryComponent implements OnInit {
 
   getTotalPaid(booking: Booking): number {
     return (booking.advance1 || 0) +
-           (booking.advance2 || 0) +
-           (booking.advance3 || 0) +
-           (booking.advance4 || 0);
+      (booking.advance2 || 0) +
+      (booking.advance3 || 0) +
+      (booking.advance4 || 0);
   }
 
   getBalance(booking: Booking): number {
@@ -260,8 +263,8 @@ export class BookingHistoryComponent implements OnInit {
   // ================= REBOOKING FUNCTIONALITY =================
 
   canRebook(booking: Booking): boolean {
-  return !!booking.plotNo || !!booking.plot?.plotId;
-}
+    return !!booking.plotNo || !!booking.plot?.plotId;
+  }
 
 
   getRebootTooltip(booking: Booking): string {
@@ -271,32 +274,32 @@ export class BookingHistoryComponent implements OnInit {
     return 'Click to rebook this plot with new customer details';
   }
 
- rebookPlot(booking: Booking): void {
+  rebookPlot(booking: Booking): void {
 
-  const plotId = booking.plot?.plotId || booking.plotNo;
+    const plotId = booking.plot?.plotId || booking.plotNo;
 
-  if (!plotId) {
-    this.toastr.error('Plot ID not found for rebooking');
-    return;
-  }
-
-  const confirmRebook = confirm(
-    `Are you sure you want to rebook this plot?\n\nThis will create a new booking.`
-  );
-
-  if (!confirmRebook) return;
-
-  this.router.navigate(['/new-booking'], {
-    queryParams: {
-      plotId: plotId,
-      layoutId: booking.layout?.id || this.layoutId,
-      rebooking: true,
-      originalBookingId: booking.bookingId
+    if (!plotId) {
+      this.toastr.error('Plot ID not found for rebooking');
+      return;
     }
-  });
 
-  this.toastr.info('Redirecting to rebooking form...');
-}
+    const confirmRebook = confirm(
+      `Are you sure you want to rebook this plot?\n\nThis will create a new booking.`
+    );
+
+    if (!confirmRebook) return;
+
+    this.router.navigate(['/new-booking'], {
+      queryParams: {
+        plotId: plotId,
+        layoutId: booking.layout?.id || this.layoutId,
+        rebooking: true,
+        originalBookingId: booking.bookingId
+      }
+    });
+
+    this.toastr.info('Redirecting to rebooking form...');
+  }
 
   // ================= NAVIGATION =================
 
@@ -370,11 +373,11 @@ export class BookingHistoryComponent implements OnInit {
     const link = document.createElement('a');
     const url = URL.createObjectURL(blob);
     link.setAttribute('href', url);
-    
-    const fileName = this.historyType === 'plot' 
+
+    const fileName = this.historyType === 'plot'
       ? `plot-${this.plot?.plotNo}-booking-history.csv`
       : `layout-${this.layout?.layoutName}-booking-history.csv`;
-    
+
     link.setAttribute('download', fileName);
     link.style.visibility = 'hidden';
     document.body.appendChild(link);

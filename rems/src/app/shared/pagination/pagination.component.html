@@ -1,0 +1,33 @@
+<div class="pagination-wrapper">
+  <div class="entries-info">
+    <span>Show:</span>
+    <select [ngModel]="pageSize" (change)="onPageSizeChange($event)" class="entries-select">
+      <option [value]="5">5</option>
+      <option [value]="10">10</option>
+      <option [value]="15">15</option>
+      <option [value]="20">20</option>
+    </select>
+    <span>entries</span>
+  </div>
+
+  <div class="pagination-controls">
+    <button class="page-btn" [disabled]="currentPage === 1" (click)="goToPage(currentPage - 1)">
+      «
+    </button>
+    <button *ngFor="let page of pages" 
+            class="page-btn" 
+            [class.active]="currentPage === page"
+            (click)="goToPage(page)">
+      {{ page }}
+    </button>
+    <button class="page-btn" [disabled]="currentPage === totalPages" (click)="goToPage(currentPage + 1)">
+      »
+    </button>
+  </div>
+
+  <div class="pagination-summary">
+    Page {{ currentPage }} of {{ totalPages || 1 }} 
+    <br>
+    (Showing {{ startItem }} to {{ endItem }} of {{ totalItems }} entries)
+  </div>
+</div>

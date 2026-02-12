@@ -19,13 +19,8 @@ export class ReportEnquiryComponent {
 
   allData: Enquiry[] = [];                // All loaded customers
   filteredData: Enquiry[] = [];           // Data filtered by search
-  paginatedCustomers: Enquiry[] = [];     // Current page data
-
-  totalPages: number = 0;
-  pageSize: number = 10;
   currentPage: number = 1;
-  totalPagesArray: number[] = [];
-  pages:number[] = [];
+  pageSize: number = 10;
 
   imageUrl(path?: string) {
     return path ? `http://localhost:8080${path}` : '';
@@ -37,7 +32,7 @@ export class ReportEnquiryComponent {
     private router: Router,
     private toastr: ToastrService,
     private reportService: ReportService
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.loadData();
@@ -55,30 +50,11 @@ export class ReportEnquiryComponent {
 
       this.filteredData = [...this.allData];
       this.currentPage = 1;
-      this.applyPagination();
     });
   }
 
- applyPagination() {
-  this.totalPages = Math.ceil(this.filteredData.length / this.pageSize);
-
-  // 🔥 HTML expects `pages`
-  this.pages = Array.from(
-    { length: this.totalPages },
-    (_, i) => i + 1
-  );
-
-  const start = (this.currentPage - 1) * this.pageSize;
-  const end = start + this.pageSize;
-
-  this.paginatedCustomers = this.filteredData.slice(start, end);
-}
 
 
-  fetchLayouts(page: number) {
-    this.currentPage = page;
-    this.applyPagination();
-  }
 
   onSearch() {
     const nameKeyword = this.searchName.trim().toLowerCase();
@@ -92,24 +68,8 @@ export class ReportEnquiryComponent {
     });
 
     this.currentPage = 1;
-    this.applyPagination();
   }
 
-  nextPage() {
-    if (this.currentPage < this.totalPages) {
-      this.fetchLayouts(this.currentPage + 1);
-    }
-  }
-
-  prevPage() {
-    if (this.currentPage > 1) {
-      this.fetchLayouts(this.currentPage - 1);
-    }
-  }
-
-  goToPage(page: number) {
-    this.fetchLayouts(page);
-  }
 
   createEnquiry() {
     this.router.navigate(['/create-enquiry']);
@@ -141,32 +101,32 @@ export class ReportEnquiryComponent {
 
   downloadEnquiriesReport(): void {
 
-  // 🔹 search irundha → filtered data
-  // 🔹 search illa na → all data
-  const dataToDownload =
-    (this.searchName || this.searchMobile)
-      ? this.filteredData
-      : this.allData;
+    // 🔹 search irundha → filtered data
+    // 🔹 search illa na → all data
+    const dataToDownload =
+      (this.searchName || this.searchMobile)
+        ? this.filteredData
+        : this.allData;
 
-  if (!dataToDownload || dataToDownload.length === 0) {
-    this.toastr.warning('No data to download');
-    return;
-  }
-
-  this.reportService.downloadEnquiriesReport(dataToDownload).subscribe({
-    next: (blob: Blob) => {
-      const url = window.URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = 'customers-report.pdf';
-      a.click();
-      window.URL.revokeObjectURL(url);
-    },
-    error: () => {
-      this.toastr.error('Failed to download customers report');
+    if (!dataToDownload || dataToDownload.length === 0) {
+      this.toastr.warning('No data to download');
+      return;
     }
-  });
-}
+
+    this.reportService.downloadEnquiriesReport(dataToDownload).subscribe({
+      next: (blob: Blob) => {
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'customers-report.pdf';
+        a.click();
+        window.URL.revokeObjectURL(url);
+      },
+      error: () => {
+        this.toastr.error('Failed to download customers report');
+      }
+    });
+  }
 
 }
 

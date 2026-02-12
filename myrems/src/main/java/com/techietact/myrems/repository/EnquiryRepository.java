@@ -15,7 +15,7 @@ public interface EnquiryRepository  extends JpaRepository<Enquiry, Long>{
 
 	boolean existsByEmail(String email);
 
-	Enquiry findByMobileNo(Long mobileNo);
+	Optional<Enquiry> findByMobileNo(Long mobileNo);
 
 	List<Enquiry> findAllByOrderByCreatedDateDesc();
 	

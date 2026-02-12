@@ -13,24 +13,28 @@ import { ToastrService } from 'ngx-toastr';
 })
 export class CreateRoleComponent {
 
-
-  constructor(private roleService: RoleserviceServiceService, private router: Router, private toastr: ToastrService) { }
-  role: Omit<Role, 'roleId'> = {
-    firstName: '',
-    lastName: '',
-    mobileNo: '',
-    email: '',
-    address: '',
-    aadharNo: '',
-    panNo: '',
-    role: ''
-  };
-  mobileExists: boolean = false;
+  role: Role = new Role();
   selectedImage: File | null = null;
+  duplicateMobileName: string = '';
+
+  constructor(
+    private roleService: RoleserviceServiceService,
+    private router: Router,
+    private toastr: ToastrService
+  ) { }
 
   onFileChange(event: any) {
     const file = event.target.files?.[0];
     this.selectedImage = file || null;
+  }
+
+  onMobileChange() {
+    this.duplicateMobileName = '';
+    if (this.role.mobileNo && this.role.mobileNo.length === 10) {
+      this.roleService.checkMobileName(this.role.mobileNo).subscribe(name => {
+        this.duplicateMobileName = name;
+      });
+    }
   }
 
   onSubmit(form: NgForm) {
@@ -38,9 +42,10 @@ export class CreateRoleComponent {
 
       // 1️⃣ Check Mobile Duplicate ONLY if provided
       if (this.role.mobileNo && this.role.mobileNo.trim() !== '') {
-        this.roleService.checkMobileExists(this.role.mobileNo).subscribe(mobileExists => {
-          if (mobileExists) {
-            this.toastr.warning('Mobile number already exists!');
+        this.roleService.checkMobileName(this.role.mobileNo).subscribe(existingName => {
+          if (existingName && existingName.trim() !== '') {
+            this.duplicateMobileName = existingName;
+            this.toastr.warning(`Mobile number already exists under the name: ${existingName}`);
             return;
           }
           this.proceedWithEmailCheck(form);

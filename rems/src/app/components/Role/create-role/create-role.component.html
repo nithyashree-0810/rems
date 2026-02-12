@@ -30,7 +30,10 @@
             Mobile
           </label>
           <input type="text" name="mobileNo" [(ngModel)]="role.mobileNo" maxlength="10" pattern="^[0-9]{10}$|^$"
-            placeholder="Enter 10-digit Mobile Number" #mobileNo="ngModel">
+            placeholder="Enter 10-digit Mobile Number" #mobileNo="ngModel" (ngModelChange)="onMobileChange()">
+          <small class="error" *ngIf="duplicateMobileName">
+            Mobile number already exists under the name: {{duplicateMobileName}}
+          </small>
         </div>
 
         <div class="col">

@@ -10,7 +10,7 @@ export class LayoutserviceService {
 
   private apiUrl = 'http://localhost:8080/api/layouts';
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
   // ===================== SEARCH =====================
   searchLayouts(searchName: string, searchLocation: string): Observable<Layout[]> {
@@ -49,17 +49,21 @@ export class LayoutserviceService {
 
   // ===================== UPDATE =====================
   updateLayout(layoutName: string, formData: FormData) {
-  return this.http.put(
-    `${this.apiUrl}/updateWithPdf/${layoutName}`,
-    formData
-  );
-}
+    return this.http.put(
+      `${this.apiUrl}/updateWithPdf/${layoutName}`,
+      formData
+    );
+  }
 
 
 
   // ===================== DELETE =====================
   deleteLayout(layoutName: string): Observable<void> {
     return this.http.delete<void>(`${this.apiUrl}/${layoutName}`);
+  }
+
+  checkPhoneName(phone: number): Observable<string> {
+    return this.http.get(`${this.apiUrl}/check-phone-name/${phone}`, { responseType: 'text' });
   }
 
 }

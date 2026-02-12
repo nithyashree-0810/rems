@@ -20,6 +20,7 @@ export class CreatePlotComponent implements OnInit {
   layouts: Layout[] = [];
   owners: Role[] = [];
   selectedOwnerId: number | null = null;
+  duplicateMobileName: string = '';
 
   // ✅ ngModel binding object
   newPlot: Plot = {
@@ -104,6 +105,15 @@ export class CreatePlotComponent implements OnInit {
     }
   }
 
+  onMobileChange(): void {
+    this.duplicateMobileName = '';
+    if (this.newPlot.mobile && this.newPlot.mobile.toString().length === 10) {
+      this.plotService.checkMobileName(this.newPlot.mobile).subscribe(name => {
+        this.duplicateMobileName = name;
+      });
+    }
+  }
+
   // ✅ Auto calculate sqft + price (improved logic)
   calculateValues(): void {
     // normalize inputs to numbers
@@ -173,6 +183,21 @@ export class CreatePlotComponent implements OnInit {
 
     console.log("FINAL DATA 👉", this.newPlot);
 
+    if (this.newPlot.mobile) {
+      this.plotService.checkMobileName(this.newPlot.mobile).subscribe(existingName => {
+        if (existingName && existingName.trim() !== '') {
+          this.duplicateMobileName = existingName;
+          this.toastr.warning(`This mobile number already exists under the name: ${existingName}`);
+          return;
+        }
+        this.executeSave(plotForm);
+      });
+    } else {
+      this.executeSave(plotForm);
+    }
+  }
+
+  private executeSave(plotForm: NgForm) {
     this.plotService.createPlot(this.newPlot).subscribe({
       next: (res: string) => {
         this.toastr.success(res);

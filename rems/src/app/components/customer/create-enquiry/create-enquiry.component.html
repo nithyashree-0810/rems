@@ -28,7 +28,10 @@
             Mobile
           </label>
           <input type="text" name="mobileNo" [(ngModel)]="enquiry.mobileNo" maxlength="10" pattern="[0-9]*"
-            #mobileNo="ngModel">
+            #mobileNo="ngModel" (ngModelChange)="onMobileChange()" [class.is-invalid]="duplicateMobileName">
+          <small class="error-msg" *ngIf="duplicateMobileName">
+            This mobile number already exists under the name: {{duplicateMobileName}}
+          </small>
         </div>
 
         <div class="col">

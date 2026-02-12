@@ -39,5 +39,6 @@ public interface PlotService {
 	Plot getPlotById(Long plotId);
 
 	void markAsBooked(Long plotId);
-	
+
+	String getExistingMobileName(Long mobile);
 }

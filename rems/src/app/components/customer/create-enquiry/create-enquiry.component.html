@@ -8,28 +8,30 @@
       <div class="row">
         <div class="col">
           <label class="dark-label">
-            First Name <span class="required">*</span>
+            First Name
           </label>
-          <input type="text" name="firstName" [(ngModel)]="enquiry.firstName" required minlength="2" maxlength="15"
-            pattern="^[a-zA-Z]+$" #firstName="ngModel" [class.is-invalid]="firstName.invalid && firstName.touched">
+          <input type="text" name="firstName" [(ngModel)]="enquiry.firstName" minlength="2" maxlength="15"
+            pattern="^[a-zA-Z]+$" #firstName="ngModel">
         </div>
 
         <div class="col">
           <label class="dark-label">
-            Last Name <span class="required">*</span>
+            Last Name
           </label>
-          <input type="text" name="lastName" [(ngModel)]="enquiry.lastName" required pattern="^[a-zA-Z]+$"
-            #lastName="ngModel" [class.is-invalid]="lastName.invalid && lastName.touched">
+          <input type="text" name="lastName" [(ngModel)]="enquiry.lastName" pattern="^[a-zA-Z]+$" #lastName="ngModel">
         </div>
       </div>
 
       <div class="row">
         <div class="col">
           <label class="dark-label">
-            Mobile <span class="required">*</span>
+            Mobile
           </label>
-          <input type="text" name="mobileNo" [(ngModel)]="enquiry.mobileNo" required maxlength="10" pattern="[0-9]*"
-            #mobileNo="ngModel" [class.is-invalid]="mobileNo.invalid && mobileNo.touched">
+          <input type="text" name="mobileNo" [(ngModel)]="enquiry.mobileNo" maxlength="10" pattern="[0-9]*"
+            #mobileNo="ngModel" (ngModelChange)="onMobileChange()" [class.is-invalid]="duplicateMobileName">
+          <small class="error-msg" *ngIf="duplicateMobileName">
+            This mobile number already exists under the name: {{duplicateMobileName}}
+          </small>
         </div>
 
         <div class="col">
@@ -41,19 +43,17 @@
       <div class="row">
         <div class="col">
           <label class="dark-label">
-            Address <span class="required">*</span>
+            Address
           </label>
-          <input type="text" name="address" [(ngModel)]="enquiry.address" required minlength="5" #address="ngModel"
-            [class.is-invalid]="address.invalid && address.touched">
+          <input type="text" name="address" [(ngModel)]="enquiry.address" minlength="5" #address="ngModel">
         </div>
 
         <div class="col">
           <label class="dark-label">
-            Pincode <span class="required">*</span>
+            Pincode
           </label>
-          <input type="text" name="pincode" [(ngModel)]="enquiry.pincode" required maxlength="6" pattern="^[0-9]{6}$"
-            inputmode="numeric" onkeypress="return event.charCode >= 48 && event.charCode <= 57" #pincode="ngModel"
-            [class.is-invalid]="pincode.invalid && pincode.touched">
+          <input type="text" name="pincode" [(ngModel)]="enquiry.pincode" maxlength="6" pattern="^[0-9]{6}$"
+            inputmode="numeric" onkeypress="return event.charCode >= 48 && event.charCode <= 57" #pincode="ngModel">
         </div>
       </div>
 
@@ -64,7 +64,7 @@
             Aadhaar(Optional)
           </label>
           <input type="text" name="aadharNo" [(ngModel)]="enquiry.aadharNo" maxlength="12" pattern="[0-9]*"
-            #aadharNo="ngModel" [class.is-invalid]="aadharNo.invalid && aadharNo.touched">
+            #aadharNo="ngModel">
         </div>
       </div>
 
@@ -73,8 +73,7 @@
           <label class="dark-label">
             Referral Name
           </label>
-          <input type="text" name="referralName" [(ngModel)]="enquiry.referralName" #referralName="ngModel"
-            [class.is-invalid]="referralName.invalid && referralName.touched">
+          <input type="text" name="referralName" [(ngModel)]="enquiry.referralName" #referralName="ngModel">
         </div>
 
         <div class="col">
@@ -82,7 +81,7 @@
             Referral Ph Number
           </label>
           <input type="text" name="referralNumber" [(ngModel)]="enquiry.referralNumber" maxlength="10" pattern="[0-9]*"
-            #referralNumber="ngModel" [class.is-invalid]="referralNumber.invalid && referralNumber.touched">
+            #referralNumber="ngModel">
         </div>
       </div>
 
@@ -93,8 +92,22 @@
         </div>
       </div>
 
+      <div class="row">
+        <div class="col">
+          <label class="dark-label">Comment (Max 500 words)</label>
+          <textarea name="comment" [(ngModel)]="enquiry.comment" (ngModelChange)="onCommentChange()"
+            placeholder="Enter your comment here..." class="form-control" rows="4"></textarea>
+          <div class="word-counter" [class.text-danger]="commentWordCount > maxWords">
+            {{commentWordCount}}/{{maxWords}} words
+          </div>
+          <div *ngIf="commentWordCount > maxWords" class="error-text">
+            Comment exceeds the maximum limit of 500 words.
+          </div>
+        </div>
+      </div>
+
       <div class="buttons-row">
-        <button type="submit" class="btn btn-success" [disabled]="!enquiryForm.valid">
+        <button type="submit" class="btn btn-success" [disabled]="enquiryForm.invalid || commentWordCount > maxWords">
           Create Customer
         </button>
         <button type="button" class="btn btn-danger" (click)="goHome()">

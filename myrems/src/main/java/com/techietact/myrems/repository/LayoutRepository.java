@@ -15,6 +15,10 @@ public interface LayoutRepository extends JpaRepository<Layout, Long>{
 
 	Optional<Layout> findByLayoutName(String layoutName);
 
+	boolean existsByPhone(long phone);
+
+	Optional<Layout> findByPhone(long phone);
+
     List<Layout> findAllByLayoutName(String layoutName);
 
 	List<Layout> findByLocation(String location);

@@ -25,8 +25,12 @@ public class LayoutController {
 	private static final String PDF_UPLOAD_PATH = System.getProperty("user.dir") + "/uploads/layout-pdfs/";
 
 	@PostMapping("/create")
-	public ResponseEntity<Layout> createLayout(@RequestBody LayoutBO layoutBO) {
-		return ResponseEntity.ok(layoutService.createLayout(layoutBO));
+	public ResponseEntity<?> createLayout(@RequestBody LayoutBO layoutBO) {
+		try {
+			return ResponseEntity.ok(layoutService.createLayout(layoutBO));
+		} catch (RuntimeException e) {
+			return ResponseEntity.badRequest().body(e.getMessage());
+		}
 	}
 
 	@GetMapping
@@ -56,22 +60,37 @@ public class LayoutController {
 
 	// ⭐ Upload Layout + PDF
 	@PostMapping("/createWithPdf")
-	public ResponseEntity<Layout> createLayoutWithPdf(@RequestPart("layoutData") LayoutBO layoutBO,
+	public ResponseEntity<?> createLayoutWithPdf(@RequestPart("layoutData") LayoutBO layoutBO,
 			@RequestPart("layoutPdf") MultipartFile file) throws Exception {
 
-		File dir = new File(PDF_UPLOAD_PATH);
-		if (!dir.exists())
-			dir.mkdirs();
+		try {
+			// Validate/Create DB record first
+			Layout savedLayout = layoutService.createLayout(layoutBO);
 
-		String filePath = PDF_UPLOAD_PATH + file.getOriginalFilename();
-		file.transferTo(new File(filePath));
+			// If success, save the file
+			File dir = new File(PDF_UPLOAD_PATH);
+			if (!dir.exists())
+				dir.mkdirs();
 
-		Layout savedLayout = layoutService.createLayout(layoutBO);
-		savedLayout.setPdfPath(filePath);
+			String originalFile = file.getOriginalFilename();
+			String extension = "";
+			if (originalFile != null && originalFile.contains(".")) {
+				extension = originalFile.substring(originalFile.lastIndexOf("."));
+			}
+			String filename = savedLayout.getLayoutName().replaceAll("\\s+", "_") + "_" + System.currentTimeMillis() + extension;
+			String filePath = PDF_UPLOAD_PATH + filename;
+			file.transferTo(new File(filePath));
 
-		Layout updated = layoutService.saveLayout(savedLayout);
+			// Update with path
+			savedLayout.setPdfPath(filePath);
+			Layout updated = layoutService.saveLayout(savedLayout);
 
-		return ResponseEntity.ok(updated);
+			return ResponseEntity.ok(updated);
+		} catch (RuntimeException e) {
+			return ResponseEntity.badRequest().body(e.getMessage());
+		} catch (Exception e) {
+			return ResponseEntity.internalServerError().body("Error: " + e.getMessage());
+		}
 	}
 
 	// ⭐ VIEW PDF API
@@ -143,5 +162,8 @@ public class LayoutController {
 			return ResponseEntity.internalServerError().body("Backend error: " + e.getMessage());
 		}
 	}
-
+	@GetMapping("/check-phone-name/{phone}")
+	public String checkPhoneName(@PathVariable long phone) {
+		return layoutService.getExistingMobileName(phone);
+	}
 }

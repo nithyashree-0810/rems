@@ -38,7 +38,15 @@ public class PlotServiceImpl implements PlotService {
 	    );
 
 	    if (exists) {
-	        return false; // Plot already exists in same layout
+	        throw new RuntimeException("Plot already exists in this layout!");
+	    }
+
+	    if (plotBo.getMobile() != 0) {
+	        Optional<Plot> existing = plotRepository.findByMobile(plotBo.getMobile());
+	        if (existing.isPresent()) {
+	            Plot p = existing.get();
+	            throw new RuntimeException("This mobile number already exists under the name: " + p.getOwnerName());
+	        }
 	    }
 
 	    // Step 3 → Create new plot
@@ -191,8 +199,13 @@ public class PlotServiceImpl implements PlotService {
         plotRepository.save(plot);
     }
 
-		
+	@Override
+	public String getExistingMobileName(Long mobile) {
+		return plotRepository.findByMobile(mobile)
+				.map(Plot::getOwnerName)
+				.orElse("");
 	}
+}
 	
 
 	

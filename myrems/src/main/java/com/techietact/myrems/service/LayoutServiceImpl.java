@@ -1,6 +1,7 @@
 package com.techietact.myrems.service;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +18,13 @@ public class LayoutServiceImpl implements LayoutService {
 
     @Override
     public Layout createLayout(LayoutBO layoutBO) {
+        if (layoutBO.getPhone() != 0) {
+            Optional<Layout> existing = layoutRepository.findByPhone(layoutBO.getPhone());
+            if (existing.isPresent()) {
+                Layout l = existing.get();
+                throw new RuntimeException("This mobile number already exists under the name: " + l.getOwnerName1());
+            }
+        }
         Layout layout = new Layout();
         BeanUtils.copyProperties(layoutBO, layout);
         return layoutRepository.save(layout);
@@ -125,5 +133,12 @@ public class LayoutServiceImpl implements LayoutService {
 	        // If we're updating the same layout, the name is still available
 	        return existing.getId().equals(excludeId);
 	    }
+
+	@Override
+	public String getExistingMobileName(long phone) {
+		return layoutRepository.findByPhone(phone)
+				.map(Layout::getOwnerName1)
+				.orElse("");
+	}
 
 }

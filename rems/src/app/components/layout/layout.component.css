@@ -5,7 +5,7 @@
   padding: 18px 20px;
   background: #ffffff;
   border-radius: 12px;
-  box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
   position: relative;
   box-sizing: border-box;
 }
@@ -38,7 +38,8 @@
 form {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 8px 12px;                 /* 🔧 reduced gap */
+  gap: 8px 12px;
+  /* 🔧 reduced gap */
   box-sizing: border-box;
 }
 
@@ -59,14 +60,18 @@ label {
 input[type="text"],
 input[type="number"],
 input[type="tel"] {
-  height: 30px;                  /* 🔧 fixed height */
-  padding: 4px 8px;              /* 🔧 reduced padding */
-  font-size: 12px;               /* 🔧 smaller font */
+  height: 30px;
+  /* 🔧 fixed height */
+  padding: 4px 8px;
+  /* 🔧 reduced padding */
+  font-size: 12px;
+  /* 🔧 smaller font */
   border-radius: 6px;
   border: 1px solid #d4d4d4;
   background: #f7f7f7;
   width: 100%;
-  box-sizing: border-box;        /* 🔧 critical fix */
+  box-sizing: border-box;
+  /* 🔧 critical fix */
 }
 
 input:focus {
@@ -120,4 +125,14 @@ input:focus {
 .required {
   color: red;
   font-weight: bold;
+}
+
+.is-invalid {
+  border-color: #dc3545 !important;
+}
+
+.error-msg {
+  font-size: 11px;
+  color: #dc3545;
+  margin-top: 2px;
 }

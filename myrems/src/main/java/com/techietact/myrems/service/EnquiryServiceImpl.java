@@ -19,8 +19,12 @@ public class EnquiryServiceImpl implements EnquiryService {
 private EnquiryRepository repository;
 	
 public Enquiry create(Enquiry enquiry) {
-    if (repository.existsByMobileNo(enquiry.getMobileNo())) {
-        throw new RuntimeException("Mobile number already exists!");
+    if (enquiry.getMobileNo() != null) {
+        Optional<Enquiry> existing = repository.findByMobileNo(enquiry.getMobileNo());
+        if (existing.isPresent()) {
+            Enquiry e = existing.get();
+            throw new RuntimeException("This mobile number already exists under the name: " + e.getFirstName() + " " + e.getLastName());
+        }
     }
     if (enquiry.getEmail() != null && !enquiry.getEmail().trim().isEmpty()) {
         if (repository.existsByEmail(enquiry.getEmail())) {
@@ -41,11 +45,14 @@ public List<Enquiry> getAll() {
 
 
 public Enquiry getByMobileNo(Long mobileNo) {
-    return repository.findByMobileNo(mobileNo);
+    return repository.findByMobileNo(mobileNo).orElse(null);
 }
 
 public Enquiry update(Long mobileNo, Enquiry updated) {
     Enquiry existing = getByMobileNo(mobileNo);
+    if (existing == null) {
+        throw new RuntimeException("Customer not found with mobile: " + mobileNo);
+    }
     existing.setFirstName(updated.getFirstName());
     existing.setLastName(updated.getLastName());
     existing.setFatherName(updated.getFatherName());
@@ -57,6 +64,7 @@ public Enquiry update(Long mobileNo, Enquiry updated) {
     existing.setProfileImagePath(updated.getProfileImagePath());
     existing.setReferralName(updated.getReferralName());
     existing.setReferralNumber(updated.getReferralNumber());
+    existing.setComment(updated.getComment());
     return repository.save(existing);
 }
 
@@ -85,6 +93,13 @@ public List<Enquiry> search(String keyword) {
     return repository.findByFirstNameContainingIgnoreCaseOrLastNameContainingIgnoreCaseOrMobileNoOrEmailContainingIgnoreCase(
             keyword, keyword, mobile, keyword
     );
+}
+
+@Override
+public String getExistingMobileName(Long mobileNo) {
+    return repository.findByMobileNo(mobileNo)
+            .map(e -> e.getFirstName() + " " + e.getLastName())
+            .orElse("");
 }
 
 }

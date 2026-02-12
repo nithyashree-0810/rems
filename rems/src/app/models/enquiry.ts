@@ -12,7 +12,7 @@ export class Enquiry {
     profileImagePath?: string;
     referralName?: string;
     referralNumber?: string;
-
+    comment?: string;
 
 }
 

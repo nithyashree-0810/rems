@@ -12,6 +12,10 @@ import com.techietact.myrems.entity.Plot;
 public interface PlotRepository extends JpaRepository<Plot,Long> {
 
 
+	boolean existsByMobile(Long mobile);
+
+	Optional<Plot> findByMobile(Long mobile);
+
 	List<Plot> findByLayout_LayoutName(String layoutName);
 
 	boolean existsByPlotNo(String plotNo);

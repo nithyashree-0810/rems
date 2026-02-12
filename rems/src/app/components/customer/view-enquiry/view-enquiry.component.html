@@ -32,7 +32,7 @@
       <span class="icon"><i class="fa fa-home"></i></span>
       <span class="label">Address</span>
       <span class="colon">:</span>
-      <span class="value">{{ customer.address}}</span>
+      <span class="value">{{ formatAddress(customer.address) }}</span>
     </div>
 
     <div class="row">
@@ -64,11 +64,16 @@
     </div>
   </div>
 
-  <!-- <div class="row">
-    <i class="fa fa-id-badge icon"></i>
-    <span class="label">Pan Number:</span>
-    <span class="value">{{ customer.panNo}}</span>
-  </div> -->
+  <!-- Comment Section -->
+  <div class="comment-section" *ngIf="customer.comment">
+    <div class="comment-label">
+      <span class="icon"><i class="fa fa-comment"></i></span>
+      <span>Comments</span>
+    </div>
+    <div class="comment-box">
+      {{ customer.comment }}
+    </div>
+  </div>
 
   <div class="btn-row">
     <button class="btn home-btn" (click)="goHome()">BACK</button>

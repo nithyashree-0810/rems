@@ -19,25 +19,19 @@
 .details-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 12px;
+  gap: 8px;
 }
 
 .row {
   display: grid;
-  grid-template-columns: 36px 140px 14px 1fr;
-  align-items: flex-start;
-  padding: 10px 12px;
-  margin: 0;
+  grid-template-columns: 36px 170px 14px auto;
+  align-items: center;
+  padding: 6px 8px;
+  margin: 4px 0;
   border-radius: 8px;
   border: 1px solid #f1f1f1;
   background: #fafafa;
   gap: 8px;
-  min-width: 0;
-  /* Critical for grid item shrinkage */
-}
-
-.row.full-width {
-  grid-column: span 2;
 }
 
 .icon {
@@ -49,79 +43,26 @@
   justify-content: center;
   align-items: center;
   color: #ff6600;
-  font-size: 14px;
-  flex-shrink: 0;
+  font-size: 12px;
 }
 
 .label {
   font-weight: 700;
-  font-size: 13px;
+  font-size: 12px;
   color: hsl(244, 87%, 43%);
-  padding-top: 4px;
+  white-space: nowrap;
 }
 
 .value {
   color: hsl(0, 0%, 4%);
-  font-size: 13px;
+  font-size: 12px;
   word-wrap: break-word;
-  overflow-wrap: break-word;
-  word-break: break-word;
-  line-height: 1.5;
-  min-width: 0;
-  padding-top: 4px;
 }
 
 .colon {
   font-weight: 700;
   color: hsl(244, 87%, 43%);
   text-align: center;
-  padding-top: 4px;
-}
-
-/* Responsiveness */
-@media (max-width: 768px) {
-  .details-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .row.full-width {
-    grid-column: span 1;
-  }
-
-  .row {
-    grid-template-columns: 36px 120px 14px 1fr;
-  }
-}
-
-@media (max-width: 480px) {
-  .row {
-    grid-template-columns: 36px 1fr;
-    gap: 4px;
-  }
-
-  .label,
-  .colon {
-    display: none;
-    /* Simplify on very small screens or keep them stacked? */
-  }
-
-  /* Alternative for 480px: stack label and value */
-  .row {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    align-items: center;
-  }
-
-  .label {
-    display: inline-block;
-    margin-right: 4px;
-  }
-
-  .colon {
-    display: inline-block;
-    margin-right: 8px;
-  }
 }
 
 .home-btn {

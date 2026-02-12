@@ -14,110 +14,88 @@ import { ToastrService } from 'ngx-toastr';
 export class CreateRoleComponent {
 
 
-constructor(private roleService:RoleserviceServiceService,private router:Router, private toastr: ToastrService){}
- role: Omit<Role, 'roleId'> = {
-  firstName: '',
-  lastName: '',
-  mobileNo: '',
-  email: '',
-  address: '',
-  aadharNo: '',
-  panNo: '',
-  role: ''
-};
-mobileExists: boolean = false;
-selectedImage: File | null = null;
+  constructor(private roleService: RoleserviceServiceService, private router: Router, private toastr: ToastrService) { }
+  role: Omit<Role, 'roleId'> = {
+    firstName: '',
+    lastName: '',
+    mobileNo: '',
+    email: '',
+    address: '',
+    aadharNo: '',
+    panNo: '',
+    role: ''
+  };
+  mobileExists: boolean = false;
+  selectedImage: File | null = null;
 
-onFileChange(event: any) {
-  const file = event.target.files?.[0];
-  this.selectedImage = file || null;
-}
+  onFileChange(event: any) {
+    const file = event.target.files?.[0];
+    this.selectedImage = file || null;
+  }
 
-onSubmit(form: NgForm) {
-  if (form.valid) {
-
-    // 1️⃣ Check Mobile Duplicate First
-    this.roleService.checkMobileExists(this.role.mobileNo).subscribe(mobileExists => {
-      if (mobileExists) {
-        this.toastr.warning('Mobile number already exists!');
-        return;
+  onSubmit(form: NgForm) {
+    const proceedWithDuplicateChecks = () => {
+      if (this.role.mobileNo && this.role.mobileNo.trim() !== '') {
+        this.roleService.checkMobileExists(this.role.mobileNo).subscribe(mobileExists => {
+          if (mobileExists) {
+            this.toastr.warning('Mobile number already exists!');
+            return;
+          }
+          this.checkEmailAndCreate(form);
+        });
+      } else {
+        this.checkEmailAndCreate(form);
       }
+    };
 
-      // 2️⃣ EMAIL OPTIONAL → If empty, skip email check
-      if (!this.role.email || this.role.email.trim() === '') {
+    if (form.valid) {
+      proceedWithDuplicateChecks();
+    }
+  }
 
-        this.roleService.createRole(this.role).subscribe({
-          next: (created) => {
-            if (created && created.roleId && this.selectedImage) {
-              this.roleService.uploadRoleImage(created.roleId, this.selectedImage).subscribe({
-                next: () => {
-                  this.toastr.success('Created Successfully!');
-                  form.reset();
-                  this.router.navigate(['/list-role']);
-                },
-                error: () => {
-                  this.toastr.error('Image upload failed');
-                  form.reset();
-                  this.router.navigate(['/list-role']);
-                }
-              });
-            } else {
+  checkEmailAndCreate(form: NgForm) {
+    if (this.role.email && this.role.email.trim() !== '') {
+      this.roleService.checkEmailExists(this.role.email).subscribe(emailExists => {
+        if (emailExists) {
+          this.toastr.warning('Email already exists!');
+          return;
+        }
+        this.createRoleRecord(form);
+      });
+    } else {
+      this.createRoleRecord(form);
+    }
+  }
+
+  createRoleRecord(form: NgForm) {
+    this.roleService.createRole(this.role).subscribe({
+      next: (created) => {
+        if (created && created.roleId && this.selectedImage) {
+          this.roleService.uploadRoleImage(created.roleId, this.selectedImage).subscribe({
+            next: () => {
               this.toastr.success('Created Successfully!');
               form.reset();
               this.router.navigate(['/list-role']);
-            }
-          },
-          error: err => this.toastr.error(err.error)
-        });
-
-      } else {
-
-        // 3️⃣ Email is entered → check duplicate
-        this.roleService.checkEmailExists(this.role.email).subscribe(emailExists => {
-          if (emailExists) {
-            this.toastr.warning('Email already exists!');
-            return;
-          }
-
-          this.roleService.createRole(this.role).subscribe({
-            next: (created) => {
-              if (created && created.roleId && this.selectedImage) {
-                this.roleService.uploadRoleImage(created.roleId, this.selectedImage).subscribe({
-                  next: () => {
-                    this.toastr.success('Created Successfully!');
-                    form.reset();
-                    this.router.navigate(['/list-role']);
-                  },
-                  error: () => {
-                    this.toastr.error('Image upload failed');
-                    form.reset();
-                    this.router.navigate(['/list-role']);
-                  }
-                });
-              } else {
-                this.toastr.success('Created Successfully!');
-                form.reset();
-                this.router.navigate(['/list-role']);
-              }
             },
-            error: err => this.toastr.error(err.error)
+            error: () => {
+              this.toastr.error('Image upload failed');
+              form.reset();
+              this.router.navigate(['/list-role']);
+            }
           });
-
-        });
-
-      }
-
+        } else {
+          this.toastr.success('Created Successfully!');
+          form.reset();
+          this.router.navigate(['/list-role']);
+        }
+      },
+      error: err => this.toastr.error(err.error)
     });
-
   }
 
-  
-
-}
-
-goHome() {
+  goHome() {
     // navigate to home page
-   this.router.navigate(['/dashboard']);
+    this.router.navigate(['/dashboard']);
   }
 
 

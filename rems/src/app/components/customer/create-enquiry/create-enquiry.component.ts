@@ -12,78 +12,51 @@ import { ToastrService } from 'ngx-toastr';
   styleUrl: './create-enquiry.component.css'
 })
 export class CreateEnquiryComponent {
-limitAadharLength() {
-throw new Error('Method not implemented.');
-}
-constructor(private customerService:CustomerService,private router:Router, private toastr: ToastrService){}
-  enquiry:Enquiry={
-
-mobileNo: undefined as any,
-    firstName:'',
-    lastName:'',
-    fatherName:'',
-    email:'',
-    address:'',
-  pincode: undefined as any,
-    aadharNo:'',
-    panNo:'',
-   
-
-    
+  limitAadharLength() {
+    throw new Error('Method not implemented.');
   }
-mobileExists: boolean = false;
-selectedImage: File | null = null;
+  constructor(private customerService: CustomerService, private router: Router, private toastr: ToastrService) { }
+  enquiry: Enquiry = {
 
-onFileChange(event: any) {
-  const file = event.target.files?.[0];
-  this.selectedImage = file || null;
-}
+    mobileNo: undefined as any,
+    firstName: '',
+    lastName: '',
+    fatherName: '',
+    email: '',
+    address: '',
+    pincode: undefined as any,
+    aadharNo: '',
+    panNo: '',
+    comments: ''
 
-onSubmit(form: NgForm) {
-  if (form.valid) {
 
-    // 1️⃣ Check Mobile Duplicate First
-    this.customerService.checkMobileExists(this.enquiry.mobileNo).subscribe(mobileExists => {
-      if (mobileExists) {
-        this.toastr.warning('Mobile number already exists!');
-        return;
-      }
 
-      // 2️⃣ EMAIL OPTIONAL → If empty, skip email check
-      if (!this.enquiry.email || this.enquiry.email.trim() === '') {
+  }
 
-        this.customerService.createCustomer(this.enquiry).subscribe({
-          next: (created) => {
-            if (this.selectedImage) {
-              this.customerService.uploadCustomerImage(this.enquiry.mobileNo, this.selectedImage).subscribe({
-                next: () => {
-                  this.toastr.success('Customer Created Successfully!');
-                  form.reset();
-                  this.router.navigate(['/view-enquiries']);
-                },
-                error: () => {
-                  this.toastr.error('Image upload failed');
-                  form.reset();
-                  this.router.navigate(['/view-enquiries']);
-                }
-              });
-            } else {
-              this.toastr.success('Customer Created Successfully!');
-              form.reset();
-              this.router.navigate(['/view-enquiries']);
-            }
-          },
-          error: err => this.toastr.error(err.error)
-        });
+  getWordCount(text: string | undefined): number {
+    if (!text) return 0;
+    return text.trim().split(/\s+/).filter(word => word.length > 0).length;
+  }
+  mobileExists: boolean = false;
+  selectedImage: File | null = null;
 
-      } else {
+  onFileChange(event: any) {
+    const file = event.target.files?.[0];
+    this.selectedImage = file || null;
+  }
 
-        // 3️⃣ Email is entered → check duplicate
-        this.customerService.checkEmailExists(this.enquiry.email).subscribe(emailExists => {
-          if (emailExists) {
-            this.toastr.warning('Email already exists!');
-            return;
-          }
+  onSubmit(form: NgForm) {
+    if (form.valid) {
+
+      // 1️⃣ Check Mobile Duplicate First
+      this.customerService.checkMobileExists(this.enquiry.mobileNo).subscribe(mobileExists => {
+        if (mobileExists) {
+          this.toastr.warning('Mobile number already exists!');
+          return;
+        }
+
+        // 2️⃣ EMAIL OPTIONAL → If empty, skip email check
+        if (!this.enquiry.email || this.enquiry.email.trim() === '') {
 
           this.customerService.createCustomer(this.enquiry).subscribe({
             next: (created) => {
@@ -109,21 +82,54 @@ onSubmit(form: NgForm) {
             error: err => this.toastr.error(err.error)
           });
 
-        });
+        } else {
 
-      }
+          // 3️⃣ Email is entered → check duplicate
+          this.customerService.checkEmailExists(this.enquiry.email).subscribe(emailExists => {
+            if (emailExists) {
+              this.toastr.warning('Email already exists!');
+              return;
+            }
 
-    });
+            this.customerService.createCustomer(this.enquiry).subscribe({
+              next: (created) => {
+                if (this.selectedImage) {
+                  this.customerService.uploadCustomerImage(this.enquiry.mobileNo, this.selectedImage).subscribe({
+                    next: () => {
+                      this.toastr.success('Customer Created Successfully!');
+                      form.reset();
+                      this.router.navigate(['/view-enquiries']);
+                    },
+                    error: () => {
+                      this.toastr.error('Image upload failed');
+                      form.reset();
+                      this.router.navigate(['/view-enquiries']);
+                    }
+                  });
+                } else {
+                  this.toastr.success('Customer Created Successfully!');
+                  form.reset();
+                  this.router.navigate(['/view-enquiries']);
+                }
+              },
+              error: err => this.toastr.error(err.error)
+            });
+
+          });
+
+        }
+
+      });
+
+    }
+
+
 
   }
 
-  
-
-}
-
-goHome() {
+  goHome() {
     // navigate to home page
-   this.router.navigate(['/dashboard']);
+    this.router.navigate(['/dashboard']);
   }
 
 

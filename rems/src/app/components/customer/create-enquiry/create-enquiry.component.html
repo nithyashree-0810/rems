@@ -8,69 +8,66 @@
       <div class="row">
         <div class="col">
           <label class="dark-label">
-            First Name <span class="required">*</span>
+            First Name <span class="text-danger">*</span>
           </label>
-          <input type="text" name="firstName" [(ngModel)]="enquiry.firstName"
-            required minlength="2" maxlength="15" pattern="^[a-zA-Z]+$"
-            #firstName="ngModel"
-            [class.is-invalid]="firstName.invalid && firstName.touched">
+          <input type="text" name="firstName" [(ngModel)]="enquiry.firstName" required minlength="2" maxlength="15"
+            pattern="^[a-zA-Z ]+$" #firstName="ngModel"
+            [class.is-invalid]="firstName.invalid && (firstName.touched || firstName.dirty)">
+          <div *ngIf="firstName.invalid && (firstName.touched || firstName.dirty)" class="error-text">
+            <small *ngIf="firstName.errors?.['required']">First Name is required.</small>
+            <small *ngIf="firstName.errors?.['pattern']">Only letters are allowed.</small>
+            <small *ngIf="firstName.errors?.['minlength']">Minimum 2 letters required.</small>
+          </div>
         </div>
 
         <div class="col">
           <label class="dark-label">
-            Last Name <span class="required">*</span>
+            Last Name
           </label>
-          <input type="text" name="lastName" [(ngModel)]="enquiry.lastName"
-            required pattern="^[a-zA-Z]+$"
-            #lastName="ngModel"
-            [class.is-invalid]="lastName.invalid && lastName.touched">
+          <input type="text" name="lastName" [(ngModel)]="enquiry.lastName" pattern="^[a-zA-Z]+$" #lastName="ngModel"
+            [class.is-invalid]="lastName.invalid && (lastName.touched || lastName.dirty)">
         </div>
       </div>
 
-    <div class="row">
-  <div class="col">
-    <label class="dark-label">
-      Mobile <span class="required">*</span>
-    </label>
-    <input type="text" name="mobileNo" [(ngModel)]="enquiry.mobileNo"
-      required maxlength="10" pattern="[0-9]*"
-      #mobileNo="ngModel"
-      [class.is-invalid]="mobileNo.invalid && mobileNo.touched">
-  </div>
+      <div class="row">
+        <div class="col">
+          <label class="dark-label">
+            Mobile Number
+          </label>
+          <input type="text" name="mobileNo" [(ngModel)]="enquiry.mobileNo" maxlength="10" minlength="10"
+            pattern="[0-9]*" #mobileNo="ngModel"
+            [class.is-invalid]="mobileNo.invalid && (mobileNo.touched || mobileNo.dirty)">
+          <div *ngIf="mobileNo.invalid && (mobileNo.touched || mobileNo.dirty)" class="error-text">
+            <small *ngIf="mobileNo.errors?.['pattern']">Only numeric values are allowed.</small>
+            <small *ngIf="mobileNo.errors?.['minlength'] || mobileNo.errors?.['maxlength']">Must be exactly 10
+              digits.</small>
+          </div>
+        </div>
 
-  <div class="col">
-    <label class="dark-label">Email (optional)</label>
-    <input type="email" name="email" [(ngModel)]="enquiry.email">
-  </div>
-</div>
+        <div class="col">
+          <label class="dark-label">Email (optional)</label>
+          <input type="email" name="email" [(ngModel)]="enquiry.email">
+        </div>
+      </div>
 
-       <div class="row">
-  <div class="col">
-    <label class="dark-label">
-      Address <span class="required">*</span>
-    </label>
-    <input type="text" name="address" [(ngModel)]="enquiry.address"
-      required minlength="5"
-      #address="ngModel"
-      [class.is-invalid]="address.invalid && address.touched">
-  </div>
+      <div class="row">
+        <div class="col">
+          <label class="dark-label">
+            Address
+          </label>
+          <input type="text" name="address" [(ngModel)]="enquiry.address" #address="ngModel"
+            [class.is-invalid]="address.invalid && (address.touched || address.dirty)">
+        </div>
 
-  <div class="col">
-    <label class="dark-label">
-      Pincode <span class="required">*</span>
-    </label>
-    <input type="text"
-           name="pincode"
-           [(ngModel)]="enquiry.pincode"
-           required
-           maxlength="6"
-           pattern="^[0-9]{6}$"
-           inputmode="numeric"
-           onkeypress="return event.charCode >= 48 && event.charCode <= 57"
-           #pincode="ngModel"
-           [class.is-invalid]="pincode.invalid && pincode.touched">
-  </div>
-</div>
+        <div class="col">
+          <label class="dark-label">
+            Pincode
+          </label>
+          <input type="text" name="pincode" [(ngModel)]="enquiry.pincode" maxlength="6" pattern="^[0-9]{6}$"
+            inputmode="numeric" onkeypress="return event.charCode >= 48 && event.charCode <= 57" #pincode="ngModel"
+            [class.is-invalid]="pincode.invalid && (pincode.touched || pincode.dirty)">
+        </div>
+      </div>
 
 
       <div class="row">
@@ -78,10 +75,38 @@
           <label class="dark-label">
             Aadhaar(Optional)
           </label>
-          <input type="text" name="aadharNo" [(ngModel)]="enquiry.aadharNo"
-             maxlength="12" pattern="[0-9]*"
-            #aadharNo="ngModel"
-            [class.is-invalid]="aadharNo.invalid && aadharNo.touched">
+          <input type="text" name="aadharNo" [(ngModel)]="enquiry.aadharNo" maxlength="12" pattern="[0-9]*"
+            #aadharNo="ngModel" [class.is-invalid]="aadharNo.invalid && (aadharNo.touched || aadharNo.dirty)">
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col">
+          <label class="dark-label">
+            Referral Name
+          </label>
+          <input type="text" name="referralName" [(ngModel)]="enquiry.referralName" #referralName="ngModel"
+            [class.is-invalid]="referralName.invalid && (referralName.touched || referralName.dirty)">
+        </div>
+
+        <div class="col">
+          <label class="dark-label">
+            Referral Number
+          </label>
+          <input type="text" name="referralNumber" [(ngModel)]="enquiry.referralNumber" maxlength="10" pattern="[0-9]*"
+            #referralNumber="ngModel"
+            [class.is-invalid]="referralNumber.invalid && (referralNumber.touched || referralNumber.dirty)">
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col">
+          <label class="dark-label">Comments (max 500 words)</label>
+          <textarea name="comments" [(ngModel)]="enquiry.comments" rows="4" class="form-control"
+            #comments="ngModel"></textarea>
+          <small [class.text-danger]="getWordCount(enquiry.comments) > 500">
+            Word count: {{ getWordCount(enquiry.comments) }} / 500
+          </small>
         </div>
       </div>
 
@@ -94,7 +119,7 @@
 
       <div class="buttons-row">
         <button type="submit" class="btn btn-success"
-          [disabled]="!enquiryForm.valid">
+          [disabled]="enquiryForm.invalid || getWordCount(enquiry.comments) > 500">
           Create Customer
         </button>
         <button type="button" class="btn btn-danger" (click)="goHome()">

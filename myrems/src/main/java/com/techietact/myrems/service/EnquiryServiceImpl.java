@@ -35,9 +35,9 @@ public Enquiry create(Enquiry enquiry) {
 //public List<Enquiry> getAll() {
 //    return repository.findAllByOrderByCreatedDateAsc();
 //}
-//public List<Enquiry> getAll() {
-//    return repository.findAllByOrderByCreatedDateDesc();
-//}
+public List<Enquiry> getAll() {
+    return repository.findAllByOrderByCreatedDateDesc();
+}
 
 
 public Enquiry getByMobileNo(Long mobileNo) {
@@ -55,7 +55,6 @@ public Enquiry update(Long mobileNo, Enquiry updated) {
     existing.setAadharNo(updated.getAadharNo());
     //existing.setPanNo(updated.getPanNo());
     existing.setProfileImagePath(updated.getProfileImagePath());
-    existing.setComments(updated.getComments());
     existing.setReferralName(updated.getReferralName());
     existing.setReferralNumber(updated.getReferralNumber());
     return repository.save(existing);
@@ -72,14 +71,6 @@ public boolean mobileExists(Long mobileNo) {
 public boolean emailExists(String email) {
     return repository.existsByEmail(email);
 }
-
-@Override
-public List<Enquiry> getAll() {
-    List<Enquiry> enquiries = repository.findAllByOrderByCreatedDateDesc();
-    enquiries.forEach(e -> e.setComments(null));
-    return enquiries;
-}
-
 @Override
 public List<Enquiry> search(String keyword) {
     Long mobile = null;
@@ -91,11 +82,9 @@ public List<Enquiry> search(String keyword) {
         mobile = null; // Not a number → ignore
     }
 
-    List<Enquiry> enquiries = repository.findByFirstNameContainingIgnoreCaseOrLastNameContainingIgnoreCaseOrMobileNoOrEmailContainingIgnoreCase(
+    return repository.findByFirstNameContainingIgnoreCaseOrLastNameContainingIgnoreCaseOrMobileNoOrEmailContainingIgnoreCase(
             keyword, keyword, mobile, keyword
     );
-    enquiries.forEach(e -> e.setComments(null));
-    return enquiries;
 }
 
 }

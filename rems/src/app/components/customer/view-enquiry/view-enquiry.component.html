@@ -28,7 +28,7 @@
       <span class="value">{{ customer.mobileNo }}</span>
     </div>
 
-    <div class="row full-width">
+    <div class="row">
       <span class="icon"><i class="fa fa-home"></i></span>
       <span class="label">Address</span>
       <span class="colon">:</span>
@@ -46,14 +46,7 @@
       <span class="icon"><i class="fa fa-id-card"></i></span>
       <span class="label">Aadhaar Number</span>
       <span class="colon">:</span>
-      <span class="value">{{ customer.aadharNo}}</span>
-    </div>
-
-    <div class="row full-width" *ngIf="customer.comments">
-      <span class="icon"><i class="fa fa-comment"></i></span>
-      <span class="label">Comments</span>
-      <span class="colon">:</span>
-      <span class="value">{{ customer.comments }}</span>
+      <span class="value">{{ customer.aadharNo }}</span>
     </div>
 
     <div class="row" *ngIf="customer.referralName">
@@ -65,7 +58,7 @@
 
     <div class="row" *ngIf="customer.referralNumber">
       <span class="icon"><i class="fa fa-phone"></i></span>
-      <span class="label">Referral Number</span>
+      <span class="label">Referral Ph Number</span>
       <span class="colon">:</span>
       <span class="value">{{ customer.referralNumber }}</span>
     </div>

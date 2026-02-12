@@ -33,8 +33,6 @@ public class Enquiry {
 	
 	private String profileImagePath;
 	
-	private String comments;
-
 	private String referralName;
 	private String referralNumber;
 

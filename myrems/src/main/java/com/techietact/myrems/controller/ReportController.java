@@ -1,22 +1,23 @@
 package com.techietact.myrems.controller;
-
+ 
 import java.awt.Color;
 import java.io.ByteArrayOutputStream;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
-
+ 
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-
+ 
 import com.lowagie.text.Document;
 import com.lowagie.text.Element;
 import com.lowagie.text.Font;
@@ -38,55 +39,59 @@ import com.techietact.myrems.repository.EnquiryRepository;
 import com.techietact.myrems.repository.LayoutRepository;
 import com.techietact.myrems.repository.PlotRepository;
 import com.techietact.myrems.repository.RoleRepository;
-
+ 
+// Apache POI Imports
+import org.apache.poi.ss.usermodel.*;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+ 
 @CrossOrigin
 @RestController
 @RequestMapping("/api/reports")
 public class ReportController {
-
+ 
     private final LayoutRepository layoutRepository;
     private final BookingRepository bookingRepository;
     private final PlotRepository plotRepository;
     private final EnquiryRepository enquiryRepository;
     private final RoleRepository roleRepository;
-
+ 
     public ReportController(
             LayoutRepository layoutRepository,
             BookingRepository bookingRepository,
             PlotRepository plotRepository,
             EnquiryRepository enquiryRepository,
             RoleRepository roleRepository) {
-
+ 
         this.layoutRepository = layoutRepository;
         this.bookingRepository = bookingRepository;
         this.plotRepository = plotRepository;
         this.enquiryRepository = enquiryRepository;
         this.roleRepository = roleRepository;
     }
-
+ 
     /*
      * =========================================================
      * 🔷 COMMON PDF HELPERS
      * =========================================================
      */
-
+ 
     private void addCompanyHeader(Document document, String reportName) throws Exception {
         Font companyFont = FontFactory.getFont(FontFactory.HELVETICA_BOLD, 22);
         Font reportTitleFont = FontFactory.getFont(FontFactory.HELVETICA_BOLD, 14);
         Font infoFont = FontFactory.getFont(FontFactory.HELVETICA, 10);
-
+ 
         // Company Logo/Name
         Paragraph company = new Paragraph("REMS", companyFont);
         company.setAlignment(Element.ALIGN_CENTER);
         company.setSpacingBefore(10f);
         document.add(company);
-
+ 
         // Report Name
         Paragraph title = new Paragraph(reportName, reportTitleFont);
         title.setAlignment(Element.ALIGN_CENTER);
         title.setSpacingBefore(5f);
         document.add(title);
-
+ 
         // Meta Info
         Paragraph info = new Paragraph(
                 "Generated on: " + LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd MMM yyyy, hh:mm a")),
@@ -95,7 +100,7 @@ public class ReportController {
         info.setSpacingAfter(20f);
         document.add(info);
     }
-
+ 
     private void addHeader(PdfPTable table, String text) {
         Font headerFont = FontFactory.getFont(FontFactory.HELVETICA_BOLD, 9, Color.WHITE);
         PdfPCell cell = new PdfPCell(new Phrase(text, headerFont));
@@ -108,7 +113,7 @@ public class ReportController {
         cell.setNoWrap(true);
         table.addCell(cell);
     }
-
+ 
     private void addCell(PdfPTable table, Object value, Color bg, int align) {
         Font font = FontFactory.getFont(FontFactory.HELVETICA, 9);
         PdfPCell cell = new PdfPCell(new Phrase(value == null ? "" : value.toString(), font));
@@ -119,7 +124,7 @@ public class ReportController {
         cell.setBorderColor(Color.LIGHT_GRAY);
         table.addCell(cell);
     }
-
+ 
     private void addFooter(Document document) throws Exception {
         Font footerFont = FontFactory.getFont(FontFactory.HELVETICA, 10);
         Paragraph footer = new Paragraph(
@@ -129,20 +134,20 @@ public class ReportController {
         footer.setSpacingBefore(20f);
         document.add(footer);
     }
-
+ 
     private ResponseEntity<byte[]> pdfResponse(ByteArrayOutputStream baos, String fileName) {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_PDF);
         headers.setContentDispositionFormData("attachment", fileName);
         return new ResponseEntity<>(baos.toByteArray(), headers, HttpStatus.OK);
     }
-
+ 
     /*
      * =========================================================
      * 📄 LAYOUTS REPORT
      * =========================================================
      */
-
+ 
     @PostMapping("/layouts/report")
     public ResponseEntity<byte[]> layoutsReport(@RequestBody(required = false) List<Layout> layouts) {
         try {
@@ -150,18 +155,18 @@ public class ReportController {
             if (layouts == null || layouts.isEmpty()) {
                 layouts = layoutRepository.findAll();
             }
-
+ 
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
             Document document = new Document(PageSize.A4.rotate(), 25, 25, 25, 25);
             PdfWriter.getInstance(document, baos);
             document.open();
-
+ 
             addCompanyHeader(document, "Layouts Master Report");
-
+ 
             PdfPTable table = new PdfPTable(10);
             table.setWidthPercentage(100);
             table.setHeaderRows(1);
-
+ 
             addHeader(table, "S.No");
             addHeader(table, "Layout Name");
             addHeader(table, "Area");
@@ -172,7 +177,7 @@ public class ReportController {
             addHeader(table, "Survey No");
             addHeader(table, "DTCP");
             addHeader(table, "RERA");
-
+ 
             int i = 1;
             for (Layout l : layouts) {
                 Color bg = i % 2 == 0 ? new Color(245, 245, 245) : Color.WHITE;
@@ -187,40 +192,40 @@ public class ReportController {
                 addCell(table, l.isDtcpApproved() ? "YES" : "NO", bg, Element.ALIGN_CENTER);
                 addCell(table, l.isReraApproved() ? "YES" : "NO", bg, Element.ALIGN_CENTER);
             }
-
+ 
             document.add(table);
             addFooter(document);
             document.close();
-
+ 
             return pdfResponse(baos, "layouts-report.pdf");
-
+ 
         } catch (Exception e) {
             return ResponseEntity.internalServerError().build();
         }
     }
-
+ 
     /*
      * =========================================================
      * 📄 BOOKINGS REPORT
      * =========================================================
      */
-
+ 
     @PostMapping("/bookings")
     public ResponseEntity<byte[]> bookingsReport(@RequestBody List<Booking> bookings) {
         try {
-
+ 
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
             Document document = new Document(PageSize.A4.rotate(), 25, 25, 25, 25);
             PdfWriter.getInstance(document, baos);
             document.open();
-
+ 
             addCompanyHeader(document, "Bookings Report");
-
+ 
             float[] columnWidths = { 3f, 13f, 6f, 13f, 10f, 22f, 11f, 11f, 11f };
             PdfPTable table = new PdfPTable(columnWidths);
             table.setWidthPercentage(100);
             table.setHeaderRows(1);
-
+ 
             addHeader(table, "S.No");
             addHeader(table, "Layout");
             addHeader(table, "Plot");
@@ -230,14 +235,14 @@ public class ReportController {
             addHeader(table, "Paid");
             addHeader(table, "Balance");
             addHeader(table, "Status");
-
+ 
             int i = 1;
             DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd-MM-yyyy");
-
+ 
             for (Booking b : bookings) {
-
+ 
                 Color bg = i % 2 == 0 ? new Color(245, 245, 245) : Color.WHITE;
-
+ 
                 StringBuilder advancesStr = new StringBuilder();
                 if (b.getAdvance1() > 0) {
                     advancesStr.append("Advance 1: ₹").append(String.format("%,d", b.getAdvance1()))
@@ -259,14 +264,14 @@ public class ReportController {
                             .append(" (").append(b.getAdvance4Date() != null ? b.getAdvance4Date().format(dtf) : "N/A")
                             .append(")\n");
                 }
-
+ 
                 double paid = b.getAdvance1() +
                         b.getAdvance2() +
                         b.getAdvance3() +
                         b.getAdvance4();
-
+ 
                 double balance = b.getPrice() - paid;
-
+ 
                 addCell(table, i++, bg, Element.ALIGN_CENTER);
                 addCell(table, b.getLayout().getLayoutName(), bg, Element.ALIGN_LEFT);
                 addCell(table, b.getPlot().getPlotNo(), bg, Element.ALIGN_CENTER);
@@ -277,34 +282,34 @@ public class ReportController {
                 addCell(table, String.format("₹%,.0f", balance), bg, Element.ALIGN_RIGHT);
                 addCell(table, b.getStatus(), bg, Element.ALIGN_CENTER);
             }
-
+ 
             document.add(table);
             addFooter(document);
             document.close();
-
+ 
             return pdfResponse(baos, "bookings-report.pdf");
-
+ 
         } catch (Exception e) {
             return ResponseEntity.internalServerError().build();
         }
     }
-
+ 
     /*
      * =========================================================
      * 📄 PLOTS REPORT
      * =========================================================
      */
-
+ 
     @PostMapping("/plots")
     public ResponseEntity<byte[]> plotsReport(
             @RequestBody(required = false) List<Plot> plots) {
-
+ 
         try {
             // 🔹 Filter illa na → ALL plots
             if (plots == null || plots.isEmpty()) {
                 plots = plotRepository.findAll();
             }
-
+ 
             // 🔥 Sort Plots by Plot No (Numeric if possible, else String)
             plots.sort((p1, p2) -> {
                 try {
@@ -315,19 +320,19 @@ public class ReportController {
                     return p1.getPlotNo().compareToIgnoreCase(p2.getPlotNo());
                 }
             });
-
+ 
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
             Document document = new Document(PageSize.A4.rotate(), 25, 25, 25, 25);
             PdfWriter.getInstance(document, baos);
             document.open();
-
+ 
             addCompanyHeader(document, "Plots Report");
-
+ 
             float[] columnWidths = { 5f, 18f, 10f, 18f, 10f, 14f, 12f };
             PdfPTable table = new PdfPTable(columnWidths);
             table.setWidthPercentage(100);
             table.setHeaderRows(1);
-
+ 
             addHeader(table, "S.No");
             addHeader(table, "Layout");
             addHeader(table, "Plot No");
@@ -335,11 +340,11 @@ public class ReportController {
             addHeader(table, "Sqft");
             addHeader(table, "Price");
             addHeader(table, "Status");
-
+ 
             int i = 1;
             for (Plot p : plots) {
                 Color bg = i % 2 == 0 ? new Color(245, 245, 245) : Color.WHITE;
-
+ 
                 addCell(table, i++, bg, Element.ALIGN_CENTER);
                 addCell(table, p.getLayout().getLayoutName(), bg, Element.ALIGN_LEFT);
                 addCell(table, p.getPlotNo(), bg, Element.ALIGN_CENTER);
@@ -349,117 +354,189 @@ public class ReportController {
                 addCell(table, p.isBooked() ? "BOOKED" : "AVAILABLE",
                         bg, Element.ALIGN_CENTER);
             }
-
+ 
             document.add(table);
             addFooter(document);
             document.close();
-
+ 
             return pdfResponse(baos, "plots-report.pdf");
-
+ 
         } catch (Exception e) {
             return ResponseEntity.internalServerError().build();
         }
     }
-
+ 
     /*
      * =========================================================
-     * 📄 ENQUIRIES REPORT ✅ NEW
+     * 📄 ENQUIRIES REPORT ✅ NEW (Refactored to Parameter Based)
      * =========================================================
      */
-
-    @PostMapping("/enquiries")
+ 
+    @GetMapping("/enquiries")
     public ResponseEntity<byte[]> enquiriesReport(
-            @RequestBody(required = false) List<Enquiry> enquiries) {
-
+            @RequestParam(required = false) String layoutLocation,
+            @RequestParam(required = false) String referralName,
+            @RequestParam(required = false) String layoutName,
+            @RequestParam(required = false) String firstName,
+            @RequestParam(required = false) String mobileNo,
+            @RequestParam(required = false) String address) {
+ 
         try {
-            // 🔹 If frontend body empty / null → fetch all
-            if (enquiries == null || enquiries.isEmpty()) {
-                enquiries = enquiryRepository.findAll();
-            }
-
+            List<Enquiry> enquiries = enquiryRepository.advancedSearch(
+                    layoutLocation, referralName, layoutName, firstName, mobileNo, address);
+ 
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
             Document document = new Document(PageSize.A4.rotate(), 25, 25, 25, 25);
             PdfWriter.getInstance(document, baos);
             document.open();
-
+ 
             addCompanyHeader(document, "Customer Enquiries Report");
-
-            float[] columnWidths = { 4f, 16f, 10f, 22f, 16f, 16f, 16f };
+ 
+            float[] columnWidths = { 4f, 14f, 10f, 14f, 12f, 12f, 12f, 12f, 10f };
             PdfPTable table = new PdfPTable(columnWidths);
             table.setWidthPercentage(100);
             table.setHeaderRows(1);
-
+ 
             addHeader(table, "S.No");
             addHeader(table, "Customer Name");
             addHeader(table, "Mobile");
+            addHeader(table, "Layout Name");
+            addHeader(table, "Location");
             addHeader(table, "Address");
             addHeader(table, "Referral Name");
-            addHeader(table, "Referral Ph Number");
+            addHeader(table, "Referral Ph");
             addHeader(table, "Date");
-
+ 
             int i = 1;
             for (Enquiry e : enquiries) {
                 Color bg = i % 2 == 0 ? new Color(245, 245, 245) : Color.WHITE;
-
+ 
                 addCell(table, i++, bg, Element.ALIGN_CENTER);
-                addCell(table,
-                        e.getFirstName() + " " + e.getLastName(),
-                        bg, Element.ALIGN_LEFT);
+                addCell(table, e.getFirstName() + " " + e.getLastName(), bg, Element.ALIGN_LEFT);
                 addCell(table, e.getMobileNo(), bg, Element.ALIGN_CENTER);
+                addCell(table, e.getLayoutName() != null ? e.getLayoutName() : "-", bg, Element.ALIGN_LEFT);
+                addCell(table, e.getLayoutLocation() != null ? e.getLayoutLocation() : "-", bg, Element.ALIGN_LEFT);
                 addCell(table, e.getAddress(), bg, Element.ALIGN_LEFT);
                 addCell(table, e.getReferralName() != null ? e.getReferralName() : "-", bg, Element.ALIGN_LEFT);
                 addCell(table, e.getReferralNumber() != null ? e.getReferralNumber() : "-", bg, Element.ALIGN_CENTER);
-                addCell(table, e.getCreatedDate(), bg, Element.ALIGN_CENTER);
+                addCell(table, e.getCreatedDate() != null ? e.getCreatedDate().format(DateTimeFormatter.ofPattern("dd-MM-yyyy")) : "-", bg, Element.ALIGN_CENTER);
             }
-
+ 
             document.add(table);
             addFooter(document);
             document.close();
-
+ 
             return pdfResponse(baos, "enquiries-report.pdf");
-
+ 
         } catch (Exception e) {
             return ResponseEntity.internalServerError().build();
         }
     }
-
+ 
+    @GetMapping("/enquiries/excel")
+    public ResponseEntity<byte[]> enquiriesExcelReport(
+            @RequestParam(required = false) String layoutLocation,
+            @RequestParam(required = false) String referralName,
+            @RequestParam(required = false) String layoutName,
+            @RequestParam(required = false) String firstName,
+            @RequestParam(required = false) String mobileNo,
+            @RequestParam(required = false) String address) {
+ 
+        try {
+            List<Enquiry> enquiries = enquiryRepository.advancedSearch(
+                    layoutLocation, referralName, layoutName, firstName, mobileNo, address);
+ 
+            try (Workbook workbook = new XSSFWorkbook();
+                 ByteArrayOutputStream out = new ByteArrayOutputStream()) {
+                
+                Sheet sheet = workbook.createSheet("Enquiries");
+ 
+                // Header style
+                CellStyle headerStyle = workbook.createCellStyle();
+                org.apache.poi.ss.usermodel.Font font = workbook.createFont();
+                font.setBold(true);
+                headerStyle.setFont(font);
+                headerStyle.setAlignment(HorizontalAlignment.CENTER);
+ 
+                // Header row
+                String[] columns = {"S.No", "Customer Name", "Mobile", "Layout Name", "Location", "Address", "Referral Name", "Referral Ph", "Date"};
+                Row headerRow = sheet.createRow(0);
+                for (int i = 0; i < columns.length; i++) {
+                    Cell cell = headerRow.createCell(i);
+                    cell.setCellValue(columns[i]);
+                    cell.setCellStyle(headerStyle);
+                }
+ 
+                // Data rows
+                int rowIdx = 1;
+                for (Enquiry e : enquiries) {
+                    Row row = sheet.createRow(rowIdx++);
+                    row.createCell(0).setCellValue(rowIdx - 1);
+                    row.createCell(1).setCellValue(e.getFirstName() + " " + e.getLastName());
+                    row.createCell(2).setCellValue(e.getMobileNo());
+                    row.createCell(3).setCellValue(e.getLayoutName() != null ? e.getLayoutName() : "-");
+                    row.createCell(4).setCellValue(e.getLayoutLocation() != null ? e.getLayoutLocation() : "-");
+                    row.createCell(5).setCellValue(e.getAddress());
+                    row.createCell(6).setCellValue(e.getReferralName() != null ? e.getReferralName() : "-");
+                    row.createCell(7).setCellValue(e.getReferralNumber() != null ? e.getReferralNumber() : "-");
+                    row.createCell(8).setCellValue(e.getCreatedDate() != null ? e.getCreatedDate().format(DateTimeFormatter.ofPattern("dd-MM-yyyy")) : "-");
+                }
+ 
+                // Auto-size columns
+                for (int i = 0; i < columns.length; i++) {
+                    sheet.autoSizeColumn(i);
+                }
+ 
+                workbook.write(out);
+                HttpHeaders headers = new HttpHeaders();
+                headers.setContentType(MediaType.parseMediaType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"));
+                headers.setContentDispositionFormData("attachment", "enquiries-report.xlsx");
+ 
+                return new ResponseEntity<>(out.toByteArray(), headers, HttpStatus.OK);
+            }
+ 
+        } catch (Exception e) {
+            return ResponseEntity.internalServerError().build();
+        }
+    }
+ 
     @PostMapping("/roles")
     public ResponseEntity<byte[]> roleReport(@RequestBody List<Role> roles) {
         try {
-
+ 
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
             Document document = new Document(PageSize.A4.rotate(), 25, 25, 25, 25);
             PdfWriter.getInstance(document, baos);
             document.open();
-
+ 
             addCompanyHeader(document, "Role Report");
-
+ 
             PdfPTable table = new PdfPTable(4);
             table.setWidthPercentage(100);
-
+ 
             addHeader(table, "S.No");
             addHeader(table, "Name");
             addHeader(table, "Mobile");
             addHeader(table, "Address");
-
+ 
             int i = 1;
             for (Role v : roles) {
                 Color bg = i % 2 == 0 ? new Color(245, 245, 245) : Color.WHITE;
-
+ 
                 addCell(table, i++, bg, Element.ALIGN_CENTER);
                 addCell(table, v.getFirstName() + " " + v.getLastName(), bg, Element.ALIGN_LEFT);
                 addCell(table, v.getMobileNo(), bg, Element.ALIGN_CENTER);
                 addCell(table, v.getAddress(), bg, Element.ALIGN_LEFT);
             }
-
+ 
             document.add(table);
             document.close();
-
+ 
             return pdfResponse(baos, "roles-report.pdf");
-
+ 
         } catch (Exception e) {
             return ResponseEntity.internalServerError().build();
         }
     }
-
+ 
 }

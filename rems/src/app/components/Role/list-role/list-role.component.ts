@@ -58,19 +58,16 @@ export class ListRoleComponent {
   }
 
   onSearch() {
-    const nameKeyword = this.searchName.trim().toLowerCase();
-    const mobileKeyword = this.searchMobile.trim();
-
-    this.filteredData = this.allData.filter(c => {
-      const fullName = ((c.firstName || '') + ' ' + (c.lastName || '')).toLowerCase();
-
-      const matchesName = nameKeyword ? fullName.includes(nameKeyword) : true;
-      const matchesMobile = mobileKeyword ? c.mobileNo?.toString().includes(mobileKeyword) : true;
-
-      return matchesName && matchesMobile;
+    this.roleService.advancedSearch(
+      this.searchName,
+      undefined,
+      this.searchMobile,
+      undefined,
+      undefined
+    ).subscribe(data => {
+      this.filteredData = data;
+      this.currentPage = 1;
     });
-
-    this.currentPage = 1;
   }
 
   createRole() {
@@ -82,7 +79,7 @@ export class ListRoleComponent {
   }
 
   viewRole(roleId: number) {
-    this.router.navigate(['/view-role', roleId]);
+    this.router.navigate(['/view-customer', roleId]);
   }
 
   deleteRole(roleId: number) {
@@ -105,6 +102,13 @@ export class ListRoleComponent {
   }
 
 
+
+  onClear() {
+    this.searchName = '';
+    this.searchMobile = '';
+    this.currentPage = 1;
+    this.loadData();
+  }
 
   goHome() {
     this.router.navigate(['/dashboard']);

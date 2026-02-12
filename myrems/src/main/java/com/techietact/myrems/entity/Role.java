@@ -1,5 +1,6 @@
 package com.techietact.myrems.entity;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -25,5 +26,11 @@ public class Role {
 	private String address;
 	private String role;
 	private String profileImagePath;
+	
+	@Column(name = "referral_name")
+	private String referralName;
+	
+	@Column(name = "referral_number")
+	private String referralNumber;
 
 }

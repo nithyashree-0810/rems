@@ -16,9 +16,11 @@ public class RoleServiceImpl implements RoleService {
 	@Override
 	public Role create(Role role) {
 		// TODO Auto-generated method stub
-		if (repository.existsByMobileNo(role.getMobileNo())) {
-	        throw new RuntimeException("Mobile number already exists!");
-	    }
+		if (role.getMobileNo() != null && !role.getMobileNo().trim().isEmpty()) {
+			if (repository.existsByMobileNo(role.getMobileNo())) {
+				throw new RuntimeException("Mobile number already exists!");
+			}
+		}
 	    if (role.getEmail() != null && !role.getEmail().trim().isEmpty()) {
 	        if (repository.existsByEmail(role.getEmail())) {
 	            throw new RuntimeException("Email already exists!");

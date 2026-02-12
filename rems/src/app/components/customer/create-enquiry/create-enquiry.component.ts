@@ -3,7 +3,9 @@ import { NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Enquiry } from '../../../models/enquiry';
 import { CustomerService } from '../../../services/customer.service';
+import { LayoutserviceService } from '../../../services/layoutservice.service';
 import { ToastrService } from 'ngx-toastr';
+import { Layout } from '../../../models/layout';
 
 @Component({
   selector: 'app-create-enquiry',
@@ -12,12 +14,46 @@ import { ToastrService } from 'ngx-toastr';
   styleUrl: './create-enquiry.component.css'
 })
 export class CreateEnquiryComponent {
-  limitAadharLength() {
-    throw new Error('Method not implemented.');
-  }
-  constructor(private customerService: CustomerService, private router: Router, private toastr: ToastrService) { }
-  enquiry: Enquiry = {
+  layoutList: Layout[] = [];
+  showOtherLayout: boolean = false;
+  selectedLayoutName: string = '';
 
+  constructor(
+    private customerService: CustomerService,
+    private layoutService: LayoutserviceService,
+    private router: Router,
+    private toastr: ToastrService
+  ) { }
+
+  ngOnInit() {
+    this.fetchLayouts();
+  }
+
+  fetchLayouts() {
+    this.layoutService.getLayouts().subscribe({
+      next: (layouts) => this.layoutList = layouts,
+      error: (err) => console.error('Error fetching layouts', err)
+    });
+  }
+
+  onLayoutNameChange() {
+    if (this.selectedLayoutName === 'Others') {
+      this.showOtherLayout = true;
+      this.enquiry.layoutName = '';
+      this.enquiry.layoutLocation = '';
+    } else {
+      this.showOtherLayout = false;
+      this.enquiry.layoutName = this.selectedLayoutName;
+      const selected = this.layoutList.find(l => l.layoutName === this.selectedLayoutName);
+      this.enquiry.layoutLocation = selected ? selected.location : '';
+    }
+  }
+
+  limitAadharLength() {
+    // Logic to limit aadhar length if needed
+  }
+
+  enquiry: Enquiry = {
     mobileNo: undefined as any,
     firstName: '',
     lastName: '',
@@ -28,8 +64,11 @@ export class CreateEnquiryComponent {
     aadharNo: '',
     panNo: '',
     referralNumber: '',
+    layoutName: '',
+    layoutLocation: '',
     comment: ''
   }
+
   mobileExists: boolean = false;
   duplicateMobileName: string = '';
   selectedImage: File | null = null;

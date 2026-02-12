@@ -89,6 +89,17 @@ public class EnquiryController {
     public List<Enquiry> search(@PathVariable String keyword) {
         return enquiryService.search(keyword);
     }
+
+    @GetMapping("/advanced-search")
+    public List<Enquiry> advancedSearch(
+            @RequestParam(required = false) String layoutLocation,
+            @RequestParam(required = false) String referralName,
+            @RequestParam(required = false) String layoutName,
+            @RequestParam(required = false) String firstName,
+            @RequestParam(required = false) String mobileNo,
+            @RequestParam(required = false) String address) {
+        return enquiryService.advancedSearch(layoutLocation, referralName, layoutName, firstName, mobileNo, address);
+    }
     
     @PostMapping("/{mobileNo}/image")
     public ResponseEntity<Enquiry> uploadImage(@PathVariable Long mobileNo, @RequestParam("file") MultipartFile file) {

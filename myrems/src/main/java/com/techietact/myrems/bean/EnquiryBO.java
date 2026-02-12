@@ -18,6 +18,7 @@ public class EnquiryBO {
 	private Long aadharNo;
 	private String referralName;
 	private String referralNumber;
+	private String layoutName;
+	private String layoutLocation;
 	
-
 }

@@ -15,19 +15,19 @@ export class ReportService {
   constructor(private http: HttpClient) { }
 
   downloadLayoutsReport(filteredLayouts: Layout[]): Observable<Blob> {
-  const headers = new HttpHeaders({
-    // any auth headers go here
-  });
+    const headers = new HttpHeaders({
+      // any auth headers go here
+    });
 
-  return this.http.post(
-    `${this.baseUrl}/layouts/report`,
-    filteredLayouts, // send filtered layouts from UI
-    { headers, responseType: 'blob' } // must be outside the body
-  );
-}
+    return this.http.post(
+      `${this.baseUrl}/layouts/report`,
+      filteredLayouts, // send filtered layouts from UI
+      { headers, responseType: 'blob' } // must be outside the body
+    );
+  }
 
 
- downloadBookingsReport(bookings: Booking[]): Observable<Blob> {
+  downloadBookingsReport(bookings: Booking[]): Observable<Blob> {
     return this.http.post(
       `${this.baseUrl}/bookings`,
       bookings,
@@ -36,29 +36,35 @@ export class ReportService {
   }
 
 
-  downloadEnquiriesReport(data: any[]): Observable<Blob> {
-  return this.http.post(
-    `${this.baseUrl}/enquiries`,
-    data,
-    { responseType: 'blob' }
-  );
-}
+  downloadEnquiriesReport(params: any): Observable<Blob> {
+    return this.http.get(`${this.baseUrl}/enquiries`, {
+      params,
+      responseType: 'blob'
+    });
+  }
+
+  downloadEnquiriesExcelReport(params: any): Observable<Blob> {
+    return this.http.get(`${this.baseUrl}/enquiries/excel`, {
+      params,
+      responseType: 'blob'
+    });
+  }
 
   downloadPlotsReport(data: any[]): Observable<Blob> {
-  return this.http.post(
-    `${this.baseUrl}/plots`,
-    data,
-    { responseType: 'blob' }
-  );
-}
+    return this.http.post(
+      `${this.baseUrl}/plots`,
+      data,
+      { responseType: 'blob' }
+    );
+  }
 
-downloadRoleReport(data: any[]) {
-  return this.http.post(
-    'http://localhost:8080/api/reports/roles',
-    data,
-    { responseType: 'blob' }
-  );
-}
+  downloadRoleReport(data: any[]) {
+    return this.http.post(
+      'http://localhost:8080/api/reports/roles',
+      data,
+      { responseType: 'blob' }
+    );
+  }
 
 
 

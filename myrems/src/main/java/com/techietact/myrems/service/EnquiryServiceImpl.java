@@ -31,6 +31,18 @@ public Enquiry create(Enquiry enquiry) {
             throw new RuntimeException("Email already exists!");
         }
     }
+
+    // Validation for firstName
+    if (enquiry.getFirstName() == null || enquiry.getFirstName().trim().isEmpty()) {
+        throw new RuntimeException("First Name is required.");
+    }
+    if (enquiry.getFirstName().length() > 30) {
+        throw new RuntimeException("First Name cannot exceed 30 characters.");
+    }
+    if (!enquiry.getFirstName().matches("^[a-zA-Z ]+$")) {
+        throw new RuntimeException("First Name can only contain alphabets and spaces.");
+    }
+
     enquiry.setCreatedDate(LocalDateTime.now());
 
     return repository.save(enquiry);
@@ -64,6 +76,8 @@ public Enquiry update(Long mobileNo, Enquiry updated) {
     existing.setProfileImagePath(updated.getProfileImagePath());
     existing.setReferralName(updated.getReferralName());
     existing.setReferralNumber(updated.getReferralNumber());
+    existing.setLayoutName(updated.getLayoutName());
+    existing.setLayoutLocation(updated.getLayoutLocation());
     existing.setComment(updated.getComment());
     return repository.save(existing);
 }
@@ -92,6 +106,18 @@ public List<Enquiry> search(String keyword) {
 
     return repository.findByFirstNameContainingIgnoreCaseOrLastNameContainingIgnoreCaseOrMobileNoOrEmailContainingIgnoreCase(
             keyword, keyword, mobile, keyword
+    );
+}
+
+@Override
+public List<Enquiry> advancedSearch(String layoutLocation, String referralName, String layoutName, String firstName, String mobileNo, String address) {
+    return repository.advancedSearch(
+            layoutLocation == null ? "" : layoutLocation,
+            referralName == null ? "" : referralName,
+            layoutName == null ? "" : layoutName,
+            firstName == null ? "" : firstName,
+            mobileNo == null ? "" : mobileNo,
+            address == null ? "" : address
     );
 }
 

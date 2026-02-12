@@ -2,25 +2,44 @@
 
   <h2>List of Customers</h2>
 
-  <!-- SEARCH + CREATE SAME ROW -->
+  <!-- ACTION BUTTONS (CREATE & PDF) -->
+  <div class="action-buttons-row">
+    <button class="btn-success" (click)="createEnquiry()">
+      <i class="fa fa-plus"></i> Create Customer
+    </button>
+
+  </div>
+
+  <!-- SEARCH SECTION -->
   <div class="search-create-row">
-
     <div class="search-container">
-      <input type="text" [(ngModel)]="searchName" (keyup)="onSearch()" placeholder="Search By first or last Name"
-        class="search-input">
+      <input type="text" [(ngModel)]="searchName" (input)="onSearch()" (keyup.enter)="onSearch()"
+        placeholder="Search By First or Last Name" class="search-input">
 
-      <input type="text" [(ngModel)]="searchMobile" (keyup)="onSearch()" placeholder="Search Mobile Number"
-        class="search-input">
+      <input type="text" [(ngModel)]="searchMobile" (input)="onSearch()" (keyup.enter)="onSearch()"
+        placeholder="Search Mobile Number" class="search-input">
 
-      <button class="search-btn" (click)="onSearch()">Search</button>
+      <input type="text" [(ngModel)]="searchLocation" (input)="onSearch()" (keyup.enter)="onSearch()"
+        placeholder="Search Location" class="search-input">
+
+      <input type="text" [(ngModel)]="searchReferral" (input)="onSearch()" (keyup.enter)="onSearch()"
+        placeholder="Search Referral Name" class="search-input">
+
+      <input type="text" [(ngModel)]="searchLayoutName" (input)="onSearch()" (keyup.enter)="onSearch()"
+        placeholder="Search Layout Name" class="search-input">
+
+      <input type="text" [(ngModel)]="searchAddress" (input)="onSearch()" (keyup.enter)="onSearch()"
+        placeholder="Search Address" class="search-input">
+
+      <div class="search-btn-wrapper">
+        <button class="search-btn" (click)="onSearch()">
+          Search
+        </button>
+        <button class="clear-btn" (click)="onClear()">
+          Clear
+        </button>
+      </div>
     </div>
-
-    <div class="top-buttons">
-      <button class="btn btn-success" (click)="createEnquiry()">
-        <i class="fa fa-plus"></i> Create Customer
-      </button>
-    </div>
-
   </div>
 
 
@@ -33,7 +52,10 @@
           <th>Image</th>
           <th>First Name</th>
           <th>Last Name</th>
+          <th>Layout Name</th>
+          <th>Layout Location</th>
           <th>Address</th>
+          <th>Referral Name</th>
           <th>Mobile</th>
           <th>Actions</th>
         </tr>
@@ -41,10 +63,7 @@
 
       <tbody *ngIf="filteredData.length > 0">
         <tr *ngFor="let c of filteredData | slice:(currentPage-1)*pageSize:currentPage*pageSize; let i = index">
-
           <td>{{ (currentPage - 1) * pageSize + i + 1 }}</td>
-
-          <!-- Profile Image -->
           <td>
             <div class="img-wrapper">
               <img *ngIf="c.profileImagePath" [src]="imageUrl(c.profileImagePath)" alt="Photo">
@@ -52,18 +71,16 @@
           </td>
           <td class="left-align">{{ c.firstName }}</td>
           <td class="left-align">{{ c.lastName }}</td>
+          <td>{{ c.layoutName }}</td>
+          <td>{{ c.layoutLocation }}</td>
           <td>{{ c.address }}</td>
+          <td>{{ c.referralName }}</td>
           <td>{{ c.mobileNo }}</td>
-
           <td>
             <div class="action-icons">
-
               <i class="fa fa-eye circle-icon view" (click)="viewcustomer(c.mobileNo)"></i>
-
               <i class="fa fa-pencil circle-icon edit" (click)="editCustomer(c)"></i>
-
               <i class="fa fa-trash circle-icon delete" (click)="deleteCustomer(c.mobileNo)"></i>
-
             </div>
           </td>
         </tr>
@@ -71,7 +88,7 @@
 
       <tbody *ngIf="filteredData.length === 0">
         <tr>
-          <td colspan="7" class="no-records-cell">
+          <td colspan="10" class="no-records-cell">
             <div class="no-records-msg">
               <i class="fa fa-info-circle"></i> No Records Found
             </div>
@@ -85,8 +102,6 @@
       (pageSizeChange)="pageSize = $event; currentPage = 1">
     </app-pagination>
   </div>
-
-
 
   <div class="pagination-container">
     <button class="btn btn-danger pagination-home-btn" (click)="goHome()">

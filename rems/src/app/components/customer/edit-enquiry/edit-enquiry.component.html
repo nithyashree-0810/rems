@@ -8,16 +8,12 @@
       <div class="row">
         <div class="col">
           <label class="form-label">First Name:</label>
-          <input type="text" class="form-control"
-                 [(ngModel)]="customer.firstName"
-                 name="firstName" required>
+          <input type="text" class="form-control" [(ngModel)]="customer.firstName" name="firstName" required>
         </div>
 
         <div class="col">
           <label class="form-label">Last Name:</label>
-          <input type="text" class="form-control"
-                 [(ngModel)]="customer.lastName"
-                 name="lastName" required>
+          <input type="text" class="form-control" [(ngModel)]="customer.lastName" name="lastName" required>
         </div>
       </div>
 
@@ -25,17 +21,12 @@
       <div class="row">
         <div class="col">
           <label class="form-label">Mobile:</label>
-          <input type="text" class="form-control"
-                 [(ngModel)]="customer.mobileNo"
-                 name="mobileNo" disabled>
+          <input type="text" class="form-control" [(ngModel)]="customer.mobileNo" name="mobileNo" disabled>
         </div>
 
         <div class="col">
           <label class="form-label">Pincode:</label>
-          <input type="text" class="form-control"
-                 [(ngModel)]="customer.pincode"
-                 name="pincode"
-                 maxlength="6" required>
+          <input type="text" class="form-control" [(ngModel)]="customer.pincode" name="pincode" maxlength="6" required>
         </div>
       </div>
 
@@ -43,16 +34,12 @@
       <div class="row">
         <div class="col">
           <label class="form-label">Address:</label>
-          <input type="text" class="form-control"
-                 [(ngModel)]="customer.address"
-                 name="address" required>
+          <input type="text" class="form-control" [(ngModel)]="customer.address" name="address" required>
         </div>
 
         <div class="col">
           <label class="form-label">Email:</label>
-          <input type="email" class="form-control"
-                 [(ngModel)]="customer.email"
-                 name="email">
+          <input type="email" class="form-control" [(ngModel)]="customer.email" name="email">
         </div>
       </div>
 
@@ -60,32 +47,36 @@
       <div class="row">
         <div class="col">
           <label class="form-label">Aadhaar:</label>
-          <input type="text" class="form-control"
-                 [(ngModel)]="customer.aadharNo"
-                 name="aadharNo"
-                 maxlength="12">
+          <input type="text" class="form-control" [(ngModel)]="customer.aadharNo" name="aadharNo" maxlength="12">
         </div>
 
         <div class="col">
           <label class="form-label">Profile Image (optional)</label>
-          <input type="file"
-                 class="form-control"
-                 (change)="onFileChange($event)"
-                 accept="image/*">
+          <input type="file" class="form-control" (change)="onFileChange($event)" accept="image/*">
+        </div>
+      </div>
+
+      <!-- Row 5: Referral Fields -->
+      <div class="row">
+        <div class="col">
+          <label class="form-label">Referral Name:</label>
+          <input type="text" class="form-control" [(ngModel)]="customer.referralName" name="referralName">
+        </div>
+
+        <div class="col">
+          <label class="form-label">Referral Ph Number:</label>
+          <input type="text" class="form-control" [(ngModel)]="customer.referralNumber" name="referralNumber"
+            maxlength="10">
         </div>
       </div>
 
       <!-- Buttons -->
       <div class="buttons-row mt-3 d-flex justify-content-end w-100">
-        <button type="submit"
-                class="btn btn-primary me-2"
-                [disabled]="!enquiryForm.valid">
+        <button type="submit" class="btn btn-primary me-2" [disabled]="!enquiryForm.valid">
           Update Customer
         </button>
 
-        <button type="button"
-                class="btn btn-secondary"
-                (click)="goHome()">
+        <button type="button" class="btn btn-secondary" (click)="goHome()">
           Back
         </button>
       </div>

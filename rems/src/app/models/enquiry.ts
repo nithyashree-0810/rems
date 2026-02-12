@@ -10,7 +10,6 @@ export class Enquiry {
     panNo!: string;
     aadharNo!: string;
     profileImagePath?: string;
-    comments?: string;
     referralName?: string;
     referralNumber?: string;
 

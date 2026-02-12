@@ -27,15 +27,9 @@ export class CreateEnquiryComponent {
     pincode: undefined as any,
     aadharNo: '',
     panNo: '',
-    comments: ''
 
 
 
-  }
-
-  getWordCount(text: string | undefined): number {
-    if (!text) return 0;
-    return text.trim().split(/\s+/).filter(word => word.length > 0).length;
   }
   mobileExists: boolean = false;
   selectedImage: File | null = null;

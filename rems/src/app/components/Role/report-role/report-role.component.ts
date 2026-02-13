@@ -98,9 +98,14 @@ export class ReportRoleComponent implements OnInit {
       return;
     }
 
-    this.reportService.downloadRoleReport(this.filteredData)
+    const dataToDownload = this.filteredData.slice(
+      (this.currentPage - 1) * this.pageSize,
+      this.currentPage * this.pageSize
+    );
+
+    this.reportService.downloadRoleReport(dataToDownload)
       .subscribe({
-        next: (blob) => {
+        next: (blob: Blob) => {
           const url = window.URL.createObjectURL(blob);
           const a = document.createElement('a');
           a.href = url;

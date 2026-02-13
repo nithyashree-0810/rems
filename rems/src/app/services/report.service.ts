@@ -36,14 +36,30 @@ export class ReportService {
   }
 
 
-  downloadEnquiriesReport(params: any): Observable<Blob> {
+  downloadEnquiriesReport(layoutLocation?: string, referralName?: string, layoutName?: string, firstName?: string, mobileNo?: string, address?: string): Observable<Blob> {
+    let params: any = {};
+    if (layoutLocation) params.layoutLocation = layoutLocation;
+    if (referralName) params.referralName = referralName;
+    if (layoutName) params.layoutName = layoutName;
+    if (firstName) params.firstName = firstName;
+    if (mobileNo) params.mobileNo = mobileNo;
+    if (address) params.address = address;
+
     return this.http.get(`${this.baseUrl}/enquiries`, {
       params,
       responseType: 'blob'
     });
   }
 
-  downloadEnquiriesExcelReport(params: any): Observable<Blob> {
+  downloadEnquiriesExcelReport(layoutLocation?: string, referralName?: string, layoutName?: string, firstName?: string, mobileNo?: string, address?: string): Observable<Blob> {
+    let params: any = {};
+    if (layoutLocation) params.layoutLocation = layoutLocation;
+    if (referralName) params.referralName = referralName;
+    if (layoutName) params.layoutName = layoutName;
+    if (firstName) params.firstName = firstName;
+    if (mobileNo) params.mobileNo = mobileNo;
+    if (address) params.address = address;
+
     return this.http.get(`${this.baseUrl}/enquiries/excel`, {
       params,
       responseType: 'blob'

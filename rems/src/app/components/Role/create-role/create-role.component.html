@@ -82,6 +82,21 @@
         </div>
       </div>
 
+      <!-- Row 5: Referral Name & Referral Number -->
+      <div class="row">
+        <div class="col">
+          <label>Referral Name</label>
+          <input type="text" name="referralName" [(ngModel)]="role.referralName" maxlength="30" pattern="^[a-zA-Z ]*$"
+            placeholder="Enter Referral Name" #referralName="ngModel">
+        </div>
+
+        <div class="col">
+          <label>Referral Ph Number</label>
+          <input type="text" name="referralNumber" [(ngModel)]="role.referralNumber" maxlength="10"
+            pattern="^[0-9]{10}$|^$" placeholder="Enter 10-digit Referral Ph Number" #referralNumber="ngModel">
+        </div>
+      </div>
+
       <!-- Profile Image -->
       <div class="row">
         <div class="col">

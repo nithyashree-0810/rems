@@ -52,14 +52,28 @@
 
         <div class="col">
           <label>Role</label>
-         <select multiple [(ngModel)]="selectedRoles" name="selectedRoles" required>
-  <option value="Agent">Agent</option>
-  <option value="Owner">Owner</option>
-</select>
+          <select multiple [(ngModel)]="selectedRoles" name="selectedRoles" required>
+            <option value="Agent">Agent</option>
+            <option value="Owner">Owner</option>
+          </select>
 
         </div>
       </div>
-      
+
+      <div class="row">
+        <div class="col">
+          <label>Referral Name</label>
+          <input type="text" name="referralName" [(ngModel)]="role.referralName" maxlength="30" pattern="^[a-zA-Z ]*$"
+            placeholder="Enter Referral Name">
+        </div>
+
+        <div class="col">
+          <label>Referral Ph Number</label>
+          <input type="text" name="referralNumber" [(ngModel)]="role.referralNumber" maxlength="10"
+            pattern="^[0-9]{10}$|^$" placeholder="Enter 10-digit Referral Ph Number">
+        </div>
+      </div>
+
       <div class="row">
         <div class="col">
           <label>Profile Image (optional)</label>
@@ -81,4 +95,3 @@
     </form>
   </div>
 </div>
-

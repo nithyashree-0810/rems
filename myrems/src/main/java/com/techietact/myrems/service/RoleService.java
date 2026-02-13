@@ -24,4 +24,6 @@ public interface RoleService {
 	List<Role> search(String keyword);
 
 	String getExistingMobileName(String mobileNo);
+ 
+	List<Role> advancedSearch(String firstName, String lastName, String mobileNo, String address, String referralName);
 }

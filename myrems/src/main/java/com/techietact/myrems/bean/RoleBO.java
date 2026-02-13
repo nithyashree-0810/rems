@@ -15,5 +15,7 @@ public class RoleBO {
 	private String email;
 	private String address;
 	private String role;
+	private String referralName;
+	private String referralNumber;
 
 }

@@ -27,5 +27,7 @@ public interface EnquiryService {
 
 	List<Enquiry> search(String keyword);
 
+	List<Enquiry> advancedSearch(String layoutLocation, String referralName, String layoutName, String firstName, String mobileNo, String address);
+
 	String getExistingMobileName(Long mobileNo);
 }

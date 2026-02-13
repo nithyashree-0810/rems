@@ -67,6 +67,8 @@ public class RoleServiceImpl implements RoleService {
         }
     roles.setAddress(role.getAddress());
     roles.setProfileImagePath(role.getProfileImagePath());
+    roles.setReferralName(role.getReferralName());
+    roles.setReferralNumber(role.getReferralNumber());
         
     return repository.save(roles);
 }
@@ -105,5 +107,10 @@ public class RoleServiceImpl implements RoleService {
 		return repository.findByMobileNo(mobileNo)
 				.map(role -> role.getFirstName() + " " + role.getLastName())
 				.orElse("");
+	}
+ 
+	@Override
+	public List<Role> advancedSearch(String firstName, String lastName, String mobileNo, String address, String referralName) {
+		return repository.advancedSearch(firstName, lastName, mobileNo, address, referralName);
 	}
 }

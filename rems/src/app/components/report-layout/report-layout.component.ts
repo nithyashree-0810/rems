@@ -35,8 +35,12 @@ export class ReportLayoutComponent {
   // Load Data
   loadLayouts() {
     this.layoutService.getLayouts().subscribe((data: Layout[]) => {
-      this.allLayouts = data;
-      this.filteredData = [...data];
+      this.allLayouts = data.sort((a, b) => {
+        const dateA = new Date(a.createdDate || 0).getTime();
+        const dateB = new Date(b.createdDate || 0).getTime();
+        return dateB - dateA || (Number(b.id) - Number(a.id));
+      });
+      this.filteredData = [...this.allLayouts];
       this.currentPage = 1;
     });
   }

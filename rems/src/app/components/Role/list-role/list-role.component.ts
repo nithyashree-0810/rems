@@ -38,7 +38,7 @@ export class ListRoleComponent {
       this.filteredData = [];
 
       this.allData = [...data]
-        .reverse()
+        .sort((a, b) => Number(b.roleId) - Number(a.roleId))
         .map(c => ({
           ...c,
           firstName: c.firstName?.trim(),
@@ -65,7 +65,7 @@ export class ListRoleComponent {
       undefined,
       undefined
     ).subscribe(data => {
-      this.filteredData = data;
+      this.filteredData = data.sort((a, b) => Number(b.roleId) - Number(a.roleId));
       this.currentPage = 1;
     });
   }

@@ -48,8 +48,12 @@ export class ViewLayoutsComponent {
 
   loadLayouts() {
     this.layoutService.getLayouts().subscribe((data: Layout[]) => {
-      this.allLayouts = data;
-      this.filteredLayouts = [...data];
+      this.allLayouts = data.sort((a, b) => {
+        const dateA = new Date(a.createdDate || 0).getTime();
+        const dateB = new Date(b.createdDate || 0).getTime();
+        return dateB - dateA || (Number(b.id) - Number(a.id));
+      });
+      this.filteredLayouts = [...this.allLayouts];
       this.noRecords = data.length === 0;
       this.currentPage = 1;
     });

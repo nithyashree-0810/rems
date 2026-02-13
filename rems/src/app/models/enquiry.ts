@@ -15,6 +15,6 @@ export class Enquiry {
     layoutName?: string;
     layoutLocation?: string;
     comment?: string;
-
+    createdDate?: string;
 }
 

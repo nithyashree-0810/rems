@@ -36,7 +36,7 @@ export class ReportPlotComponent {
   loadPlots(): void {
     this.plotService.getPlots().subscribe({
       next: (data: any[]) => {
-        this.allPlots = data.reverse();
+        this.allPlots = data.sort((a, b) => Number(b.plotId) - Number(a.plotId));
         this.plots = [...this.allPlots];
         this.searchMessage = '';
         this.currentPage = 1;

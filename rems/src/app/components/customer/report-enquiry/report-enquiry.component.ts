@@ -51,7 +51,11 @@ export class ReportEnquiryComponent {
         firstName: c.firstName?.trim(),
         lastName: c.lastName?.trim(),
         address: c.address?.trim()
-      }));
+      })).sort((a, b) => {
+        const dateA = a.createdDate ? new Date(a.createdDate).getTime() : 0;
+        const dateB = b.createdDate ? new Date(b.createdDate).getTime() : 0;
+        return dateB - dateA;
+      });
 
       this.filteredData = [...this.allData];
       this.currentPage = 1;
@@ -67,7 +71,11 @@ export class ReportEnquiryComponent {
       this.searchMobile,
       this.searchAddress
     ).subscribe(data => {
-      this.filteredData = data;
+      this.filteredData = data.sort((a, b) => {
+        const dateA = a.createdDate ? new Date(a.createdDate).getTime() : 0;
+        const dateB = b.createdDate ? new Date(b.createdDate).getTime() : 0;
+        return dateB - dateA;
+      });
       this.currentPage = 1;
     });
   }

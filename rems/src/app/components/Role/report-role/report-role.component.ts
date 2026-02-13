@@ -36,7 +36,7 @@ export class ReportRoleComponent implements OnInit {
 
   loadRoles(): void {
     this.roleService.getAll().subscribe((data: Role[]) => {
-      this.allData = data || [];
+      this.allData = (data || []).sort((a, b) => Number(b.roleId) - Number(a.roleId));
       this.filteredData = [...this.allData];
       this.showRoleColumn = true;
       this.currentPage = 1;

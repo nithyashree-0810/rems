@@ -103,10 +103,10 @@ export class ReportPlotComponent {
 
   downloadPlotsReport(): void {
 
-    const dataToDownload =
-      this.searchLayoutName || this.searchPlotNo
-        ? this.plots        // filtered plots
-        : this.allPlots;    // all plots
+    const dataToDownload = this.plots.slice(
+      (this.currentPage - 1) * this.pageSize,
+      this.currentPage * this.pageSize
+    );
 
     this.reportService.downloadPlotsReport(dataToDownload).subscribe({
       next: (blob: Blob) => {

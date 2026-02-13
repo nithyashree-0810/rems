@@ -19,6 +19,7 @@ export class ListEnquiryComponent implements OnInit {
   searchReferral: string = '';
   searchLayoutName: string = '';
   searchAddress: string = '';
+  activeSearchTab: string = 'general'; // 'general' or 'referral'
 
   allData: Enquiry[] = [];
   filteredData: Enquiry[] = [];

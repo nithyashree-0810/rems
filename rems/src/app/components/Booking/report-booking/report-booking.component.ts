@@ -140,8 +140,10 @@ export class ReportBookingComponent {
   }
 
   downloadBookingsReport(): void {
-    // send filteredData or paginatedBookings depending on your needs
-    const dataToSend = this.filteredData;
+    const dataToSend = this.filteredData.slice(
+      (this.currentPage - 1) * this.pageSize,
+      this.currentPage * this.pageSize
+    );
 
     this.reportService.downloadBookingsReport(dataToSend).subscribe({
       next: (blob: Blob) => {

@@ -89,7 +89,12 @@ export class ReportLayoutComponent {
       return;
     }
 
-    this.reportService.downloadLayoutsReport(this.filteredData).subscribe({
+    const dataToDownload = this.filteredData.slice(
+      (this.currentPage - 1) * this.pageSize,
+      this.currentPage * this.pageSize
+    );
+
+    this.reportService.downloadLayoutsReport(dataToDownload).subscribe({
       next: (blob: Blob) => {
         const url = window.URL.createObjectURL(blob);
         const a = document.createElement('a');

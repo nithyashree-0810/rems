@@ -198,7 +198,7 @@
         </div>
       </div>
 
-      <div class="pagination-section" *ngIf="filteredBookingHistory.length > 0">
+      <div class="pagination-section" *ngIf="filteredBookingHistory.length > 5">
         <app-pagination [totalItems]="filteredBookingHistory.length" [pageSize]="pageSize" [currentPage]="currentPage"
           (pageChange)="currentPage = $event" (pageSizeChange)="pageSize = $event; currentPage = 1">
         </app-pagination>

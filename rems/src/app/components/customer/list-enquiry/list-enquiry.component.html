@@ -122,7 +122,7 @@
       </tbody>
     </table>
 
-    <app-pagination *ngIf="filteredData.length > 0" [totalItems]="filteredData.length" [pageSize]="pageSize"
+    <app-pagination *ngIf="filteredData.length > 5" [totalItems]="filteredData.length" [pageSize]="pageSize"
       [currentPage]="currentPage" (pageChange)="currentPage = $event"
       (pageSizeChange)="pageSize = $event; currentPage = 1">
     </app-pagination>

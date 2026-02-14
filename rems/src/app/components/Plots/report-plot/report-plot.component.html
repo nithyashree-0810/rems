@@ -68,7 +68,7 @@
     </table>
 
     <!-- Pagination inside the same card -->
-    <app-pagination *ngIf="plots.length > 0" [totalItems]="plots.length" [pageSize]="pageSize"
+    <app-pagination *ngIf="plots.length > 5" [totalItems]="plots.length" [pageSize]="pageSize"
       [currentPage]="currentPage" (pageChange)="currentPage = $event"
       (pageSizeChange)="pageSize = $event; currentPage = 1">
     </app-pagination>

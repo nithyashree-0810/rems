@@ -100,7 +100,7 @@
         </tr>
       </tbody>
     </table>
-    <app-pagination *ngIf="filteredLayouts.length > 0" [totalItems]="filteredLayouts.length" [pageSize]="pageSize"
+    <app-pagination *ngIf="filteredLayouts.length > 5" [totalItems]="filteredLayouts.length" [pageSize]="pageSize"
       [currentPage]="currentPage" (pageChange)="currentPage = $event"
       (pageSizeChange)="pageSize = $event; currentPage = 1">
     </app-pagination>

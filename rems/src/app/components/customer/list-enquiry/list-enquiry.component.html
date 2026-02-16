@@ -2,42 +2,67 @@
 
   <h2>List of Customers</h2>
 
-  <!-- ACTION BUTTONS (CREATE & PDF) -->
-  <div class="action-buttons-row">
-    <button class="btn-success" (click)="createEnquiry()">
-      <i class="fa fa-plus"></i> Create Customer
-    </button>
 
-  </div>
+  <!-- 🔍 TABBED SEARCH SECTION -->
+  <div class="search-container-glass">
+    <!-- TABS NAVIGATION -->
+    <div class="search-tabs">
+      <div class="tabs-left">
+        <div class="tab-item" [class.active]="activeSearchTab === 'general'" (click)="activeSearchTab = 'general'">
+          <i class="fa fa-user"></i> General Search
+        </div>
+        <div class="tab-item" [class.active]="activeSearchTab === 'referral'" (click)="activeSearchTab = 'referral'">
+          <i class="fa fa-user-friends"></i> Referral Based Search
+        </div>
+      </div>
 
-  <!-- SEARCH SECTION -->
-  <div class="search-create-row">
-    <div class="search-container">
-      <input type="text" [(ngModel)]="searchName" (input)="onSearch()" (keyup.enter)="onSearch()"
-        placeholder="Search By First or Last Name" class="search-input">
+      <button class="create-btn-inside" (click)="createEnquiry()">
+        <i class="fa fa-plus"></i> Create Customer
+      </button>
+    </div>
 
-      <input type="text" [(ngModel)]="searchMobile" (input)="onSearch()" (keyup.enter)="onSearch()"
-        placeholder="Search Mobile Number" class="search-input">
+    <!-- TAB CONTENT -->
+    <div class="search-content">
+      <!-- 🔹 Card 1 – General Search -->
+      <div class="search-flex-row" *ngIf="activeSearchTab === 'general'">
+        <div class="input-group">
+          <input type="text" [(ngModel)]="searchName" (input)="onSearch()" (keyup.enter)="onSearch()"
+            placeholder="First/Last Name" class="search-input">
 
-      <input type="text" [(ngModel)]="searchLocation" (input)="onSearch()" (keyup.enter)="onSearch()"
-        placeholder="Search Location" class="search-input">
+          <input type="text" [(ngModel)]="searchMobile" (input)="onSearch()" (keyup.enter)="onSearch()"
+            placeholder="Mobile Number" class="search-input">
 
-      <input type="text" [(ngModel)]="searchReferral" (input)="onSearch()" (keyup.enter)="onSearch()"
-        placeholder="Search Referral Name" class="search-input">
+          <input type="text" [(ngModel)]="searchLayoutName" (input)="onSearch()" (keyup.enter)="onSearch()"
+            placeholder="Layout Name" class="search-input">
 
-      <input type="text" [(ngModel)]="searchLayoutName" (input)="onSearch()" (keyup.enter)="onSearch()"
-        placeholder="Search Layout Name" class="search-input">
+          <input type="text" [(ngModel)]="searchAddress" (input)="onSearch()" (keyup.enter)="onSearch()"
+            placeholder="Address" class="search-input">
+        </div>
 
-      <input type="text" [(ngModel)]="searchAddress" (input)="onSearch()" (keyup.enter)="onSearch()"
-        placeholder="Search Address" class="search-input">
+        <div class="button-group">
+          <button class="clear-btn" (click)="onClear()">Reset</button>
+          <button class="search-btn" (click)="onSearch()">
+            <i class="fa fa-search"></i> Search
+          </button>
+        </div>
+      </div>
 
-      <div class="search-btn-wrapper">
-        <button class="search-btn" (click)="onSearch()">
-          Search
-        </button>
-        <button class="clear-btn" (click)="onClear()">
-          Clear
-        </button>
+      <!-- 🔹 Card 2 – Referral Based Search -->
+      <div class="search-flex-row" *ngIf="activeSearchTab === 'referral'">
+        <div class="input-group">
+          <input type="text" [(ngModel)]="searchReferral" (input)="onSearch()" (keyup.enter)="onSearch()"
+            placeholder="Referral Name" class="search-input">
+
+          <input type="text" [(ngModel)]="searchLocation" (input)="onSearch()" (keyup.enter)="onSearch()"
+            placeholder="Location" class="search-input">
+        </div>
+
+        <div class="button-group">
+          <button class="clear-btn" (click)="onClear()">Reset</button>
+          <button class="search-btn referral-btn" (click)="onSearch()">
+            <i class="fa fa-user-friends"></i> Search Referral
+          </button>
+        </div>
       </div>
     </div>
   </div>
@@ -97,7 +122,7 @@
       </tbody>
     </table>
 
-    <app-pagination *ngIf="filteredData.length > 0" [totalItems]="filteredData.length" [pageSize]="pageSize"
+    <app-pagination *ngIf="filteredData.length > 5" [totalItems]="filteredData.length" [pageSize]="pageSize"
       [currentPage]="currentPage" (pageChange)="currentPage = $event"
       (pageSizeChange)="pageSize = $event; currentPage = 1">
     </app-pagination>

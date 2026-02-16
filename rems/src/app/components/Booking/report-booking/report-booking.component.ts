@@ -69,7 +69,11 @@ export class ReportBookingComponent {
   loadBookings() {
     this.bookingService.getAllBookings().subscribe({
       next: data => {
-        this.bookingList = data;
+        this.bookingList = data.sort((a, b) => {
+          const dateA = new Date(a.createdDate || 0).getTime();
+          const dateB = new Date(b.createdDate || 0).getTime();
+          return dateB - dateA || (Number(b.bookingId) - Number(a.bookingId));
+        });
         this.filteredData = [...this.bookingList];
         this.currentPage = 1;
         this.loading = false;
@@ -140,8 +144,10 @@ export class ReportBookingComponent {
   }
 
   downloadBookingsReport(): void {
-    // send filteredData or paginatedBookings depending on your needs
-    const dataToSend = this.filteredData;
+    const dataToSend = this.filteredData.slice(
+      (this.currentPage - 1) * this.pageSize,
+      this.currentPage * this.pageSize
+    );
 
     this.reportService.downloadBookingsReport(dataToSend).subscribe({
       next: (blob: Blob) => {

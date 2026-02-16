@@ -16,6 +16,11 @@ export class ReportEnquiryComponent {
 
   searchName: string = "";
   searchMobile: string = "";
+  searchLocation: string = '';
+  searchReferral: string = '';
+  searchLayoutName: string = '';
+  searchAddress: string = '';
+  activeSearchTab: string = 'general';
 
   allData: Enquiry[] = [];                // All loaded customers
   filteredData: Enquiry[] = [];           // Data filtered by search
@@ -46,53 +51,44 @@ export class ReportEnquiryComponent {
         firstName: c.firstName?.trim(),
         lastName: c.lastName?.trim(),
         address: c.address?.trim()
-      }));
+      })).sort((a, b) => {
+        const dateA = a.createdDate ? new Date(a.createdDate).getTime() : 0;
+        const dateB = b.createdDate ? new Date(b.createdDate).getTime() : 0;
+        return dateB - dateA;
+      });
 
       this.filteredData = [...this.allData];
       this.currentPage = 1;
     });
   }
 
-
-
-
   onSearch() {
-    const nameKeyword = this.searchName.trim().toLowerCase();
-    const mobileKeyword = this.searchMobile.trim();
-
-    this.filteredData = this.allData.filter(c => {
-      const fullName = (c.firstName + ' ' + c.lastName).toLowerCase();
-      const matchesName = nameKeyword ? fullName.includes(nameKeyword) : true;
-      const matchesMobile = mobileKeyword ? c.mobileNo?.toString().includes(mobileKeyword) : true;
-      return matchesName && matchesMobile;
-    });
-
-    this.currentPage = 1;
-  }
-
-
-  createEnquiry() {
-    this.router.navigate(['/create-enquiry']);
-  }
-
-  editCustomer(enquiry: Enquiry) {
-    this.router.navigate(['/edit-enquiry', enquiry.mobileNo]);
-  }
-
-  viewcustomer(mobileNo: number) {
-    this.router.navigate(['/view-customer', mobileNo]);
-  }
-
-  deleteCustomer(mobileNo: number) {
-    if (confirm("Are you sure to delete this customer?")) {
-      this.customerService.deleteCustomer(mobileNo).subscribe({
-        next: (msg) => {
-          this.toastr.success(msg);
-          this.loadData();
-        },
-        error: (err) => console.error("Delete failed", err)
+    this.customerService.advancedSearch(
+      this.searchLocation,
+      this.searchReferral,
+      this.searchLayoutName,
+      this.searchName,
+      this.searchMobile,
+      this.searchAddress
+    ).subscribe(data => {
+      this.filteredData = data.sort((a, b) => {
+        const dateA = a.createdDate ? new Date(a.createdDate).getTime() : 0;
+        const dateB = b.createdDate ? new Date(b.createdDate).getTime() : 0;
+        return dateB - dateA;
       });
-    }
+      this.currentPage = 1;
+    });
+  }
+
+  onClear() {
+    this.searchName = '';
+    this.searchMobile = '';
+    this.searchLocation = '';
+    this.searchReferral = '';
+    this.searchLayoutName = '';
+    this.searchAddress = '';
+    this.currentPage = 1;
+    this.loadData();
   }
 
   goHome() {
@@ -100,20 +96,14 @@ export class ReportEnquiryComponent {
   }
 
   downloadEnquiriesReport(): void {
-
-    // 🔹 search irundha → filtered data
-    // 🔹 search illa na → all data
-    const dataToDownload =
-      (this.searchName || this.searchMobile)
-        ? this.filteredData
-        : this.allData;
-
-    if (!dataToDownload || dataToDownload.length === 0) {
-      this.toastr.warning('No data to download');
-      return;
-    }
-
-    this.reportService.downloadEnquiriesReport(dataToDownload).subscribe({
+    this.reportService.downloadEnquiriesReport(
+      this.searchLocation,
+      this.searchReferral,
+      this.searchLayoutName,
+      this.searchName,
+      this.searchMobile,
+      this.searchAddress
+    ).subscribe({
       next: (blob: Blob) => {
         const url = window.URL.createObjectURL(blob);
         const a = document.createElement('a');

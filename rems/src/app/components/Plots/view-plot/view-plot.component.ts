@@ -3,6 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { PlotserviceService } from '../../../services/plotservice.service';
 import { Plot } from '../../../models/plot';
 import { ToastrService } from 'ngx-toastr';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-view-plot',
@@ -20,7 +21,8 @@ export class ViewPlotComponent implements OnInit {
     private route: ActivatedRoute,
     private plotService: PlotserviceService,
     private router: Router,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    private location: Location
   ) { }
 
   ngOnInit(): void {
@@ -45,7 +47,7 @@ export class ViewPlotComponent implements OnInit {
   }
 
   goBack() {
-    this.router.navigate(['/plots']);
+    this.location.back();
   }
 
   goHome() {

@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { Layout } from '../../models/layout';
 import { ActivatedRoute, Router } from '@angular/router';
 import { LayoutserviceService } from '../../services/layoutservice.service';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-view-layout',
@@ -16,8 +17,9 @@ export class ViewLayoutComponent {
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-    private layoutService: LayoutserviceService
-  ) {}
+    private layoutService: LayoutserviceService,
+    private location: Location
+  ) { }
 
   ngOnInit(): void {
     const layoutName = this.route.snapshot.paramMap.get('layoutName');
@@ -29,7 +31,7 @@ export class ViewLayoutComponent {
   }
 
   goBack() {
-    this.router.navigate(['/layouts']);
+    this.location.back();
   }
 
   viewLayoutPdf() {

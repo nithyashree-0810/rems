@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Enquiry } from '../../../models/enquiry';
 import { CustomerService } from '../../../services/customer.service';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-view-enquiry',
@@ -20,7 +21,8 @@ export class ViewEnquiryComponent {
     return address.split(',').map(part => part.trim()).join('\n');
   }
   constructor(private route: ActivatedRoute, private router: Router,
-    private customerService: CustomerService
+    private customerService: CustomerService,
+    private location: Location
   ) { }
   ngOnInit(): void {
     const mobileNoStr = this.route.snapshot.paramMap.get('mobileNo');
@@ -33,7 +35,7 @@ export class ViewEnquiryComponent {
     }
   }
   goHome() {
-    this.router.navigate(['/view-enquiries'])
+    this.location.back();
   }
 }
 

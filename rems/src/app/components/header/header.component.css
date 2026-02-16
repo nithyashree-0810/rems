@@ -9,23 +9,54 @@
   position: sticky;
   top: 0;
   z-index: 1000;
-  box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
 }
 
 /* LEFT */
 .left-section {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 12px;
 }
 
-.navbar-brand {
-  font-size: 18px;
+
+.logo-image-container {
+  height: 45px;
+  /* Fits nicely in dashboard header */
+  display: flex;
+  align-items: center;
+  background: white;
+  padding: 5px 10px;
+  border-radius: 8px;
+}
+
+.brand-logo-img {
+  height: 100%;
+  width: auto;
+  object-fit: contain;
+  transform: scale(1.5);
+  /* Zoom effect */
+  transform-origin: center;
+}
+
+.brand-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.brand-name {
+  font-size: 1.2rem;
+  font-weight: 800;
+  color: white;
+  line-height: 1;
+  margin: 0;
+}
+
+.brand-tag {
+  font-size: 0.65rem;
+  color: rgba(255, 255, 255, 0.9);
   font-weight: 600;
-}
-
-.brand-icon {
-  font-size: 20px;
+  margin: 2px 0 0 0;
 }
 
 /* CENTER MENU */
@@ -61,7 +92,7 @@
   min-width: 180px;
   padding: 8px 0;
   border-radius: 10px;
-  box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
   animation: dropdownFade 0.25s ease;
   z-index: 1100;
 }
@@ -106,6 +137,7 @@
     opacity: 0;
     transform: translateY(-10px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);

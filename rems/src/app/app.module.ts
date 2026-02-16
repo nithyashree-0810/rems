@@ -4,6 +4,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { LoginComponent } from './components/login/login.component';
+import { AboutComponent } from './components/about/about.component';
 import { LayoutComponent } from './components/layout/layout.component';
 
 import { HeaderComponent } from './components/header/header.component';
@@ -17,7 +18,7 @@ import { BrowserAnimationsModule, provideAnimations } from '@angular/platform-br
 import { ToastrModule } from 'ngx-toastr';
 import { NgxSpinnerModule } from 'ngx-spinner';
 
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 
 import { ListEnquiryComponent } from './components/customer/list-enquiry/list-enquiry.component';
 import { ViewEnquiryComponent } from './components/customer/view-enquiry/view-enquiry.component';
@@ -46,9 +47,7 @@ import { RegisterComponent } from './components/register/register.component';
 import { ForgotPasswordComponent } from './components/forgot-password/forgot-password.component';
 import { BookingHistoryComponent } from './components/Booking/booking-history/booking-history.component';
 import { SharedModule } from './shared/shared.module';
-
-
-
+import { AuthInterceptor } from './interceptors/auth.interceptor';
 
 @NgModule({
   declarations: [
@@ -94,6 +93,7 @@ import { SharedModule } from './shared/shared.module';
     RegisterComponent,
     ForgotPasswordComponent,
     BookingHistoryComponent,
+    AboutComponent,
   ],
   imports: [
     BrowserModule,
@@ -112,7 +112,8 @@ import { SharedModule } from './shared/shared.module';
     ViewBookingComponent
   ],
   providers: [
-    provideAnimations()
+    provideAnimations(),
+    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }
   ],
   bootstrap: [AppComponent]
 })

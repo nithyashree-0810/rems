@@ -5,9 +5,14 @@ import com.techietact.myrems.bean.OtpRequest;
 import com.techietact.myrems.bean.RegisterRequest;
 import com.techietact.myrems.bean.ResetPasswordRequest;
 import com.techietact.myrems.entity.UserCredential;
+import com.techietact.myrems.helper.JwtUtil;
 import com.techietact.myrems.service.AuthService;
+import com.techietact.myrems.service.MyUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
@@ -17,18 +22,35 @@ import java.util.Map;
 public class AuthController {
 
     @Autowired
+    private AuthenticationManager authenticationManager;
+
+    @Autowired
+    private MyUserDetailsService userDetailsService;
+
+    @Autowired
+    private JwtUtil jwtUtil;
+
+    @Autowired
     private AuthService authService;
 
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody LoginRequest request) {
         try {
-            UserCredential user = authService.login(request.getEmail(), request.getPassword());
+            authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword()));
+
+            final UserDetails userDetails = userDetailsService.loadUserByUsername(request.getEmail());
+            final String jwt = jwtUtil.generateToken(userDetails);
+
+            UserCredential user = authService.getUserByEmail(request.getEmail());
+
             return ResponseEntity.ok(Map.of(
                     "message", "Login successful",
+                    "token", jwt,
                     "email", user.getEmail(),
                     "fullName", user.getFullName()));
         } catch (Exception e) {
-            return ResponseEntity.status(401).body(Map.of("error", e.getMessage()));
+            return ResponseEntity.status(401).body(Map.of("error", "Invalid email or password"));
         }
     }
 

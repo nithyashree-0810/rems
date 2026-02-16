@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { BookingService } from '../../../services/booking.service';
 import { Booking } from '../../../models/bookings';
-import { CommonModule } from '@angular/common';
+import { CommonModule, Location } from '@angular/common';
 import { ToastrService } from 'ngx-toastr';
 
 @Component({
@@ -21,7 +21,8 @@ export class ViewBookingComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private bookingService: BookingService,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    private location: Location
   ) { }
 
   ngOnInit(): void {
@@ -44,6 +45,6 @@ export class ViewBookingComponent implements OnInit {
   }
 
   goBack(): void {
-    this.router.navigate(['/booking-history']);
+    this.location.back();
   }
 }

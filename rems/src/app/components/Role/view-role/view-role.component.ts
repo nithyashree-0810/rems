@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { Role } from '../../../models/role';
 import { ActivatedRoute, Router } from '@angular/router';
 import { RoleserviceServiceService } from '../../../services/roleservice.service.service';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-view-role',
@@ -19,20 +20,21 @@ export class ViewRoleComponent {
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-    private roleService: RoleserviceServiceService
-  ) {}
+    private roleService: RoleserviceServiceService,
+    private location: Location
+  ) { }
 
   ngOnInit(): void {
     const roleId = Number(this.route.snapshot.paramMap.get('roleId'));
     if (roleId) {
       this.roleService.getByRoleId(roleId).subscribe((data: Role) => {
-  this.role = data;
+        this.role = data;
       });
     }
   }
 
   goBack() {
-    this.router.navigate(['/list-role']);
+    this.location.back();
   }
 
 }

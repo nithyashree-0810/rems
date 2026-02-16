@@ -6,6 +6,7 @@ import { LoginComponent } from './components/login/login.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { RegisterComponent } from './components/register/register.component';
 import { ForgotPasswordComponent } from './components/forgot-password/forgot-password.component';
+import { AboutComponent } from './components/about/about.component';
 
 // Layout
 import { LayoutComponent } from './components/layout/layout.component';
@@ -45,54 +46,57 @@ import { ReportRoleComponent } from './components/Role/report-role/report-role.c
 import { GalleryComponent } from './gallery/gallery.component';
 
 
+import { AuthGuard } from './guards/auth.guard';
+
 const routes: Routes = [
 
   /** Authentication */
   { path: '', component: LoginComponent },
   { path: 'register', component: RegisterComponent },
   { path: 'forgot-password', component: ForgotPasswordComponent },
-  { path: 'dashboard', component: DashboardComponent },
+  { path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuard] },
+  { path: 'about', component: AboutComponent },
 
   /** Layout Routes */
-  { path: 'create-layout', component: LayoutComponent },
-  { path: 'layouts', component: ViewLayoutsComponent },
-  { path: 'edit-layout/:layoutName', component: EditLayoutComponent },
-  { path: 'view-layout/:layoutName', component: ViewLayoutComponent },
-  { path: 'report-layout', component: ReportLayoutComponent },
+  { path: 'create-layout', component: LayoutComponent, canActivate: [AuthGuard] },
+  { path: 'layouts', component: ViewLayoutsComponent, canActivate: [AuthGuard] },
+  { path: 'edit-layout/:layoutName', component: EditLayoutComponent, canActivate: [AuthGuard] },
+  { path: 'view-layout/:layoutName', component: ViewLayoutComponent, canActivate: [AuthGuard] },
+  { path: 'report-layout', component: ReportLayoutComponent, canActivate: [AuthGuard] },
 
   /** Booking Routes */
-  { path: 'new-booking', component: CreateBookingComponent },
-  { path: 'booking-history', component: ListBookingComponent },
-  { path: 'view-booking/:id', component: ViewBookingComponent },
-  { path: 'edit-booking/:id', component: EditBookingComponent },
-  { path: 'report-booking', component: ReportBookingComponent },
-  
+  { path: 'new-booking', component: CreateBookingComponent, canActivate: [AuthGuard] },
+  { path: 'booking-history', component: ListBookingComponent, canActivate: [AuthGuard] },
+  { path: 'view-booking/:id', component: ViewBookingComponent, canActivate: [AuthGuard] },
+  { path: 'edit-booking/:id', component: EditBookingComponent, canActivate: [AuthGuard] },
+  { path: 'report-booking', component: ReportBookingComponent, canActivate: [AuthGuard] },
+
   // History routes
-  { path: 'booking-history/plot/:plotId', component: BookingHistoryComponent },
-  { path: 'booking-history/layout/:layoutId', component: BookingHistoryComponent },
+  { path: 'booking-history/plot/:plotId', component: BookingHistoryComponent, canActivate: [AuthGuard] },
+  { path: 'booking-history/layout/:layoutId', component: BookingHistoryComponent, canActivate: [AuthGuard] },
 
   /** Customer / Enquiry Routes */
-  { path: 'create-enquiry', component: CreateEnquiryComponent },
-  { path: 'view-enquiries', component: ListEnquiryComponent },
-  { path: 'edit-enquiry/:mobileNo', component: EditEnquiryComponent },
-  { path: 'view-customer/:mobileNo', component: ViewEnquiryComponent },
-  { path: 'report-enquiry', component: ReportEnquiryComponent },
+  { path: 'create-enquiry', component: CreateEnquiryComponent, canActivate: [AuthGuard] },
+  { path: 'view-enquiries', component: ListEnquiryComponent, canActivate: [AuthGuard] },
+  { path: 'edit-enquiry/:mobileNo', component: EditEnquiryComponent, canActivate: [AuthGuard] },
+  { path: 'view-customer/:mobileNo', component: ViewEnquiryComponent, canActivate: [AuthGuard] },
+  { path: 'report-enquiry', component: ReportEnquiryComponent, canActivate: [AuthGuard] },
 
   /** Plot Routes */
-  { path: 'create-plot', component: CreatePlotComponent },
-  { path: 'plots', component: ListPlotComponent },
-  { path: 'edit-plot/:layoutName/:plotNo', component: EditPlotComponent },
-  { path: 'view-plot/:layoutName/:plotNo', component: ViewPlotComponent },
-  { path: 'report-plot', component: ReportPlotComponent },
+  { path: 'create-plot', component: CreatePlotComponent, canActivate: [AuthGuard] },
+  { path: 'plots', component: ListPlotComponent, canActivate: [AuthGuard] },
+  { path: 'edit-plot/:layoutName/:plotNo', component: EditPlotComponent, canActivate: [AuthGuard] },
+  { path: 'view-plot/:layoutName/:plotNo', component: ViewPlotComponent, canActivate: [AuthGuard] },
+  { path: 'report-plot', component: ReportPlotComponent, canActivate: [AuthGuard] },
 
-   { path: 'gallery', component: GalleryComponent },
+  { path: 'gallery', component: GalleryComponent, canActivate: [AuthGuard] },
 
   /** Role Routes */
-  { path: 'create-role', component: CreateRoleComponent },
-  { path: 'edit-role/:roleId', component: EditRoleComponent },
-  { path: 'list-role', component: ListRoleComponent },
-  { path: 'view-role/:roleId', component: ViewRoleComponent },
-  { path: 'report-role', component: ReportRoleComponent },
+  { path: 'create-role', component: CreateRoleComponent, canActivate: [AuthGuard] },
+  { path: 'edit-role/:roleId', component: EditRoleComponent, canActivate: [AuthGuard] },
+  { path: 'list-role', component: ListRoleComponent, canActivate: [AuthGuard] },
+  { path: 'view-role/:roleId', component: ViewRoleComponent, canActivate: [AuthGuard] },
+  { path: 'report-role', component: ReportRoleComponent, canActivate: [AuthGuard] },
 
   /** 404 Fallback */
   { path: '**', redirectTo: '', pathMatch: 'full' }

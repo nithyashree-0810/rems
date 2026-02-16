@@ -2,57 +2,148 @@
 <div class="dashboard-bg">
 
   <div class="dashboard-shell">
-
-    <div class="glass-card hero-card">
-      <div class="icon-box">
-        <i class="fa-solid fa-house-chimney"></i>
-      </div>
-      <div class="hero-text">
-        <h1>Welcome to Real Estate Management System</h1>
-        <p>Your powerful platform for managing properties, layouts, customer enquiries, and plot bookings.</p>
-      </div>
-    </div>
-
+    <!-- STATS ROW (Moved to Top) -->
     <div class="stats-row">
       <div class="glass-card stat-item" (click)="goTo('totalLayouts')">
-        <div class="icon-box"><i class="fa-solid fa-map"></i></div>
-        <span class="stat-number">{{ totalLayouts }}</span>
-        <span class="stat-text">Total Layouts</span>
+        <div class="icon-box layouts"><i class="fa-solid fa-map"></i></div>
+        <div class="stat-content">
+          <span class="stat-number">{{ totalLayouts }}</span>
+          <span class="stat-text">Total Layouts</span>
+        </div>
       </div>
 
       <div class="glass-card stat-item" (click)="goTo('totalPlots')">
-        <div class="icon-box"><i class="fa-solid fa-border-all"></i></div>
-        <span class="stat-number">{{ totalPlots }}</span>
-        <span class="stat-text">Total Plots</span>
+        <div class="icon-box plots"><i class="fa-solid fa-border-all"></i></div>
+        <div class="stat-content">
+          <span class="stat-number">{{ totalPlots }}</span>
+          <span class="stat-text">Total Plots</span>
+        </div>
       </div>
 
       <div class="glass-card stat-item" (click)="goTo('totalEnquiries')">
-        <div class="icon-box"><i class="fa-solid fa-users"></i></div>
-        <span class="stat-number">{{ totalEnquiries }}</span>
-        <span class="stat-text">Customer Enquiries</span>
+        <div class="icon-box enquiries"><i class="fa-solid fa-users"></i></div>
+        <div class="stat-content">
+          <span class="stat-number">{{ totalEnquiries }}</span>
+          <span class="stat-text">Customer Enquiries</span>
+        </div>
       </div>
 
-      <div class="glass-card stat-item"  (click)="goTo('totalBookings')">
-        <div class="icon-box"><i class="fa-solid fa-check-double"></i></div>
-        <span class="stat-number">{{ totalBookings }}</span>
-        <span class="stat-text">Bookings Completed</span>
+      <div class="glass-card stat-item" (click)="goTo('totalBookings')">
+        <div class="icon-box bookings"><i class="fa-solid fa-check-double"></i></div>
+        <div class="stat-content">
+          <span class="stat-number">{{ totalBookings }}</span>
+          <span class="stat-text">Bookings Completed</span>
+        </div>
+      </div>
+
+      <!-- NEW: Agents Count -->
+      <div class="glass-card stat-item" (click)="goTo('agents')">
+        <div class="icon-box agents"><i class="fa-solid fa-user-tie"></i></div>
+        <div class="stat-content">
+          <span class="stat-number">{{ totalAgents }}</span>
+          <span class="stat-text">Total Agents</span>
+        </div>
+      </div>
+
+      <!-- NEW: Owners Count -->
+      <div class="glass-card stat-item" (click)="goTo('owners')">
+        <div class="icon-box owners"><i class="fa-solid fa-user-shield"></i></div>
+        <div class="stat-content">
+          <span class="stat-number">{{ totalOwners }}</span>
+          <span class="stat-text">Total Owners</span>
+        </div>
       </div>
     </div>
 
+    <!-- RECENT ACTIVITY GRID -->
     <div class="charts-grid">
-      <div class="glass-card">
-        <h3 class="chart-title">Monthly Bookings</h3>
-        <button class="btn-premium" (click)="goTo('bookings')">
-          <span>View Detailed Report</span>
-          <span aria-hidden="true">→</span>
-        </button>
+      <!-- Recent Bookings -->
+      <div class="glass-card activity-card">
+        <div class="card-header">
+          <h3 class="chart-title">Recent Bookings</h3>
+          <div class="header-actions">
+            <select class="filter-select" [(ngModel)]="bookingFilter" (change)="applyBookingFilter()">
+              <option value="ALL">All Time</option>
+              <option value="TODAY">Today</option>
+              <option value="WEEK">This Week</option>
+              <option value="MONTH">This Month</option>
+            </select>
+            <button class="btn-link" (click)="goTo('bookings')">View All</button>
+          </div>
+        </div>
+
+        <div class="activity-list">
+          <table class="dashboard-table" *ngIf="recentBookings.length > 0">
+            <thead>
+              <tr>
+                <th>Layout</th>
+                <th>Plot No</th>
+                <th>Date</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let booking of recentBookings">
+                <td>{{ booking.layout?.layoutName || '-' }}</td>
+                <td>{{ booking.plot?.plotNo || '-' }}</td>
+                <td>{{ getDisplayDate(booking.createdDate) }}</td>
+                <td>
+                  <button class="table-icon-btn" [routerLink]="['/view-booking', booking.bookingId]" title="View">
+                    <i class="fa fa-eye"></i>
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <div class="no-data" *ngIf="recentBookings.length === 0">
+            <p>No recent bookings found.</p>
+          </div>
+        </div>
       </div>
 
-      <div class="glass-card">
-        <h3 class="chart-title">Enquiries Overview</h3>
-        <button class="btn-premium" (click)="goTo('enquiries')">
-          View Enquiries <i class="fa-solid fa-arrow-right"></i>
-        </button>
+      <!-- Recent Enquiries -->
+      <div class="glass-card activity-card">
+        <div class="card-header">
+          <h3 class="chart-title">Recent Enquiries</h3>
+          <div class="header-actions">
+            <select class="filter-select" [(ngModel)]="enquiryFilter" (change)="applyEnquiryFilter()">
+              <option value="ALL">All Time</option>
+              <option value="TODAY">Today</option>
+              <option value="WEEK">This Week</option>
+              <option value="MONTH">This Month</option>
+            </select>
+            <button class="btn-link" (click)="goTo('enquiries')">View All</button>
+          </div>
+        </div>
+
+        <div class="activity-list">
+          <table class="dashboard-table" *ngIf="recentEnquiries.length > 0">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Phone</th>
+                <th>Date</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let enquiry of recentEnquiries">
+                <td>{{ enquiry.firstName }} {{ enquiry.lastName }}</td>
+                <td>{{ enquiry.mobileNo }}</td>
+                <td>{{ getDisplayDate(enquiry.createdDate) }}</td>
+                <td>
+                  <button class="table-icon-btn" [routerLink]="['/view-customer', enquiry.mobileNo]"
+                    title="View Details">
+                    <i class="fa fa-eye"></i>
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <div class="no-data" *ngIf="recentEnquiries.length === 0">
+            <p>No recent enquiries found.</p>
+          </div>
+        </div>
       </div>
     </div>
 

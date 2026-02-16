@@ -3,8 +3,10 @@ import { Router } from '@angular/router';
 import { DashboardServiceService } from '../../services/dashboard-service.service';
 import { BookingService } from '../../services/booking.service';
 import { CustomerService } from '../../services/customer.service';
+import { RoleserviceServiceService } from '../../services/roleservice.service.service';
 import { Booking } from '../../models/bookings';
 import { Enquiry } from '../../models/enquiry';
+import { Role } from '../../models/role';
 import { Subject, takeUntil } from 'rxjs';
 
 @Component({
@@ -22,24 +24,31 @@ export class DashboardComponent implements OnInit, OnDestroy {
   totalPlots = 0;
   totalEnquiries = 0;
   totalBookings = 0;
+  totalAgents = 0;
+  totalOwners = 0;
 
-  enquiriesNew = 0;
-  enquiriesPending = 0;
+  recentBookings: Booking[] = [];
+  recentEnquiries: Enquiry[] = [];
 
-  monthlyBookingsLabels: string[] = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'];
-  monthlyBookingsCounts: number[] = [0, 0, 0, 0, 0, 0];
+  allRecentBookings: Booking[] = [];
+  allRecentEnquiries: Enquiry[] = [];
+
+  bookingFilter: 'ALL' | 'TODAY' | 'WEEK' | 'MONTH' = 'ALL';
+  enquiryFilter: 'ALL' | 'TODAY' | 'WEEK' | 'MONTH' = 'ALL';
 
   constructor(
-    private router: Router,
+    public router: Router,
     private dashboardService: DashboardServiceService,
     private bookingService: BookingService,
-    private customerService: CustomerService
-  ) {}
+    private customerService: CustomerService,
+    private roleService: RoleserviceServiceService
+  ) { }
 
   ngOnInit(): void {
     this.loadCounts();
-    this.loadBookingsForChart();
-    this.loadEnquiriesOverview();
+    this.loadRecentBookings();
+    this.loadRecentEnquiries();
+    this.loadRoleCounts();
   }
 
   loadCounts(): void {
@@ -57,46 +66,151 @@ export class DashboardComponent implements OnInit, OnDestroy {
       });
   }
 
-  getChartData() {
-    return {
-      labels: this.monthlyBookingsLabels,
-      values: this.monthlyBookingsCounts,
-      maxValue: Math.max(...this.monthlyBookingsCounts, 8)
-    };
+  private loadRoleCounts(): void {
+    this.roleService.getAll()
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: (roles: Role[]) => {
+          if (roles) {
+            // Case-insensitive check
+            this.totalAgents = roles.filter(r => r.role?.toUpperCase() === 'AGENT').length;
+            this.totalOwners = roles.filter(r => r.role?.toUpperCase() === 'OWNER').length;
+          }
+        },
+        error: () => console.error('Failed to load roles')
+      });
   }
 
-  getYPosition(value: number, max: number = 8): number {
-    const height = 120;
-    return 160 - (value / max) * height;
+  private loadRecentBookings(): void {
+    this.bookingService
+      .getAllBookings()
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: (bookings: Booking[]) => {
+          // Store FULL sorted list
+          this.allRecentBookings = (bookings || [])
+            .sort((a, b) => (b.bookingId || 0) - (a.bookingId || 0));
+
+          this.applyBookingFilter();
+        },
+        error: () => console.error('Failed to load recent bookings')
+      });
   }
 
-  getChartPath(): string {
-    const data = this.getChartData();
-    return data.values
-      .map((val, i) => {
-        const x = 40 + i * 104;
-        const y = this.getYPosition(val, data.maxValue);
-        return `${i === 0 ? 'M' : 'L'} ${x} ${y}`;
-      })
-      .join(' ');
+  private loadRecentEnquiries(): void {
+    this.customerService
+      .getAllCustomers()
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: (enquiries: Enquiry[]) => {
+          this.totalEnquiries = enquiries?.length || 0;
+
+          // Store FULL sorted list
+          this.allRecentEnquiries = (enquiries || [])
+            .sort((a, b) => {
+              const dateA = a.createdDate ? new Date(a.createdDate).getTime() : 0;
+              const dateB = b.createdDate ? new Date(b.createdDate).getTime() : 0;
+              return dateB - dateA;
+            });
+
+          this.applyEnquiryFilter();
+        },
+        error: () => console.error('Failed to load enquiries')
+      });
   }
 
-  getAreaPath(): string {
-    return `${this.getChartPath()} L 560 160 L 40 160 Z`;
+  applyBookingFilter(): void {
+    let filtered = this.allRecentBookings;
+
+    if (this.bookingFilter === 'TODAY') {
+      filtered = filtered.filter(b => this.isToday(b.createdDate));
+    } else if (this.bookingFilter === 'WEEK') {
+      filtered = filtered.filter(b => this.isThisWeek(b.createdDate));
+    } else if (this.bookingFilter === 'MONTH') {
+      filtered = filtered.filter(b => this.isThisMonth(b.createdDate));
+    }
+
+    this.recentBookings = filtered.slice(0, 5);
   }
 
-  getYAxisValues(): number[] {
-    const m = this.getChartData().maxValue;
-    return [0, Math.floor(m / 2), m];
+  applyEnquiryFilter(): void {
+    let filtered = this.allRecentEnquiries;
+
+    if (this.enquiryFilter === 'TODAY') {
+      filtered = filtered.filter(e => this.isToday(e.createdDate));
+    } else if (this.enquiryFilter === 'WEEK') {
+      filtered = filtered.filter(e => this.isThisWeek(e.createdDate));
+    } else if (this.enquiryFilter === 'MONTH') {
+      filtered = filtered.filter(e => this.isThisMonth(e.createdDate));
+    }
+
+    this.recentEnquiries = filtered.slice(0, 5);
   }
 
-  getDonutOffset(): number {
-    const circumference = 440;
-    const progress =
-      this.totalEnquiries > 0
-        ? this.enquiriesNew / this.totalEnquiries
-        : 0;
-    return circumference * (1 - progress);
+  private isToday(dateStr?: string | Date): boolean {
+    if (!dateStr) return false;
+    const date = new Date(dateStr);
+    const today = new Date();
+    return date.toDateString() === today.toDateString();
+  }
+
+  private isThisWeek(dateStr?: string | Date): boolean {
+    if (!dateStr) return false;
+    const date = new Date(dateStr);
+    const today = new Date(); // now
+
+    // "This Week" = Last 7 Days rolling window
+    // This is safer than calendar week for "Recent" lists
+    const sevenDaysAgo = new Date(today);
+    sevenDaysAgo.setDate(today.getDate() - 7);
+    sevenDaysAgo.setHours(0, 0, 0, 0); // Start of that day
+
+    return date >= sevenDaysAgo;
+  }
+
+  private isThisMonth(dateStr?: string | Date): boolean {
+    if (!dateStr) return false;
+    const date = new Date(dateStr);
+    const today = new Date();
+    return date.getMonth() === today.getMonth() && date.getFullYear() === today.getFullYear();
+  }
+
+  getRelativeTime(dateInput: string | Date | undefined): string {
+    if (!dateInput) return '';
+
+    const date = new Date(dateInput);
+    const now = new Date();
+    const diffMs = now.getTime() - date.getTime();
+    const diffSec = Math.floor(diffMs / 1000);
+    const diffMin = Math.floor(diffSec / 60);
+    const diffHr = Math.floor(diffMin / 60);
+    const diffDay = Math.floor(diffHr / 24);
+
+    if (diffSec < 60) return 'Just now';
+    if (diffMin < 60) return `${diffMin} min${diffMin > 1 ? 's' : ''} ago`;
+    if (diffHr < 24) return `${diffHr} hr${diffHr > 1 ? 's' : ''} ago`;
+    if (diffDay === 1) return 'Yesterday';
+    if (diffDay < 7) return `${diffDay} days ago`;
+
+    return date.toLocaleDateString();
+  }
+
+  getDisplayDate(dateInput: string | Date | undefined): string {
+    if (!dateInput) return '';
+
+    const date = new Date(dateInput);
+    const today = new Date();
+    const yesterday = new Date();
+    yesterday.setDate(today.getDate() - 1);
+
+    if (date.toDateString() === today.toDateString()) {
+      return 'Today';
+    } else if (date.toDateString() === yesterday.toDateString()) {
+      return 'Yesterday';
+    } else {
+      // Format: Apr 22, 2026
+      return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+    }
   }
 
   goTo(type: string): void {
@@ -105,42 +219,19 @@ export class DashboardComponent implements OnInit, OnDestroy {
       plots: '/view-plots',
       enquiries: '/view-enquiries',
       bookings: '/booking-history',
-      totalBookings:'/booking-history',
-      totalEnquiries:'/view-enquiries',
-      totalPlots:'/plots',
-      totalLayouts:'/layouts'
+      totalBookings: '/booking-history',
+      totalEnquiries: '/view-enquiries',
+      totalPlots: '/plots',
+      totalLayouts: '/layouts',
+      agents: '/list-role',
+      owners: '/list-role'
     };
 
-    this.router.navigate([routes[type]]);
+    if (routes[type]) {
+      this.router.navigate([routes[type]]);
+    }
   }
 
-  private loadBookingsForChart(): void {
-    this.bookingService
-      .getAllBookings()
-      .pipe(takeUntil(this.destroy$))
-      .subscribe({
-        next: (_: Booking[]) => {},
-        error: () => console.error('Failed to load bookings chart data')
-      });
-  }
-
-  private loadEnquiriesOverview(): void {
-    this.customerService
-      .getAllCustomers()
-      .pipe(takeUntil(this.destroy$))
-      .subscribe({
-        next: (enquiries: Enquiry[]) => {
-          this.totalEnquiries = enquiries?.length || 0;
-          this.enquiriesNew =
-            enquiries?.filter((e: any) => e.status === 'New').length || 0;
-          this.enquiriesPending =
-            enquiries?.filter((e: any) => e.status === 'Pending').length || 0;
-        },
-        error: () => console.error('Failed to load enquiries overview')
-      });
-  }
-
- 
   ngOnDestroy(): void {
     this.destroy$.next();
     this.destroy$.complete();

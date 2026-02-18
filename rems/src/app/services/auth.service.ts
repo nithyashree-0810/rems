@@ -26,4 +26,16 @@ export class AuthService {
     login(data: any): Observable<any> {
         return this.http.post(`${this.apiUrl}/login`, data);
     }
+
+    isTokenExpired(): boolean {
+        const token = localStorage.getItem('token');
+        if (!token) return true;
+
+        try {
+            const expiry = (JSON.parse(atob(token.split('.')[1]))).exp;
+            return (Math.floor((new Date()).getTime() / 1000)) >= expiry;
+        } catch (e) {
+            return true;
+        }
+    }
 }

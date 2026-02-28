@@ -23,7 +23,7 @@ export class EditPlotComponent implements OnInit {
     private router: Router,
     private layoutService: LayoutserviceService,
     private toastr: ToastrService
-  ) {}
+  ) { }
 
   ngOnInit(): void {
 
@@ -60,7 +60,11 @@ export class EditPlotComponent implements OnInit {
           this.toastr.success('Plot updated successfully');
           this.router.navigate(['/plots']);
         },
-        error: () => this.toastr.error('Update failed')
+        error: (error) => {
+          console.error(error);
+          const errorMsg = error.error || 'Update failed';
+          this.toastr.error(errorMsg);
+        }
       });
   }
 

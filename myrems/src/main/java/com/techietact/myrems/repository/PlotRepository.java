@@ -27,7 +27,7 @@ public interface PlotRepository extends JpaRepository<Plot,Long> {
 	Optional<Plot> findByLayout_LayoutNameAndPlotNo(String layoutName, String plotNo);
 	
 	List<Plot> findByLayout_LayoutNameAndBookedFalse(String layoutName);
-
+	long countByLayout_Id(Long layoutId);
 
 
 }

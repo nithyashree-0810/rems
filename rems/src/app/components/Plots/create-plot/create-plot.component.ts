@@ -206,11 +206,9 @@ export class CreatePlotComponent implements OnInit {
       },
       error: (error) => {
         console.error('❌ Backend error:', error);
-        if (error.status === 409) {
-          this.toastr.error("Plot No already exists. Try another Plot No");
-        } else {
-          this.toastr.error('Server error. Check console');
-        }
+        // Error from backend is usually in the 'error' property of the HttpErrorResponse
+        const errorMsg = error.error || 'Server error. Check console';
+        this.toastr.error(errorMsg);
       }
     });
   }
@@ -224,9 +222,10 @@ export class CreatePlotComponent implements OnInit {
 
     this.plotService.uploadPlotsExcel(formData).subscribe({
       next: (res: string) => this.toastr.success(res),
-      error: (err) => {
-        console.error(err);
-        this.toastr.error("Excel upload failed.");
+      error: (error) => {
+        console.error(error);
+        const errorMsg = error.error || 'Excel upload failed.';
+        this.toastr.error(errorMsg);
       }
     });
   }

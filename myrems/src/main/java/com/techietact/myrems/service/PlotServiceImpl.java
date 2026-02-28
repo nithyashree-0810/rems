@@ -31,14 +31,34 @@ public class PlotServiceImpl implements PlotService {
 	    Layout layout = layoutRepository.findByLayoutName(plotBo.getLayout().getLayoutName())
 	            .orElseThrow(() -> new RuntimeException("Layout not found"));
 
-	    // Step 2 → Check unique condition: plotNo + layoutName
+	    // Step 2 → Check plot number range and unique condition
+	    int pNo;
+	    try {
+	        pNo = Integer.parseInt(plotBo.getPlotNo());
+	    } catch (NumberFormatException e) {
+	        throw new RuntimeException("Invalid plot number format.");
+	    }
+
+	    if (pNo < 1) {
+	        throw new RuntimeException("Invalid plot number.");
+	    }
+	    if (pNo > layout.getNoOfPlots()) {
+	        throw new RuntimeException("Plot number exceeds the allowed limit for this layout.");
+	    }
+
 	    boolean exists = plotRepository.existsByPlotNoAndLayout_LayoutName(
 	            plotBo.getPlotNo(),
 	            layout.getLayoutName()
 	    );
 
 	    if (exists) {
-	        throw new RuntimeException("Plot already exists in this layout!");
+	        throw new RuntimeException("The plot already exists.");
+	    }
+
+	    // Step 2.1 → Count plots in layout
+	    long plotCount = plotRepository.countByLayout_Id(layout.getId());
+	    if (plotCount >= layout.getNoOfPlots()) {
+	        throw new RuntimeException("The plot limit is reached.");
 	    }
 
 	    if (plotBo.getMobile() != 0) {
@@ -114,6 +134,21 @@ public class PlotServiceImpl implements PlotService {
 		    Layout layout = layoutRepository.findByLayoutName(newPlot.getLayout().getLayoutName())
 		            .orElseThrow(() -> new RuntimeException("Layout not found"));
 
+		    // Range check
+		    int pNo;
+		    try {
+		        pNo = Integer.parseInt(newPlot.getPlotNo());
+		    } catch (NumberFormatException e) {
+		        throw new RuntimeException("Invalid plot number format.");
+		    }
+
+		    if (pNo < 1) {
+		        throw new RuntimeException("Invalid plot number.");
+		    }
+		    if (pNo > layout.getNoOfPlots()) {
+		        throw new RuntimeException("Plot number exceeds the allowed limit for this layout.");
+		    }
+
 		    // Duplicate check
 		    boolean exists = plotRepository.existsByPlotNoAndLayout_LayoutName(
 		            newPlot.getPlotNo(),
@@ -121,7 +156,7 @@ public class PlotServiceImpl implements PlotService {
 		    );
 
 		    if (exists && !existing.getPlotId().equals(newPlot.getPlotId())) {
-		        throw new RuntimeException("Plot already exists in this layout");
+		        throw new RuntimeException("The plot already exists.");
 		    }
 
 		    BeanUtils.copyProperties(newPlot, existing);
@@ -142,9 +177,53 @@ public class PlotServiceImpl implements PlotService {
 			List<Plot> plots = ExcelHelper.convertExcelToPlots(file.getInputStream(), layoutRepository);
 
 
-			// Optional: validate duplicates by plotNo before save
-			// e.g., filter out plots whose plotNo already exists
+			// Validate Bulk Upload
+			for (Plot p : plots) {
+				Layout l = p.getLayout();
+				
+				// 0. Range check
+				int pNo;
+				try {
+					pNo = Integer.parseInt(p.getPlotNo());
+				} catch (NumberFormatException e) {
+					throw new RuntimeException("Invalid plot number format for Plot No: " + p.getPlotNo());
+				}
 
+				if (pNo < 1) {
+					throw new RuntimeException("Invalid plot number: " + p.getPlotNo());
+				}
+				if (pNo > l.getNoOfPlots()) {
+					throw new RuntimeException("Plot number " + p.getPlotNo() + " exceeds the allowed limit for layout " + l.getLayoutName());
+				}
+
+				// 1. Check if plot number already exists in DB for this layout
+				boolean existsInDb = plotRepository.existsByPlotNoAndLayout_LayoutName(p.getPlotNo(), l.getLayoutName());
+				if (existsInDb) {
+					throw new RuntimeException("Plot number " + p.getPlotNo() + " already exists in layout " + l.getLayoutName());
+				}
+
+				// 2. Check for duplicates within the Excel itself
+				long duplicateInExcel = plots.stream()
+						.filter(item -> item.getPlotNo().equals(p.getPlotNo()) && item.getLayout().getLayoutName().equals(l.getLayoutName()))
+						.count();
+				if (duplicateInExcel > 1) {
+					throw new RuntimeException("Duplicate plot number " + p.getPlotNo() + " found in Excel for layout " + l.getLayoutName());
+				}
+
+				// 3. Check layout limit
+				long currentCount = plotRepository.countByLayout_Id(l.getId());
+				if (currentCount >= l.getNoOfPlots()) {
+					throw new RuntimeException("Layout " + l.getLayoutName() + " (The plot limit is reached.)");
+				}
+				
+				// 4. Check if adding these plots will exceed the limit
+				long incomingCount = plots.stream()
+						.filter(item -> item.getLayout().getId().equals(l.getId()))
+						.count();
+				if (currentCount + incomingCount > l.getNoOfPlots()) {
+					throw new RuntimeException("Adding " + incomingCount + " plots will exceed the limit of " + l.getNoOfPlots() + " (The plot limit is reached.) for layout " + l.getLayoutName());
+				}
+			}
 
 			plotRepository.saveAll(plots);
 			} catch (IOException e) {
@@ -174,6 +253,31 @@ public class PlotServiceImpl implements PlotService {
 
 	    Layout layout = layoutRepository.findByLayoutName(bo.getLayout().getLayoutName())
 	            .orElseThrow(() -> new RuntimeException("Layout not found"));
+
+	    // Range check
+	    int pNo;
+	    try {
+	        pNo = Integer.parseInt(bo.getPlotNo());
+	    } catch (NumberFormatException e) {
+	        throw new RuntimeException("Invalid plot number format.");
+	    }
+
+	    if (pNo < 1) {
+	        throw new RuntimeException("Invalid plot number.");
+	    }
+	    if (pNo > layout.getNoOfPlots()) {
+	        throw new RuntimeException("Plot number exceeds the allowed limit for this layout.");
+	    }
+
+	    // Duplicate check
+	    boolean exists = plotRepository.existsByPlotNoAndLayout_LayoutName(
+	            bo.getPlotNo(),
+	            layout.getLayoutName()
+	    );
+
+	    if (exists && !existing.getPlotId().equals(bo.getPlotId())) {
+	        throw new RuntimeException("The plot already exists.");
+	    }
 
 	    BeanUtils.copyProperties(bo, existing);
 	    existing.setLayout(layout);

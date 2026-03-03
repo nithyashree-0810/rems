@@ -69,14 +69,20 @@ public class PlotController {
 
 	
 	@PutMapping("/{layoutName}/{plotNo}")
-	public ResponseEntity<Plot> updatePlot(
+	public ResponseEntity<?> updatePlot(
 	        @PathVariable String layoutName,
 	        @PathVariable String plotNo,
 	        @RequestBody PlotBO bo) {
-
-	    return ResponseEntity.ok(
-	            plotService.updateByLayoutNameAndPlotNo(layoutName, plotNo, bo)
-	    );
+	    try {
+	        return ResponseEntity.ok(
+	                plotService.updateByLayoutNameAndPlotNo(layoutName, plotNo, bo)
+	        );
+	    } catch (RuntimeException e) {
+	        return ResponseEntity.badRequest().body(e.getMessage());
+	    } catch (Exception e) {
+	        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+	                .body("Error while updating: " + e.getMessage());
+	    }
 	}
 
 
@@ -101,8 +107,15 @@ public class PlotController {
 	
 	@PostMapping("/upload")
 	public ResponseEntity<String> uploadPlots(@RequestParam("file") MultipartFile file) {
-	plotService.uploadPlotsFromExcel(file);
-	return ResponseEntity.ok("Excel uploaded successfully!");
+	    try {
+	        plotService.uploadPlotsFromExcel(file);
+	        return ResponseEntity.ok("Excel uploaded successfully!");
+	    } catch (RuntimeException e) {
+	        return ResponseEntity.badRequest().body(e.getMessage());
+	    } catch (Exception e) {
+	        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+	                .body("Excel upload failed: " + e.getMessage());
+	    }
 	}
 	
 	@GetMapping("/id/{plotId}")

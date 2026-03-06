@@ -39,6 +39,10 @@ export class EditPlotComponent implements OnInit {
         next: (res) => {
           this.plot = res;
           console.log("EDIT PLOT DATA:", this.plot);
+          // ✅ Match the initial layout object
+          if (this.layouts.length > 0) {
+            this.matchLayout();
+          }
         },
         error: () => this.toastr.error("Plot not found")
       });
@@ -46,14 +50,26 @@ export class EditPlotComponent implements OnInit {
     // Load layouts for dropdown
     this.layoutService.getLayouts().subscribe(res => {
       this.layouts = res;
+      if (this.plot && this.plot.layout) {
+        this.matchLayout();
+      }
     });
   }
 
-  updatePlot() {
+  matchLayout() {
+    this.plot.layout = this.layouts.find(l => l.layoutName === this.layoutName) || this.plot.layout;
+  }
 
+  onLayoutChange() {
+    if (this.plot.layout) {
+      this.plot.layoutAddress = this.plot.layout.address;
+    }
+  }
+
+  updatePlot() {
     console.log("UPDATING PLOT:", this.plot);
 
-    // ✅ Updated API: update by layoutName + plotNo
+    // ✅ Use plotId if available, otherwise fallback to params
     this.plotService.updatePlotByLayoutAndPlotNo(this.layoutName, this.plotNo, this.plot)
       .subscribe({
         next: () => {
@@ -69,7 +85,6 @@ export class EditPlotComponent implements OnInit {
   }
 
   calculateValues(): void {
-
     const b1 = Number(this.plot.breadthOne) || 0;
     const b2 = Number(this.plot.breadthTwo) || 0;
     const l1 = Number(this.plot.lengthOne) || 0;
@@ -80,11 +95,17 @@ export class EditPlotComponent implements OnInit {
       const avgBreadth = (b1 + b2) / 2;
       const avgLength = (l1 + l2) / 2;
       const totalSqft = avgBreadth * avgLength;
-      const totalPrice = totalSqft * rate;
-
       this.plot.totalSqft = Math.round(totalSqft);
-      this.plot.price = Math.round(totalPrice);
+      this.plot.price = Math.round(this.plot.totalSqft * rate);
+    } else if (this.plot.totalSqft > 0) {
+      this.plot.price = Math.round(this.plot.totalSqft * rate);
     }
+  }
+
+  calculatePriceOnly(): void {
+    const rate = Number(this.plot.sqft) || 0;
+    const totalSqft = Number(this.plot.totalSqft) || 0;
+    this.plot.price = Math.round(totalSqft * rate);
   }
 
   goHome() {

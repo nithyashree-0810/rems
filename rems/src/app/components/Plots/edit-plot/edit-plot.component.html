@@ -12,89 +12,68 @@
     <div class="form-row">
       <div class="form-group">
         <label>Layout</label>
-
-      <input type="text"
-       class="form-control"
-       [value]="plot.layout.layoutName"
-       disabled>
-
+        <select class="form-control" [(ngModel)]="plot.layout" name="layout" required (change)="onLayoutChange()">
+          <option *ngFor="let layout of layouts" [ngValue]="layout">
+            {{ layout.layoutName }}
+          </option>
+        </select>
       </div>
 
       <div class="form-group">
         <label>Plot No.</label>
-        <input type="number"
-               [(ngModel)]="plot.plotNo"
-               name="plotNo"
-               disabled />
+        <input type="text" [(ngModel)]="plot.plotNo" name="plotNo" required />
       </div>
     </div>
 
-   <!-- Rate + Direction + Survey No -->
-<div class="form-row">
+    <!-- Rate + Direction + Survey No -->
+    <div class="form-row">
 
-  <div class="form-group">
-    <label>SqFt Rate</label>
-    <input type="number"
-           [(ngModel)]="plot.sqft"
-           name="sqft"
-           disabled/>
-  </div>
+      <div class="form-group">
+        <label>SqFt Rate</label>
+        <input type="number" [(ngModel)]="plot.sqft" name="sqft" required (input)="calculateValues()" />
+      </div>
 
-  <div class="form-group">
-    <label>Direction</label>
-    <select [(ngModel)]="plot.direction"
-            name="direction"
-            required
-            #direction="ngModel">
-      <option value="">Select Direction</option>
-      <option>EAST</option>
-      <option>WEST</option>
-      <option>NORTH</option>
-      <option>SOUTH</option>
-      <option>SOUTHEAST</option>
-      <option>SOUTHWEST</option>
-      <option>NORTHEAST</option>
-      <option>NORTHWEST</option>
-    </select>
+      <div class="form-group">
+        <label>Direction</label>
+        <select [(ngModel)]="plot.direction" name="direction" required #direction="ngModel">
+          <option value="">Select Direction</option>
+          <option>EAST</option>
+          <option>WEST</option>
+          <option>NORTH</option>
+          <option>SOUTH</option>
+          <option>SOUTHEAST</option>
+          <option>SOUTHWEST</option>
+          <option>NORTHEAST</option>
+          <option>NORTHWEST</option>
+        </select>
 
-    <small class="error" *ngIf="direction.invalid && direction.touched">
-      Direction is required
-    </small>
-  </div>
+        <small class="error" *ngIf="direction.invalid && direction.touched">
+          Direction is required
+        </small>
+      </div>
 
-  <div class="form-group">
-    <label>Survey No</label>
-    <input type="text"
-           [(ngModel)]="plot.surveyNo"
-           name="surveyNo"
-           required
-           #surveyNo="ngModel" />
+      <div class="form-group">
+        <label>Survey No</label>
+        <input type="text" [(ngModel)]="plot.surveyNo" name="surveyNo" required #surveyNo="ngModel" />
 
-    <small class="error" *ngIf="surveyNo.invalid && surveyNo.touched">
-      Survey Number is required
-    </small>
-  </div>
+        <small class="error" *ngIf="surveyNo.invalid && surveyNo.touched">
+          Survey Number is required
+        </small>
+      </div>
 
-</div>
+    </div>
 
     <!-- Dimensions -->
     <div class="form-row">
       <div class="form-group">
         <label>Total Square Feet</label>
-        <input type="number"
-               [(ngModel)]="plot.totalSqft"
-               name="totalSqft"
-               disabled />
+        <input type="number" [(ngModel)]="plot.totalSqft" name="totalSqft" (input)="calculatePriceOnly()" />
       </div>
 
       <div class="form-group">
         <label>Breadth One</label>
-        <input type="number"
-               [(ngModel)]="plot.breadthOne"
-               name="breadthOne"
-               required
-               #breadthOne="ngModel"
-               (input)="calculateValues()" />
+        <input type="number" [(ngModel)]="plot.breadthOne" name="breadthOne" required #breadthOne="ngModel"
+          (input)="calculateValues()" />
 
         <small class="error" *ngIf="breadthOne.invalid && breadthOne.touched">
           Required
@@ -105,12 +84,8 @@
     <div class="form-row">
       <div class="form-group">
         <label>Breadth Two</label>
-        <input type="number"
-               [(ngModel)]="plot.breadthTwo"
-               name="breadthTwo"
-               required
-               #breadthTwo="ngModel"
-               (input)="calculateValues()" />
+        <input type="number" [(ngModel)]="plot.breadthTwo" name="breadthTwo" required #breadthTwo="ngModel"
+          (input)="calculateValues()" />
 
         <small class="error" *ngIf="breadthTwo.invalid && breadthTwo.touched">
           Required
@@ -119,12 +94,8 @@
 
       <div class="form-group">
         <label>Length One</label>
-        <input type="number"
-               [(ngModel)]="plot.lengthOne"
-               name="lengthOne"
-               required
-               #lengthOne="ngModel"
-               (input)="calculateValues()" />
+        <input type="number" [(ngModel)]="plot.lengthOne" name="lengthOne" required #lengthOne="ngModel"
+          (input)="calculateValues()" />
 
         <small class="error" *ngIf="lengthOne.invalid && lengthOne.touched">
           Required
@@ -135,33 +106,23 @@
     <div class="form-row">
       <div class="form-group">
         <label>Length Two</label>
-        <input type="number"
-               [(ngModel)]="plot.lengthTwo"
-               name="lengthTwo"
-               required
-               #lengthTwo="ngModel"
-               (input)="calculateValues()" />
+        <input type="number" [(ngModel)]="plot.lengthTwo" name="lengthTwo" required #lengthTwo="ngModel"
+          (input)="calculateValues()" />
 
         <small class="error" *ngIf="lengthTwo.invalid && lengthTwo.touched">
           Required
         </small>
       </div>
     </div>
-    
+
     <div class="form-row">
       <div class="form-group">
         <label>Price (₹)</label>
-        <input type="number"
-               [(ngModel)]="plot.price"
-               name="price"
-               disabled />
+        <input type="number" [(ngModel)]="plot.price" name="price" />
       </div>
       <div class="form-group">
         <label>Layout Address</label>
-        <input type="text"
-               [(ngModel)]="plot.layoutAddress"
-               name="layoutAddress"
-               disabled />
+        <input type="text" [(ngModel)]="plot.layoutAddress" name="layoutAddress" />
       </div>
     </div>
 
@@ -169,11 +130,7 @@
     <div class="form-row">
       <div class="form-group">
         <label>Owner Name</label>
-        <input type="text"
-               [(ngModel)]="plot.ownerName"
-               name="ownerName"
-               required
-               #ownerName="ngModel" />
+        <input type="text" [(ngModel)]="plot.ownerName" name="ownerName" required #ownerName="ngModel" />
 
         <small class="error" *ngIf="ownerName.invalid && ownerName.touched">
           Owner Name is required
@@ -182,11 +139,7 @@
 
       <div class="form-group">
         <label>Address</label>
-        <input type="text"
-               [(ngModel)]="plot.address"
-               name="address"
-               required
-               #address="ngModel" />
+        <input type="text" [(ngModel)]="plot.address" name="address" required #address="ngModel" />
 
         <small class="error" *ngIf="address.invalid && address.touched">
           Address is required
@@ -197,12 +150,7 @@
     <div class="form-row">
       <div class="form-group">
         <label>Mobile No.</label>
-        <input type="tel"
-               [(ngModel)]="plot.mobile"
-               name="mobile"
-               required
-               pattern="[0-9]{10}"
-               #mobile="ngModel" />
+        <input type="tel" [(ngModel)]="plot.mobile" name="mobile" required pattern="[0-9]{10}" #mobile="ngModel" />
 
         <small class="error" *ngIf="mobile.invalid && mobile.touched">
           Enter valid 10 digit mobile number
@@ -211,11 +159,7 @@
 
       <div class="form-group">
         <label>Email</label>
-        <input type="email"
-               [(ngModel)]="plot.email"
-               name="email"
-               required
-               #email="ngModel" />
+        <input type="email" [(ngModel)]="plot.email" name="email" required #email="ngModel" />
 
         <small class="error" *ngIf="email.invalid && email.touched">
           Enter valid email
@@ -242,15 +186,11 @@
 
     <!-- Buttons -->
     <div class="form-buttons">
-      <button class="btn save-btn" 
-              type="submit"
-              [disabled]="plotForm.invalid">
+      <button class="btn save-btn" type="submit" [disabled]="plotForm.invalid">
         Update
       </button>
 
-      <button class="btn home-btn" 
-              type="button" 
-              (click)="goBackToList()">
+      <button class="btn home-btn" type="button" (click)="goBackToList()">
         Back
       </button>
     </div>

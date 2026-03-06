@@ -150,13 +150,10 @@ public class PlotServiceImpl implements PlotService {
 		    }
 
 		    // Duplicate check
-		    boolean exists = plotRepository.existsByPlotNoAndLayout_LayoutName(
-		            newPlot.getPlotNo(),
-		            layout.getLayoutName()
-		    );
+		    Optional<Plot> duplicate = plotRepository.findByLayout_LayoutNameAndPlotNo(layout.getLayoutName(), newPlot.getPlotNo());
 
-		    if (exists && !existing.getPlotId().equals(newPlot.getPlotId())) {
-		        throw new RuntimeException("The plot already exists.");
+		    if (duplicate.isPresent() && !duplicate.get().getPlotId().equals(existing.getPlotId())) {
+		        throw new RuntimeException("The plot already exists in this layout.");
 		    }
 
 		    BeanUtils.copyProperties(newPlot, existing);
@@ -270,13 +267,10 @@ public class PlotServiceImpl implements PlotService {
 	    }
 
 	    // Duplicate check
-	    boolean exists = plotRepository.existsByPlotNoAndLayout_LayoutName(
-	            bo.getPlotNo(),
-	            layout.getLayoutName()
-	    );
+	    Optional<Plot> duplicate = plotRepository.findByLayout_LayoutNameAndPlotNo(layout.getLayoutName(), bo.getPlotNo());
 
-	    if (exists && !existing.getPlotId().equals(bo.getPlotId())) {
-	        throw new RuntimeException("The plot already exists.");
+	    if (duplicate.isPresent() && !duplicate.get().getPlotId().equals(existing.getPlotId())) {
+	        throw new RuntimeException("The plot already exists in this layout.");
 	    }
 
 	    BeanUtils.copyProperties(bo, existing);
